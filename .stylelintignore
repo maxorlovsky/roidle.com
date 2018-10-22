@@ -1,0 +1,6 @@
+*.css
+/fe/styles/_dialog.scss
+/fe/styles/_tooltip.scss
+/fe/styles/icomoon/*
+/fe/index.html
+/public/index.html

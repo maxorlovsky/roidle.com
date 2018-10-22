@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: $font;
+    background-color: $bgColor;
+    min-width: 320px;
+    width: 100%;
+
+    &.mobile-menu {
+        overflow: hidden;
+    }
+}
+
+.btn {
+    cursor: pointer;
+    font-family: $font;
+}
+
+.btn:focus,
+input:focus,
+textarea:focus,
+.form-control:focus {
+    box-shadow: none;
+}
+
+a {
+    transition: 0.3s;
+
+    &:focus {
+        outline: none;
+        outline-offset: 0;
+    }
+
+    &:hover {
+        outline: none;
+        text-decoration: none;
+    }
+}
+
+/* stylelint-disable */
+[v-cloak] .v-cloak--hidden {
+    display: none;
+}
+/* stylelint-enable */
+
+.page {
+    width: 95%;
+    flex: 1;
+    position: relative;
+    margin: 0px auto;
+    visibility: visible;
+    height: auto;
+    transition: 0.5s;
+
+    @include clearfix();
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

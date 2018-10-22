@@ -1,0 +1,31 @@
+/* Project variables */
+$mainColor: #fe980f !default;
+$mainColorOpacity: rgba(254, 152, 15, 0.5) !default;
+$bgColor: #fff !default;
+$font: "Roboto", sans-serif !default;
+$mobileSize: 768px;
+
+/* Boostrap variables */
+$link-hover-decoration: none;
+$link-color: $mainColor;
+$link-hover-color: #bbb;
+$link-hover-decoration: none;
+$font-family-base: $font;
+$nav-link-padding: 0;
+$table-border-width: 0;
+$nav-link-padding-y: 0;
+$nav-link-padding-x: 0;
+
+/* Font-Awesome variables */
+$fa-font-path: "../dist/assets/fonts/";
+$icomoon-font-path: "../dist/assets/fonts/";
+$assets: "../dist/assets" !default;
+
+// Importing lib styles
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../node_modules/font-awesome/scss/font-awesome.scss";
+
+// Import project styles
+@import "./styles.scss";
+@import "../src/components/**/*.scss";
+@import "../src/pages/**/*.scss";
