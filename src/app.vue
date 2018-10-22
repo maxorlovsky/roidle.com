@@ -2,13 +2,7 @@
     <section id="app">
         <router-view class="body-content"/>
 
-        <section v-if="loading"
-            class="pre-loading"
-        >
-            <img src="/dist/assets/images/logo.png"
-                alt="Loading"
-            >
-        </section>
+        <loading v-if="loading"/>
     </section>
 </template>
 
@@ -17,10 +11,13 @@
 import { store } from './store/index.js';
 
 // Components
-// 1import loading from './components/loading/loading.vue';
+import loading from './components/loading/loading.vue';
 
 export default {
     name: 'app',
+    components: {
+        loading
+    },
     store: store,
     data() {
         return {

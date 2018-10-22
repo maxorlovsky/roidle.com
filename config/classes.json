@@ -1,0 +1,50 @@
+[{
+    "id": 1,
+    "name": "Fighter",
+    "info": "Really straight-forwards class who like like to rush into melee fight and protect his allies. Fight with 1h-sword + shield, 2h-sword or spear/halberd",
+    "statPointsPerLevel": 2,
+    "statsModifiers": {
+        "pow": {
+            "atk": 1.5,
+            "matk": 0,
+            "acc": 0.4,
+            "crit": 0.2,
+            "def": 0.3,
+            "mdef": 0.1,
+            "health": 2
+        },
+        "wis": {
+            "atk": 0,
+            "matk": 0.2,
+            "acc": 0.6,
+            "crit": 0.4,
+            "def": 0,
+            "mdef": 0.4,
+            "health": 0
+        },
+        "hea": {
+            "atk": 0,
+            "matk": 0,
+            "acc": 0,
+            "crit": 0,
+            "def": 0.9,
+            "mdef": 0.6,
+            "health": 5
+        }
+    }
+},
+{
+    "id": 2,
+    "name": "Thief",
+    "info": "Nimble fighter with high accuracy, speed and crits. Use daggers, bows, or crossbows"
+},
+{
+    "id": 3,
+    "name": "Mage",
+    "info": "Magician practitioner who learn ways of elemental magic, use staff, wands+shield"
+},
+{
+    "id": 4,
+    "name": "Cleric",
+    "info": "Healer for your party who specializes in both magical and medical healing. Use blunt weapon + shield, staff, wands+shield, crossbow"
+}]
