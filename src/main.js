@@ -9,14 +9,9 @@ import App from './app.vue';
 
 /* eslint-disable */
 // Pages
+import gamePage from './pages/game/game.vue';
+import heroesPage from './pages/heroes/heroes.vue';
 import homePage from './pages/home/home.vue';
-/* import dashboardPage from './pages/dashboard/dashboard.vue';
-import settingsPage from './pages/settings/settings.vue';
-import notFoundPage from './pages/not-found/not-found.vue';
-import surveyFormPage from './pages/survey/survey-form.vue';
-import partnersPage from './pages/partners/partners.vue';
-import partnerFormPage from './pages/partner/partner-form.vue';
-import partnerProfilePage from './pages/partner/partner-profile.vue'; */
 // Mixins
 //import globalMixins from '@shared/fe-utilities/src/mixins/global-mixin.js';
 

@@ -14,17 +14,21 @@ const classMixin = {
                 health: 0
             };
 
-            console.log(stats);
-            console.log(params);
-
             const statsModifiers = classes.find((obj) => obj.id === classId).statsModifiers;
 
-            for (const stat of ['pow', 'wis', 'hea']) {
-                for (const modifier of statsModifiers[stat]) {
-                    console.log(modifier);
+            // Looping stats
+            for (const stat of Object.keys(stats)) {
+                // Looping class stats modifiers
+                for (const modifier of Object.keys(statsModifiers[stat])) {
+                    // If it's not 0, go for formula
+                    if (statsModifiers[stat][modifier]) {
+                        params[modifier] = Math.floor(params[modifier] + (stats[stat] * statsModifiers[stat][modifier]));
+                    }
                 }
-                // 1 console.log(statsModifiers[stat]);
             }
+
+            // Return hero parameters
+            return params;
         }
     }
 };

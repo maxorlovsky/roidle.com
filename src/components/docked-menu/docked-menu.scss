@@ -1,0 +1,11 @@
+.docked-menu {
+    position: fixed;
+    bottom: 0;
+    height: 60px;
+    width: 100%;
+    border-top: 3px solid #999;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

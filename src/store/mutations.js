@@ -1,6 +1,9 @@
 // Mutations are always synchronous
 export default {
-    saveTheState: (state, values) => {
-        state.theState = values;
+    saveParty: (state, values) => {
+        state.party = values;
+    },
+    displayDockedMenu: (state, values) => {
+        state.dockedMenu = values;
     }
 }

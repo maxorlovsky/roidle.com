@@ -5,10 +5,6 @@ body {
     background-color: $bgColor;
     min-width: 320px;
     width: 100%;
-
-    &.mobile-menu {
-        overflow: hidden;
-    }
 }
 
 .btn {
@@ -43,18 +39,6 @@ a {
 }
 /* stylelint-enable */
 
-.page {
-    width: 95%;
-    flex: 1;
-    position: relative;
-    margin: 0px auto;
-    visibility: visible;
-    height: auto;
-    transition: 0.5s;
-
-    @include clearfix();
-}
-
 @keyframes fadeInUp {
     0% {
         opacity: 0;
@@ -64,5 +48,11 @@ a {
     100% {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+.body-content {
+    &.docked-menu-open {
+        padding-bottom: 60px;
     }
 }

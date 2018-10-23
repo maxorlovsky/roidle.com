@@ -1,3 +1,4 @@
 export default {
-    theState: []
+    party: [],
+    dockedMenu: false
 }
