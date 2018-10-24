@@ -10,8 +10,9 @@ import App from './app.vue';
 /* eslint-disable */
 // Pages
 import gamePage from './pages/game/game.vue';
-import heroesPage from './pages/heroes/heroes.vue';
 import homePage from './pages/home/home.vue';
+import partyPage from './pages/party/party.vue';
+import partyMemberPage from './pages/party/party-member.vue';
 // Mixins
 //import globalMixins from '@shared/fe-utilities/src/mixins/global-mixin.js';
 

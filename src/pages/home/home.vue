@@ -94,23 +94,29 @@ const homePage = {
         },
         storeParty() {
             // Fill in missing data
-            for (const hero of this.party) {
-                hero.level = 1;
-                hero.statPoints = 7;
-                hero.exp = 0;
-                hero.stats = {
+            for (const member of this.party) {
+                member.level = 1;
+                member.statPoints = 7;
+                member.exp = 0;
+                member.stats = {
                     pow: 1,
                     wis: 1,
                     hea: 1
                 };
 
                 // Adding params depending on class
-                hero.params = this.getClassParams(hero.class, hero.stats);
+                member.params = this.getClassParams(member.class, member.stats);
+
+                // Adding hp
+                member.hp = member.params.health;
             }
 
             // Saving token in localStorage after how many days it should expire
             // 604800000 = 7 * 90 days
             functions.storage('set', 'party', this.party, 604800000 * 90);
+
+            this.$store.commit('saveParty', this.party);
+            this.$store.commit('displayDockedMenu', true);
 
             this.$router.replace('/game');
         },
