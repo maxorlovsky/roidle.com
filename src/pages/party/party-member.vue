@@ -20,7 +20,7 @@
                         :key="stat.attr"
                         class="stat"
                     >
-                        <div>{{ stat.name }}: {{ (member.stats[stat.attr] + tempStats[stat.attr]) }}</div>
+                        <div>{{ stat.name }}: {{ member.stats[stat.attr] }}</div>
                         <div v-if="member.statPoints"
                             class="stat-upgrade"
                         >
@@ -79,6 +79,7 @@ const partyMemberPage = {
     mixins: [classMixin],
     data() {
         return {
+            id: this.$route.params.id,
             job: '',
             tempStats: {
                 points: 0,
@@ -105,7 +106,6 @@ const partyMemberPage = {
     computed: {
         member() {
             const member = this.$store.getters.get('party')[this.$route.params.id] || {};
-            console.log('rawr');
 
             if (Object.keys(member).length) {
                 this.queryMemberData(member);
@@ -116,6 +116,16 @@ const partyMemberPage = {
     },
     created() {
 
+    },
+    beforeDestroy() {
+        const member = this.$store.getters.get('party')[this.id];
+        
+        // Recalculating member stats
+        member.stats.pow -= this.tempStats.pow;
+        member.stats.wis -= this.tempStats.wis;
+        member.stats.hea -= this.tempStats.hea;
+
+        member.params = this.recalculateParams(member);
     },
     methods: {
         queryMemberData(member) {
@@ -135,10 +145,13 @@ const partyMemberPage = {
                 // Increase temporary stat
                 this.tempStats[stat]++;
 
+                // Increase member stat
+                this.member.stats[stat]++;
+
                 // Decrease available points
                 this.tempStats.points--;
 
-                this.recalculateParams();
+                this.member.params = this.recalculateParams(this.member);
 
                 return true;
             }
@@ -152,22 +165,20 @@ const partyMemberPage = {
             // Decrease temporary stat
             this.tempStats[stat]--;
 
+            // Decrease member stat
+            this.member.stats[stat]--;
+
             // Increase available points
             this.tempStats.points++;
 
-            this.recalculateParams();
+            this.member.params = this.recalculateParams(this.member);
 
             return true;
         },
-        recalculateParams() {
-            this.member.params = this.getClassParams(this.member.class, this.member.stats);
+        recalculateParams(member) {
+            return this.getClassParams(member.class, member.stats);
         },
         confirmStats() {
-            // Adding temp stats into real stats
-            this.member.stats.pow += this.tempStats.pow;
-            this.member.stats.wis += this.tempStats.wis;
-            this.member.stats.hea += this.tempStats.hea;
-
             // Reseting temporary stats
             this.tempStats.pow = 0;
             this.tempStats.wis = 0;
