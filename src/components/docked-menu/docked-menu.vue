@@ -6,10 +6,15 @@
             @click="$router.go(-1)"
         >&#8592;</a>
 
-        <router-link v-if="!displayBackButton"
-            to="/party"
-            class="btn btn-secondary"
-        >P</router-link>
+        <template v-if="!displayBackButton">
+            <router-link to="/party"
+                class="btn btn-secondary"
+            >P</router-link>
+
+            <router-link to="/missions"
+                class="btn btn-secondary"
+            >M</router-link>
+        </template>
     </div>
 </template>
 

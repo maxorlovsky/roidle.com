@@ -11,6 +11,7 @@ import App from './app.vue';
 // Pages
 import gamePage from './pages/game/game.vue';
 import homePage from './pages/home/home.vue';
+import missionsPage from './pages/missions/missions.vue';
 import partyPage from './pages/party/party.vue';
 import partyMemberPage from './pages/party/party-member.vue';
 // Mixins
