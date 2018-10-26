@@ -1,0 +1,5 @@
+[
+    {"id": 1, "name": "Dagger", "type": "weapon", "value": 10, "eqSlots": []},
+    {"id": 2, "name": "Sword", "type": "weapon", "value": 30},
+    {"id": 3, "name": "Bow", "type": "weapon", "value": 30}
+]

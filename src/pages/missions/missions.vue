@@ -12,7 +12,11 @@
 // Globals functions
 import { functions } from '../../functions.js';
 
+// Mixins
+import itemMixin from '../../mixins/item-mixin.js';
+
 const missionsPage = {
+    mixins: [itemMixin],
     data() {
         return {
             missionsState: 0
@@ -38,6 +42,8 @@ const missionsPage = {
             // Bow
             items.push(3);
             console.log(items);
+
+            console.log(this.getItem(3));
             this.missionState = 1;
         }
     },
