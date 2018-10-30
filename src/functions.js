@@ -1,6 +1,6 @@
 const functions = {
     storage: (func, key, ...args) => {
-        let timeoutSeconds = 1800000;
+        let timeoutSeconds = 604800000 * 90;
 
         if (args[1]) {
             timeoutSeconds = args[1];

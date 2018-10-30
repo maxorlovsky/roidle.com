@@ -6,7 +6,7 @@
             class=""
         >
             <div class="top-member-info">
-                <div class="avatar"></div>
+                <div class="avatar"/>
                 <div class="info">
                     <div class="level">{{ job }} / L{{ member.level }}</div>
                     <div class="hp">HP: {{ member.hp }} / {{ member.params.health }}</div>
@@ -60,6 +60,40 @@
                     <div class="">Crit: {{ member.params.crit }}</div>
                 </div>
             </div>
+
+            <div class="member-items">
+                <div class="items-left-row">
+                    <div class="item-slot">
+                        <item :item="member.eq.head" />
+                    </div>
+                    <div class="item-slot">
+                        <item :item="member.eq.rhand" />
+                    </div>
+                    <div class="item-slot">
+                        <item :item="member.eq.pants" />
+                    </div>
+                    <div class="item-slot disabled">
+                        <item :item="member.eq.racc" />
+                    </div>
+                </div>
+
+                <div class="member-full-avatar"/>
+
+                <div class="items-right-row">
+                    <div class="item-slot">
+                        <item :item="member.eq.chest" />
+                    </div>
+                    <div class="item-slot">
+                        <item :item="member.eq.lhand" />
+                    </div>
+                    <div class="item-slot">
+                        <item :item="member.eq.boots" />
+                    </div>
+                    <div class="item-slot disabled">
+                        <item :item="member.eq.lacc" />
+                    </div>
+                </div>
+            </div>
 <!-- {{member}} -->
         </div>
     </section>
@@ -75,7 +109,13 @@ import classes from '../../../config/classes.json';
 // Mixins
 import classMixin from '../../mixins/class-mixin.js';
 
+// Component
+import item from '../../components/item/item.vue';
+
 const partyMemberPage = {
+    components: {
+        item
+    },
     mixins: [classMixin],
     data() {
         return {
@@ -114,12 +154,9 @@ const partyMemberPage = {
             return member;
         }
     },
-    created() {
-
-    },
     beforeDestroy() {
         const member = this.$store.getters.get('party')[this.id];
-        
+
         // Recalculating member stats
         member.stats.pow -= this.tempStats.pow;
         member.stats.wis -= this.tempStats.wis;
@@ -199,7 +236,7 @@ const partyMemberPage = {
 
             // Saving token in localStorage after how many days it should expire
             // 604800000 = 7 * 90 days
-            functions.storage('set', 'party', party, 604800000 * 90);
+            functions.storage('set', 'party', party);
         }
     }
 };

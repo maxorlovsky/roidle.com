@@ -91,4 +91,30 @@
         align-items: center;
         justify-content: space-around;
     }
+
+    .member-items {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+
+        .items-left-row,
+        .items-right-row {
+            width: 80px;
+
+            .item-slot {
+                width: 80px;
+                height: 80px;
+                border: 2px solid #000;
+                border-top: 0;
+
+                &:first-child {
+                    border-top: 2px solid #000;
+                }
+
+                &.disabled {
+                    background-color: rgba(255, 0, 0, 0.2);
+                }
+            }
+        }
+    }
 }

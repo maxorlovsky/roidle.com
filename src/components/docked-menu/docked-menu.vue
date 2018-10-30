@@ -30,10 +30,10 @@ export default {
         $route: {
             immediate: true,
             handler() {
-                if (this.$route.path !== '/game') {
-                    this.displayBackButton = true;
-                } else {
+                if (this.$route.path === '/game') {
                     this.displayBackButton = false;
+                } else {
+                    this.displayBackButton = true;
                 }
             }
         }

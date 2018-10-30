@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
     }
 
     // Set up meta title
-    document.title = 'mo - Back Office';
+    document.title = 'mo';
     if (to.meta.title) {
         document.title = `${to.meta.title} | ${document.title}`;
     }

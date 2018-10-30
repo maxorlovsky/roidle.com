@@ -109,6 +109,18 @@ const homePage = {
 
                 // Adding hp
                 member.hp = member.params.health;
+
+                // Adding equipment slots
+                member.eq = {
+                    head: 0,
+                    chest: 0,
+                    rhand: 0,
+                    lhand: 0,
+                    pants: 0,
+                    boots: 0,
+                    racc: 0,
+                    lacc: 0
+                };
             }
 
             // Saving token in localStorage after how many days it should expire

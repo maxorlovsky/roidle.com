@@ -14,9 +14,6 @@ const gamePage = {
         party() {
             return this.$store.getters.get('party') || [];
         }
-    },
-    created() {
-        
     }
 };
 
