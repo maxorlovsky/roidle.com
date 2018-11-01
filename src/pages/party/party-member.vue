@@ -63,25 +63,33 @@
 
             <div class="member-items">
                 <div class="items-left-row">
-                    <div class="item-slot">
+                    <router-link :to="urlToItem + '/head'"
+                        class="item-slot"
+                    >
                         <item :item="member.eq.head" />
-                    </div>
-                    <div class="item-slot">
+                    </router-link>
+                    <router-link :to="urlToItem + '/rhand'"
+                        class="item-slot"
+                    >
                         <item :item="member.eq.rhand" />
-                    </div>
-                    <div class="item-slot">
+                    </router-link>
+                    <router-link :to="urlToItem + '/pants'"
+                        class="item-slot"
+                    >
                         <item :item="member.eq.pants" />
-                    </div>
-                    <div class="item-slot disabled">
+                    </router-link>
+                    <router-link :to="urlToItem + '/racc'"
+                        class="item-slot disabled"
+                    >
                         <item :item="member.eq.racc" />
-                    </div>
+                    </router-link>
                 </div>
 
                 <div class="member-full-avatar"/>
 
                 <div class="items-right-row">
                     <div class="item-slot">
-                        <item :item="member.eq.chest" />
+                        <item :item="member.eq.body" />
                     </div>
                     <div class="item-slot">
                         <item :item="member.eq.lhand" />
@@ -121,6 +129,7 @@ const partyMemberPage = {
         return {
             id: this.$route.params.id,
             job: '',
+            urlToItem: '/party/' + this.$route.params.id,
             tempStats: {
                 points: 0,
                 pow: 0,

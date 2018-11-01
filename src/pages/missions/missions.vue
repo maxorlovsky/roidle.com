@@ -30,7 +30,6 @@ const missionsPage = {
         }
     },
     created() {
-        console.log(this.getItem(100));
         if (!functions.storage('get', 'missionInitial') || functions.storage('get', 'missionInitial') === 1) {
             // Update the state
             this.missionInitial = 1;

@@ -105,8 +105,10 @@ module.exports = {
             "error",
             "beside"
         ],
-        "indent": "off",
-        "indent-legacy": "error",
+        "indent": ["error", 4, {
+            "SwitchCase": 1
+        }],
+        "indent-legacy": "off",
         "init-declarations": "error",
         "jsx-quotes": "error",
         "key-spacing": "error",

@@ -31,7 +31,8 @@
             "mdef": 0.6,
             "health": 5
         }
-    }
+    },
+    "allowedItemsParts": ["sword", "2hsword", "shield", "hhelm", "hbody", "hpants", "boots"]
 },
 {
     "id": 2,

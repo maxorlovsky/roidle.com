@@ -113,7 +113,7 @@ const homePage = {
                 // Adding equipment slots
                 member.eq = {
                     head: 0,
-                    chest: 0,
+                    body: 0,
                     rhand: 0,
                     lhand: 0,
                     pants: 0,

@@ -14,6 +14,7 @@ import homePage from './pages/home/home.vue';
 import missionsPage from './pages/missions/missions.vue';
 import partyPage from './pages/party/party.vue';
 import partyMemberPage from './pages/party/party-member.vue';
+import partyItemsPage from './pages/party/party-items.vue';
 // Mixins
 //import globalMixins from '@shared/fe-utilities/src/mixins/global-mixin.js';
 
