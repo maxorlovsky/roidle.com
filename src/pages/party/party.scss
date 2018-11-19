@@ -124,5 +124,20 @@
             border: 2px solid #000;
             border-top: 0;
         }
+
+        .item-block-info {
+            display: flex;
+            align-items: center;
+
+            .avatar {
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+            }
+
+            .price {
+                text-align: right;
+            }
+        }
     }
 }

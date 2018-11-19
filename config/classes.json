@@ -32,7 +32,7 @@
             "health": 5
         }
     },
-    "allowedItemsParts": ["sword", "2hsword", "shield", "hhelm", "hbody", "hpants", "boots"]
+    "allowedItemsParts": ["sword", "2hsword", "shield", "hhelm", "hbody", "hpants", "hboots"]
 },
 {
     "id": 2,

@@ -29,6 +29,9 @@ const classMixin = {
 
             // Return hero parameters
             return params;
+        },
+        getClassDataById(classId) {
+            return classes.find((obj) => obj.id === classId);
         }
     }
 };

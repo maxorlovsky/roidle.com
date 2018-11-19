@@ -1,14 +1,26 @@
 <template>
     <section class="party-page">
-        <div class="heading">{{ member.name }} - {{ itemPart }} slot</div>
+        <div class="heading">{{ member.name }} - {{ itemPart.name }} slot</div>
 
-        <div v-if="Object.keys(member).length"
+        <div v-if="Object.keys(member).length && itemList.length"
             class="items-list"
         >
             <div v-for="(item, index) in itemList"
                 :key="index"
                 class="item-block"
-            >{{ item }}</div>
+            >
+                <div class="top-member-info item-block-info">
+                    <div class="avatar"><span class="price">{{ item.value }}</span></div>
+
+                    <div class="info">
+                        <div class="level">{{ item.name }} / L{{ item.level }}</div>
+                        <div class="params">{{ item.paramsStr }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-else>
+            <p>No items to display</p>
         </div>
     </section>
 </template>
@@ -37,10 +49,12 @@ const partyItemsPage = {
             id: this.$route.params.id,
             job: {},
             urlBack: '/party/' + this.$route.params.id,
-            itemPart: ''
+            itemPart: this.getPartName(this.$route.params.item),
+            itemList: []
         };
     },
     created() {
+        // Allowed "dynamic" URLs
         const itemPartsWhiteList = ['head', 'body', 'rhand', 'lhand', 'pants', 'boots', 'racc', 'lacc'];
 
         // In case URL is incorrect, redirecting back to profile of a member
@@ -48,16 +62,10 @@ const partyItemsPage = {
             this.$route.push(this.urlBack);
             return false;
         }
-
-        this.itemPart = this.getPartName(this.$route.params.item);
     },
     computed: {
         member() {
             const member = this.$store.getters.get('party')[this.$route.params.id] || {};
-
-            if (Object.keys(member).length) {
-                this.getAllowedItems();
-            }
 
             return member;
         }
@@ -73,37 +81,78 @@ const partyItemsPage = {
 
         member.params = this.recalculateParams(member); */
     },
+    watch: {
+        member: {
+            handler() {
+                if (this.member.class) {
+                    // Get job description and fetch allowed items
+                    this.queryMemberData(this.member);
+
+                    // Create a list of allowed items to display
+                    this.getAllowedItems();
+                }
+            },
+            immediate: true
+        }
+    },
     methods: {
         getPartName(part) {
-            let returnPart = '';
+            let returnPart = {};
 
             switch (part) {
                 case 'head':
-                    returnPart = 'Head';
+                    returnPart = {
+                        name: 'Head',
+                        types: ['hhelm', 'lhelm']
+                    };
                     break;
                 case 'body':
-                    returnPart = 'Body';
+                    returnPart = {
+                        name: 'Body',
+                        types: ['hbody', 'lbody']
+                    };
                     break;
                 case 'rhand':
-                    returnPart = 'Right Hand';
+                    returnPart = {
+                        name: 'Right Hand',
+                        types: ['dagger', 'sword', '2hsword', 'bow', 'xbox', 'mace', 'axe', 'wand', 'staff']
+                    };
                     break;
                 case 'lhand':
-                    returnPart = 'Left Hand';
+                    returnPart = {
+                        name: 'Left Hand',
+                        types: ['shield']
+                    };
                     break;
                 case 'pants':
-                    returnPart = 'Pants';
+                    returnPart = {
+                        name: 'Pants',
+                        types: ['hpants', 'lpants']
+                    };
                     break;
                 case 'boots':
-                    returnPart = 'Boots';
+                    returnPart = {
+                        name: 'Boots',
+                        types: ['hboots', 'lboots']
+                    };
                     break;
                 case 'racc':
-                    returnPart = 'Accessory (1)';
+                    returnPart = {
+                        name: 'Accessory (1)',
+                        types: []
+                    };
                     break;
                 case 'lacc':
-                    returnPart = 'Accessory (2)';
+                    returnPart = {
+                        name: 'Accessory (2)',
+                        types: []
+                    };
                     break;
                 default:
-                    returnPart = '-';
+                    returnPart = {
+                        name: '-',
+                        types: []
+                    };
                     break;
             }
 
@@ -112,7 +161,6 @@ const partyItemsPage = {
         queryMemberData(member) {
             // Fetch member class data
             this.job = classes.find((job) => job.id === member.class);
-            console.log(this.job);
         },
         getAllowedItems() {
             // Grab all items from storage
@@ -120,82 +168,43 @@ const partyItemsPage = {
 
             // Gather only items that are allowed for this class / level
             const gatherItems = [];
-            console.log(this.member);
+
             for (const item of items) {
                 const itemData = this.getItem(item);
 
-                if (itemData.level <= this.member.level) {
-                    gatherItems.push(itemData);
+                // Check if this item type is allowed for this type of class, if not, we're removing it from the list
+                if (this.job.allowedItemsParts.indexOf(itemData.type) === -1) {
+                    continue;
                 }
+
+                // Check which slot are we looking at, if this is a weapon display, we should hide armor and vice versa
+                if (this.itemPart.types.indexOf(itemData.type) === -1) {
+                    continue;
+                }
+
+                // Gathering params in a properly displayed string
+                itemData.paramsStr = '';
+                for (const [key, value] of Object.entries(itemData.params)) {
+                    // In case parameter is positive, adding + to it, otherwise 0 or a negative number coming straight out of items.json
+                    if (parseInt(value) > 0) {
+                        itemData.paramsStr += `${key.toUpperCase()}: +${value}, `;
+                    } else {
+                        itemData.paramsStr += `${key.toUpperCase()}: ${value}, `;
+                    }
+                }
+                // Removing last space and comma
+                itemData.paramsStr = itemData.paramsStr.substring(0, itemData.paramsStr.length - 2);
+
+                // In case item level is too high, we mark it as disabled, to still display it in the list, but make it unclickable
+                if (itemData.level > this.member.level) {
+                    itemData.disabled = 1;
+                }
+
+                // Add to displayed list of items
+                gatherItems.push(itemData);
             }
 
             this.itemList = gatherItems;
-        },
-        allocateStat(stat, increment) {
-            if (increment) {
-                // In case there is 0 stat points, we hold the increment
-                if (!this.tempStats.points) {
-                    return false;
-                }
-
-                // Increase temporary stat
-                this.tempStats[stat]++;
-
-                // Increase member stat
-                this.member.stats[stat]++;
-
-                // Decrease available points
-                this.tempStats.points--;
-
-                this.member.params = this.recalculateParams(this.member);
-
-                return true;
-            }
-
-            // Otherwise decreasing
-            // If temporary stat that we're decreasing is already on 0, we can't decrease more
-            if (!this.tempStats[stat]) {
-                return false;
-            }
-
-            // Decrease temporary stat
-            this.tempStats[stat]--;
-
-            // Decrease member stat
-            this.member.stats[stat]--;
-
-            // Increase available points
-            this.tempStats.points++;
-
-            this.member.params = this.recalculateParams(this.member);
-
-            return true;
-        },
-        recalculateParams(member) {
-            return this.getClassParams(member.class, member.stats);
-        },
-        confirmStats() {
-            // Reseting temporary stats
-            this.tempStats.pow = 0;
-            this.tempStats.wis = 0;
-            this.tempStats.hea = 0;
-
-            // Removing used points
-            this.member.statPoints -= (this.member.statPoints - this.tempStats.points);
-
-            // Updating current HP to maximum
-            this.member.hp = this.member.params.health;
-
-            // Get clean data of party and update specific member
-            const party = this.$store.getters.get('party');
-            party[this.$route.params.id] = this.member;
-
-            // Update party in vuex and storage
-            this.$store.commit('saveParty', party);
-
-            // Saving token in localStorage after how many days it should expire
-            // 604800000 = 7 * 90 days
-            functions.storage('set', 'party', party);
         }
     }
 };
