@@ -100,8 +100,8 @@ const config = {
     devtool: 'source-map',
     devServer: {
         compress: true,
-        https: true,
-        port: 8090,
+        https: false,
+        port: 8200,
         historyApiFallback: true,
         contentBase: './public/',
         publicPath: '/dist/',
@@ -110,24 +110,8 @@ const config = {
         },
         inline: true,
         quiet: false,
-        proxy: {
-            '/api': {
-                target: 'http://localhost:9000/public',
-                secure: false,
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': ''
-                }
-            },
-            '/images': {
-                target: 'https://maxorlovsky.com/assets/uploads/images',
-                secure: false,
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/images': ''
-                }
-            }
-        }
+        public: 'game-fe-web.maxorlovsky.net',
+        proxy: {}
     },
     performance: {
         hints: false

@@ -2,7 +2,8 @@ module.exports = {
     "env": {
         "browser": true,
         "commonjs": true,
-        "es6": true
+        "es6": true,
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
@@ -16,7 +17,8 @@ module.exports = {
         "mo": true
     },
     "parserOptions": {
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaVersion": 8
     },
     "rules": {
         "accessor-pairs": "error",
@@ -47,9 +49,9 @@ module.exports = {
         ],
         "callback-return": "off",
         "camelcase": "error",
-        "capitalized-comments": "off",
+        "capitalized-comments": "error",
         "class-methods-use-this": "error",
-        "comma-dangle": "error",
+        "comma-dangle": "off",
         "comma-spacing": [
             "error",
             {
@@ -124,22 +126,24 @@ module.exports = {
             "error",
             "unix"
         ],
-        "lines-around-comment": "error",
+        "lines-around-comment": ["error", {
+            "beforeBlockComment": false
+        }],
         "lines-around-directive": "error",
         "lines-between-class-members": "error",
         "max-depth": "error",
         "max-len": "off",
         "max-lines": "off",
         "max-nested-callbacks": "error",
-        "max-params": "off",
+        "max-params": "error",
         "max-statements": "off",
         "max-statements-per-line": "error",
         "multiline-comment-style": "off",
         "new-parens": "error",
-        "newline-after-var": "off",
-        "newline-before-return": "off",
+        "newline-after-var": "error",
+        "newline-before-return": "error",
         "newline-per-chained-call": "error",
-        "no-alert": "off",
+        "no-alert": "error",
         "no-array-constructor": "error",
         "no-await-in-loop": "error",
         "no-bitwise": "error",
@@ -148,7 +152,12 @@ module.exports = {
         "no-catch-shadow": "error",
         "no-confusing-arrow": "error",
         "no-continue": "off",
-        "no-console": "off",
+        "no-console": [
+            "error",
+            {
+                allow: ["warn", "error"]
+            }
+        ],
         "no-div-regex": "error",
         "no-duplicate-imports": "error",
         "no-else-return": "error",
@@ -160,7 +169,7 @@ module.exports = {
         "no-extra-label": "error",
         "no-extra-parens": ["error", "functions"],
         "no-floating-decimal": "error",
-        "no-implicit-coercion": "error",
+        "no-implicit-coercion": "off",
         "no-implicit-globals": "error",
         "no-implied-eval": "error",
         "no-inline-comments": "error",
@@ -172,7 +181,7 @@ module.exports = {
         "no-lonely-if": "error",
         "no-loop-func": "error",
         "no-magic-numbers": "off",
-        "no-mixed-operators": "error",
+        "no-mixed-operators": "off",
         "no-mixed-requires": "error",
         "no-multi-assign": "error",
         "no-multi-spaces": "error",
@@ -191,8 +200,8 @@ module.exports = {
         "no-param-reassign": "off",
         "no-path-concat": "error",
         "no-plusplus": "off",
-        "no-process-env": "error",
-        "no-process-exit": "error",
+        "no-process-env": "off",
+        "no-process-exit": "off",
         "no-proto": "error",
         "no-prototype-builtins": "error",
         "no-restricted-globals": "error",
@@ -229,7 +238,7 @@ module.exports = {
         "no-useless-return": "error",
         "no-var": "error",
         "no-void": "error",
-        "no-warning-comments": "error",
+        "no-warning-comments": [0, { "terms": ["todo"], "location": "start" }],
         "no-whitespace-before-property": "error",
         "no-with": "error",
         "nonblock-statement-body-position": "error",
@@ -264,7 +273,10 @@ module.exports = {
         "require-await": "error",
         "require-jsdoc": "off",
         "rest-spread-spacing": "error",
-        "semi": "off",
+        "semi": [
+            "error",
+            "always"
+        ],
         "semi-spacing": "error",
         "semi-style": [
             "error",
@@ -274,7 +286,10 @@ module.exports = {
         "sort-keys": "off",
         "sort-vars": "error",
         "space-before-blocks": "error",
-        "space-before-function-paren": "off",
+        "space-before-function-paren": [
+            "error",
+            "never"
+        ],
         "space-in-parens": [
             "error",
             "never"
@@ -299,7 +314,21 @@ module.exports = {
         ],
         "valid-jsdoc": "error",
         "vars-on-top": "error",
-        "vue/html-indent": "off",
+        "vue/html-closing-bracket-newline": ["error", {
+            "singleline": "never",
+            "multiline": "always"
+        }],
+        "vue/html-closing-bracket-spacing": ["error", {
+            "startTag": "never",
+            "endTag": "never",
+            "selfClosingTag": "always"
+        }],
+        "vue/html-indent": ["error", 4, {
+            "attribute": 1,
+            "closeBracket": 0,
+            "alignAttributesVertically": true,
+            "ignores": ["VAttribute"]
+        }],
         "vue/max-attributes-per-line": [2, {
             "singleline": 1,
             "multiline": {
@@ -307,7 +336,9 @@ module.exports = {
                 "allowFirstLine": true
             }
         }],
+        "vue/multiline-html-element-content-newline": "off",
         "vue/name-property-casing": ["error", "kebab-case"],
+        "vue/singleline-html-element-content-newline": "off",
         "wrap-iife": "error",
         "wrap-regex": "error",
         "yield-star-spacing": "error",
