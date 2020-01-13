@@ -7,23 +7,19 @@ import VueI18n from 'vue-i18n';
 
 import App from './app.vue';
 
-/* eslint-disable */
 // Pages
-import gamePage from './pages/game/game.vue';
-import homePage from './pages/home/home.vue';
-import missionsPage from './pages/missions/missions.vue';
-import partyPage from './pages/party/party.vue';
-import partyMemberPage from './pages/party/party-member.vue';
-import partyItemsPage from './pages/party/party-items.vue';
+import './pages/character/character.vue';
+import './pages/game/game.vue';
+import './pages/home/home.vue';
+import './pages/missions/missions.vue';
 // Mixins
-//import globalMixins from '@shared/fe-utilities/src/mixins/global-mixin.js';
+// 1 import globalMixins from '@shared/fe-utilities/src/mixins/global-mixin.js';
 
 // Router
 import router from './router.js';
-/* eslint-enable */
 
 // Number formats definitions based on locale
-/* import { numberFormats } from './config/i18n/number-formats.js';
+/* 1 import { numberFormats } from './config/i18n/number-formats.js';
 import messages from './config/i18n/messages.js'; */
 
 // Destroying old cache
@@ -41,9 +37,9 @@ if (functions.storage('get', 'token')) {
  * Extract language (first two letters) from the locale
  * Due to inconsistency of locale format in different browsers
  */
-// const browserLocale = navigator.language.substring(0, 2);
+// 1 const browserLocale = navigator.language.substring(0, 2);
 
-/* const i18n = new VueI18n({
+/* 1 const i18n = new VueI18n({
     locale: browserLocale,
     messages: messages,
     numberFormats: numberFormats

@@ -7,7 +7,7 @@
             :to="'/party/' + member.id"
             class="member-block"
         >
-            <div class="avatar"/>
+            <div class="avatar" />
             <div class="info">
                 <div>{{ member.name }}</div>
                 <div>L: {{ member.level }}</div>

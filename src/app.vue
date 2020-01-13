@@ -37,13 +37,14 @@ export default {
         }
     },
     mounted() {
-        if (functions.storage('get', 'party')) {
-            // Storing the party in vuex and displaying docked menu
-            this.$store.commit('saveParty', functions.storage('get', 'party'));
+        if (functions.storage('get', 'character')) {
+            const character = functions.storage('get', 'character');
+
+            this.$store.commit('updateCharacterData', character);
             this.$store.commit('displayDockedMenu', true);
 
             // Redirecting to main game page
-            // 1this.$router.replace('/game');
+            // 1 this.$router.replace('/game');
         } else {
             // If party is not there, placing to home page
             this.$router.replace('/');

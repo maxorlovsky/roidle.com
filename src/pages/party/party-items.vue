@@ -60,6 +60,7 @@ const partyItemsPage = {
         // In case URL is incorrect, redirecting back to profile of a member
         if (itemPartsWhiteList.indexOf(this.$route.params.item) < 0) {
             this.$route.push(this.urlBack);
+
             return false;
         }
     },
@@ -71,8 +72,7 @@ const partyItemsPage = {
         }
     },
     beforeDestroy() {
-
-        /* const member = this.$store.getters.get('party')[this.id];
+        /* 1 const member = this.$store.getters.get('party')[this.id];
 
         // Recalculating member stats
         member.stats.pow -= this.tempStats.pow;

@@ -6,7 +6,7 @@
             class=""
         >
             <div class="top-member-info">
-                <div class="avatar"/>
+                <div class="avatar" />
                 <div class="info">
                     <div class="level">{{ job }} / L{{ member.level }}</div>
                     <div class="hp">HP: {{ member.hp }} / {{ member.params.health }}</div>
@@ -85,7 +85,7 @@
                     </router-link>
                 </div>
 
-                <div class="member-full-avatar"/>
+                <div class="member-full-avatar" />
 
                 <div class="items-right-row">
                     <div class="item-slot">
@@ -102,7 +102,7 @@
                     </div>
                 </div>
             </div>
-<!-- {{member}} -->
+            <!-- {{member}} -->
         </div>
     </section>
 </template>
@@ -238,6 +238,7 @@ const partyMemberPage = {
 
             // Get clean data of party and update specific member
             const party = this.$store.getters.get('party');
+
             party[this.$route.params.id] = this.member;
 
             // Update party in vuex and storage

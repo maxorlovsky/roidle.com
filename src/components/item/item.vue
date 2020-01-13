@@ -33,9 +33,10 @@ export default {
 
                 this.displayItem = true;
 
+                /* eslint-disable-next-line */
                 console.log(this.getItem(this.item));
             }
         }
     }
-}
+};
 </script>

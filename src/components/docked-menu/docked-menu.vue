@@ -7,13 +7,37 @@
         >&#8592;</a>
 
         <template v-if="!displayBackButton">
-            <router-link to="/party"
+            <router-link to="/character"
                 class="btn btn-secondary"
-            >P</router-link>
+            >Char</router-link>
 
             <router-link to="/missions"
                 class="btn btn-secondary"
-            >M</router-link>
+            >Mis</router-link>
+
+            <router-link to="/"
+                class="btn btn-secondary"
+            >Bag</router-link>
+
+            <router-link to="/"
+                class="btn btn-secondary"
+            >Skills</router-link>
+
+            <!--<router-link to="/"
+                class="btn btn-secondary"
+            >Storage</router-link>
+
+            <router-link to="/"
+                class="btn btn-secondary"
+            >Map</router-link>
+
+            <router-link to="/"
+                class="btn btn-secondary"
+            >Party</router-link>
+
+            <router-link to="/"
+                class="btn btn-secondary"
+            >Guild</router-link>-->
         </template>
     </div>
 </template>
@@ -38,5 +62,5 @@ export default {
             }
         }
     }
-}
+};
 </script>

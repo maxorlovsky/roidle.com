@@ -1,0 +1,31 @@
+[
+    {
+        "id": 0,
+        "name": "Novice",
+        "info": "Beginner class",
+        "statsBonuses": "6,0,0,1,2,3,4,5,0,6",
+        "allowedItemsParts": ["sword", "2hsword", "shield", "hhelm", "hbody", "hpants", "hboots"]
+    },
+    {
+        "id": 1,
+        "name": "Fighter",
+        "info": "Melee class",
+        "statsBonuses": "1,0,1,0,0,0,3,0,0,0,5,0,0,0,1,0,0,0,3,0,0,0,5,0,0,0,6,0,0,0,2,0,0,1,0,0,5,0,3,0,1,0,3,0,6,0,2,1,0,1,1",
+        "allowedItemsParts": ["sword", "2hsword", "shield", "hhelm", "hbody", "hpants", "hboots"]
+    },
+    {
+        "id": 2,
+        "name": "Thief",
+        "info": "Nimble fighter with high accuracy, speed and crits. Use daggers, bows, or crossbows"
+    },
+    {
+        "id": 3,
+        "name": "Mage",
+        "info": "Magician practitioner who learn ways of elemental magic, use staff, wands+shield"
+    },
+    {
+        "id": 4,
+        "name": "Cleric",
+        "info": "Healer for your party who specializes in both magical and medical healing. Use blunt weapon + shield, staff, wands+shield, crossbow"
+    }
+]

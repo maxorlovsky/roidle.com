@@ -4,6 +4,7 @@ body {
     font-family: $font;
     background-color: $bgColor;
     min-width: 320px;
+    font-size: 10px;
 }
 
 .btn {
@@ -51,6 +52,8 @@ a {
 }
 
 .body-content {
+    height: 100vh;
+
     &.docked-menu-open {
         padding-bottom: 60px;
     }

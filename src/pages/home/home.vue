@@ -1,138 +1,134 @@
 <template>
-    <form class="home-page"
-        @submit.prevent="saveNames()"
-    >
-        <p>You've been travelling the continent of "Agnolia" with group of 4 friends, including yourself. Before we get into the story, let's get their names.</p>
-        <div v-for="member of party"
-            :key="member.id"
-            class="member-block"
-        >
-            <div>
-                <span v-if="member.id === 0"
-                    class="member-text"
-                >You</span>
-                <span v-else
-                    class="member-text"
-                >Member {{ member.id }}</span>
-                <input v-model="member.name"
-                    type="text"
-                    class="names"
-                >
-                <button @click.prevent="randomizeName(member.id)">rand</button>
-            </div>
-            <div>
-                <select v-model="member.class">
-                    <option v-for="job of classes"
-                        :key="job.id"
-                        :value="job.id"
-                    >{{ job.name }}</option>
-                </select>
-                {{ classes[member.class - 1].info }}
-            </div>
-        </div>
+    <div class="home">
+        <template v-if="step === 2">
+            <p>Let's distribute your initial stats and how you will appear to others</p>
 
-        <button >Proceed</button>
-    </form>
+            <div class="character-view">
+                <div class="character-view__head"><img :src="`/dist/assets/images/heads/${headStyle}_${gender}.gif`"></div>
+                <div class="character-view__body"><img :src="`/dist/assets/images/bodies/novice_${gender}_0.png`"></div>
+                <div class="character-pickers">
+                    <div class="character-pickers__buttons">
+                        <Button @click="setGender(0)">Male</Button>
+                        <Button @click="setGender(1)">Female</Button>
+                    </div>
+                    <div class="character-pickers__buttons">
+                        <Button @click="setStyle('prev')"> &#60; </Button>
+                        <Button @click="setStyle('next')"> &#62; </Button>
+                    </div>
+                </div>
+            </div>
+
+            <stats :stats="stats"
+                :status-points="statusPoints"
+                :job-id="0"
+                :job-level="1"
+            />
+
+            <button @click="saveStats()">Proceed</button>
+        </template>
+        <template v-else>
+            <p>Welcome to the world of "Max". In this world society is a whole and danger doesn't come from fighting each other, it's coming from monsters that. In this world, there are still people who crave for extreme and adventure, you are one of those adventurers. Beginner adventurer, tell me your name.</p>
+
+            <input v-model="name"
+                type="text"
+            >
+
+            <button @click="saveName()">Proceed</button>
+        </template>
+    </div>
 </template>
 
 <script>
 // Globals functions
 import { functions } from '../../functions.js';
 
-// Configs
-import classes from '../../../config/classes.json';
-import names from '../../../config/names.json';
-
-// Mixins
-import classMixin from '../../mixins/class-mixin.js';
+// Components
+import stats from '../../components/stats/stats.vue';
 
 const homePage = {
-    mixins: [classMixin],
+    components: {
+        stats
+    },
     data() {
         return {
-            party: [
-                {
-                    id: 0,
-                    name: 'You',
-                    class: 1
-                },
-                {
-                    id: 1,
-                    name: 'Biggs',
-                    class: 1
-                },
-                {
-                    id: 2,
-                    name: 'Wedge',
-                    class: 1
-                },
-                {
-                    id: 3,
-                    name: 'Jessie',
-                    class: 1
-                }
-            ],
-            classes: classes
+            step: 1,
+            name: '',
+            stats: {
+                str: 1,
+                dex: 1,
+                int: 1,
+                vit: 1,
+                wis: 1,
+                luk: 1
+            },
+            statusPoints: 48,
+            headStyle: 1,
+            gender: 'm'
         };
     },
+    created() {
+        this.recalculateStatCosts();
+    },
     methods: {
-        randomizeName(memberId) {
-            const index = this.party.findIndex((member) => member.id === memberId);
-            const randomInt = Math.floor(Math.random() * Math.floor(names.length));
+        setStyle(pos) {
+            let style = 0;
 
-            this.party[index].name = names[randomInt];
-        },
-        saveNames() {
-            if (!this.checkNames()) {
-                console.log('error');
-                return false;
+            switch (pos) {
+                case 'prev':
+                    style = this.headStyle - 1;
+                    break;
+                default:
+                    style = this.headStyle + 1;
+                    break;
             }
 
-            this.storeParty();
-
-            this.initialWindow = false;
-        },
-        storeParty() {
-            // Fill in missing data
-            for (const member of this.party) {
-                member.level = 1;
-                member.statPoints = 7;
-                member.exp = 0;
-                member.stats = {
-                    pow: 1,
-                    wis: 1,
-                    hea: 1
-                };
-
-                // Adding params depending on class
-                member.params = this.getClassParams(member.class, member.stats);
-
-                // Adding hp
-                member.hp = member.params.health;
-
-                // Adding equipment slots
-                member.eq = {
-                    head: 0,
-                    body: 0,
-                    rhand: 0,
-                    lhand: 0,
-                    pants: 0,
-                    boots: 0,
-                    racc: 0,
-                    lacc: 0
-                };
+            if (style < 1) {
+                style = 3;
+            } else if (style > 3) {
+                style = 1;
             }
+
+            this.headStyle = style;
+        },
+        setGender(gender) {
+            switch (gender) {
+                case 1:
+                    this.gender = 'f';
+                    break;
+                default:
+                    this.gender = 'm';
+                    break;
+            }
+
+            this.headStyle = 1;
+        },
+        proceed(step) {
+            this.step = step;
+        },
+        saveStats() {
+            const character = {
+                name: this.name,
+                gender: this.gender,
+                headStyle: this.headStyle,
+                stats: this.stats,
+                statusPoints: this.statusPoints
+            };
+
+            this.$store.commit('updateCharacterData', character);
 
             // Saving token in localStorage after how many days it should expire
-            // 604800000 = 7 * 90 days
-            functions.storage('set', 'party', this.party, 604800000 * 90);
+            functions.storage('set', 'character', character, 604800000 * 90);
 
-            this.$store.commit('saveParty', this.party);
             this.$store.commit('displayDockedMenu', true);
 
             this.$router.replace('/game');
         },
-        checkNames() {
+        saveName() {
+            this.$store.commit('saveCharacterName', this.name);
+
+            this.proceed(2);
+        }
+        /* 1 checkNames() {
             let num = 1;
 
             for (const member of this.party) {
@@ -151,7 +147,7 @@ const homePage = {
             }
 
             return true;
-        }
+        } */
     }
 };
 
