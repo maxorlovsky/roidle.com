@@ -1,6 +1,13 @@
 {
     "files.exclude": {
         "**/.git": true,
+        "**/.DS_Store": true,
         "**/node_modules": true
-    }
+    },
+    "git.ignoreLimitWarning": true,
+    "git.inputValidationSubjectLength": 120,
+    "eslint.validate": [
+        "javascript",
+        "vue"
+    ],
 }
