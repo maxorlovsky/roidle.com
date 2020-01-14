@@ -33,8 +33,6 @@
                 <avatar :head-style="characterHeadStyle"
                     :gender="characterGender"
                 />
-                <!--<div class="equipment__avatar__body"><img :src="`/dist/assets/images/bodies/novice_${gender}_0.png`"></div>
-                <div class="equipment__avatar__head"><img :src="`/dist/assets/images/heads/${headStyle}_${gender}.gif`"></div>-->
             </div>
             <div class="equipment__right">
                 <div class="equipment__body"><span class="equipment__placeholder">body</span></div>
@@ -50,6 +48,10 @@
             :base-level="characterBaseLevel"
             :job-level="characterJobLevel"
         />
+
+        <button class="btn btn-warning btn-lg skills-button"
+            @click="goToSkills()"
+        >Skills</button>
     </section>
 </template>
 
@@ -98,6 +100,9 @@ const characterPage = {
         calculateStats() {
             this.maxHp = statsUtils.getHpFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.vit);
             this.maxMp = statsUtils.getMpFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.wis, this.characterStats.int);
+        },
+        goToSkills() {
+            this.$router.push('/character/skills');
         }
     }
 };

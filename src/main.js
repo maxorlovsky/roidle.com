@@ -9,6 +9,7 @@ import App from './app.vue';
 
 // Pages
 import './pages/character/character.vue';
+import './pages/character/character-skills.vue';
 import './pages/game/game.vue';
 import './pages/home/home.vue';
 import './pages/missions/missions.vue';

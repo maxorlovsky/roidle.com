@@ -1,0 +1,9 @@
+[
+    {
+        "id": 1,
+        "name": "Basic skill",
+        "image": "nv_basic.gif",
+        "maxLevel": 9,
+        "explanation": "Enable to apply Basic Interface Skills<br>[Lv 1]: Enable Chat<br>Allow to use chat<br>[Lv 5]: Enable to join party<br>Allow to join a party.<br>[Lv 9]: Enable transform into 1st profession<br>Allow to change one's Job into the 1st profession."
+    }
+]

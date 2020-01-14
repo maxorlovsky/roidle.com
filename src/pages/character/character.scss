@@ -66,7 +66,7 @@
         display: flex;
         width: 100%;
         position: relative;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.8);
 
         &__left,
         &__right {
@@ -103,5 +103,102 @@
             height: 50px;
             border-bottom: 1px solid rgba(179, 179, 179, 0.8);
         }
+    }
+
+    .skills-button {
+        display: flex;
+        justify-content: center;
+        margin: 1rem auto;
+        width: 90%;
+    }
+
+    &__tabs {
+        display: flex;
+
+        .btn {
+            width: 50%;
+            border-radius: 0;
+        }
+    }
+
+    .skills-list {
+        background-color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        padding: 1.25rem;
+
+        &__skill {
+            display: flex;
+            align-items: center;
+
+            &__image {
+                padding-right: 2rem;
+
+                &--disabled {
+                    opacity: 0.4;
+                }
+            }
+
+            &__info {
+                width: 50%;
+            }
+        }
+
+        &__incdec {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            color: #fff;
+            background-color: rgb(22, 179, 252);
+            text-align: center;
+            font-size: 1.25rem;
+            margin-left: 1rem;
+    
+            &--disabled {
+                opacity: 0.5;
+            }
+        }
+
+        &__bottom {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0 1rem 0;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+    
+        &__points {
+            font-size: 0.8rem;
+            padding: 0.5rem 1.5rem;
+            display: inline-flex;
+            align-content: center;
+            width: 50%;
+    
+            &__points {
+                color: rgb(22, 179, 252);
+                padding-left: 0.3rem;
+    
+                &--empty {
+                    color: #000;
+                }
+            }
+        }
+    
+        &__apply {
+            width: 40%;
+        }
+    }
+
+    .skill-info {
+        position: absolute;
+        width: 90%;
+        max-height: 50%;
+        overflow: auto;
+        background-color: rgba(255, 255, 255, 0.95);
+        font-size: 1rem;
+        border: 2px solid #000;
+        left: calc(50% - 45%);
+        top: 10vh;
+        border-radius: 4px;
+        z-index: 3;
+        padding: 1rem;
     }
 }
