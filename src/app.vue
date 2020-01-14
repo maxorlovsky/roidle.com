@@ -4,6 +4,8 @@
             class="body-content"
         />
 
+        <chat v-show="showChat" />
+
         <docked-menu v-if="dockedMenu" />
 
         <loading v-if="loading" />
@@ -11,40 +13,78 @@
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
 // Globals functions
 import { functions } from './functions.js';
 import { store } from './store/index.js';
 
 // Components
+import chat from './components/chat/chat.vue';
 import dockedMenu from './components/docked-menu/docked-menu.vue';
 import loading from './components/loading/loading.vue';
 
 export default {
     name: 'app',
     components: {
+        chat,
         dockedMenu,
         loading
     },
     store: store,
     data() {
         return {
-            loading: true
+            loading: true,
+            showChat: false
         };
     },
     computed: {
-        dockedMenu() {
-            return this.$store.getters.get('dockedMenu');
+        ...mapGetters(['dockedMenu'])
+    },
+    watch: {
+        $route: {
+            immediate: true,
+            handler() {
+                this.showHideChat();
+            }
         }
     },
     mounted() {
+        // If there are no character data, generate it
         if (functions.storage('get', 'character')) {
-            const character = functions.storage('get', 'character');
+            this.$store.commit('setCharacterData', functions.storage('get', 'character'));
+        } else {
+            const generatedCharacter = {
+                name: `Guest_${Math.random()}`,
+                gender: 'm',
+                headStyle: 1,
+                baseLevel: 1,
+                jobLevel: 1,
+                jobId: 0,
+                stats: {
+                    str: 1,
+                    dex: 1,
+                    int: 1,
+                    vit: 1,
+                    wis: 1,
+                    luk: 1
+                },
+                statusPoints: 48
+            };
 
-            this.$store.commit('updateCharacterData', character);
+            functions.storage('set', 'character', generatedCharacter, 604800000 * 90);
+
+            this.$store.commit('setCharacterData', generatedCharacter);
+        }
+
+        if (functions.storage('get', 'characterGenerated')) {
             this.$store.commit('displayDockedMenu', true);
 
-            // Redirecting to main game page
-            // 1 this.$router.replace('/game');
+            // Redirecting to main game page if ended up on home page
+            if (this.$route.path === '/') {
+                this.$router.replace('/game');
+            }
         } else {
             // If party is not there, placing to home page
             this.$router.replace('/');
@@ -53,6 +93,13 @@ export default {
         this.removeLoader();
     },
     methods: {
+        showHideChat() {
+            if (functions.storage('get', 'characterGenerated') && this.$route.path === '/game') {
+                this.showChat = true;
+            } else {
+                this.showChat = false;
+            }
+        },
         removeLoader() {
             // Remove loader
             this.loading = false;
