@@ -53,6 +53,7 @@ a {
 
 .body-content {
     height: 100vh;
+    overflow: auto;
 
     &.docked-menu-open {
         padding-bottom: 60px;
