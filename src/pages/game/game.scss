@@ -69,27 +69,4 @@
             }
         }
     }
-
-    .info-avatar {
-        border: 2px solid #00f;
-        width: 60px;
-        height: 60px;
-        position: relative;
-        overflow: hidden;
-        margin-right: 1rem;
-
-        &__head {
-            position: absolute;
-            top: 0;
-            left: calc(50% - 12px);
-        }
-
-        &__body {
-            width: 240px;
-            height: 240px;
-            position: absolute;
-            top: -77px;
-            left: -92px;
-        }
-    }
 }

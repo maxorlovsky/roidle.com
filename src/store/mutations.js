@@ -10,17 +10,25 @@ export default {
 
         state.characterStatusPoints = values.statusPoints;
     },
-    updateCharacterData: (state, character) => {
-        state.characterName = character.name;
-        state.gender = character.gender;
-        state.characterHeadStyle = character.headStyle;
-        state.characterStats.str = character.stats.str;
-        state.characterStats.dex = character.stats.dex;
-        state.characterStats.int = character.stats.int;
-        state.characterStats.vit = character.stats.vit;
-        state.characterStats.wis = character.stats.wis;
-        state.characterStats.luk = character.stats.luk;
-        state.characterStatusPoints = character.statusPoints;
+    setCharacterData: (state, values) => {
+        // Main character data
+        state.characterName = values.name;
+        state.characterGender = values.gender;
+        state.characterHeadStyle = values.headStyle;
+
+        // Char params
+        state.characterBaseLevel = values.baseLevel;
+        state.characterJobLevel = values.jobLevel;
+        state.characterJobId = values.jobId;
+
+        // Stats
+        state.characterStats.str = values.stats.str;
+        state.characterStats.dex = values.stats.dex;
+        state.characterStats.int = values.stats.int;
+        state.characterStats.vit = values.stats.vit;
+        state.characterStats.wis = values.stats.wis;
+        state.characterStats.luk = values.stats.luk;
+        state.characterStatusPoints = values.statusPoints;
     },
     saveCharacterName: (state, characterName) => {
         state.characterName = characterName;

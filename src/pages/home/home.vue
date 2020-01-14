@@ -1,73 +1,105 @@
 <template>
     <div class="home">
-        <template v-if="step === 2">
-            <p>Let's distribute your initial stats and how you will appear to others</p>
+        <input v-model="name"
+            type="text"
+            class="character-name"
+            placeholder="What is your name?"
+        >
 
-            <div class="character-view">
-                <div class="character-view__head"><img :src="`/dist/assets/images/heads/${headStyle}_${gender}.gif`"></div>
-                <div class="character-view__body"><img :src="`/dist/assets/images/bodies/novice_${gender}_0.png`"></div>
-                <div class="character-pickers">
-                    <div class="character-pickers__buttons">
-                        <Button @click="setGender(0)">Male</Button>
-                        <Button @click="setGender(1)">Female</Button>
-                    </div>
-                    <div class="character-pickers__buttons">
-                        <Button @click="setStyle('prev')"> &#60; </Button>
-                        <Button @click="setStyle('next')"> &#62; </Button>
-                    </div>
-                </div>
-            </div>
-
-            <stats :stats="stats"
-                :status-points="statusPoints"
-                :job-id="0"
-                :job-level="1"
+        <div class="character-view">
+            <avatar :head-style="headStyle"
+                :gender="gender"
             />
 
-            <button @click="saveStats()">Proceed</button>
-        </template>
-        <template v-else>
-            <p>Welcome to the world of "Max". In this world society is a whole and danger doesn't come from fighting each other, it's coming from monsters that. In this world, there are still people who crave for extreme and adventure, you are one of those adventurers. Beginner adventurer, tell me your name.</p>
+            <div class="character-pickers">
+                <div class="character-pickers__buttons">
+                    <Button class="btn btn-secondary"
+                        @click="setGender(0)"
+                    >Male</Button>
+                    <Button class="btn btn-secondary"
+                        @click="setGender(1)"
+                    >Female</Button>
+                </div>
+                <div class="character-pickers__buttons">
+                    <Button class="btn btn-secondary"
+                        @click="setStyle('prev')"
+                    > &#60; </Button>
+                    <Button class="btn btn-secondary"
+                        @click="setStyle('next')"
+                    > &#62; </Button>
+                </div>
+            </div>
+        </div>
 
-            <input v-model="name"
-                type="text"
-            >
+        <stats :stats="characterStats"
+            :status-points="characterStatusPoints"
+            :job-id="characterJobId"
+            :base-level="characterBaseLevel"
+            :job-level="characterJobLevel"
+            :hide-params="true"
+        />
 
-            <button @click="saveName()">Proceed</button>
-        </template>
+        <div class="home__stats-explanation">
+            <p>
+                <b>Strength (STR)</b>: This stat affects the physical power of the character, be that of melee or range, melee benefit more from Strength than range.<br>
+                Primary stat for jobs: <b>Fighter, Thief</b><br>
+                Secondary stat for jobs: <b>Archer, Merchant</b>
+            </p>
+            <p>
+                <b>Dexterity (DEX)</b>: This stat affects the speed of how fast character can finish missions. Speed affects whole party. This stat affect physical power of the character, range though benefit more from this stat.<br>
+                Primary stat for jobs: <b>Archer, Thief</b>
+            </p>
+            <p>
+                <b>Intellect (INT)</b>: This stat affects the mental power of the character, allowing to deal massive magic damage<br>
+                Primary stat for jobs: <b>Mage</b>
+            </p>
+            <p>
+                <b>Vitality (VIT)</b>: This stat affects the physical defense and HP and is a mandatory stat for protectors<br>
+                Secondary stat for jobs: <b>Fighter</b>
+            </p>
+            <p>
+                <b>Wisdom (WIS)</b>: This stat affects the healing capabilities of acolyte, magical defense and MP<br>
+                Primary stat for jobs: <b>Acolyte</b><br>
+                Secondary stat for jobs: <b>Mage</b>
+            </p>
+            <p>
+                <b>Luck (LUK)</b>: This stat affects the luck of a character in many way, primarily it is used for crafts<br>
+                Primary stat for jobs: <b>Merchant</b><br>
+                Secondary stat for jobs: <b>Thief</b>
+            </p>
+        </div>
+
+        <button class="home__proceed btn btn-warning btn-lg"
+            @click="proceed()"
+        >Proceed</button>
     </div>
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
 // Globals functions
 import { functions } from '../../functions.js';
 
 // Components
+import avatar from '../../components/avatar/avatar.vue';
 import stats from '../../components/stats/stats.vue';
 
 const homePage = {
     components: {
+        avatar,
         stats
     },
     data() {
         return {
-            step: 1,
             name: '',
-            stats: {
-                str: 1,
-                dex: 1,
-                int: 1,
-                vit: 1,
-                wis: 1,
-                luk: 1
-            },
-            statusPoints: 48,
-            headStyle: 1,
-            gender: 'm'
+            gender: 'm',
+            headStyle: 1
         };
     },
-    created() {
-        this.recalculateStatCosts();
+    computed: {
+        ...mapGetters(['characterStats', 'characterStatusPoints', 'characterBaseLevel', 'characterJobLevel', 'characterJobId'])
     },
     methods: {
         setStyle(pos) {
@@ -102,52 +134,44 @@ const homePage = {
 
             this.headStyle = 1;
         },
-        proceed(step) {
-            this.step = step;
-        },
-        saveStats() {
-            const character = {
-                name: this.name,
-                gender: this.gender,
-                headStyle: this.headStyle,
-                stats: this.stats,
-                statusPoints: this.statusPoints
-            };
+        proceed() {
+            if (!this.checkName()) {
+                return false;
+            }
 
-            this.$store.commit('updateCharacterData', character);
+            const character = functions.storage('get', 'character');
+
+            character.name = this.name;
+            character.gender = this.gender;
+            character.headStyle = this.headStyle;
+
+            this.$store.commit('generateCharacter', character);
 
             // Saving token in localStorage after how many days it should expire
             functions.storage('set', 'character', character, 604800000 * 90);
+            functions.storage('set', 'characterGenerated', true, 604800000 * 90);
 
             this.$store.commit('displayDockedMenu', true);
 
             this.$router.replace('/game');
         },
-        saveName() {
-            this.$store.commit('saveCharacterName', this.name);
+        checkName() {
+            if (!this.name) {
+                console.error('Name missing');
 
-            this.proceed(2);
-        }
-        /* 1 checkNames() {
-            let num = 1;
+                return false;
+            }
 
-            for (const member of this.party) {
-                if (!member.name) {
-                    console.log(`member of party nr. ${num} name missing`);
-                    return false;
-                }
+            const reg = /^\w+$/g;
 
-                const reg = /\w+/g;
-                if (!reg.test(member.name)) {
-                    console.log(`member of party nr. ${num} name is incorrect`);
-                    return false;
-                }
+            if (!reg.test(this.name)) {
+                console.error('Name is incorrect');
 
-                num++;
+                return false;
             }
 
             return true;
-        } */
+        }
     }
 };
 

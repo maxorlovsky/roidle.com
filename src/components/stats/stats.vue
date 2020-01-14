@@ -37,12 +37,53 @@
                 @click="saveStats()"
             >Save</button>
         </div>
+
+        <div v-if="!hideParams"
+            class="stats__attributes"
+        >
+            <div class="stats__params">
+                <span class="stats__params__label">M.HP</span>
+                <span class="stats__params__value">{{ attributes.hp }}</span>
+            </div>
+            <div class="stats__params">
+                <span class="stats__params__label">M.MP</span>
+                <span class="stats__params__value">{{ attributes.mp }}</span>
+            </div>
+            <div class="stats__params">
+                <span class="stats__params__label">P.Atk</span>
+                <span class="stats__params__value">{{ attributes.patk }}</span>
+            </div>
+            <div class="stats__params">
+                <span class="stats__params__label">M.Atk</span>
+                <span class="stats__params__value">{{ attributes.matk }}</span>
+            </div>
+            <div class="stats__params">
+                <span class="stats__params__label">P.Def</span>
+                <span class="stats__params__value">{{ attributes.pdef }}</span>
+            </div>
+            <div class="stats__params">
+                <span class="stats__params__label">M.Def</span>
+                <span class="stats__params__value">{{ attributes.mdef }}</span>
+            </div>
+            <div class="stats__params">
+                <span class="stats__params__label">Hit</span>
+                <span class="stats__params__value">{{ attributes.hit }}</span>
+            </div>
+            <div class="stats__params">
+                <span class="stats__params__label">Eva</span>
+                <span class="stats__params__value">{{ attributes.eva }}</span>
+            </div>
+            <div class="stats__params">
+                <span class="stats__params__label">Speed</span>
+                <span class="stats__params__value">+{{ attributes.speed }}%</span>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-// Configs
-import jobs from '../../../config/jobs.json';
+// Utils
+import statsUtils from '../../utils/stats.js';
 
 export default {
     name: 'stats',
@@ -59,9 +100,17 @@ export default {
             type: Number,
             required: true
         },
+        baseLevel: {
+            type: Number,
+            required: true
+        },
         jobLevel: {
             type: Number,
             required: true
+        },
+        hideParams: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -91,13 +140,27 @@ export default {
                 wis: 2,
                 luk: 2
             },
+            attributes: {
+                patk: 0,
+                matk: 0,
+                pdef: 0,
+                mdef: 0,
+                hit: 0,
+                eva: 0,
+                speed: 0,
+                hp: 0,
+                mp: 0
+            },
             tempStatusPoints: 0,
         };
     },
     watch: {
-        statusPoints() {
-            // Every time vuex is updated, we will need to refresh temp status points with real value
-            this.tempStatusPoints = this.statusPoints;
+        statusPoints: {
+            immediate: true,
+            handler() {
+                // Every time vuex is updated, we will need to refresh temp status points with real value
+                this.tempStatusPoints = this.statusPoints;
+            }
         }
     },
     mounted() {
@@ -111,8 +174,11 @@ export default {
             // Triggering recalculation of the next stat
             this.recalculateStatCosts();
 
-            // Triggering fetch of bonus stats
-            this.calculateBonusStats();
+            // Fetching bonus stats of a job
+            this.bonusStats = Object.assign({}, statsUtils.calculateBonusStats(this.jobId, this.jobLevel));
+
+            // Triggering calculation of attributes
+            this.calculateAttributes();
         });
     },
     methods: {
@@ -127,41 +193,17 @@ export default {
                 statusPoints: this.tempStatusPoints
             });
         },
-        calculateBonusStats() {
-            const foundJob = jobs.find((job) => job.id === this.jobId);
-            let i = 0;
+        calculateAttributes() {
+            this.attributes.patk = statsUtils.getPatkFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.str, this.tempStats.dex, this.tempStats.luk);
+            this.attributes.matk = statsUtils.getMatkFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.int, this.tempStats.dex, this.tempStats.luk);
+            this.attributes.pdef = statsUtils.getPdefFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.vit, this.tempStats.wis);
+            this.attributes.mdef = statsUtils.getMdefFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.wis, this.tempStats.vit);
+            this.attributes.hit = statsUtils.getHitFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.dex, this.tempStats.luk);
+            this.attributes.eva = statsUtils.getEvaFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.dex, this.tempStats.luk);
+            this.attributes.speed = statsUtils.getSpeedFormula(this.tempStats.dex);
 
-            for (const num of foundJob.statsBonuses.split(',')) {
-                // In case job level reached, we stop calculating bonuses
-                if (i >= this.jobLevel) {
-                    return false;
-                }
-
-                switch (Number(num)) {
-                    case 1:
-                        this.bonusStats.str++;
-                        break;
-                    case 2:
-                        this.bonusStats.dex++;
-                        break;
-                    case 3:
-                        this.bonusStats.int++;
-                        break;
-                    case 4:
-                        this.bonusStats.vit++;
-                        break;
-                    case 5:
-                        this.bonusStats.wis++;
-                        break;
-                    case 6:
-                        this.bonusStats.luk++;
-                        break;
-                    default:
-                        break;
-                }
-
-                ++i;
-            }
+            this.attributes.hp = statsUtils.getHpFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.vit);
+            this.attributes.mp = statsUtils.getMpFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.wis, this.tempStats.int);
         },
         recalculateStatCosts() {
             for (const [key, value] of Object.entries(this.tempStats)) {
@@ -185,6 +227,9 @@ export default {
 
             // Increasing tempStatusPoints after recalculation
             this.tempStatusPoints += this.statCost[stat];
+
+            // Triggering re-calculation of attributes
+            this.calculateAttributes();
         },
         increaseTempStat(stat) {
             // In case something went wrong, stop at 99
@@ -200,6 +245,9 @@ export default {
 
             // Re-calculate stat cost
             this.statCost[stat] = this.calculateCost(this.tempStats[stat]);
+
+            // Triggering re-calculation of attributes
+            this.calculateAttributes();
         }
     }
 };

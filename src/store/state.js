@@ -1,7 +1,7 @@
 export default {
     characterName: '',
     characterHeadStyle: 0,
-    gender: 'm',
+    characterGender: 'm',
     characterStats: {
         str: 0,
         dex: 0,
@@ -10,10 +10,7 @@ export default {
         wis: 0,
         luk: 0
     },
-    characterJob: {
-        id: 0,
-        title: 'Novice'
-    },
+    characterJobId: 0,
     characterBaseLevel: 1,
     characterJobLevel: 1,
     characterStatusPoints: 0,

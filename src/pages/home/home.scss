@@ -1,38 +1,30 @@
 .home {
-    .names {
-        max-width: 100px;
-    }
+    font-size: 1rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("#{$assets}/images/character.jpg");
 
-    .member-block {
-        margin-bottom: 1rem;
-
-        .member-text {
-            display: inline-block;
-            width: 75px;
-        }
-    }
-
-    .character-view {
-        width: 240px;
-        height: 240px;
-        margin: 0 auto;
-        position: relative;
-
-        &__head {
-            position: absolute;
-            top: 75px;
-            left: calc(50% - 14px);
-        }
-
-        &__body img {
-            width: 240px;
-            height: 240px;
-        }
+    .character-name {
+        display: flex;
+        width: 50%;
+        margin: 2rem auto 0 auto;
+        padding: 0.2rem 0.4rem;
     }
 
     .character-pickers {
-        position: absolute;
-        bottom: 0;
-        left: calc(50% - 60px);
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    &__proceed {
+        display: flex;
+        margin: 1rem auto;
+    }
+
+    &__stats-explanation {
+        background-color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
     }
 }

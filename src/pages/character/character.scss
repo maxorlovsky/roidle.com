@@ -16,7 +16,7 @@
         font-size: 1rem;
 
         &__description {
-            width: 40%;
+            width: 60%;
 
             &__name {
                 font-weight: bold;
@@ -31,7 +31,7 @@
         &__health {
             display: flex;
             flex-wrap: wrap;
-            width: 38%;
+            width: 40%;
 
             &__hp,
             &__mp {
@@ -60,37 +60,6 @@
                 width: 100%;
             }
         }
-
-        &__location {
-            width: 50%;
-
-            &__place {
-                display: block;
-            }
-        }
-    }
-
-    .info-avatar {
-        border: 2px solid #00f;
-        width: 60px;
-        height: 60px;
-        position: relative;
-        overflow: hidden;
-        margin-right: 1rem;
-
-        &__head {
-            position: absolute;
-            top: 0;
-            left: calc(50% - 12px);
-        }
-
-        &__body {
-            width: 240px;
-            height: 240px;
-            position: absolute;
-            top: -77px;
-            left: -92px;
-        }
     }
 
     .equipment {
@@ -106,20 +75,12 @@
 
         &__avatar {
             width: 20%;
-            position: relative;
             border-left: 1px solid #808080;
             border-right: 1px solid #808080;
+            padding-top: 2rem;
 
-            &__head {
-                position: absolute;
-                left: calc(50% - 12px);
-                top: 52px;
-            }
-
-            &__body {
-                position: absolute;
-                top: -25px;
-                left: -84px;
+            .avatar {
+                left: calc(50% - 60px);
             }
         }
 

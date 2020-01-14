@@ -4,6 +4,41 @@
         "name": "Novice",
         "info": "Beginner class",
         "statsBonuses": "6,0,0,1,2,3,4,5,0,6",
+        "dividers": {
+            "hp": {
+                "level": 15,
+                "vit": 15
+            },
+            "mp": {
+                "level": 50,
+                "wis": 50,
+                "int": 25
+            },
+            "patk": {
+                "str": 1,
+                "dex": 5,
+                "luk": 2
+            },
+            "matk": {
+                "int": 1,
+                "dex": 5,
+                "luk": 2
+            },
+            "pdef": {
+                "vit": 5,
+                "wis": 10
+            },
+            "mdef": {
+                "vit": 10,
+                "wis": 5
+            },
+            "hit": {
+                "dex": 10
+            },
+            "eva": {
+                "dex": 10
+            }
+        },
         "allowedItemsParts": ["sword", "2hsword", "shield", "hhelm", "hbody", "hpants", "hboots"]
     },
     {
@@ -11,21 +46,108 @@
         "name": "Fighter",
         "info": "Melee class",
         "statsBonuses": "1,0,1,0,0,0,3,0,0,0,5,0,0,0,1,0,0,0,3,0,0,0,5,0,0,0,6,0,0,0,2,0,0,1,0,0,5,0,3,0,1,0,3,0,6,0,2,1,0,1,1",
+        "dividers": {
+            "patk": {
+                "str": 1,
+                "dex": 5,
+                "luk": 3
+            },
+            "matk": {
+                "int": 5,
+                "dex": 2,
+                "luk": 3
+            }
+        },
         "allowedItemsParts": ["sword", "2hsword", "shield", "hhelm", "hbody", "hpants", "hboots"]
     },
     {
         "id": 2,
-        "name": "Thief",
-        "info": "Nimble fighter with high accuracy, speed and crits. Use daggers, bows, or crossbows"
+        "name": "Mage",
+        "info": "Magician practitioner who learn ways of elemental magic, use staff, wands+shield",
+        "statsBonuses": "2,0,4,0,0,0,5,0,0,0,5,0,0,0,4,0,0,0,2,0,0,0,4,0,0,0,2,0,0,0,6,0,0,4,0,0,5,0,4,0,2,0,6,0,4,0,4,2,0,6,4",
+        "dividers": {
+            "patk": {
+                "str": 4,
+                "dex": 4,
+                "luk": 3
+            },
+            "matk": {
+                "int": 1,
+                "dex": 5,
+                "luk": 3
+            }
+        }
     },
     {
         "id": 3,
-        "name": "Mage",
-        "info": "Magician practitioner who learn ways of elemental magic, use staff, wands+shield"
+        "name": "Archer",
+        "info": "Archer is a long-range fighter who like to keep enemies at distance and support front lines from afar",
+        "statsBonuses": "3,0,5,0,0,0,1,0,0,0,4,0,0,0,5,0,0,0,5,0,0,0,6,0,0,0,2,0,0,0,5,0,0,2,0,0,5,0,1,0,1,0,5,0,6,0,3,4,0,2,5",
+        "dividers": {
+            "patk": {
+                "str": 5,
+                "dex": 1,
+                "luk": 3
+            },
+            "matk": {
+                "int": 1,
+                "dex": 5,
+                "luk": 3
+            }
+        }
     },
     {
         "id": 4,
-        "name": "Cleric",
-        "info": "Healer for your party who specializes in both magical and medical healing. Use blunt weapon + shield, staff, wands+shield, crossbow"
+        "name": "Acolyte",
+        "info": "Healer for your party who specializes in both magical and medical healing",
+        "statsBonuses": "4,0,6,0,0,0,3,0,0,0,4,0,0,0,5,0,0,0,6,0,0,0,2,0,0,0,1,0,0,0,3,0,0,4,0,0,5,0,6,0,2,0,1,0,3,0,4,5,0,1,6",
+        "dividers": {
+            "patk": {
+                "str": 2,
+                "dex": 4,
+                "luk": 3
+            },
+            "matk": {
+                "int": 2,
+                "dex": 4,
+                "luk": 3
+            }
+        }
+    },
+    {
+        "id": 5,
+        "name": "Merchant",
+        "info": "",
+        "statsBonuses": "5,0,3,0,0,0,5,0,0,0,1,0,0,0,5,0,0,0,3,0,0,0,1,0,0,0,4,0,0,0,3,0,0,0,0,0,6,0,5,0,1,2,5,0,1,0,6,3,0,1,5",
+        "dividers": {
+            "patk": {
+                "str": 2,
+                "dex": 5,
+                "luk": 3
+            },
+            "matk": {
+                "int": 2,
+                "dex": 3,
+                "luk": 2
+            }
+        }
+    },
+    {
+        "id": 6,
+        "name": "Thief",
+        "info": "Nimble fighter with high accuracy, speed and crits. Use daggers, bows, or crossbows",
+        "statsBonuses": "6,0,2,0,0,0,1,0,0,0,5,0,0,0,3,0,0,0,4,0,0,0,5,0,0,0,6,0,0,0,1,0,0,2,0,0,1,0,2,0,6,0,5,0,3,0,6,1,0,5,2",
+        "dividers": {
+            "patk": {
+                "str": 2,
+                "dex": 3,
+                "luk": 2
+            },
+            "matk": {
+                "int": 2,
+                "dex": 3,
+                "luk": 2
+            }
+        }
     }
 ]
