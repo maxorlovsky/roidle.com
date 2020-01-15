@@ -2,6 +2,18 @@
 import { functions } from '../functions.js';
 
 export default {
+    saveSkills: ({ commit }, values) => {
+        // Persisting save of user new stats
+        const character = functions.storage('get', 'character');
+
+        character.skills = values.skills;
+        character.skillPoints = values.skillPoints;
+
+        functions.storage('set', 'character', character, 604800000 * 90);
+
+        // Update vuex store
+        commit('saveSkills', values);
+    },
     saveStats: ({ commit }, values) => {
         const stats = {
             str: values.str,

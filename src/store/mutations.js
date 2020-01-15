@@ -1,5 +1,9 @@
 // Mutations are always synchronous
 export default {
+    saveSkills: (state, values) => {
+        state.characterSkills = values.skills;
+        state.characterSkillPoints = values.skillPoints;
+    },
     saveStats: (state, values) => {
         state.characterStats.str = values.str;
         state.characterStats.dex = values.dex;
@@ -29,12 +33,10 @@ export default {
         state.characterStats.wis = values.stats.wis;
         state.characterStats.luk = values.stats.luk;
         state.characterStatusPoints = values.statusPoints;
-    },
-    saveCharacterName: (state, characterName) => {
-        state.characterName = characterName;
-    },
-    saveCharacterStats: (state, characterStats) => {
-        state.characterName = characterStats;
+
+        // Skills
+        state.characterSkillPoints = values.skillPoints;
+        state.characterSkills = values.skills;
     },
     saveParty: (state, values) => {
         state.party = values;

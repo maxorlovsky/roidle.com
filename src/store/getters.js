@@ -8,5 +8,7 @@ export default {
     characterBaseLevel: (state) => state.characterBaseLevel,
     characterJobLevel: (state) => state.characterJobLevel,
     characterHeadStyle: (state) => state.characterHeadStyle,
-    characterGender: (state) => state.characterGender
+    characterGender: (state) => state.characterGender,
+    characterSkills: (state) => state.characterSkills,
+    characterSkillPoints: (state) => state.characterSkillPoints
 };

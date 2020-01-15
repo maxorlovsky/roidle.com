@@ -14,6 +14,8 @@ export default {
     characterBaseLevel: 1,
     characterJobLevel: 1,
     characterStatusPoints: 0,
+    characterSkills: {},
+    characterSkillPoints: 0,
     party: [],
     dockedMenu: false
 };

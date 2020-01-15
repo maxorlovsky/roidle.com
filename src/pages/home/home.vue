@@ -145,7 +145,7 @@ const homePage = {
             character.gender = this.gender;
             character.headStyle = this.headStyle;
 
-            this.$store.commit('generateCharacter', character);
+            this.$store.commit('setCharacterData', character);
 
             // Saving token in localStorage after how many days it should expire
             functions.storage('set', 'character', character, 604800000 * 90);
