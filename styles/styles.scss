@@ -7,6 +7,12 @@ body {
     font-size: 10px;
 }
 
+.app {
+    max-width: 375px;
+    max-height: 900px;
+    margin: 0 auto;
+}
+
 .btn {
     cursor: pointer;
     font-family: $font;

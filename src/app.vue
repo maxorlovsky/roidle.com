@@ -1,5 +1,7 @@
 <template>
-    <section id="app">
+    <section id="app"
+        class="app"
+    >
         <router-view :class="{'docked-menu-open': dockedMenu}"
             class="body-content"
         />
