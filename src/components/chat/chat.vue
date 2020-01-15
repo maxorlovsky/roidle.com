@@ -31,19 +31,40 @@
                     class="chat__input__message"
                 >
                 <button class="btn btn-primary btn-sm chat__input__button">&#62;</button>
+
+                <div v-if="disabledChat"
+                    class="chat__input__limit"
+                >Need Basic Level 1 to use chat</div>
             </div>
         </div>
     </section>
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'chat',
     data() {
         return {
             whisperName: '',
-            message: ''
+            message: '',
+            disabledChat: true
         };
+    },
+    computed: {
+        ...mapGetters(['characterSkills'])
+    },
+    watch: {
+        characterSkills: {
+            immediate: true,
+            handler() {
+                if (this.characterSkills[1] >= 1) {
+                    this.disabledChat = false;
+                }
+            }
+        }
     },
     mounted() {
         this.$refs.chatBody.scrollTop = this.$refs.chatBody.scrollHeight;

@@ -67,7 +67,6 @@
 import { mapGetters } from 'vuex';
 
 // Configs
-// 1 import jobs from '../../../config/jobs.json';
 import allSkills from '../../../config/skills.json';
 
 const characterSkillsPage = {

@@ -1,3 +1,5 @@
+$chat-input-height: 32px;
+
 .chat {
     position: absolute;
     bottom: 60px;
@@ -19,7 +21,7 @@
         color: #fff;
         font-size: 0.9rem;
         padding: 0.4rem 0.2rem;
-        height: calc(100% - 30px);
+        height: calc(100% - #{$chat-input-height});
 
         &__main {
             color: #deff9c;
@@ -37,7 +39,7 @@
     &__input {
         display: flex;
         position: absolute;
-        height: 30px;
+        height: $chat-input-height;
         bottom: 0;
         left: 0;
         width: 100%;
@@ -59,6 +61,19 @@
 
         &__button {
             width: 10%;
+        }
+
+        &__limit {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            height: $chat-input-height;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 }
