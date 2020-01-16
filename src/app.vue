@@ -2,6 +2,8 @@
     <section id="app"
         class="app"
     >
+        <char-info-top v-if="dockedMenu" />
+
         <router-view :class="{'docked-menu-open': dockedMenu}"
             class="body-content"
         />
@@ -24,6 +26,7 @@ import { store } from './store/index.js';
 
 // Components
 import chat from './components/chat/chat.vue';
+import charInfoTop from './components/char-info-top/char-info-top.vue';
 import dockedMenu from './components/docked-menu/docked-menu.vue';
 import loading from './components/loading/loading.vue';
 
@@ -31,6 +34,7 @@ export default {
     name: 'app',
     components: {
         chat,
+        charInfoTop,
         dockedMenu,
         loading
     },

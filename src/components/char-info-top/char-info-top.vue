@@ -53,7 +53,12 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['characterName', 'characterJobId', 'characterHeadStyle', 'characterGender', 'characterBaseLevel', 'characterJobLevel', 'characterStats'])
+        ...mapGetters(['characterName', 'characterJobId', 'characterHeadStyle', 'characterGender', 'characterBaseLevel', 'characterJobLevel', 'characterStats', 'characterStatusPoints'])
+    },
+    watch: {
+        characterStatusPoints() {
+            this.calculateStats();
+        }
     },
     mounted() {
         this.$nextTick(() => {

@@ -1,17 +1,9 @@
 <template>
-    <section class="game">
-        <char-info-top />
-    </section>
+    <section class="game">.</section>
 </template>
 
 <script>
-// Components
-import charInfoTop from '../../components/char-info-top/char-info-top.vue';
-
 const gamePage = {
-    components: {
-        charInfoTop
-    },
     data() {
         return {};
     }

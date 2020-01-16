@@ -62,7 +62,7 @@ a {
     overflow: auto;
 
     &.docked-menu-open {
-        padding-bottom: 60px;
+        height: calc(100vh - 60px - 126px);
     }
 }
 

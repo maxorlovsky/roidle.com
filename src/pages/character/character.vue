@@ -1,7 +1,5 @@
 <template>
     <section class="character">
-        <char-info-top />
-
         <div class="equipment">
             <div class="equipment__left">
                 <div class="equipment__head"><span class="equipment__placeholder">head</span></div>
@@ -44,7 +42,6 @@ import jobs from '../../../config/jobs.json';
 
 // Components
 import avatar from '../../components/avatar/avatar.vue';
-import charInfoTop from '../../components/char-info-top/char-info-top.vue';
 import stats from '../../components/stats/stats.vue';
 
 // Utils
@@ -53,7 +50,6 @@ import statsUtils from '../../utils/stats.js';
 const characterPage = {
     components: {
         avatar,
-        charInfoTop,
         stats
     },
     data() {
