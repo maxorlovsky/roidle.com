@@ -137,7 +137,7 @@ export default {
                 const minutes = Math.floor(remainingTime / 60);
                 let seconds = remainingTime - minutes * 60;
 
-                if (seconds < 9) {
+                if (seconds <= 9) {
                     seconds = `0${seconds}`;
                 }
 
