@@ -1,26 +1,6 @@
 <template>
     <section class="character">
-        <div class="info">
-            <div class="info__description">
-                <span class="info__description__name">{{ characterName }}</span>
-                <span class="info__description__job">{{ jobTitle }}</span>
-            </div>
-
-            <div class="info__health">
-                <span class="info__health__hp"><span>HP:</span> 1 / {{ maxHp }}</span>
-                <span class="info__health__mp"><span>MP:</span> 1 / {{ maxMp }}</span>
-            </div>
-
-            <div class="info__levels">
-                <span class="info__levels__base">Base Lv: {{ characterBaseLevel }}</span>
-                <span class="info__levels__job">Job Lv: {{ characterJobLevel }}</span>
-            </div>
-
-            <div class="info__exp">
-                <span class="info__exp__base">XP: 0.00%</span>
-                <span class="info__exp__job">XP: 0.00%</span>
-            </div>
-        </div>
+        <char-info-top />
 
         <div class="equipment">
             <div class="equipment__left">
@@ -64,6 +44,7 @@ import jobs from '../../../config/jobs.json';
 
 // Components
 import avatar from '../../components/avatar/avatar.vue';
+import charInfoTop from '../../components/char-info-top/char-info-top.vue';
 import stats from '../../components/stats/stats.vue';
 
 // Utils
@@ -72,6 +53,7 @@ import statsUtils from '../../utils/stats.js';
 const characterPage = {
     components: {
         avatar,
+        charInfoTop,
         stats
     },
     data() {

@@ -1,0 +1,54 @@
+.char-info {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #ff0;
+    outline: 1px solid #000;
+    border-radius: 4px;
+    background-color: rgb(184, 135, 2);
+    color: #fff;
+    padding: 0.5rem;
+    font-size: 1rem;
+
+    &__description {
+        width: 40%;
+
+        &__name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 130px;
+        }
+    }
+
+    &__health {
+        display: flex;
+        flex-wrap: wrap;
+        width: 38%;
+
+        &__hp,
+        &__mp {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    &__levels {
+        width: calc(40% - 0.5rem);
+        padding-left: 0.5rem;
+
+        &__base {
+            display: block;
+        }
+    }
+
+    &__location {
+        width: 60%;
+
+        &__place {
+            display: block;
+        }
+    }
+}

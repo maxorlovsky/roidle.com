@@ -4,64 +4,6 @@
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
 
-    .info {
-        display: flex;
-        flex-wrap: wrap;
-        border: 1px solid #ff0;
-        outline: 1px solid #000;
-        border-radius: 4px;
-        background-color: rgb(184, 135, 2);
-        color: #fff;
-        padding: 0.5rem;
-        font-size: 1rem;
-
-        &__description {
-            width: 60%;
-
-            &__name {
-                font-weight: bold;
-                font-size: 1.1rem;
-                display: block;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                max-width: 130px;
-            }
-        }
-
-        &__health {
-            display: flex;
-            flex-wrap: wrap;
-            width: 40%;
-
-            &__hp,
-            &__mp {
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-            }
-        }
-
-        &__levels {
-            width: 25%;
-
-            &__base {
-                display: block;
-            }
-        }
-
-        &__exp {
-            width: 25%;
-            font-size: 0.9rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-
-            &__base {
-                width: 100%;
-            }
-        }
-    }
-
     .equipment {
         display: flex;
         width: 100%;
