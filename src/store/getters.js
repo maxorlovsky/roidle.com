@@ -7,10 +7,14 @@ export default {
     characterStatusPoints: (state) => state.characterStatusPoints,
     characterBaseLevel: (state) => state.characterBaseLevel,
     characterJobLevel: (state) => state.characterJobLevel,
+    characterBaseExp: (state) => state.characterBaseExp,
+    characterJobExp: (state) => state.characterJobExp,
     characterHeadStyle: (state) => state.characterHeadStyle,
     characterGender: (state) => state.characterGender,
     characterSkills: (state) => state.characterSkills,
     characterSkillPoints: (state) => state.characterSkillPoints,
     characterLocation: (state) => state.characterLocation,
-    travelingToLocation: (state) => state.travelingToLocation
+    travelingToLocation: (state) => state.travelingToLocation,
+    characterHp: (state) => state.characterHp,
+    characterMp: (state) => state.characterMp
 };

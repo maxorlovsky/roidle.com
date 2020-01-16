@@ -11,13 +11,13 @@
         </div>
 
         <div class="char-info__health">
-            <span class="char-info__health__hp"><span>HP:</span> 1 / {{ maxHp }}</span>
-            <span class="char-info__health__mp"><span>MP:</span> 1 / {{ maxMp }}</span>
+            <span class="char-info__health__hp"><span>HP:</span> {{ characterHp }} / {{ maxHp }}</span>
+            <span class="char-info__health__mp"><span>MP:</span> {{ characterMp }} / {{ maxMp }}</span>
         </div>
 
         <div class="char-info__levels">
-            <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} (0.00%)</span>
-            <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} (0.00%)</span>
+            <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ characterBaseExp }}%)</span>
+            <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ characterJobExp }}%)</span>
         </div>
 
         <div class="char-info__location">
@@ -27,7 +27,7 @@
             <span v-else
                 class="char-info__location__place"
             >Location: {{ location || '-' }}</span>
-            <span class="char-info__location__party">Party: --</span>
+            <span class="char-info__location__party">Zeny: 0z</span>
         </div>
     </div>
 </template>
@@ -65,7 +65,22 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['characterName', 'characterJobId', 'characterHeadStyle', 'characterGender', 'characterBaseLevel', 'characterJobLevel', 'characterStats', 'characterStatusPoints', 'characterLocation', 'travelingToLocation'])
+        ...mapGetters([
+            'characterName',
+            'characterJobId',
+            'characterHeadStyle',
+            'characterGender',
+            'characterBaseLevel',
+            'characterJobLevel',
+            'characterBaseExp',
+            'characterJobExp',
+            'characterStats',
+            'characterStatusPoints',
+            'characterLocation',
+            'travelingToLocation',
+            'characterHp',
+            'characterMp'
+        ])
     },
     watch: {
         characterStatusPoints() {
