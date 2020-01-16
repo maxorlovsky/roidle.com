@@ -1,5 +1,12 @@
 // Mutations are always synchronous
 export default {
+    saveLocation: (state, locationId) => {
+        state.characterLocation = locationId;
+        state.travelingToLocation = 0;
+    },
+    saveTraveling: (state, values) => {
+        state.travelingToLocation = values.locationId;
+    },
     saveSkills: (state, values) => {
         state.characterSkills = values.skills;
         state.characterSkillPoints = values.skillPoints;
@@ -37,6 +44,9 @@ export default {
         // Skills
         state.characterSkillPoints = values.skillPoints;
         state.characterSkills = values.skills;
+
+        // Location
+        state.characterLocation = values.location;
     },
     saveParty: (state, values) => {
         state.party = values;

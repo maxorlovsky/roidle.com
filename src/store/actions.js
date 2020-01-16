@@ -2,6 +2,16 @@
 import { functions } from '../functions.js';
 
 export default {
+    updateLocation: ({ commit }, locationId) => {
+        // Persisting save of user new stats
+        const character = functions.storage('get', 'character');
+
+        character.location = locationId;
+
+        functions.storage('set', 'character', character, 604800000 * 90);
+
+        commit('saveLocation', locationId);
+    },
     saveSkills: ({ commit }, values) => {
         // Persisting save of user new stats
         const character = functions.storage('get', 'character');

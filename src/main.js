@@ -12,6 +12,7 @@ import './pages/character/character.vue';
 import './pages/character/character-skills.vue';
 import './pages/game/game.vue';
 import './pages/home/home.vue';
+import './pages/map/map.vue';
 import './pages/missions/missions.vue';
 // Mixins
 // 1 import globalMixins from '@shared/fe-utilities/src/mixins/global-mixin.js';

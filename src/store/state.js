@@ -16,6 +16,8 @@ export default {
     characterStatusPoints: 0,
     characterSkills: {},
     characterSkillPoints: 0,
+    characterLocation: 1,
+    travelingToLocation: 0,
     party: [],
     dockedMenu: false
 };

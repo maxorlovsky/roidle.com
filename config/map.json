@@ -1,0 +1,67 @@
+{
+    "0": [
+        {
+            "id": 999
+        },
+        {
+            "id": 2,
+            "name": "Prontera Field 1",
+            "mapFile": "prt_fild01",
+            "level": [1, 5],
+            "coordiates": [0, 1]
+        },
+        {
+            "id": 3,
+            "name": "Prontera Field 2",
+            "mapFile": "prt_fild02",
+            "level": [5, 15],
+            "coordiates": [1, 1]
+        }
+    ],
+    "1": [
+        {
+            "id": 4,
+            "name": "Prontera Field 5",
+            "mapFile": "prt_fild05",
+            "level": [1, 5],
+            "coordiates": [-1, 0]
+        },
+        {
+            "id": 1,
+            "name": "Prontera",
+            "mapFile": "prontera",
+            "level": null,
+            "coordiates": [0, 0]
+        },
+        {
+            "id": 5,
+            "name": "Prontera Field 6",
+            "mapFile": "prt_fild06",
+            "level": [1, 5],
+            "coordiates": [1, 0]
+        }
+    ],
+    "2": [
+        {
+            "id": 6,
+            "name": "Prontera Field 7",
+            "mapFile": "prt_fild07",
+            "level": [1, 15],
+            "coordiates": [-1, -1]
+        },
+        {
+            "id": 7,
+            "name": "Prontera Field 8",
+            "mapFile": "prt_fild08",
+            "level": [1, 5],
+            "coordiates": [0, -1]
+        },
+        {
+            "id": 8,
+            "name": "Izlude",
+            "mapFile": "izlude",
+            "level": null,
+            "coordiates": [1, -1]
+        }
+    ]
+}

@@ -1,15 +1,19 @@
 <template>
     <div class="docked-menu">
         <a v-if="displayBackButton"
-            class="btn btn-secondary"
+            class="btn btn-secondary btn-lg"
             href="#"
             @click="$router.go(-1)"
         >&#8592;</a>
 
         <template v-if="!displayBackButton">
             <router-link to="/character"
-                class="btn btn-secondary"
+                class="btn btn-secondary btn-lg"
             >Char</router-link>
+
+            <router-link to="/map"
+                class="btn btn-secondary btn-lg"
+            >Map</router-link>
 
             <router-link to="/missions"
                 class="btn btn-secondary"
@@ -19,17 +23,9 @@
                 class="btn btn-secondary"
             >Bag</router-link>
 
-            <router-link to="/"
-                class="btn btn-secondary"
-            >Skills</router-link>
-
             <!--<router-link to="/"
                 class="btn btn-secondary"
             >Storage</router-link>
-
-            <router-link to="/"
-                class="btn btn-secondary"
-            >Map</router-link>
 
             <router-link to="/"
                 class="btn btn-secondary"

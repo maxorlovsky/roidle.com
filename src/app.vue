@@ -78,7 +78,8 @@ export default {
                 },
                 statusPoints: 48,
                 skillPoints: 0,
-                skills: {}
+                skills: {},
+                location: 1
             };
 
             functions.storage('set', 'character', generatedCharacter, 604800000 * 90);

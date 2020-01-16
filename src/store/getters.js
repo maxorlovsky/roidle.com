@@ -10,5 +10,7 @@ export default {
     characterHeadStyle: (state) => state.characterHeadStyle,
     characterGender: (state) => state.characterGender,
     characterSkills: (state) => state.characterSkills,
-    characterSkillPoints: (state) => state.characterSkillPoints
+    characterSkillPoints: (state) => state.characterSkillPoints,
+    characterLocation: (state) => state.characterLocation,
+    travelingToLocation: (state) => state.travelingToLocation
 };
