@@ -1,5 +1,38 @@
 // Mutations are always synchronous
 export default {
+    saveSkillPoints: (state, value) => {
+        state.characterSkillPoints = value;
+    },
+    saveStatusPoints: (state, value) => {
+        state.characterStatusPoints = value;
+    },
+    saveLevels: (state, values) => {
+        if (values.baseLevel) {
+            state.characterBaseLevel = values.baseLevel;
+        }
+
+        if (values.jobLevel) {
+            state.characterJobLevel = values.jobLevel;
+        }
+    },
+    saveExp: (state, values) => {
+        if (values.baseExp) {
+            state.characterBaseExp = values.baseExp;
+        }
+
+        if (values.jobExp) {
+            state.characterJobExp = values.jobExp;
+        }
+    },
+    sendChat: (state, values) => {
+        state.chatContent = values;
+    },
+    fightStatus: (state, value) => {
+        state.fightStatus = value;
+    },
+    saveCharHp: (state, hp) => {
+        state.characterHp = hp;
+    },
     saveLocation: (state, locationId) => {
         state.characterLocation = locationId;
         state.travelingToLocation = 0;
@@ -30,6 +63,8 @@ export default {
         // Char params
         state.characterBaseLevel = values.baseLevel;
         state.characterJobLevel = values.jobLevel;
+        state.characterBaseExp = values.baseExp;
+        state.characterJobExp = values.jobExp;
         state.characterJobId = values.jobId;
 
         // Stats

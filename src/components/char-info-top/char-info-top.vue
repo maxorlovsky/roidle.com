@@ -16,8 +16,8 @@
         </div>
 
         <div class="char-info__levels">
-            <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ characterBaseExp }}%)</span>
-            <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ characterJobExp }}%)</span>
+            <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ baseExpPercentage }}%)</span>
+            <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ jobExpPercentage }}%)</span>
         </div>
 
         <div class="char-info__location">
@@ -40,13 +40,14 @@ import { mapGetters } from 'vuex';
 import { functions } from '../../functions.js';
 
 // Configs
-import allMaps from '../../../config/map.json';
+import exp from '../../../config/exp.json';
 import jobs from '../../../config/jobs.json';
 
 // Components
 import avatar from '../avatar/avatar.vue';
 
 // Utils
+import locationUtils from '../../utils/location.js';
 import statsUtils from '../../utils/stats.js';
 
 export default {
@@ -61,7 +62,9 @@ export default {
             maxMp: 0,
             location: '',
             travelingDisplay: '',
-            interval: null
+            interval: null,
+            baseExpPercentage: '0.00',
+            jobExpPercentage: '0.00'
         };
     },
     computed: {
@@ -96,6 +99,18 @@ export default {
         },
         characterLocation() {
             this.getLocation();
+        },
+        characterBaseExp: {
+            immediate: true,
+            handler() {
+                this.calculateExpPercentage();
+            }
+        },
+        characterJobExp: {
+            immediate: true,
+            handler() {
+                this.calculateExpPercentage();
+            }
         }
     },
     mounted() {
@@ -120,6 +135,34 @@ export default {
         });
     },
     methods: {
+        calculateExpPercentage() {
+            // Calculating base exp into percentage of how much user currently have
+            let expTable = exp.exp.split(',');
+
+            // Check if there is a next level, if yes show percentage, otherwise user reached max leve
+            if (expTable[this.characterBaseLevel]) {
+                this.baseExpPercentage = parseFloat(this.characterBaseExp * 100 / expTable[this.characterBaseLevel]).toFixed(2);
+            } else {
+                this.baseExpPercentage = '100';
+            }
+
+            // Calculating job exp into percentage of how much user currently have
+            expTable = null;
+            if (this.characterJobId === 0) {
+                expTable = exp.noviceExp.split(',');
+            } else if (this.characterJobId > 1 && this.characterJobId < 6) {
+                expTable = exp.firstJobs.split(',');
+            } else {
+                expTable = exp.secondJobs.split(',');
+            }
+
+            // Check if there is a next level, if yes show percentage, otherwise user reached max leve
+            if (expTable[this.characterJobLevel]) {
+                this.jobExpPercentage = parseFloat(this.characterJobExp * 100 / expTable[this.characterJobLevel]).toFixed(2);
+            } else {
+                this.jobExpPercentage = '100';
+            }
+        },
         switchLocations() {
             // Get traveling data from storage
             const traveling = functions.storage('get', 'traveling');
@@ -161,17 +204,9 @@ export default {
         },
         // Get current location of the character
         getLocation() {
-            let mapPiece = null;
+            const locationItem = locationUtils.getLocation(Number(this.characterLocation));
 
-            for (const row of Object.keys(allMaps)) {
-                mapPiece = allMaps[row].find((piece) => piece.id === Number(this.characterLocation));
-
-                if (mapPiece) {
-                    break;
-                }
-            }
-
-            this.location = mapPiece.name;
+            this.location = locationItem.name;
         },
         calculateStats() {
             this.maxHp = statsUtils.getHpFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.vit);

@@ -12,6 +12,62 @@ export default {
 
         commit('saveLocation', locationId);
     },
+    updateExp: ({ commit }, values) => {
+        // Persisting save of user new stats
+        const character = functions.storage('get', 'character');
+
+        if (values.baseExp) {
+            character.baseExp = values.baseExp;
+        }
+
+        if (values.jobExp) {
+            character.jobExp = values.jobExp;
+        }
+
+        functions.storage('set', 'character', character, 604800000 * 90);
+
+        commit('saveExp', values);
+    },
+    levelUpJob: ({ commit }, values) => {
+        // Persisting save of user new stats
+        const character = functions.storage('get', 'character');
+
+        if (values.jobLevel) {
+            character.jobLevel = values.jobLevel;
+        }
+
+        if (values.jobExp) {
+            character.jobExp = values.jobExp;
+        }
+
+        character.skillPoints = values.skillPoints;
+
+        functions.storage('set', 'character', character, 604800000 * 90);
+
+        commit('saveSkillPoints', character.skillPoints);
+        commit('saveLevels', values);
+        commit('saveExp', values);
+    },
+    levelUpBase: ({ commit }, values) => {
+        // Persisting save of user new stats
+        const character = functions.storage('get', 'character');
+
+        if (values.baseLevel) {
+            character.baseLevel = values.baseLevel;
+        }
+
+        if (values.baseExp) {
+            character.baseExp = values.baseExp;
+        }
+
+        character.statusPoints = values.statusPoints;
+
+        functions.storage('set', 'character', character, 604800000 * 90);
+
+        commit('saveStatusPoints', character.statusPoints);
+        commit('saveLevels', values);
+        commit('saveExp', values);
+    },
     saveSkills: ({ commit }, values) => {
         // Persisting save of user new stats
         const character = functions.storage('get', 'character');

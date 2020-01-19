@@ -1,25 +1,32 @@
 <template>
     <section class="chat">
         <div class="chat-wrapper">
-            <div ref="chatBody"
+            <div class="chat__tabs">
+                <div :class="{'chat__tabs__tab--selected': selectedTab === 0, 'chat__tabs__tab--notification': tabNotification[0]}"
+                    class="chat__tabs__tab"
+                    @click="selectedTab = 0; tabNotification[0] = false"
+                >Regular chat</div>
+                <div :class="{'chat__tabs__tab--selected': selectedTab === 1, 'chat__tabs__tab--notification': tabNotification[1]}"
+                    class="chat__tabs__tab"
+                    @click="selectedTab = 1; tabNotification[1] = false"
+                >Battle chat</div>
+            </div>
+            <div v-show="selectedTab === 0"
+                ref="chatBody"
                 class="chat__body"
             >
-                <p class="chat__body__main">[ #main ] Testa : rawr</p>
-                <p class="chat__body__map">[ #map ] Testa : rawr</p>
-                <p class="chat__body__main">[ #main ] Testa : rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr </p>
-                <p class="chat__body__main">[ #main ] Testa : rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr </p>
-                <p class="chat__body__main">[ #main ] Max : rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr </p>
-                <p class="chat__body__main">[ #main ] Testa : rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr </p>
-                <p class="chat__body__main">[ #main ] Testa : rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr </p>
-                <p class="chat__body__main">[ #main ] Max : rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr </p>
-                <p class="chat__body__main">[ #main ] Max : rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr </p>
-                <p class="chat__body__map">[ #map ] Max : rawr</p>
-                <p class="chat__body__map">[ #map ] Max : rawr</p>
-                <p class="chat__body__map">[ #map ] Testa : rawr</p>
-                <p class="chat__body__map">[ #map ] Testa : rawr</p>
-                <p class="chat__body__map">[ #map ] Testa : rawr</p>
-                <p class="chat__body__map">[ #map ] Max : rawr</p>
-                <p class="chat__body__map">[ #map ] Max : rawr</p>
+                <p v-for="(chat, index) in chatLog"
+                    :key="index"
+                    :class="`chat__body__${chat.type}`"
+                >[ #{{ chat.type }} ] <span @click="whisperName = chat.character">{{ chat.character }}</span> : {{ chat.message }}</p>
+            </div>
+            <div v-show="selectedTab === 1"
+                ref="chatBodyBattle"
+                class="chat__body"
+            >
+                <p v-for="(chat, index) in battleChatLog"
+                    :key="index"
+                >{{ chat.message }}</p>
             </div>
             <div class="chat__input">
                 <input v-model="whisperName"
@@ -50,11 +57,15 @@ export default {
         return {
             whisperName: '',
             message: '',
-            disabledChat: true
+            chatLog: [],
+            battleChatLog: [],
+            disabledChat: true,
+            selectedTab: 0,
+            tabNotification: [false, false]
         };
     },
     computed: {
-        ...mapGetters(['characterSkills'])
+        ...mapGetters(['characterSkills', 'chatContent'])
     },
     watch: {
         characterSkills: {
@@ -64,10 +75,78 @@ export default {
                     this.disabledChat = false;
                 }
             }
+        },
+        chatContent() {
+            for (const chat of this.chatContent) {
+                if (chat.type === 'battle') {
+                    if (this.selectedTab !== 1) {
+                        this.tabNotification[1] = true;
+                    }
+
+                    this.battleChatLog.push({
+                        message: chat.message
+                    });
+                } else {
+                    if (this.selectedTab !== 0) {
+                        this.tabNotification[0] = true;
+                    }
+
+                    this.chatLog.push({
+                        type: chat.type,
+                        character: chat.character,
+                        message: chat.message
+                    });
+                }
+            }
+
+            this.scrollChat();
         }
     },
     mounted() {
-        this.$refs.chatBody.scrollTop = this.$refs.chatBody.scrollHeight;
+        this.chatLog.push(
+            {
+                type: 'map',
+                character: 'Testa',
+                message: 'rawr'
+            },
+            {
+                type: 'main',
+                character: 'Testa',
+                message: 'rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr'
+            },
+            {
+                type: 'map',
+                character: 'Max',
+                message: 'rawr rawr rawr rawr rawr rawr rawr rawr rawr'
+            },
+            {
+                type: 'map',
+                character: 'Max',
+                message: 'rawr'
+            },
+            {
+                type: 'map',
+                character: 'Testa',
+                message: 'rawr'
+            }
+        );
+
+        this.scrollChat();
+    },
+    methods: {
+        scrollChat() {
+            if (this.$refs.chatBody.scrollTop === this.$refs.chatBody.scrollHeight - this.$refs.chatBody.clientHeight) {
+                this.$nextTick(() => {
+                    this.$refs.chatBody.scrollTop = this.$refs.chatBody.scrollHeight;
+                });
+            }
+
+            if (this.$refs.chatBodyBattle.scrollTop === this.$refs.chatBodyBattle.scrollHeight - this.$refs.chatBodyBattle.clientHeight) {
+                this.$nextTick(() => {
+                    this.$refs.chatBodyBattle.scrollTop = this.$refs.chatBodyBattle.scrollHeight;
+                });
+            }
+        }
     }
 };
 </script>

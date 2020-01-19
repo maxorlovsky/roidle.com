@@ -16,5 +16,7 @@ export default {
     characterLocation: (state) => state.characterLocation,
     travelingToLocation: (state) => state.travelingToLocation,
     characterHp: (state) => state.characterHp,
-    characterMp: (state) => state.characterMp
+    characterMp: (state) => state.characterMp,
+    fightStatus: (state) => state.fightStatus,
+    chatContent: (state) => state.chatContent
 };
