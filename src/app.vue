@@ -10,6 +10,8 @@
 
         <chat v-show="showChat" />
 
+        <level-up />
+
         <docked-menu v-if="dockedMenu" />
 
         <loading v-if="loading" />
@@ -29,6 +31,7 @@ import chat from './components/chat/chat.vue';
 import charInfoTop from './components/char-info-top/char-info-top.vue';
 import dockedMenu from './components/docked-menu/docked-menu.vue';
 import loading from './components/loading/loading.vue';
+import levelUp from './components/level-up/level-up.vue';
 
 export default {
     name: 'app',
@@ -36,7 +39,8 @@ export default {
         chat,
         charInfoTop,
         dockedMenu,
-        loading
+        loading,
+        levelUp
     },
     store: store,
     data() {
@@ -67,6 +71,8 @@ export default {
                 headStyle: 1,
                 baseLevel: 1,
                 jobLevel: 1,
+                baseExp: 0,
+                jobExp: 0,
                 jobId: 0,
                 stats: {
                     str: 1,

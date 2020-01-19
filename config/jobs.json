@@ -149,5 +149,47 @@
                 "luk": 2
             }
         }
+    },
+    {
+        "id": 9999,
+        "name": "Monster",
+        "info": "Monster class",
+        "statsBonuses": "0",
+        "dividers": {
+            "hp": {
+                "level": 1,
+                "vit": 5
+            },
+            "mp": {
+                "level": 50,
+                "wis": 50,
+                "int": 25
+            },
+            "patk": {
+                "str": 1,
+                "dex": 5,
+                "luk": 2
+            },
+            "matk": {
+                "int": 1,
+                "dex": 5,
+                "luk": 2
+            },
+            "pdef": {
+                "vit": 3,
+                "wis": 10
+            },
+            "mdef": {
+                "vit": 10,
+                "wis": 5
+            },
+            "hit": {
+                "dex": 10
+            },
+            "eva": {
+                "dex": 10
+            }
+        },
+        "allowedItemsParts": []
     }
 ]
