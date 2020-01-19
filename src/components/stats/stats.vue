@@ -43,11 +43,11 @@
         >
             <div class="stats__params">
                 <span class="stats__params__label">M.HP</span>
-                <span class="stats__params__value">{{ attributes.hp }}</span>
+                <span class="stats__params__value">{{ attributes.maxHp }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">M.MP</span>
-                <span class="stats__params__value">{{ attributes.mp }}</span>
+                <span class="stats__params__value">{{ attributes.maxMp }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">P.Atk</span>
@@ -148,8 +148,8 @@ export default {
                 hit: 0,
                 eva: 0,
                 speed: 0,
-                hp: 0,
-                mp: 0
+                maxHp: 0,
+                maxMp: 0
             },
             tempStatusPoints: 0,
         };
@@ -202,8 +202,8 @@ export default {
             this.attributes.eva = statsUtils.getEvaFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.dex, this.tempStats.luk);
             this.attributes.speed = statsUtils.getSpeedFormula(this.tempStats.dex);
 
-            this.attributes.hp = statsUtils.getHpFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.vit);
-            this.attributes.mp = statsUtils.getMpFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.wis, this.tempStats.int);
+            this.attributes.maxHp = statsUtils.getHpFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.vit);
+            this.attributes.maxMp = statsUtils.getMpFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.wis, this.tempStats.int);
         },
         recalculateStatCosts() {
             for (const [key, value] of Object.entries(this.tempStats)) {
