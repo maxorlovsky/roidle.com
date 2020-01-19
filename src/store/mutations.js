@@ -1,5 +1,9 @@
 // Mutations are always synchronous
 export default {
+    setEquipment: (state, value) => {
+        state.characterEquipmentSlots[value.slot] = value.itemId;
+        state.characterEquipmentTrigger = new Date();
+    },
     setHpMp: (state, values) => {
         state.characterHp = values.hp;
         state.characterMp = values.mp;

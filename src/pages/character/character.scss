@@ -47,6 +47,25 @@
         }
     }
 
+    .equiment-modal {
+        width: 80%;
+        padding: 0;
+
+        &__item {
+            padding: 1rem;
+            border-bottom: 2px solid #fff;
+
+            &:last-child {
+                border-bottom: 0;
+            }
+        }
+
+        &__buttons {
+            padding: 1rem;
+            margin-top: 0;
+        }
+    }
+
     .skills-button {
         display: flex;
         justify-content: center;

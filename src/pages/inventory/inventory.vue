@@ -93,7 +93,7 @@ const inventoryPage = {
             this.itemInfo.weaponLevel = 0;
             this.itemInfo.requiredLevel = 0;
             this.itemInfo.weight = item.weight;
-            this.itemInfo.applicableJob = item.type === 'weapon' || item.type === 'armor' ? 'All' : '';
+            this.itemInfo.applicableJob = item.jobs === null ? 'All' : '';
 
             // Making params human readable
             if (item.params) {

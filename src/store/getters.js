@@ -22,5 +22,6 @@ export default {
     fightStatus: (state) => state.fightStatus,
     chatContent: (state) => state.chatContent,
     restInProgress: (state) => state.restInProgress,
-    inventory: (state) => state.inventory
+    inventory: (state) => state.inventory,
+    characterEquipmentTrigger: (state) => state.characterEquipmentTrigger
 };
