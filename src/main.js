@@ -11,6 +11,7 @@ import App from './app.vue';
 import './pages/character/character.vue';
 import './pages/character/character-skills.vue';
 import './pages/game/game.vue';
+import './pages/inventory/inventory.vue';
 import './pages/home/home.vue';
 import './pages/map/map.vue';
 import './pages/missions/missions.vue';

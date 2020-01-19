@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
     }
 
     // Set up meta title
-    document.title = 'mo';
+    document.title = 'Idle RO';
     if (to.meta.title) {
         document.title = `${to.meta.title} | ${document.title}`;
     }

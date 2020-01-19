@@ -77,6 +77,11 @@ export default {
 
         return result;
     },
+    getWeightFormula(str) {
+        const result = 2000 + 30 * str;
+
+        return result;
+    },
     calculateBonusStats(jobId, jobLevel) {
         const foundJob = jobs.find((job) => job.id === jobId);
         const bonusStats = {
