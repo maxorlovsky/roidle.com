@@ -9,7 +9,16 @@
     align-items: center;
     justify-content: center;
 
-    .btn {
-        margin-right: 0.5rem;
+    &__button {
+        background-color: #b88702;
+        border: 1px solid #ff0;
+        height: 100%;
+        width: 25%;
+        text-align: center;
+        border-radius: 7px;
+    }
+
+    img {
+        height: 54px;
     }
 }

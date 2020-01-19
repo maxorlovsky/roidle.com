@@ -8,30 +8,22 @@
 
         <template v-if="!displayBackButton">
             <router-link to="/character"
-                class="btn btn-secondary btn-lg"
-            >Char</router-link>
+                class="docked-menu__button"
+            ><img src="/dist/assets/images/char.png"></router-link>
 
             <router-link to="/map"
-                class="btn btn-secondary btn-lg"
-            >Map</router-link>
+                class="docked-menu__button"
+            ><img src="/dist/assets/images/compass.png"></router-link>
 
             <router-link to="/missions"
-                class="btn btn-secondary"
-            >Mis</router-link>
+                class="docked-menu__button"
+            ><img src="/dist/assets/images/tasks.png"></router-link>
 
-            <router-link to="/"
-                class="btn btn-secondary"
-            >Bag</router-link>
+            <router-link to="/inventory"
+                class="docked-menu__button"
+            ><img src="/dist/assets/images/backpack.png"></router-link>
 
-            <!--<router-link to="/"
-                class="btn btn-secondary"
-            >Storage</router-link>
-
-            <router-link to="/"
-                class="btn btn-secondary"
-            >Party</router-link>
-
-            <router-link to="/"
+            <!-- <router-link to="/"
                 class="btn btn-secondary"
             >Guild</router-link>-->
         </template>
