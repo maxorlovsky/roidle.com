@@ -19,11 +19,15 @@ export default {
     characterSkills: {},
     characterSkillPoints: 0,
     characterLocation: 1,
+    characterSaveLocation: 1,
     characterHp: 42,
     characterMp: 13,
+    characterZeny: 0,
     travelingToLocation: 0,
+    restInProgress: false,
     party: [],
     dockedMenu: false,
     fightStatus: false,
-    chatContent: []
+    chatContent: [],
+    inventory: []
 };

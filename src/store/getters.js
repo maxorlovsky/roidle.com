@@ -14,9 +14,13 @@ export default {
     characterSkills: (state) => state.characterSkills,
     characterSkillPoints: (state) => state.characterSkillPoints,
     characterLocation: (state) => state.characterLocation,
+    characterSaveLocation: (state) => state.characterSaveLocation,
+    characterZeny: (state) => state.characterZeny,
     travelingToLocation: (state) => state.travelingToLocation,
     characterHp: (state) => state.characterHp,
     characterMp: (state) => state.characterMp,
     fightStatus: (state) => state.fightStatus,
-    chatContent: (state) => state.chatContent
+    chatContent: (state) => state.chatContent,
+    restInProgress: (state) => state.restInProgress,
+    inventory: (state) => state.inventory
 };

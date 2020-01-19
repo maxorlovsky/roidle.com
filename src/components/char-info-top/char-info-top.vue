@@ -24,10 +24,13 @@
             <span v-if="travelingDisplay"
                 class="char-info__location__place"
             >Traveling ({{ travelingDisplay }})</span>
+            <span v-else-if="restingDisplay"
+                class="char-info__location__place"
+            >Resting ({{ restingDisplay }})</span>
             <span v-else
                 class="char-info__location__place"
             >Location: {{ location || '-' }}</span>
-            <span class="char-info__location__party">Zeny: 0z</span>
+            <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: {{ weightPercentage }}%</span>
         </div>
     </div>
 </template>
@@ -48,6 +51,7 @@ import avatar from '../avatar/avatar.vue';
 
 // Utils
 import locationUtils from '../../utils/location.js';
+import itemsUtils from '../../utils/items.js';
 import statsUtils from '../../utils/stats.js';
 
 export default {
@@ -62,9 +66,11 @@ export default {
             maxMp: 0,
             location: '',
             travelingDisplay: '',
+            restingDisplay: '',
             interval: null,
             baseExpPercentage: '0.00',
-            jobExpPercentage: '0.00'
+            jobExpPercentage: '0.00',
+            weightPercentage: 0
         };
     },
     computed: {
@@ -79,21 +85,38 @@ export default {
             'characterJobExp',
             'characterStats',
             'characterStatusPoints',
-            'characterLocation',
-            'travelingToLocation',
             'characterHp',
-            'characterMp'
+            'characterMp',
+            'characterLocation',
+            'characterZeny',
+            'travelingToLocation',
+            'restInProgress',
+            'inventory'
         ])
     },
     watch: {
         characterStatusPoints() {
             this.calculateStats();
         },
+        inventory: {
+            immediate: true,
+            handler() {
+                this.calculateWeight();
+            }
+        },
         travelingToLocation: {
             immediate: true,
             handler() {
                 if (this.travelingToLocation) {
                     this.getTravelingTime();
+                }
+            }
+        },
+        restInProgress: {
+            immediate: true,
+            handler() {
+                if (this.restInProgress) {
+                    this.getRestingTime();
                 }
             }
         },
@@ -129,12 +152,23 @@ export default {
                 this.getLocation();
             }
 
+            // Detect if resting is in progress
+            if (functions.storage('get', 'resting')) {
+                this.$store.commit('saveResting', true);
+            }
+
             const foundJob = jobs.find((job) => job.id === this.characterJobId);
 
             this.jobTitle = foundJob.name;
         });
     },
     methods: {
+        calculateWeight() {
+            const currentWeight = itemsUtils.getCurrentWeight(this.inventory);
+            const maxWeight = statsUtils.getWeightFormula(this.characterStats.str);
+
+            this.weightPercentage = Math.round((currentWeight * 100) / maxWeight);
+        },
         calculateExpPercentage() {
             // Calculating base exp into percentage of how much user currently have
             let expTable = exp.exp.split(',');
@@ -163,6 +197,29 @@ export default {
                 this.jobExpPercentage = '100';
             }
         },
+        finishRest() {
+            // Get resting data from storage
+            const resting = functions.storage('get', 'resting');
+
+            if (resting.type === 4) {
+                // Add delux bonuses
+            }
+
+            this.$store.dispatch('updateHpMp', {
+                hp: this.maxHp,
+                mp: this.maxMp
+            });
+
+            // Reset variable responsible for travel
+            this.restingDisplay = '';
+            clearInterval(this.interval);
+
+            // Put rest in progress
+            this.$store.commit('saveResting', false);
+
+            // Remove traveling data from storage
+            functions.storage('remove', 'resting');
+        },
         switchLocations() {
             // Get traveling data from storage
             const traveling = functions.storage('get', 'traveling');
@@ -175,6 +232,32 @@ export default {
 
             // Remove traveling data from storage
             functions.storage('remove', 'traveling');
+        },
+        // Display traveling time
+        getRestingTime() {
+            const resting = functions.storage('get', 'resting');
+
+            this.interval = setInterval(() => {
+                // Calculating remaining time every time from the date param
+                const remainingTime = Math.floor((resting.dateTimeFinish - new Date().getTime()) / 1000);
+
+                // If timer reached 0, switch user locations and unlock the map
+                if (remainingTime <= 0) {
+                    this.finishRest();
+
+                    return true;
+                }
+
+                // Making display of resting time user friendly
+                const minutes = Math.floor(remainingTime / 60);
+                let seconds = remainingTime - minutes * 60;
+
+                if (seconds <= 9) {
+                    seconds = `0${seconds}`;
+                }
+
+                this.restingDisplay = `${minutes}:${seconds}`;
+            }, 1000);
         },
         // Display traveling time
         getTravelingTime() {

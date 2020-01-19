@@ -62,39 +62,6 @@
             }
         }
     }
-
-    &__modal {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        border: 1px solid #ff0;
-        outline: 1px solid #000;
-        border-radius: 4px;
-        background-color: rgb(184, 135, 2);
-        transform: translate(-50%, -50%);
-        font-size: 1rem;
-        color: #fff;
-        padding: 0.5rem 1rem;
-        white-space: nowrap;
-
-        &__header {
-            font-size: 1.75rem;
-            text-align: center;
-            white-space: nowrap;
-        }
-
-        &__content {
-            b {
-                color: #00f;
-            }
-        }
-
-        &__buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-        }
-    }
 }
 
 @keyframes mapTravelingBorderColor {

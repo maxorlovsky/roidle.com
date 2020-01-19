@@ -85,12 +85,38 @@ export default {
                 statusPoints: 48,
                 skillPoints: 0,
                 skills: {},
-                location: 1
+                location: 1,
+                saveLocation: 1,
+                hp: 1,
+                mp: 1,
+                zeny: 0
             };
 
             functions.storage('set', 'character', generatedCharacter, 604800000 * 90);
 
             this.$store.commit('setCharacterData', generatedCharacter);
+        }
+
+        // If there are no inventory data, generate it
+        if (functions.storage('get', 'inventory')) {
+            this.$store.commit('setInventoryData', functions.storage('get', 'inventory'));
+        } else {
+            const generatedInventory = [
+                {
+                    // Knife
+                    id: 1,
+                    amount: 1,
+                },
+                {
+                    // Cotton shirt
+                    id: 2000,
+                    amount: 1
+                }
+            ];
+
+            functions.storage('set', 'inventory', generatedInventory, 604800000 * 90);
+
+            this.$store.commit('setInventoryData', generatedInventory);
         }
 
         if (functions.storage('get', 'characterGenerated')) {

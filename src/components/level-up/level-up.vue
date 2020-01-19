@@ -18,15 +18,20 @@ import { mapGetters } from 'vuex';
 // Configs
 import exp from '../../../config/exp.json';
 
+// Utils
+import statsUtils from '../../utils/stats.js';
+
 export default {
     name: 'level-up',
     data() {
         return {
-            showLevelUpAnimation: false
+            showLevelUpAnimation: false,
+            maxHp: 0,
+            maxMp: 0
         };
     },
     computed: {
-        ...mapGetters(['characterBaseExp', 'characterJobExp', 'characterBaseLevel', 'characterJobLevel', 'characterJobId', 'characterStatusPoints', 'characterSkillPoints'])
+        ...mapGetters(['characterBaseExp', 'characterJobExp', 'characterBaseLevel', 'characterJobLevel', 'characterJobId', 'characterStats', 'characterStatusPoints', 'characterSkillPoints'])
     },
     watch: {
         characterBaseExp() {
@@ -61,6 +66,15 @@ export default {
                     statusPoints: this.characterStatusPoints + Math.floor(this.characterBaseLevel / 5) + 3
                 });
 
+                // Triggering function to calculate maxHp/maxMp after level up
+                this.calculateStats();
+
+                // Heal up character after base level up
+                this.$store.dispatch('updateHpMp', {
+                    hp: this.maxHp,
+                    mp: this.maxMp
+                });
+
                 // Delaying angel animation a bit, because of audio
                 setTimeout(() => {
                     this.showLevelAnim();
@@ -90,6 +104,10 @@ export default {
                     skillPoints: this.characterSkillPoints + 1
                 });
             }
+        },
+        calculateStats() {
+            this.maxHp = statsUtils.getHpFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.vit);
+            this.maxMp = statsUtils.getMpFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.wis, this.characterStats.int);
         }
     }
 };

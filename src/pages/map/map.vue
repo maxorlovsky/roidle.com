@@ -8,7 +8,7 @@
         >
             <div v-for="location in piece"
                 :key="location.id"
-                :class="{'map__piece--selected': location.id === characterLocation, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': travelingToLocation && location.id !== travelingToLocation}"
+                :class="{'map__piece--selected': location.id === characterLocation, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': (travelingToLocation || restInProgress) && location.id !== travelingToLocation}"
                 class="map__piece"
                 @click="selectMap(location.id)"
             >
@@ -27,14 +27,14 @@
         </div>
 
         <div v-if="showModal"
-            class="map__modal"
+            class="modal"
         >
-            <div class="map__modal__header">Confirm travel</div>
-            <div class="map__modal__content">
+            <div class="modal__header">Confirm travel</div>
+            <div class="modal__content">
                 <p>Traveling to <b>{{ travelDestinationName }}</b></p>
                 <span>Travel will take you {{ humanReadableDate }}~</span>
             </div>
-            <div class="map__modal__buttons">
+            <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showModal = false"
                 >Cancel</button>
@@ -70,7 +70,7 @@ const mapPage = {
         };
     },
     computed: {
-        ...mapGetters(['characterLocation', 'characterBaseLevel', 'characterStats', 'travelingToLocation'])
+        ...mapGetters(['characterLocation', 'characterBaseLevel', 'characterStats', 'travelingToLocation', 'restInProgress'])
     },
     mounted() {
         this.$nextTick(() => {
@@ -99,7 +99,7 @@ const mapPage = {
         },
         selectMap(locationId) {
             // If it's a black square, we don't do anything
-            if (locationId >= 999 || locationId === this.characterLocation || this.travelingToLocation) {
+            if (locationId >= 999 || locationId === this.characterLocation || this.travelingToLocation || this.restInProgress) {
                 return false;
             }
 

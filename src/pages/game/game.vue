@@ -12,40 +12,67 @@
         </div>
 
         <div class="game__actions">
-            <div :class="{'game__action--disabled': fightStatus}"
+            <div v-if="outsideActions"
+                :class="{'game__action--disabled': fightStatus || travelingToLocation || restInProgress}"
                 class="game__action"
-                @click="showModal = true"
+                @click="showFightModal = true"
             >
                 <img src="/dist/assets/images/sword.png">
                 <span class="game__action__name">Hunt</span>
             </div>
 
-            <div :class="{'game__action--disabled': fightStatus}"
+            <!--<div v-if="outsideActions"
+                :class="{'game__action--disabled': fightStatus || travelingToLocation || restInProgress}"
                 class="game__action"
                 @click="trackMonster()"
             >
                 <img src="/dist/assets/images/eye.png">
                 <span class="game__action__name">Track down</span>
+            </div>-->
+
+            <kafra-actions v-if="!outsideActions"
+                :class="{'game__action--disabled': fightStatus || travelingToLocation || restInProgress}"
+            />
+            <inn-actions v-if="!outsideActions"
+                :class="{'game__action--disabled': fightStatus || travelingToLocation || restInProgress}"
+            />
+
+            <div v-if="!outsideActions"
+                :class="{'game__action--disabled': fightStatus || travelingToLocation || restInProgress}"
+                class="game__action"
+            >
+                <img src="/dist/assets/images/shopping.png">
+                <span class="game__action__name">Shop Dealers</span>
             </div>
 
             <div v-if="fightStatus"
-                class="game__fight"
+                class="game__action-in-progress"
             >
-                <div>fight in progress</div>
-                <span>{{ fightTimer }}</span>
+                <div>Fight in progress</div>
+                <div>{{ fightTimer }}</div>
+                <button v-if="!cancelFight"
+                    class="btn btn-secondary"
+                    @click="stopHunt()"
+                >Cancel hunt</button>
+            </div>
+
+            <div v-if="travelingToLocation || restInProgress"
+                class="game__action-in-progress"
+            >
+                <div>{{ travelingToLocation ? 'Traveling' : 'Rest' }} in Progress</div>
             </div>
         </div>
 
-        <div v-if="showModal"
-            class="game__modal"
+        <div v-if="showFightModal"
+            class="modal"
         >
-            <div class="map__modal__header">Confirm hunt</div>
-            <div class="map__modal__content">
+            <div class="modal__header">Confirm hunt</div>
+            <div class="modal__content">
                 <p>Start the hunt</p>
             </div>
-            <div class="map__modal__buttons">
+            <div class="modal__buttons">
                 <button class="btn btn-secondary"
-                    @click="showModal = false"
+                    @click="showFightModal = false"
                 >Cancel</button>
                 <button class="btn btn-primary"
                     @click="startHunt()"
@@ -59,30 +86,69 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Components
+import kafraActions from '../../components/kafra-actions/kafra-actions.vue';
+import innActions from '../../components/inn-actions/inn-actions.vue';
+
 // Utils
 import locationUtils from '../../utils/location.js';
 import monstersUtils from '../../utils/monsters.js';
 import statsUtils from '../../utils/stats.js';
 
 const gamePage = {
+    components: {
+        kafraActions,
+        innActions
+    },
     data() {
         return {
             location: '',
-            showModal: false,
+            showFightModal: false,
+            showKafraModal: false,
             selectedMonster: null,
             roundTime: 10000,
             fightTimer: 10,
-            interval: null
+            interval: null,
+            outsideActions: false,
+            monsterIds: [],
+            cancelFight: false
         };
     },
     computed: {
-        ...mapGetters(['characterName', 'characterBaseLevel', 'characterJobLevel', 'characterBaseExp', 'characterJobExp', 'characterJobId', 'characterStats', 'characterLocation', 'characterHp', 'fightStatus'])
+        ...mapGetters([
+            'characterName',
+            'characterBaseLevel',
+            'characterJobLevel',
+            'characterBaseExp',
+            'characterJobExp',
+            'characterJobId',
+            'characterStats',
+            'characterLocation',
+            'characterSaveLocation',
+            'characterHp',
+            'fightStatus',
+            'travelingToLocation',
+            'restInProgress'
+        ])
     },
     watch: {
         characterLocation: {
             immediate: true,
             handler() {
                 const locationItem = locationUtils.getLocation(Number(this.characterLocation));
+
+                // Decide if we're outside of the city or in, this will change game actions
+                if (locationItem.level) {
+                    this.outsideActions = true;
+                } else {
+                    this.outsideActions = false;
+                }
+
+                if (locationItem.monsters) {
+                    this.monsterIds = locationItem.monsters;
+                } else {
+                    this.monsterIds = [];
+                }
 
                 this.location = this.getLocationClass(locationItem.mapFile);
             }
@@ -95,21 +161,22 @@ const gamePage = {
                 jobExp: this.characterJobExp + 5
             });
         },
+        stopHunt() {
+            this.cancelFight = true;
+        },
         startHunt() {
             // If fight in progress, we don't start another one
-            if (this.fightStatus) {
+            // If there are no monster ids on the map, we have nothing to hunt for
+            if (this.fightStatus && this.monsterIds) {
                 return false;
             }
 
-            this.showModal = false;
+            this.showFightModal = false;
             this.$store.commit('fightStatus', true);
 
-            const monstersIds = [1002, 1007, 1063];
-            const randomMonster = monstersIds[Math.floor(Math.random() * monstersIds.length)];
+            const randomMonster = this.monsterIds[Math.floor(Math.random() * this.monsterIds.length)];
 
             this.selectedMonster = monstersUtils.getMonster(randomMonster);
-
-            // 1 console.log(this.selectedMonster);
 
             const charAttributes = {
                 patk: statsUtils.getPatkFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.str, this.characterStats.dex, this.characterStats.luk),
@@ -123,6 +190,7 @@ const gamePage = {
 
             this.roundTime = Math.floor(this.roundTime - (this.roundTime * (charAttributes.speed / 100)));
             this.fightTimer = Math.ceil(this.roundTime / 1000);
+            // 1 console.log(this.selectedMonster);
             // 1 console.log(charAttributes);
 
             this.interval = setInterval(() => {
@@ -134,6 +202,8 @@ const gamePage = {
             }, this.roundTime);
         },
         calculateRound(charAttributes) {
+            let restartFight = false;
+
             this.fightTimer = Math.ceil(this.roundTime / 1000);
 
             // Fight calculate if char hit the mob
@@ -180,7 +250,10 @@ const gamePage = {
                 const damage = Math.floor(this.selectedMonster.patk - (this.selectedMonster.patk * (charAttributes.pdef / 100))) +
                     Math.floor(this.selectedMonster.matk - (this.selectedMonster.matk * (charAttributes.mdef / 100)));
 
-                this.$store.commit('saveCharHp', this.characterHp - damage);
+                // Updating char HP
+                this.$store.dispatch('updateHpMp', {
+                    hp: this.characterHp - damage > 0 ? this.characterHp - damage : 0
+                });
 
                 chat.push({
                     type: 'battle',
@@ -212,13 +285,16 @@ const gamePage = {
                 this.stopFight();
                 this.rewards();
 
+                restartFight = true;
+
                 chat.push({
                     type: 'battle',
                     character: 'Battle',
                     message: `${this.selectedMonster.name} was defeated, finishing blow was dealt by ${this.characterName}`
                 });
-            } else {
+            } else if (!this.cancelFight) {
                 // Call same function again for recurse
+                // Unless fight was canceled pre-emptively
                 setTimeout(() => {
                     this.calculateRound(charAttributes);
                 }, this.roundTime);
@@ -226,9 +302,15 @@ const gamePage = {
 
             // Sending array of battle logs
             this.$store.commit('sendChat', chat);
+
+            if (this.cancelFight) {
+                this.stopFight();
+            } else if (restartFight) {
+                this.startHunt();
+            }
         },
         rewards() {
-            this.$store.commit('saveExp', {
+            this.$store.dispatch('updateExp', {
                 baseExp: this.characterBaseExp + this.selectedMonster.exp,
                 jobExp: this.characterJobExp + this.selectedMonster.jexp
             });
@@ -241,16 +323,21 @@ const gamePage = {
             const jobExpPenalty = this.characterJobExp - Math.floor((this.characterJobExp / 5));
 
             // In case job penalty went into minus, we drop it to 0
-            this.$store.commit('saveExp', {
+            this.$store.dispatch('updateExp', {
                 baseExp: baseExpPenalty < 0 ? 0 : baseExpPenalty,
                 jobExp: jobExpPenalty < 0 ? 0 : jobExpPenalty
             });
+
+            // Teleport character back to saveLocation
+            this.$store.dispatch('updateLocation', this.characterSaveLocation);
         },
         stopFight() {
             // Stopping the fight
             this.$store.commit('fightStatus', false);
             // Reseting round time
             this.roundTime = 10000;
+            // Reset cancel fight
+            this.cancelFight = false;
             // Stopping timer
             clearInterval(this.interval);
         },

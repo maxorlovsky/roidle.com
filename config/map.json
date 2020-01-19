@@ -8,7 +8,8 @@
             "name": "Prontera Field 1",
             "mapFile": "prt_fild01",
             "level": [1, 5],
-            "coordiates": [0, 1]
+            "coordiates": [0, 1],
+            "monsters": [1002, 1007, 1063]
         },
         {
             "id": 3,

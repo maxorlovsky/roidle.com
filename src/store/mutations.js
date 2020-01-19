@@ -1,5 +1,12 @@
 // Mutations are always synchronous
 export default {
+    setHpMp: (state, values) => {
+        state.characterHp = values.hp;
+        state.characterMp = values.mp;
+    },
+    saveResting: (state, value) => {
+        state.restInProgress = value;
+    },
     saveSkillPoints: (state, value) => {
         state.characterSkillPoints = value;
     },
@@ -54,6 +61,9 @@ export default {
 
         state.characterStatusPoints = values.statusPoints;
     },
+    setInventoryData: (state, value) => {
+        state.inventory = value;
+    },
     setCharacterData: (state, values) => {
         // Main character data
         state.characterName = values.name;
@@ -82,6 +92,14 @@ export default {
 
         // Location
         state.characterLocation = values.location;
+        state.characterSaveLocation = values.saveLocation;
+
+        // Hp/Mp
+        state.characterHp = values.hp;
+        state.characterMp = values.mp;
+
+        // Zeny
+        state.characterZeny = values.zeny;
     },
     saveParty: (state, values) => {
         state.party = values;
