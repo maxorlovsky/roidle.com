@@ -111,14 +111,28 @@ const config = {
         inline: true,
         quiet: false,
         public: 'game-fe-web.maxorlovsky.net',
-        proxy: {}
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8225/public',
+                secure: false,
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            },
+            '/socket.io': {
+                target: 'http://localhost:8225',
+                secure: false,
+                ws: true
+            }
+        }
     },
     performance: {
         hints: false
     }
 };
 
-module.exports = function (env = {}) {
+module.exports = (env = {}) => {
     if (env.production) {
         config.mode = 'production';
         config.devtool = false;
@@ -136,6 +150,7 @@ module.exports = function (env = {}) {
         const Dashboard = require('webpack-dashboard');
         const DashboardPlugin = require('webpack-dashboard/plugin');
         const dashboard = new Dashboard({ port: 9000 });
+
         config.plugins.push(new DashboardPlugin(dashboard.setData));
     }
 
@@ -147,6 +162,10 @@ module.exports = function (env = {}) {
         {
             from: './node_modules/font-awesome/fonts/',
             to: 'assets/fonts'
+        },
+        {
+            from: './node_modules/socket.io-client/dist/socket.io.js',
+            to: 'socket.io.js'
         }
     ];
 

@@ -31,6 +31,14 @@
             </div>
         </div>
 
+        <div v-if="message"
+            class="home__message"
+        >{{ message }}</div>
+
+        <button class="home__proceed btn btn-warning btn-lg"
+            @click="proceed()"
+        >Proceed</button>
+
         <stats :stats="characterStats"
             :status-points="characterStatusPoints"
             :job-id="characterJobId"
@@ -68,19 +76,12 @@
                 Secondary stat for jobs: <b>Thief</b>
             </p>
         </div>
-
-        <button class="home__proceed btn btn-warning btn-lg"
-            @click="proceed()"
-        >Proceed</button>
     </div>
 </template>
 
 <script>
 // 3rd party libs
 import { mapGetters } from 'vuex';
-
-// Globals functions
-import { functions } from '../../functions.js';
 
 // Components
 import avatar from '../../components/avatar/avatar.vue';
@@ -93,13 +94,31 @@ const homePage = {
     },
     data() {
         return {
-            name: '',
+            name: 'Guest_0.8723746799143453',
             gender: 'm',
-            headStyle: 1
+            headStyle: 1,
+            message: ''
         };
     },
     computed: {
         ...mapGetters(['characterStats', 'characterStatusPoints', 'characterBaseLevel', 'characterJobLevel', 'characterJobId'])
+    },
+    mounted() {
+        mo.socket.on('completeRegistrationResponse', (params) => {
+            if (params.status) {
+                this.$store.commit('setCharacterData', {
+                    name: this.name,
+                    gender: this.gender,
+                    headStyle: this.headStyle
+                });
+
+                this.$store.commit('displayDockedMenu', true);
+
+                this.$router.replace('/game');
+            } else {
+                this.message = params.message;
+            }
+        });
     },
     methods: {
         setStyle(pos) {
@@ -139,21 +158,11 @@ const homePage = {
                 return false;
             }
 
-            const character = functions.storage('get', 'character');
-
-            character.name = this.name;
-            character.gender = this.gender;
-            character.headStyle = this.headStyle;
-
-            this.$store.commit('setCharacterData', character);
-
-            // Saving token in localStorage after how many days it should expire
-            functions.storage('set', 'character', character, 604800000 * 90);
-            functions.storage('set', 'characterGenerated', true, 604800000 * 90);
-
-            this.$store.commit('displayDockedMenu', true);
-
-            this.$router.replace('/game');
+            mo.socket.emit('completeRegistration', {
+                name: this.name,
+                gender: this.gender,
+                headStyle: this.headStyle
+            });
         },
         checkName() {
             if (!this.name) {

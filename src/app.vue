@@ -2,19 +2,27 @@
     <section id="app"
         class="app"
     >
-        <char-info-top v-if="dockedMenu" />
-
-        <router-view :class="{'docked-menu-open': dockedMenu}"
-            class="body-content"
-        />
-
-        <chat v-show="showChat" />
-
-        <level-up />
-
-        <docked-menu v-if="dockedMenu" />
-
         <loading v-if="loading" />
+        <template v-else>
+            <char-info-top v-if="dockedMenu" />
+
+            <router-view :class="{'docked-menu-open': dockedMenu}"
+                class="body-content"
+            />
+
+            <chat v-show="showChat" />
+
+            <level-up />
+
+            <docked-menu v-if="dockedMenu" />
+
+            <div v-if="serverWentDown"
+                class="modal"
+            >Disconnected from server</div>
+            <div v-if="serverWentDown"
+                class="server-down-modal"
+            />
+        </template>
     </section>
 </template>
 
@@ -25,6 +33,7 @@ import { mapGetters } from 'vuex';
 // Globals functions
 import { functions } from './functions.js';
 import { store } from './store/index.js';
+import io from 'socket.io-client';
 
 // Components
 import chat from './components/chat/chat.vue';
@@ -46,101 +55,79 @@ export default {
     data() {
         return {
             loading: true,
-            showChat: false
+            serverInitialCheck: true,
+            serverWentDown: false
         };
     },
     computed: {
-        ...mapGetters(['dockedMenu'])
-    },
-    watch: {
-        $route: {
-            immediate: true,
-            handler() {
-                this.showHideChat();
-            }
-        }
+        ...mapGetters(['dockedMenu', 'showChat'])
     },
     mounted() {
-        // If there are no character data, generate it
-        if (functions.storage('get', 'character')) {
-            this.$store.commit('setCharacterData', functions.storage('get', 'character'));
-        } else {
-            const generatedCharacter = {
-                name: `Guest_${Math.random()}`,
-                gender: 'm',
-                headStyle: 1,
-                baseLevel: 1,
-                jobLevel: 1,
-                baseExp: 0,
-                jobExp: 0,
-                jobId: 0,
-                stats: {
-                    str: 1,
-                    dex: 1,
-                    int: 1,
-                    vit: 1,
-                    wis: 1,
-                    luk: 1
-                },
-                statusPoints: 48,
-                skillPoints: 0,
-                skills: {},
-                location: 1,
-                saveLocation: 1,
-                hp: 1,
-                mp: 1,
-                zeny: 0
-            };
+        // Saving socket connection to vuex
+        mo.socket = io();
 
-            functions.storage('set', 'character', generatedCharacter, 604800000 * 90);
-
-            this.$store.commit('setCharacterData', generatedCharacter);
-        }
-
-        // If there are no inventory data, generate it
-        if (functions.storage('get', 'inventory')) {
-            this.$store.commit('setInventoryData', functions.storage('get', 'inventory'));
-        } else {
-            const generatedInventory = [
-                {
-                    // Knife
-                    id: 1,
-                    amount: 1,
-                },
-                {
-                    // Cotton shirt
-                    id: 2000,
-                    amount: 1
-                }
-            ];
-
-            functions.storage('set', 'inventory', generatedInventory, 604800000 * 90);
-
-            this.$store.commit('setInventoryData', generatedInventory);
-        }
-
-        if (functions.storage('get', 'characterGenerated')) {
-            this.$store.commit('displayDockedMenu', true);
-
-            // Redirecting to main game page if ended up on home page
-            if (this.$route.path === '/') {
-                this.$router.replace('/game');
+        mo.socket.on('connect', () => {
+            if (functions.storage('get', 'session')) {
+                mo.socket.emit('authenticate', functions.storage('get', 'session'));
+            } else {
+                mo.socket.emit('register');
             }
-        } else {
-            // If party is not there, placing to home page
-            this.$router.replace('/');
-        }
+        });
 
-        this.removeLoader();
+        mo.socket.on('connect_error', () => {
+            // We redirect user to server down page only on initial run and check if he then disconnected, otherwise handle it on disconnect event
+            if (this.serverInitialCheck) {
+                this.$router.replace('/server-down');
+            }
+
+            this.removeLoader();
+        });
+
+        mo.socket.on('disconnect', () => {
+            this.serverWentDown = true;
+        });
+
+        mo.socket.on('authenticationStatus', (params) => {
+            // Just in case user comes back after disconnect, hiding disconnect modal
+            this.serverWentDown = false;
+            // Turning off initial check as now it means that connection was successful
+            this.serverInitialCheck = false;
+
+            // Check if we received session token and auth success
+            // If all correct, update session token
+            if (params.status && params.sessionToken) {
+                functions.storage('set', 'session', params.sessionToken);
+            }
+
+            // Get player/char/eq/inventory/etc data and parse it into vuex
+            if (params.status) {
+                params.character.stats = JSON.parse(params.character.stats);
+                params.character.skills = JSON.parse(params.character.skills);
+                params.character.equipment = JSON.parse(params.character.equipment);
+                params.character.inventory = JSON.parse(params.character.inventory);
+
+                this.$store.commit('setCharacterData', params.character);
+                this.$store.commit('setInventoryData', params.character.inventory);
+
+                // If character name is Guest, relocate to home screen
+                if (params.character.name === 'Guest') {
+                    this.$router.replace('/');
+                } else {
+                    this.$store.commit('displayDockedMenu', true);
+                    this.$store.commit('showChat', true);
+
+                    this.$router.replace('/game');
+                }
+            } else {
+                console.error('[ERROR] Something went wrong, can not create character or login');
+
+                this.$router.replace('/');
+            }
+
+            this.removeLoader();
+        });
     },
     methods: {
-        showHideChat() {
-            if (functions.storage('get', 'characterGenerated') && this.$route.path === '/game') {
-                this.showChat = true;
-            } else {
-                this.showChat = false;
-            }
-        },
         removeLoader() {
             // Remove loader
             this.loading = false;

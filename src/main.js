@@ -15,6 +15,7 @@ import './pages/inventory/inventory.vue';
 import './pages/home/home.vue';
 import './pages/map/map.vue';
 import './pages/missions/missions.vue';
+import './pages/server-down/server-down.vue';
 // Mixins
 // 1 import globalMixins from '@shared/fe-utilities/src/mixins/global-mixin.js';
 

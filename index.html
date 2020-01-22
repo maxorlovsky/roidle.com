@@ -52,11 +52,9 @@
 <script async>
     var mo = {
         app: null,
-        projectName: 'game',
         version: '%version%',
-        apiUrl: '/api',
-        imgUrl: '/images',
-        routes: []
+        routes: [],
+        socket: null
     };
 </script>
 
@@ -66,6 +64,7 @@
     <link async defer rel="stylesheet" href="/dist/styles.css?v=%version%" />
     <link async defer rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
+    <script src="/dist/socket.io.js"></script>
     <script src="/dist/vendors.js?v=%version%"></script>
     <script src="/dist/bundle.js?v=%version%" async></script>
 
