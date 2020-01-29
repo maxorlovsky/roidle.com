@@ -28,22 +28,34 @@
 
         &__placeholder {
             position: absolute;
-            color: rgb(179, 179, 179);
-            left: 40px;
+            color: #d1d1d2;
+            left: 50px;
             font-size: 1rem;
             bottom: 0;
         }
 
-        &__head,
-        &__rhand,
-        &__robe,
-        &__lhand,
-        &__body,
-        &__shoes,
-        &__accessory {
+        &__slot {
             position: relative;
             height: 50px;
             border-bottom: 1px solid rgba(179, 179, 179, 0.8);
+        }
+
+        &__item {
+            display: flex;
+            align-items: center;
+            height: 50px;
+    
+            img {
+                width: 35px;
+                margin: 0 0.5rem;
+                box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.75);
+                border-radius: 8px;
+            }
+    
+            &__name {
+                font-size: 1rem;
+                z-index: 2;
+            }
         }
     }
 
@@ -54,6 +66,10 @@
         &__item {
             padding: 1rem;
             border-bottom: 2px solid #fff;
+
+            img {
+                width: 35px;
+            }
 
             &:last-child {
                 border-bottom: 0;
@@ -71,6 +87,7 @@
         justify-content: center;
         margin: 1rem auto;
         width: 90%;
+        margin-bottom: 265px;
     }
 
     &__tabs {

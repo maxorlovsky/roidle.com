@@ -113,6 +113,9 @@ const homePage = {
             maxAmountCharacter: 5
         };
     },
+    beforeDestroy() {
+        mo.socket.off('selectCharacterComplete');
+    },
     methods: {
         loadGame() {
             // In case we're already loading, stop click events
@@ -160,33 +163,41 @@ const homePage = {
                 this.loading = false;
             }
         },
-        async chooseCharacter(characterId) {
-            try {
-                await axios.post('/api/choose-character', {
-                    sessionToken: functions.storage('get', 'session'),
-                    characterId: characterId
-                });
-
-                // If authentication succeeded and character is selected we connect to socket
-                // Storring it in global variable
-                mo.socket = io({
-                    reconnection: true,
-                    reconnectionDelay: 1000,
-                    reconnectionDelayMax: 5000,
-                    reconnectionAttempts: Infinity
-                });
-
-                // Send data to save character data
-                mo.socket.emit('selectCharacter', characterId);
-            } catch (error) {
-                console.error('ERROR #3');
-                console.error(error);
-                console.error(error.response);
-                this.selectCharacter = false;
-                this.characters = [];
-            } finally {
-                this.loading = false;
+        chooseCharacter(characterId) {
+            // If socket connection is already established, we ignore it
+            if (mo.socket) {
+                return false;
             }
+
+            // Saving selected character
+            functions.storage('set', 'selectedCharacter', characterId);
+
+            // If authentication succeeded and character is selected we connect to socket
+            // Storring it in global variable
+            mo.socket = io({
+                reconnection: true,
+                reconnectionDelay: 1000,
+                reconnectionDelayMax: 5000,
+                reconnectionAttempts: Infinity
+            });
+
+            this.$store.commit('socketConnection', true);
+
+            // Send data to save character data
+            mo.socket.emit('selectCharacter', {
+                sessionToken: functions.storage('get', 'session'),
+                characterId: characterId
+            });
+
+            // If socket is registered, we're progressing by fetching user data
+            mo.socket.on('selectCharacterComplete', (response) => {
+                this.$store.commit('characterInit', response);
+
+                this.$store.commit('displayDockedMenu', true);
+                this.$store.commit('showChat', true);
+
+                this.$router.push('/game');
+            });
         },
         switchToCreateCharacter() {
             this.createCharacter = true;

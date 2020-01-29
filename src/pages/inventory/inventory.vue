@@ -1,13 +1,13 @@
 <template>
     <section class="inventory">
         <div class="inventory-wrapper">
-            <div class="inventory__weight">Weight: <span :class="{'inventory__weight--critical': itemsWeight.critical}">{{ itemsWeight.current }}</span> / {{ itemsWeight.max }}</div>
-            <div v-for="item in items"
-                :key="item.id"
+            <div class="inventory__weight">Weight: <span :class="{'inventory__weight--critical': criticalWeight}">{{ inventoryWeight }}</span> / {{ characterAttributes.weight }}</div>
+            <div v-for="(item, index) in inventory"
+                :key="index"
                 class="inventory__item"
-                @click="showInfo(item)"
+                @click="showItemInfo(item.itemId)"
             >
-                <img :src="`/dist/assets/images/items/${item.id}.gif`">
+                <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                 <span class="inventory__item__amount">{{ item.amount }}</span>
             </div>
 
@@ -25,7 +25,7 @@
                     <div v-if="itemInfo.weaponLevel">Weapon Level: {{ itemInfo.weaponLevel }}</div>
                     <div v-if="itemInfo.requiredLevel">Required Level: {{ itemInfo.requiredLevel }}</div>
                     <div>Weight: {{ itemInfo.weight }}</div>
-                    <div v-if="itemInfo.applicableJob">Applicable Job: {{ itemInfo.applicableJob }}</div>
+                    <div v-if="itemInfo.applicableJobs">Applicable Job: {{ itemInfo.applicableJobs }}</div>
                 </div>
             </div>
         </div>
@@ -35,13 +35,6 @@
 <script>
 // 3rd party libs
 import { mapGetters } from 'vuex';
-
-// Configs
-import jobs from '../../../config/jobs.json';
-
-// Utils
-import statsUtils from '../../utils/stats.js';
-import itemsUtils from '../../utils/items.js';
 
 const inventoryPage = {
     data() {
@@ -57,33 +50,33 @@ const inventoryPage = {
                 weight: 0,
                 applicableJob: ''
             },
-            itemsWeight: {
-                current: 0,
-                max: 0,
-                critical: false
-            }
+            getItemId: 0
         };
     },
     computed: {
-        ...mapGetters(['characterStats', 'inventory'])
-    },
-    mounted() {
-        this.$nextTick(() => {
-            this.itemsWeight.current = itemsUtils.getCurrentWeight(this.inventory);
-            this.itemsWeight.max = statsUtils.getWeightFormula(this.characterStats.str);
-            // In case weight limit is reaching 90%, show as critical
-            this.itemsWeight.critical = (this.itemsWeight.current * 100) / this.itemsWeight.max > 90;
-        });
-    },
-    watch: {
-        inventory: {
-            immediate: true,
-            handler() {
-                this.calculateInvetory();
-            }
+        ...mapGetters(['inventory', 'inventoryWeight']),
+        characterAttributes() {
+            return this.$store.getters.get('characterAttributes') || {};
+        },
+        criticalWeight() {
+            return (this.inventoryWeight * 100) / this.characterAttributes.weight > 90;
         }
     },
+    mounted() {
+        mo.socket.on('getItemsInfoComplete', (items) => {
+            const foundItem = items.find((item) => item.id === this.getItemId);
+
+            this.showInfo(foundItem);
+        });
+    },
+    beforeDestroy() {
+        mo.socket.off('getItemsInfoComplete');
+    },
     methods: {
+        showItemInfo(itemId) {
+            this.getItemId = itemId;
+            mo.socket.emit('getItemsInfo', [itemId]);
+        },
         showInfo(item) {
             this.itemInfo.show = true;
             this.itemInfo.id = item.id;
@@ -93,7 +86,7 @@ const inventoryPage = {
             this.itemInfo.weaponLevel = 0;
             this.itemInfo.requiredLevel = 0;
             this.itemInfo.weight = item.weight;
-            this.itemInfo.applicableJob = item.jobs === null ? 'All' : '';
+            this.itemInfo.applicableJobs = item.jobs === null ? 'All' : '';
 
             // Making params human readable
             if (item.params) {
@@ -112,24 +105,8 @@ const inventoryPage = {
                 this.itemInfo.requiredLevel = item.requireLevel;
             }
 
-            // Making job list human readable
-            if (item.jobs) {
-                for (const jobId of item.jobs) {
-                    const foundJob = jobs.find((job) => job.id === jobId);
-
-                    this.itemInfo.applicableJob += `${foundJob.name}, `;
-                }
-
-                this.itemInfo.applicableJob = this.itemInfo.applicableJob.substring(0, this.itemInfo.applicableJob.length - 2);
-            }
-        },
-        calculateInvetory() {
-            for (const item of this.inventory) {
-                const foundItem = itemsUtils.getItem(item.id);
-
-                foundItem.amount = item.amount;
-
-                this.items.push(foundItem);
+            if (item.applicableJobs) {
+                this.itemInfo.applicableJobs = item.applicableJobs;
             }
         }
     }

@@ -31,7 +31,16 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['characterBaseExp', 'characterJobExp', 'characterBaseLevel', 'characterJobLevel', 'characterJobId', 'characterStats', 'characterStatusPoints', 'characterSkillPoints'])
+        ...mapGetters([
+            'characterBaseExp',
+            'characterJobExp',
+            'characterBaseLevel',
+            'characterJobLevel',
+            'characterJobId',
+            'characterStats',
+            'characterStatusPoints',
+            'characterSkillPoints'
+        ])
     },
     watch: {
         characterBaseExp() {
