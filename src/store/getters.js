@@ -4,6 +4,7 @@ export default {
     characterName: (state) => state.characterName,
     characterStats: (state) => state.characterStats,
     characterJobId: (state) => state.characterJobId,
+    characterJob: (state) => state.characterJob,
     characterStatusPoints: (state) => state.characterStatusPoints,
     characterBaseLevel: (state) => state.characterBaseLevel,
     characterJobLevel: (state) => state.characterJobLevel,
@@ -13,7 +14,9 @@ export default {
     characterGender: (state) => state.characterGender,
     characterSkills: (state) => state.characterSkills,
     characterSkillPoints: (state) => state.characterSkillPoints,
+    characterLocationId: (state) => state.characterLocationId,
     characterLocation: (state) => state.characterLocation,
+    characterSaveLocationId: (state) => state.characterSaveLocationId,
     characterSaveLocation: (state) => state.characterSaveLocation,
     characterZeny: (state) => state.characterZeny,
     travelingToLocation: (state) => state.travelingToLocation,
@@ -23,5 +26,10 @@ export default {
     chatContent: (state) => state.chatContent,
     restInProgress: (state) => state.restInProgress,
     inventory: (state) => state.inventory,
-    characterEquipmentTrigger: (state) => state.characterEquipmentTrigger
+    inventoryWeight: (state) => state.inventoryWeight,
+    characterEquipment: (state) => state.characterEquipment,
+    characterStatsTrigger: (state) => state.characterStatsTrigger,
+    characterAttributes: (state) => state.characterAttributes,
+    showChat: (state) => state.showChat,
+    socketConnection: (state) => state.socketConnection
 };

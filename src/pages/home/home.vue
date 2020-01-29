@@ -1,126 +1,197 @@
 <template>
-    <div class="home">
-        <input v-model="name"
-            type="text"
-            class="character-name"
-            placeholder="What is your name?"
-        >
-
-        <div class="character-view">
-            <avatar :head-style="headStyle"
-                :gender="gender"
-            />
-
-            <div class="character-pickers">
-                <div class="character-pickers__buttons">
-                    <Button class="btn btn-secondary"
-                        @click="setGender(0)"
-                    >Male</Button>
-                    <Button class="btn btn-secondary"
-                        @click="setGender(1)"
-                    >Female</Button>
+    <section :class="{'home--select-character': selectCharacter}"
+        class="home"
+        @click="loadGame()"
+    >
+        <template v-if="selectCharacter">
+            <div class="select-character-wrapper">
+                <div v-for="item in characters"
+                    :key="item.id"
+                    class="home__select-character"
+                    @click="chooseCharacter(item.id)"
+                >
+                    <avatar :head-style="item.headStyle"
+                        :gender="item.gender"
+                        :just-head="true"
+                    />
+                    <div class="home__select-character__info">
+                        {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>
+                        {{ item.job }}<br>
+                        Location: {{ item.location }}
+                    </div>
                 </div>
-                <div class="character-pickers__buttons">
-                    <Button class="btn btn-secondary"
-                        @click="setStyle('prev')"
-                    > &#60; </Button>
-                    <Button class="btn btn-secondary"
-                        @click="setStyle('next')"
-                    > &#62; </Button>
+
+                <div v-if="characters.length < maxAmountCharacter"
+                    class="home__select-character home__select-character--create-new"
+                    @click="switchToCreateCharacter()"
+                >
+                    Create new character
                 </div>
             </div>
-        </div>
+        </template>
+        <template v-else-if="createCharacter">
+            <div class="character-view">
+                <avatar :head-style="headStyle"
+                    :gender="gender"
+                />
 
-        <div v-if="message"
-            class="home__message"
-        >{{ message }}</div>
+                <div class="character-pickers">
+                    <div class="character-pickers__buttons">
+                        <Button class="btn btn-secondary"
+                            @click="setGender(0)"
+                        >Male</Button>
+                        <Button class="btn btn-secondary"
+                            @click="setGender(1)"
+                        >Female</Button>
+                    </div>
+                    <div class="character-pickers__buttons">
+                        <Button class="btn btn-secondary"
+                            @click="setStyle('prev')"
+                        > &#60; </Button>
+                        <Button class="btn btn-secondary"
+                            @click="setStyle('next')"
+                        > &#62; </Button>
+                    </div>
+                </div>
 
-        <button class="home__proceed btn btn-warning btn-lg"
-            @click="proceed()"
-        >Proceed</button>
+                <div class="character-view__name">
+                    <input v-model="name"
+                        type="text"
+                        class="character-view__name__input"
+                        placeholder="What is your name?"
+                    >
+                </div>
 
-        <stats :stats="characterStats"
-            :status-points="characterStatusPoints"
-            :job-id="characterJobId"
-            :base-level="characterBaseLevel"
-            :job-level="characterJobLevel"
-            :hide-params="true"
-        />
+                <button :disabled="buttonLoading"
+                    class="character-view__proceed btn btn-warning btn-lg"
+                    @click="registerCharacter()"
+                >Create New Character</button>
 
-        <div class="home__stats-explanation">
-            <p>
-                <b>Strength (STR)</b>: This stat affects the physical power of the character, be that of melee or range, melee benefit more from Strength than range.<br>
-                Primary stat for jobs: <b>Fighter, Thief</b><br>
-                Secondary stat for jobs: <b>Archer, Merchant</b>
-            </p>
-            <p>
-                <b>Dexterity (DEX)</b>: This stat affects the speed of how fast character can finish missions. Speed affects whole party. This stat affect physical power of the character, range though benefit more from this stat.<br>
-                Primary stat for jobs: <b>Archer, Thief</b>
-            </p>
-            <p>
-                <b>Intellect (INT)</b>: This stat affects the mental power of the character, allowing to deal massive magic damage<br>
-                Primary stat for jobs: <b>Mage</b>
-            </p>
-            <p>
-                <b>Vitality (VIT)</b>: This stat affects the physical defense and HP and is a mandatory stat for protectors<br>
-                Secondary stat for jobs: <b>Fighter</b>
-            </p>
-            <p>
-                <b>Wisdom (WIS)</b>: This stat affects the healing capabilities of acolyte, magical defense and MP<br>
-                Primary stat for jobs: <b>Acolyte</b><br>
-                Secondary stat for jobs: <b>Mage</b>
-            </p>
-            <p>
-                <b>Luck (LUK)</b>: This stat affects the luck of a character in many way, primarily it is used for crafts<br>
-                Primary stat for jobs: <b>Merchant</b><br>
-                Secondary stat for jobs: <b>Thief</b>
-            </p>
-        </div>
-    </div>
+                <div :class="{'character-view__message--visible': message}"
+                    class="character-view__message"
+                >{{ message }}</div>
+            </div>
+        </template>
+        <template v-else>
+            <div class="home__logo"><img src=""></div>
+            <loading v-if="loading" />
+            <div v-else
+                class="home__tap"
+            >Tap screen</div>
+        </template>
+    </section>
 </template>
 
 <script>
 // 3rd party libs
-import { mapGetters } from 'vuex';
+import axios from 'axios';
+import io from 'socket.io-client';
+
+// Globals functions
+import { functions } from '@src/functions.js';
 
 // Components
-import avatar from '../../components/avatar/avatar.vue';
-import stats from '../../components/stats/stats.vue';
+import loading from '@components/loading/loading.vue';
+import avatar from '@components/avatar/avatar.vue';
 
 const homePage = {
     components: {
         avatar,
-        stats
+        loading
     },
     data() {
         return {
-            name: 'Guest_0.8723746799143453',
+            loading: false,
+            buttonLoading: false,
+            selectCharacter: false,
+            createCharacter: false,
+            characters: [],
+            name: '',
             gender: 'm',
             headStyle: 1,
-            message: ''
+            message: '',
+            maxAmountCharacter: 5
         };
     },
-    computed: {
-        ...mapGetters(['characterStats', 'characterStatusPoints', 'characterBaseLevel', 'characterJobLevel', 'characterJobId'])
-    },
-    mounted() {
-        mo.socket.on('completeRegistrationResponse', (params) => {
-            if (params.status) {
-                this.$store.commit('setCharacterData', {
-                    name: this.name,
-                    gender: this.gender,
-                    headStyle: this.headStyle
+    methods: {
+        loadGame() {
+            // In case we're already loading, stop click events
+            if (this.loading || this.selectCharacter || this.createCharacter) {
+                return false;
+            }
+
+            this.loading = true;
+
+            // Check if we need to authenticate user or create a new one
+            if (functions.storage('get', 'session')) {
+                this.authenticate();
+            } else {
+                this.register();
+            }
+        },
+        async authenticate() {
+            try {
+                const response = await axios.post('/api/authenticate', {
+                    sessionToken: functions.storage('get', 'session')
                 });
 
-                this.$store.commit('displayDockedMenu', true);
-
-                this.$router.replace('/game');
-            } else {
-                this.message = params.message;
+                this.characters = response.data.characters;
+                this.selectCharacter = true;
+            } catch (error) {
+                console.error('ERROR #1');
+                console.error(error);
+                console.error(error.response);
+            } finally {
+                this.loading = false;
             }
-        });
-    },
-    methods: {
+        },
+        async register() {
+            try {
+                const response = await axios.post('/api/register');
+
+                functions.storage('set', 'session', response.data.sessionToken);
+
+                this.selectCharacter = true;
+            } catch (error) {
+                console.error('ERROR #2');
+                console.error(error);
+                console.error(error.response);
+            } finally {
+                this.loading = false;
+            }
+        },
+        async chooseCharacter(characterId) {
+            try {
+                await axios.post('/api/choose-character', {
+                    sessionToken: functions.storage('get', 'session'),
+                    characterId: characterId
+                });
+
+                // If authentication succeeded and character is selected we connect to socket
+                // Storring it in global variable
+                mo.socket = io({
+                    reconnection: true,
+                    reconnectionDelay: 1000,
+                    reconnectionDelayMax: 5000,
+                    reconnectionAttempts: Infinity
+                });
+
+                // Send data to save character data
+                mo.socket.emit('selectCharacter', characterId);
+            } catch (error) {
+                console.error('ERROR #3');
+                console.error(error);
+                console.error(error.response);
+                this.selectCharacter = false;
+                this.characters = [];
+            } finally {
+                this.loading = false;
+            }
+        },
+        switchToCreateCharacter() {
+            this.createCharacter = true;
+            this.selectCharacter = false;
+        },
         setStyle(pos) {
             let style = 0;
 
@@ -153,20 +224,56 @@ const homePage = {
 
             this.headStyle = 1;
         },
-        proceed() {
+        async registerCharacter() {
+            // Cleaning up message in case it's a second try
+            this.message = '';
+            this.buttonLoading = true;
+
             if (!this.checkName()) {
+                this.buttonLoading = false;
+
                 return false;
             }
 
-            mo.socket.emit('completeRegistration', {
-                name: this.name,
-                gender: this.gender,
-                headStyle: this.headStyle
-            });
+            if (!functions.storage('get', 'session')) {
+                this.message = 'Your session expired, please reload the app';
+                this.buttonLoading = false;
+
+                return false;
+            }
+
+            try {
+                const response = await axios.post('/api/create-character', {
+                    name: this.name,
+                    gender: this.gender,
+                    headStyle: this.headStyle,
+                    sessionToken: functions.storage('get', 'session')
+                });
+
+                this.createCharacter = false;
+                this.selectCharacter = true;
+
+                // Drop form values
+                this.name = '';
+                this.gender = 'm';
+                this.headStyle = 1;
+                this.message = '';
+
+                // Populate character with new response
+                this.characters = response.data.characters;
+            } catch (error) {
+                console.error('ERROR #3');
+                console.error(error);
+                console.error(error.response);
+
+                this.message = error.response.data.errorMessage;
+            } finally {
+                this.buttonLoading = false;
+            }
         },
         checkName() {
             if (!this.name) {
-                console.error('Name missing');
+                this.message = 'Name missing';
 
                 return false;
             }
@@ -174,7 +281,7 @@ const homePage = {
             const reg = /^\w+$/g;
 
             if (!reg.test(this.name)) {
-                console.error('Name is incorrect');
+                this.message = 'Name is incorrect, use normal letters and symbols';
 
                 return false;
             }

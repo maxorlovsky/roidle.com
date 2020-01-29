@@ -65,9 +65,12 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['characterSkills', 'chatContent'])
+        ...mapGetters(['characterSkills', 'chatContent', 'socketConnection'])
     },
     watch: {
+        socketConnection() {
+            this.setUpSocketEvents();
+        },
         characterSkills: {
             immediate: true,
             handler() {
@@ -102,38 +105,15 @@ export default {
             this.scrollChat();
         }
     },
-    mounted() {
-        this.chatLog.push(
-            {
-                type: 'map',
-                character: 'Testa',
-                message: 'rawr'
-            },
-            {
-                type: 'main',
-                character: 'Testa',
-                message: 'rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr rawr'
-            },
-            {
-                type: 'map',
-                character: 'Max',
-                message: 'rawr rawr rawr rawr rawr rawr rawr rawr rawr'
-            },
-            {
-                type: 'map',
-                character: 'Max',
-                message: 'rawr'
-            },
-            {
-                type: 'map',
-                character: 'Testa',
-                message: 'rawr'
-            }
-        );
-
-        this.scrollChat();
+    beforeDestroy() {
+        mo.socket.off('chat');
     },
     methods: {
+        setUpSocketEvents() {
+            mo.socket.on('chat', (message) => {
+                this.$store.commit('sendChat', [message]);
+            });
+        },
         scrollChat() {
             if (this.$refs.chatBody.scrollTop === this.$refs.chatBody.scrollHeight - this.$refs.chatBody.clientHeight) {
                 this.$nextTick(() => {

@@ -29,9 +29,10 @@
 <script>
 // 3rd party libs
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 
 // Globals functions
-import { functions } from './functions.js';
+import { functions } from '@src/functions.js';
 import { store } from './store/index.js';
 import io from 'socket.io-client';
 
@@ -60,74 +61,70 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['dockedMenu', 'showChat'])
+        ...mapGetters(['dockedMenu', 'showChat', 'socketConnection'])
     },
-    mounted() {
-        // Saving socket connection to vuex
-        mo.socket = io();
-
-        mo.socket.on('connect', () => {
-            if (functions.storage('get', 'session')) {
-                mo.socket.emit('authenticate', functions.storage('get', 'session'));
-            } else {
-                mo.socket.emit('register');
+    watch: {
+        socketConnection() {
+            if (this.$route.path !== '/' && this.socketConnection) {
+                this.setUpSocketEvents();
             }
-        });
-
-        mo.socket.on('connect_error', () => {
-            // We redirect user to server down page only on initial run and check if he then disconnected, otherwise handle it on disconnect event
-            if (this.serverInitialCheck) {
-                this.$router.replace('/server-down');
-            }
-
+        }
+    },
+    async mounted() {
+        // We ping the server, to know that it's alive, in case it isn't we're redirecting user to server-down page
+        try {
+            await axios.get('/api/ping');
+        } catch (error) {
+            this.$router.replace('/server-down');
+        } finally {
             this.removeLoader();
-        });
+        }
 
-        mo.socket.on('disconnect', () => {
-            this.serverWentDown = true;
-        });
+        // In case it's not a home page that we're trying to get into we will try
+        if (!['/', '/server-down'].includes(this.$route.path) && functions.storage('get', 'session')) {
+            this.reconnect();
+        }
 
-        mo.socket.on('authenticationStatus', (params) => {
-            // Just in case user comes back after disconnect, hiding disconnect modal
-            this.serverWentDown = false;
-            // Turning off initial check as now it means that connection was successful
-            this.serverInitialCheck = false;
-
-            // Check if we received session token and auth success
-            // If all correct, update session token
-            if (params.status && params.sessionToken) {
-                functions.storage('set', 'session', params.sessionToken);
-            }
-
-            // Get player/char/eq/inventory/etc data and parse it into vuex
-            if (params.status) {
-                params.character.stats = JSON.parse(params.character.stats);
-                params.character.skills = JSON.parse(params.character.skills);
-                params.character.equipment = JSON.parse(params.character.equipment);
-                params.character.inventory = JSON.parse(params.character.inventory);
-
-                this.$store.commit('setCharacterData', params.character);
-                this.$store.commit('setInventoryData', params.character.inventory);
-
-                // If character name is Guest, relocate to home screen
-                if (params.character.name === 'Guest') {
-                    this.$router.replace('/');
-                } else {
-                    this.$store.commit('displayDockedMenu', true);
-                    this.$store.commit('showChat', true);
-
-                    this.$router.replace('/game');
-                }
-            } else {
-                console.error('[ERROR] Something went wrong, can not create character or login');
-
-                this.$router.replace('/');
-            }
-
-            this.removeLoader();
-        });
+        this.removeLoader();
     },
     methods: {
+        setUpSocketEvents() {
+            mo.socket.emit('reconnect', functions.storage('get', 'session'));
+
+            mo.socket.on('disconnect', () => {
+                this.serverWentDown = true;
+                this.$store.commit('socketConnection', false);
+            });
+
+            mo.socket.on('reconnectFail', () => {
+                mo.socket.disconnect();
+                mo.socket = null;
+                this.$router.push('/');
+            });
+
+            // If socket is registered, we're progressing by fetching user data
+            mo.socket.on('selectCharacterComplete', (response) => {
+                this.$store.commit('characterInit', response);
+
+                this.$store.commit('displayDockedMenu', true);
+                this.$store.commit('showChat', true);
+            });
+        },
+        reconnect() {
+            mo.socket = io({
+                reconnection: true,
+                reconnectionDelay: 1000,
+                reconnectionDelayMax: 5000,
+                reconnectionAttempts: Infinity
+            });
+
+            this.$store.commit('socketConnection', true);
+
+            mo.socket.emit('reconnectRequest', {
+                sessionToken: functions.storage('get', 'session'),
+                characterId: functions.storage('get', 'selectedCharacter')
+            });
+        },
         removeLoader() {
             // Remove loader
             this.loading = false;

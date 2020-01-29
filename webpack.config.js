@@ -71,7 +71,10 @@ const config = {
         extensions: ['.vue', '.js', '.html'],
         modules: ['node_modules'],
         alias: {
-            vue: 'vue/dist/vue.js'
+            vue: 'vue/dist/vue.js',
+            '@src': path.resolve('./src'),
+            '@pages': path.resolve('./src/pages'),
+            '@components': path.resolve('./src/components')
         }
     },
     plugins: [
