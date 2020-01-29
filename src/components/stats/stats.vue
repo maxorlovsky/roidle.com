@@ -6,7 +6,7 @@
         >
             <span class="stats__label">{{ stat }}:</span>
             <div class="stats__numbers">
-                <span class="stats__numbers__base">{{ tempStats[stat] }}</span>
+                <span class="stats__numbers__base">{{ stats[stat] }}</span>
                 <span class="stats__numbers__bonus">+{{ bonusStats[stat] }}</span>
                 <span class="stats__numbers__cost">
                     <span :class="{'stats__numbers__arrow--disabled': tempStatusPoints < statCost[stat]}"
@@ -14,11 +14,11 @@
                     >></span> {{ statCost[stat] }}
                 </span>
             </div>
-            <div :class="{'stats__incdec--disabled': tempStats[stat] === 1 || tempStats[stat] === stats[stat]}"
+            <div :class="{'stats__incdec--disabled': stats[stat] === 1 || stats[stat] === characterStats[stat]}"
                 class="stats__incdec"
                 @click="decreaseTempStat(stat)"
             >-</div>
-            <div :class="{'stats__incdec--disabled': tempStats[stat] === 99 || tempStatusPoints < statCost[stat]}"
+            <div :class="{'stats__incdec--disabled': stats[stat] === 99 || tempStatusPoints < statCost[stat]}"
                 class="stats__incdec"
                 @click="increaseTempStat(stat)"
             >+</div>
@@ -32,7 +32,7 @@
                 >{{ tempStatusPoints }}</span>
             </div>
 
-            <button :disabled="tempStatusPoints === statusPoints"
+            <button :disabled="tempStatusPoints === characterStatusPoints"
                 class="btn btn-primary stats__apply"
                 @click="saveStats()"
             >Save</button>
@@ -82,32 +82,12 @@
 </template>
 
 <script>
-// Utils
-import statsUtils from '../../utils/stats.js';
+// 3rd party libs
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'stats',
     props: {
-        stats: {
-            type: Object,
-            required: true
-        },
-        statusPoints: {
-            type: Number,
-            required: true
-        },
-        jobId: {
-            type: Number,
-            required: true
-        },
-        baseLevel: {
-            type: Number,
-            required: true
-        },
-        jobLevel: {
-            type: Number,
-            required: true
-        },
         hideParams: {
             type: Boolean,
             default: false
@@ -116,13 +96,13 @@ export default {
     data() {
         return {
             statsNames: ['str', 'dex', 'int', 'vit', 'wis', 'luk'],
-            tempStats: {
-                str: 1,
-                dex: 1,
-                int: 1,
-                vit: 1,
-                wis: 1,
-                luk: 1
+            stats: {
+                str: 0,
+                dex: 0,
+                int: 0,
+                vit: 0,
+                wis: 0,
+                luk: 0
             },
             bonusStats: {
                 str: 0,
@@ -154,76 +134,100 @@ export default {
             tempStatusPoints: 0,
         };
     },
+    computed: {
+        ...mapGetters([
+            'characterEquipment',
+            'characterStats',
+            'characterBonusStats',
+            'characterAttributes',
+            'characterStatusPoints',
+            'characterBaseLevel',
+            'characterJobLevel',
+            'characterJobId'
+        ])
+    },
     watch: {
-        statusPoints: {
+        characterStats: {
             immediate: true,
             handler() {
-                // Every time vuex is updated, we will need to refresh temp status points with real value
-                this.tempStatusPoints = this.statusPoints;
+                this.updateTempStats();
             }
         }
     },
     mounted() {
-        // Awaiting props arrival
-        this.$nextTick(() => {
-            // Update temp stats with real stats
-            for (const stat of this.statsNames) {
-                this.tempStats[stat] = this.stats[stat];
+        // On hypo request, we update user attributes, this object is not really used for anything beside display, so it's safe to manipulate
+        mo.socket.on('getCharacterHypotheticalAttributesComplete', (response) => {
+            this.bonusStats = response.bonusStats;
+            this.attributes = response.attributes;
+        });
+
+        // After successful saving of stats sending request to update character stats globally
+        mo.socket.on('saveCharacterStatsComplete', (response) => {
+            // In case we receive success response, we trigger the renew of the stats in the vuex as it's already updated on a backend
+            if (response) {
+                this.renewStats();
+            } else {
+                this.$store.commit('sendChat', [
+                    {
+                        type: 'system',
+                        character: 'System',
+                        message: 'Something went wrong while trying to update your stats'
+                    }
+                ]);
             }
-
-            // Triggering recalculation of the next stat
-            this.recalculateStatCosts();
-
-            // Fetching bonus stats of a job
-            this.bonusStats = Object.assign({}, statsUtils.calculateBonusStats(this.jobId, this.jobLevel));
-
-            // Triggering calculation of attributes
-            this.calculateAttributes();
         });
     },
+    beforeDestroy() {
+        mo.socket.off('getCharacterHypotheticalAttributesComplete');
+        mo.socket.off('saveCharacterStatsComplete');
+    },
     methods: {
-        saveStats() {
-            this.$store.dispatch('saveStats', {
-                str: this.tempStats.str,
-                dex: this.tempStats.dex,
-                int: this.tempStats.int,
-                vit: this.tempStats.vit,
-                wis: this.tempStats.wis,
-                luk: this.tempStats.luk,
+        renewStats() {
+            // Renew stats after the save, to represent what we have on backend
+            this.$store.commit('setCharacterData', {
+                stats: this.stats,
+                bonusStats: this.bonusStats,
+                attributes: this.attributes,
                 statusPoints: this.tempStatusPoints
             });
         },
-        calculateAttributes() {
-            this.attributes.patk = statsUtils.getPatkFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.str, this.tempStats.dex, this.tempStats.luk);
-            this.attributes.matk = statsUtils.getMatkFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.int, this.tempStats.dex, this.tempStats.luk);
-            this.attributes.pdef = statsUtils.getPdefFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.vit, this.tempStats.wis);
-            this.attributes.mdef = statsUtils.getMdefFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.wis, this.tempStats.vit);
-            this.attributes.hit = statsUtils.getHitFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.dex, this.tempStats.luk);
-            this.attributes.eva = statsUtils.getEvaFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.dex, this.tempStats.luk);
-            this.attributes.speed = statsUtils.getSpeedFormula(this.tempStats.dex);
+        updateTempStats() {
+            this.stats = Object.assign({}, this.characterStats);
+            this.bonusStats = Object.assign({}, this.characterBonusStats);
+            this.attributes = Object.assign({}, this.characterAttributes);
+            this.tempStatusPoints = this.characterStatusPoints;
 
-            this.attributes.maxHp = statsUtils.getHpFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.vit);
-            this.attributes.maxMp = statsUtils.getMpFormula(this.jobId, this.baseLevel, this.jobLevel, this.tempStats.wis, this.tempStats.int);
+            this.recalculateStatCosts();
+        },
+        saveStats() {
+            // Send stats and status points to server
+            mo.socket.emit('saveCharacterStats', {
+                ...this.stats,
+                statusPoints: this.tempStatusPoints
+            });
         },
         recalculateStatCosts() {
-            for (const [key, value] of Object.entries(this.tempStats)) {
+            for (const [key, value] of Object.entries(this.stats)) {
                 this.statCost[key] = this.calculateCost(value);
             }
         },
         calculateCost(stat) {
             return Math.floor(stat / 10) + 2;
         },
+        calculateAttributes() {
+            mo.socket.emit('getCharacterHypotheticalAttributes', this.stats);
+        },
         decreaseTempStat(stat) {
             // In case something went wrong, stop at 1
-            if (this.tempStats[stat] <= 1 || this.tempStats[stat] === this.stats[stat]) {
+            if (this.stats[stat] <= 1 || this.stats[stat] === this.characterStats[stat]) {
                 return false;
             }
 
             // Decrease stat
-            this.tempStats[stat]--;
+            this.stats[stat]--;
 
             // Re-calculate stat cost
-            this.statCost[stat] = this.calculateCost(this.tempStats[stat]);
+            this.statCost[stat] = this.calculateCost(this.stats[stat]);
 
             // Increasing tempStatusPoints after recalculation
             this.tempStatusPoints += this.statCost[stat];
@@ -233,18 +237,18 @@ export default {
         },
         increaseTempStat(stat) {
             // In case something went wrong, stop at 99
-            if (this.tempStats[stat] >= 99 || this.tempStatusPoints < this.statCost[stat]) {
+            if (this.stats[stat] >= 99 || this.tempStatusPoints < this.statCost[stat]) {
                 return false;
             }
 
             // Increase stat
-            this.tempStats[stat]++;
+            this.stats[stat]++;
 
             // Decreasing tempStatusPoints first
             this.tempStatusPoints -= this.statCost[stat];
 
             // Re-calculate stat cost
-            this.statCost[stat] = this.calculateCost(this.tempStats[stat]);
+            this.statCost[stat] = this.calculateCost(this.stats[stat]);
 
             // Triggering re-calculation of attributes
             this.calculateAttributes();

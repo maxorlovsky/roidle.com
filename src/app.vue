@@ -82,6 +82,7 @@ export default {
 
         // In case it's not a home page that we're trying to get into we will try
         if (!['/', '/server-down'].includes(this.$route.path) && functions.storage('get', 'session')) {
+            this.$router.push('/game');
             this.reconnect();
         }
 
