@@ -19,7 +19,6 @@ export default {
     characterMp: 13,
     characterZeny: 0,
 
-    characterStatsTrigger: null,
     characterStats: {
         str: 0,
         dex: 0,
@@ -92,6 +91,8 @@ export default {
         }
     },
     travelingToLocation: 0,
+    travelingToLocationName: '',
+    travelingArrivalTime: 0,
     restInProgress: false,
     party: [],
     dockedMenu: false,
@@ -116,5 +117,6 @@ export default {
         eva: 0
     },
     showChat: false,
-    socketConnection: false
+    socketConnection: false,
+    allMaps: null
 };

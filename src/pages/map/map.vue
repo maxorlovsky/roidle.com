@@ -1,14 +1,15 @@
 <template>
-    <div ref="map"
+    <div v-if="!loading && allMaps"
+        ref="map"
         class="map"
     >
-        <div v-for="(piece, index) in map"
+        <div v-for="(piece, index) in allMaps"
             :key="index"
             class="map__row"
         >
             <div v-for="location in piece"
                 :key="location.id"
-                :class="{'map__piece--selected': location.id === characterLocation, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': (travelingToLocation || restInProgress) && location.id !== travelingToLocation}"
+                :class="{'map__piece--selected': location.id === characterLocationId, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': (travelingToLocation || restInProgress) && location.id !== travelingToLocation}"
                 class="map__piece"
                 @click="selectMap(location.id)"
             >
@@ -50,98 +51,85 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
-// Globals functions
-import { functions } from '../../functions.js';
-
-// Configs
-import allMaps from '../../../config/map.json';
-
-// Utils
-import statsUtils from '../../utils/stats.js';
-
 const mapPage = {
     data() {
         return {
-            map: allMaps,
+            loading: true,
             showModal: false,
             humanReadableDate: '',
-            travelDestination: {},
+            travelDestinationName: '',
+            travelDestinationId: 0,
             travelTime: 0
         };
     },
     computed: {
-        ...mapGetters(['characterLocation', 'characterBaseLevel', 'characterStats', 'travelingToLocation', 'restInProgress'])
+        ...mapGetters([
+            'characterLocationId',
+            'characterBaseLevel',
+            'characterStats',
+            'travelingToLocation',
+            'restInProgress',
+            'allMaps'
+        ])
+    },
+    watch: {
+        allMaps: {
+            immediate: true,
+            handler() {
+                this.loadMaps();
+            }
+        }
     },
     mounted() {
-        this.$nextTick(() => {
-            this.$refs.map.scrollLeft = document.querySelector('.map__piece--selected').offsetLeft - 102;
-
-            // There is some issue with scroll to top, that we need to wait for initial render to finish
-            setTimeout(() => {
-                this.$refs.map.scrollTop = document.querySelector('.map__piece--selected').offsetTop - 102;
-            }, 1);
+        mo.socket.on('getMapsComplete', (response) => {
+            this.$store.commit('allMaps', response);
         });
+
+        mo.socket.on('selectMapToTravelComplete', (response) => {
+            this.humanReadableDate = response.humanReadableDate;
+            this.travelDestinationName = response.travelDestinationName;
+
+            this.showModal = true;
+        });
+
+        this.$store.commit('showChat', false);
+    },
+    beforeDestroy() {
+        mo.socket.off('getMapsComplete');
+        mo.socket.off('selectMapToTravelComplete');
+
+        this.$store.commit('showChat', true);
     },
     methods: {
+        loadMaps() {
+            // In case all maps is set, remove loading and display map immediately
+            if (this.allMaps) {
+                this.loading = false;
+
+                // There is some issue with scroll, that we need to wait for initial render to finish
+                setTimeout(() => {
+                    this.$refs.map.scrollLeft = document.querySelector('.map__piece--selected').offsetLeft - 102;
+                    this.$refs.map.scrollTop = document.querySelector('.map__piece--selected').offsetTop - 102;
+                }, 1);
+            } else {
+                // Otherwise, request maps from server
+                mo.socket.emit('getMaps');
+            }
+        },
         confirmTravel() {
-            const traveling = {
-                time: this.travelTime,
-                dateTimeFinish: new Date().getTime() + (this.travelTime * 1000),
-                locationId: this.travelDestination.id,
-                locationName: this.travelDestination.name
-            };
-
-            functions.storage('set', 'traveling', traveling, 604800000 * 90);
-
-            this.$store.commit('saveTraveling', traveling);
-
+            mo.socket.emit('travelToMap', this.travelDestinationId);
             this.showModal = false;
         },
         selectMap(locationId) {
-            // If it's a black square, we don't do anything
-            if (locationId >= 999 || locationId === this.characterLocation || this.travelingToLocation || this.restInProgress) {
+            // If it's a black square or user is on the same location, we don't do anything
+            if (locationId >= 999 || locationId === this.characterLocationId || this.travelingToLocation || this.restInProgress) {
                 return false;
             }
 
-            // Reset values
-            this.travelDestination = null;
-            this.humanReadableDate = '';
-            this.travelTime = 0;
+            // Storring travel location id for modal
+            this.travelDestinationId = locationId;
 
-            let currentMapPiece = null;
-
-            // Mapping through maps and getting info on current position and destination position
-            for (const row of Object.keys(this.map)) {
-                if (!this.travelDestination) {
-                    this.travelDestination = this.map[row].find((piece) => piece.id === Number(locationId));
-                }
-
-                if (!currentMapPiece) {
-                    currentMapPiece = this.map[row].find((piece) => piece.id === Number(this.characterLocation));
-                }
-            }
-
-            // Calculating positive numbers for steps
-            const x = currentMapPiece.coordiates[0] > this.travelDestination.coordiates[0] ? currentMapPiece.coordiates[0] - this.travelDestination.coordiates[0] : this.travelDestination.coordiates[0] - currentMapPiece.coordiates[0];
-            const y = currentMapPiece.coordiates[1] > this.travelDestination.coordiates[1] ? currentMapPiece.coordiates[1] - this.travelDestination.coordiates[1] : this.travelDestination.coordiates[1] - currentMapPiece.coordiates[1];
-
-            // Calculating speed of a character for reduction
-            const speed = statsUtils.getSpeedFormula(this.characterStats.dex);
-
-            // Getting how many steps we need to do in order to move to destination location
-            // Multiply by 5 minutes each
-            const fullTime = (x + y) * 300;
-
-            // Deducting speed of a character
-            this.travelTime = Math.floor(fullTime - (fullTime * (speed / 100)));
-
-            const minutes = Math.floor(this.travelTime / 60);
-            const seconds = this.travelTime - minutes * 60;
-
-            this.humanReadableDate = `${minutes}m ${seconds}s`;
-            this.travelDestinationName = this.travelDestination.name;
-
-            this.showModal = true;
+            mo.socket.emit('selectMapToTravel', locationId);
         }
     }
 };

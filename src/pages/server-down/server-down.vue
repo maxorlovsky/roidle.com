@@ -17,7 +17,7 @@ const serverDownPage = {
         };
     },
     mounted() {
-        this.runTimer();
+        this.checkServerStatus();
     },
     methods: {
         async checkServerStatus() {

@@ -43,35 +43,35 @@
         >
             <div class="stats__params">
                 <span class="stats__params__label">M.HP</span>
-                <span class="stats__params__value">{{ attributes.maxHp }}</span>
+                <span class="stats__params__value">{{ attributes.maxHp + bonusStats.hp }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">M.MP</span>
-                <span class="stats__params__value">{{ attributes.maxMp }}</span>
+                <span class="stats__params__value">{{ attributes.maxMp + bonusStats.mp }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">P.Atk</span>
-                <span class="stats__params__value">{{ attributes.patk }}</span>
+                <span class="stats__params__value">{{ attributes.patk + bonusStats.patk }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">M.Atk</span>
-                <span class="stats__params__value">{{ attributes.matk }}</span>
+                <span class="stats__params__value">{{ attributes.matk + bonusStats.matk }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">P.Def</span>
-                <span class="stats__params__value">{{ attributes.pdef }}</span>
+                <span class="stats__params__value">{{ attributes.pdef + bonusStats.pdef }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">M.Def</span>
-                <span class="stats__params__value">{{ attributes.mdef }}</span>
+                <span class="stats__params__value">{{ attributes.mdef + bonusStats.mdef }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">Hit</span>
-                <span class="stats__params__value">{{ attributes.hit }}</span>
+                <span class="stats__params__value">{{ attributes.hit + bonusStats.hit }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">Eva</span>
-                <span class="stats__params__value">{{ attributes.eva }}</span>
+                <span class="stats__params__value">{{ attributes.eva + bonusStats.eva }}</span>
             </div>
             <div class="stats__params">
                 <span class="stats__params__label">Speed</span>

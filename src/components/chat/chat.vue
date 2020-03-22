@@ -69,7 +69,9 @@ export default {
     },
     watch: {
         socketConnection() {
-            this.setUpSocketEvents();
+            if (this.socketConnection) {
+                this.setUpSocketEvents();
+            }
         },
         characterSkills: {
             immediate: true,

@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    allMaps: (state, value) => {
+        state.allMaps = value;
+    },
     socketConnection: (state, value) => {
         state.socketConnection = value;
     },
@@ -65,12 +68,19 @@ export default {
     saveCharHp: (state, hp) => {
         state.characterHp = hp;
     },
-    saveLocation: (state, locationId) => {
-        state.characterLocation = locationId;
+    saveLocation: (state, values) => {
+        state.characterLocationId = values.locationId;
+        state.characterLocation = values.location;
+
+        // Reset traveling state
         state.travelingToLocation = 0;
+        state.travelingToLocationName = '';
+        state.travelingArrivalTime = 0;
     },
     saveTraveling: (state, values) => {
         state.travelingToLocation = values.locationId;
+        state.travelingToLocationName = values.locationName;
+        state.travelingArrivalTime = values.time;
     },
     saveSkills: (state, values) => {
         state.characterSkills = values.skills;
@@ -119,105 +129,147 @@ export default {
         }
 
         // Stats
-        let statsTrigger = false;
+        const characterStats = {
+            str: state.characterStats.str,
+            dex: state.characterStats.dex,
+            int: state.characterStats.int,
+            vit: state.characterStats.vit,
+            wis: state.characterStats.wis,
+            luk: state.characterStats.luk
+        };
 
         if (values.stats && values.stats.str) {
-            state.characterStats.str = values.stats.str;
-            statsTrigger = true;
+            characterStats.str = values.stats.str;
         }
         if (values.stats && values.stats.dex) {
-            state.characterStats.dex = values.stats.dex;
-            statsTrigger = true;
+            characterStats.dex = values.stats.dex;
         }
         if (values.stats && values.stats.int) {
-            state.characterStats.int = values.stats.int;
-            statsTrigger = true;
+            characterStats.int = values.stats.int;
         }
         if (values.stats && values.stats.vit) {
-            state.characterStats.vit = values.stats.vit;
-            statsTrigger = true;
+            characterStats.vit = values.stats.vit;
         }
         if (values.stats && values.stats.wis) {
-            state.characterStats.wis = values.stats.wis;
-            statsTrigger = true;
+            characterStats.wis = values.stats.wis;
         }
         if (values.stats && values.stats.luk) {
-            state.characterStats.luk = values.stats.luk;
-            statsTrigger = true;
+            characterStats.luk = values.stats.luk;
         }
         if (values.statusPoints) {
             state.characterStatusPoints = values.statusPoints;
         }
 
+        Vue.set(state, 'characterStats', characterStats);
+
         // Bonus stats
+        const characterBonusStats = {
+            str: state.characterBonusStats.str,
+            dex: state.characterBonusStats.dex,
+            int: state.characterBonusStats.int,
+            vit: state.characterBonusStats.vit,
+            wis: state.characterBonusStats.wis,
+            luk: state.characterBonusStats.luk,
+            patk: state.characterBonusStats.patk,
+            pdef: state.characterBonusStats.pdef,
+            matk: state.characterBonusStats.matk,
+            mdef: state.characterBonusStats.mdef,
+            hp: state.characterBonusStats.hp,
+            mp: state.characterBonusStats.mp,
+            hit: state.characterBonusStats.hit,
+            eva: state.characterBonusStats.eva
+        };
+
         if (values.bonusStats && values.bonusStats.str) {
-            state.characterBonusStats.str = values.bonusStats.str;
-            statsTrigger = true;
+            characterBonusStats.str = values.bonusStats.str;
         }
         if (values.bonusStats && values.bonusStats.dex) {
-            state.characterBonusStats.dex = values.bonusStats.dex;
-            statsTrigger = true;
+            characterBonusStats.dex = values.bonusStats.dex;
         }
         if (values.bonusStats && values.bonusStats.int) {
-            state.characterBonusStats.int = values.bonusStats.int;
-            statsTrigger = true;
+            characterBonusStats.int = values.bonusStats.int;
         }
         if (values.bonusStats && values.bonusStats.vit) {
-            state.characterBonusStats.vit = values.bonusStats.vit;
-            statsTrigger = true;
+            characterBonusStats.vit = values.bonusStats.vit;
         }
         if (values.bonusStats && values.bonusStats.wis) {
-            state.characterBonusStats.wis = values.bonusStats.wis;
-            statsTrigger = true;
+            characterBonusStats.wis = values.bonusStats.wis;
         }
         if (values.bonusStats && values.bonusStats.luk) {
-            state.characterBonusStats.luk = values.bonusStats.luk;
-            statsTrigger = true;
+            characterBonusStats.luk = values.bonusStats.luk;
+        }
+        if (values.bonusStats && values.bonusStats.patk) {
+            characterBonusStats.patk = values.bonusStats.patk;
+        }
+        if (values.bonusStats && values.bonusStats.matk) {
+            characterBonusStats.matk = values.bonusStats.matk;
+        }
+        if (values.bonusStats && values.bonusStats.pdef) {
+            characterBonusStats.pdef = values.bonusStats.pdef;
+        }
+        if (values.bonusStats && values.bonusStats.mdef) {
+            characterBonusStats.mdef = values.bonusStats.mdef;
+        }
+        if (values.bonusStats && values.bonusStats.hit) {
+            characterBonusStats.hit = values.bonusStats.hit;
+        }
+        if (values.bonusStats && values.bonusStats.eva) {
+            characterBonusStats.eva = values.bonusStats.eva;
+        }
+        if (values.bonusStats && values.bonusStats.maxHp) {
+            characterBonusStats.maxHp = values.bonusStats.maxHp;
+        }
+        if (values.bonusStats && values.bonusStats.maxMp) {
+            characterBonusStats.maxMp = values.bonusStats.maxMp;
         }
 
+        Vue.set(state, 'characterBonusStats', characterBonusStats);
+
         // Attributes
-        const characterAttributes = {};
+        const characterAttributes = {
+            patk: state.characterAttributes.patk,
+            pdef: state.characterAttributes.pdef,
+            matk: state.characterAttributes.matk,
+            mdef: state.characterAttributes.mdef,
+            maxHp: state.characterAttributes.maxHp,
+            maxMp: state.characterAttributes.maxMp,
+            hit: state.characterAttributes.hit,
+            eva: state.characterAttributes.eva,
+            speed: state.characterAttributes.speed,
+            weight: state.characterAttributes.weight
+        };
 
         if (values.attributes && values.attributes.patk) {
             characterAttributes.patk = values.attributes.patk;
-            statsTrigger = true;
         }
         if (values.attributes && values.attributes.matk) {
             characterAttributes.matk = values.attributes.matk;
-            statsTrigger = true;
         }
         if (values.attributes && values.attributes.pdef) {
             characterAttributes.pdef = values.attributes.pdef;
-            statsTrigger = true;
         }
         if (values.attributes && values.attributes.mdef) {
             characterAttributes.mdef = values.attributes.mdef;
-            statsTrigger = true;
         }
         if (values.attributes && values.attributes.hit) {
             characterAttributes.hit = values.attributes.hit;
-            statsTrigger = true;
         }
         if (values.attributes && values.attributes.eva) {
             characterAttributes.eva = values.attributes.eva;
-            statsTrigger = true;
         }
         if (values.attributes && values.attributes.speed) {
-            characterAttributes.speed = values.attributes.speed;
-            statsTrigger = true;
+            characterAttributes.speed = values.attributes.speed || 0;
         }
         if (values.attributes && values.attributes.maxHp) {
             characterAttributes.maxHp = values.attributes.maxHp;
-            statsTrigger = true;
         }
         if (values.attributes && values.attributes.maxMp) {
             characterAttributes.maxMp = values.attributes.maxMp;
-            statsTrigger = true;
         }
         if (values.attributes && values.attributes.weight) {
             characterAttributes.weight = values.attributes.weight;
-            statsTrigger = true;
         }
+
         Vue.set(state, 'characterAttributes', characterAttributes);
 
         // Skills
@@ -279,10 +331,6 @@ export default {
             state.characterEquipment.footgear.itemId = values.equipment.footgear.itemId || 0;
             state.characterEquipment.footgear.name = values.equipment.footgear.name || '';
             state.characterEquipment.footgear.refined = values.equipment.footgear.refined || 0;
-        }
-
-        if (statsTrigger) {
-            state.characterStatsTrigger = new Date();
         }
     },
     characterInit: (state, values) => {
@@ -380,6 +428,13 @@ export default {
             state.characterEquipment.footgear.itemId = values.equipment.footgear.itemId || 0;
             state.characterEquipment.footgear.name = values.equipment.footgear.name || '';
             state.characterEquipment.footgear.refined = values.equipment.footgear.refined || 0;
+        }
+
+        // Traveling
+        if (values.traveling.traveling) {
+            state.travelingToLocation = values.traveling.travelingId;
+            state.travelingToLocationName = values.traveling.travelingName;
+            state.travelingArrivalTime = values.traveling.arrivalTime;
         }
     },
     displayDockedMenu: (state, values) => {

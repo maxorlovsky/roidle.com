@@ -2,50 +2,62 @@
     <section class="character">
         <div class="equipment">
             <div class="equipment__left">
-                <div class="equipment__head"><span class="equipment__placeholder">head</span></div>
-                <div class="equipment__rhand"
-                    @click="equimentList('weapon')"
+                <div v-for="eq in leftSlots"
+                    :key="eq.slot"
+                    :class="`equipment__slot equipment__${eq.slot}`"
+                    @click="equimentList(eq.slot)"
                 >
-                    <template v-if="equipment.rhand && equipment.rhand.id">
-                        <img :src="`/dist/assets/images/items/${equipment.rhand.id}.gif`">
-                        {{ equipment.rhand.name }}
-                    </template>
-                    <span class="equipment__placeholder">R-hand</span>
+                    <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
+                        class="equipment__item"
+                    >
+                        <img :src="`/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
+                        <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
+                    </div>
+                    <span class="equipment__placeholder">{{ eq.name }}</span>
                 </div>
-                <div class="equipment__robe"><span class="equipment__placeholder">robe</span></div>
-                <div class="equipment__accessory"><span class="equipment__placeholder">accessory</span></div>
             </div>
+
             <div class="equipment__avatar">
                 <avatar :head-style="characterHeadStyle"
                     :gender="characterGender"
                 />
             </div>
-            <div class="equipment__right">
-                <div class="equipment__body"
-                    @click="equimentList('armor', 'body')"
+
+            <div class="equipment__left">
+                <div v-for="eq in rightSlots"
+                    :key="eq.slot"
+                    :class="`equipment__slot equipment__${eq.slot}`"
+                    @click="equimentList(eq.slot)"
                 >
-                    <template v-if="equipment.body && equipment.body.id">
-                        <img :src="`/dist/assets/images/items/${equipment.body.id}.gif`">
-                        {{ equipment.body.name }}
-                    </template>
-                    <span class="equipment__placeholder">body</span>
+                    <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
+                        class="equipment__item"
+                    >
+                        <img :src="`/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
+                        <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
+                    </div>
+                    <span class="equipment__placeholder">{{ eq.name }}</span>
                 </div>
-                <div class="equipment__lhand"><span class="equipment__placeholder">L-hand</span></div>
-                <div class="equipment__shoes"><span class="equipment__placeholder">shoes</span></div>
-                <div class="equipment__accessory"><span class="equipment__placeholder">accessory</span></div>
             </div>
         </div>
 
         <div v-if="showEquipmentModal"
             class="equiment-modal modal"
         >
+            <div v-if="characterEquipment[slot].itemId"
+                class="equiment-modal__item"
+                @click="uneqipItem(slot)"
+            >
+                <img :src="`/dist/assets/images/cancel.png`">
+                <span class="equiment-modal__item__amount">Unequip item</span>
+            </div>
+
             <template v-if="items && items.length">
                 <div v-for="(item, index) in items"
                     :key="index"
                     class="equiment-modal__item"
-                    @click="equipItem(item.id)"
+                    @click="equipItem(item.id, item.itemId)"
                 >
-                    <img :src="`/dist/assets/images/items/${item.id}.gif`">
+                    <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                     <span class="equiment-modal__item__amount">{{ item.name }}</span>
                 </div>
             </template>
@@ -62,12 +74,7 @@
             </div>
         </div>
 
-        <stats :stats="characterStats"
-            :status-points="characterStatusPoints"
-            :job-id="characterJobId"
-            :base-level="characterBaseLevel"
-            :job-level="characterJobLevel"
-        />
+        <stats />
 
         <button class="btn btn-warning btn-lg skills-button"
             @click="goToSkills()"
@@ -79,16 +86,9 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
-// Configs
-import jobs from '../../../config/jobs.json';
-
 // Components
 import avatar from '../../components/avatar/avatar.vue';
 import stats from '../../components/stats/stats.vue';
-
-// Utils
-import statsUtils from '../../utils/stats.js';
-import itemsUtils from '../../utils/items.js';
 
 const characterPage = {
     components: {
@@ -99,11 +99,9 @@ const characterPage = {
         return {
             maxHp: 0,
             maxMp: 0,
-            jobTitle: '',
             showEquipmentModal: false,
             items: [],
-            type: '',
-            part: '',
+            slot: '',
             equipment: {
                 head: null,
                 body: null,
@@ -113,99 +111,102 @@ const characterPage = {
                 shoes: null,
                 acc1: null,
                 acc2: null
-            }
+            },
+            leftSlots: [
+                {
+                    slot: 'head',
+                    name: 'head'
+                },
+                {
+                    slot: 'rhand',
+                    name: 'R-hand'
+                },
+                {
+                    slot: 'garment',
+                    name: 'robe'
+                },
+                {
+                    slot: 'acc1',
+                    name: 'accessory'
+                }
+            ],
+            rightSlots: [
+                {
+                    slot: 'body',
+                    name: 'body'
+                },
+                {
+                    slot: 'lhand',
+                    name: 'L-hand'
+                },
+                {
+                    slot: 'footgear',
+                    name: 'shoes'
+                },
+                {
+                    slot: 'acc2',
+                    name: 'accessory'
+                }
+            ]
         };
     },
     computed: {
         ...mapGetters([
-            'characterName',
-            'characterStats',
-            'characterStatusPoints',
-            'characterBaseLevel',
-            'characterJobLevel',
-            'characterJobId',
             'characterHeadStyle',
             'characterGender',
-            'inventory',
-            'characterEquipmentTrigger'
+            'characterEquipment',
+            'inventory'
         ])
     },
     mounted() {
-        this.$nextTick(() => {
-            this.calculateStats();
+        mo.socket.on('getEquipableItemsComplete', (response) => {
+            if (response) {
+                this.items = response.equipableItems;
 
-            const foundJob = jobs.find((job) => job.id === this.characterJobId);
+                this.showEquipmentModal = true;
+            } else {
+                this.$store.commit('sendChat', [
+                    {
+                        type: '#system',
+                        character: 'System',
+                        message: 'Error retrieving equipable items'
+                    }
+                ]);
+            }
+        });
 
-            this.jobTitle = foundJob.name;
+        mo.socket.on('equipmentUpdate', () => {
+            this.showEquipmentModal = false;
         });
     },
-    watch: {
-        characterEquipmentTrigger: {
-            immediate: true,
-            handler() {
-                this.populateEquipment();
-            }
-        }
+    beforeDestroy() {
+        mo.socket.off('getEquipableItemsComplete');
+        mo.socket.off('equipItemComplete');
+        mo.socket.off('unequipItemComplete');
     },
     methods: {
-        populateEquipment() {
-            for (const item of Object.keys(this.$store.state.characterEquipmentSlots)) {
-                if (this.$store.state.characterEquipmentSlots[item]) {
-                    this.equipment[item] = itemsUtils.getItem(this.$store.state.characterEquipmentSlots[item]);
-                }
-            }
-        },
-        equipItem(itemId) {
-            const item = {
-                key: 0,
-                item: {}
-            };
-
-            for (const [key, value] of Object.entries(this.inventory)) {
-                if (value.id === itemId) {
-                    item.key = key;
-                    item.item = this.inventory[key];
-
-                    break;
-                }
-            }
-
-            if (!item.key) {
-                console.error('[ERROR] Item that user is trying to equip is not found in inventory');
-
-                return false;
-            }
-
-            this.$store.commit('setEquipment', {
-                slot: this.part === 'body' ? 'body' : 'rhand',
-                itemId: itemId
+        uneqipItem(slot) {
+            // Triggering equip of an item on server
+            mo.socket.emit('unequipItem', {
+                slot: slot
             });
-
-            this.showEquipmentModal = false;
         },
-        equimentList(type, part) {
-            this.showEquipmentModal = true;
-            // Rest items
+        equipItem(id, itemId) {
+            // Triggering equip of an item on server
+            mo.socket.emit('equipItem', {
+                id,
+                itemId,
+                slot: this.slot
+            });
+        },
+        equimentList(slot) {
+            // Reset items
             this.items = [];
-            // Saving for future reference
-            this.type = type;
-            this.part = part;
+            this.showEquipmentModal = false;
+            // Saving slot for future reference
+            this.slot = slot;
 
-            for (const item of this.inventory) {
-                const foundItem = itemsUtils.getItem(item.id);
-
-                // Only adding item with specific type and class
-                if (foundItem.type === type || (part && foundItem.class === part) && (!foundItem.jobs || foundItem.jobs.includes(this.characterJobId))) {
-                    // For inventory we need to loop each item
-                    for (let i = 0; i < item.amount; ++i) {
-                        this.items.push(foundItem);
-                    }
-                }
-            }
-        },
-        calculateStats() {
-            this.maxHp = statsUtils.getHpFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.vit);
-            this.maxMp = statsUtils.getMpFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.wis, this.characterStats.int);
+            mo.socket.emit('getEquipableItems', slot);
         },
         goToSkills() {
             this.$router.push('/character/skills');

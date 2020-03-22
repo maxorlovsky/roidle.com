@@ -3,6 +3,8 @@ export default {
     dockedMenu: (state) => state.dockedMenu,
     characterName: (state) => state.characterName,
     characterStats: (state) => state.characterStats,
+    characterBonusStats: (state) => state.characterBonusStats,
+    characterAttributes: (state) => state.characterAttributes,
     characterJobId: (state) => state.characterJobId,
     characterJob: (state) => state.characterJob,
     characterStatusPoints: (state) => state.characterStatusPoints,
@@ -28,8 +30,7 @@ export default {
     inventory: (state) => state.inventory,
     inventoryWeight: (state) => state.inventoryWeight,
     characterEquipment: (state) => state.characterEquipment,
-    characterStatsTrigger: (state) => state.characterStatsTrigger,
-    characterAttributes: (state) => state.characterAttributes,
     showChat: (state) => state.showChat,
-    socketConnection: (state) => state.socketConnection
+    socketConnection: (state) => state.socketConnection,
+    allMaps: (state) => state.allMaps
 };

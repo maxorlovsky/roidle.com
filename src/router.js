@@ -19,20 +19,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     window.scrollTo(0, 0);
 
-    // Check if user is logged in and if page require user to be logged in
-    if (to.meta.loggedIn && !mo.loggedIn) {
-        console.error('Authentication failure');
-        next('/');
-
-        return false;
-    }
-
-    // Set up meta title
-    document.title = 'Idle RO';
-    if (to.meta.title) {
-        document.title = `${to.meta.title} | ${document.title}`;
-    }
-
     next();
 });
 

@@ -7,12 +7,12 @@
 
         <div class="char-info__description">
             <span class="char-info__description__name">{{ characterName }}</span>
-            <span class="char-info__description__job">{{ jobTitle }}</span>
+            <span class="char-info__description__job">{{ characterJob }}</span>
         </div>
 
         <div class="char-info__health">
-            <span class="char-info__health__hp"><span>HP:</span> {{ characterHp }} / {{ maxHp }}</span>
-            <span class="char-info__health__mp"><span>MP:</span> {{ characterMp }} / {{ maxMp }}</span>
+            <span class="char-info__health__hp"><span>HP:</span> {{ characterHp }} / {{ characterAttributes.maxHp }}</span>
+            <span class="char-info__health__mp"><span>MP:</span> {{ characterMp }} / {{ characterAttributes.maxMp }}</span>
         </div>
 
         <div class="char-info__levels">
@@ -29,7 +29,7 @@
             >Resting ({{ restingDisplay }})</span>
             <span v-else
                 class="char-info__location__place"
-            >Location: {{ location || '-' }}</span>
+            >Location: {{ characterLocation }}</span>
             <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: {{ weightPercentage }}%</span>
         </div>
     </div>
@@ -44,15 +44,9 @@ import { functions } from '../../functions.js';
 
 // Configs
 import exp from '../../../config/exp.json';
-import jobs from '../../../config/jobs.json';
 
 // Components
 import avatar from '../avatar/avatar.vue';
-
-// Utils
-import locationUtils from '../../utils/location.js';
-import itemsUtils from '../../utils/items.js';
-import statsUtils from '../../utils/stats.js';
 
 export default {
     name: 'char-info-top',
@@ -61,9 +55,6 @@ export default {
     },
     data() {
         return {
-            jobTitle: '',
-            maxHp: 0,
-            maxMp: 0,
             location: '',
             travelingDisplay: '',
             restingDisplay: '',
@@ -76,7 +67,7 @@ export default {
     computed: {
         ...mapGetters([
             'characterName',
-            'characterJobId',
+            'characterJob',
             'characterHeadStyle',
             'characterGender',
             'characterBaseLevel',
@@ -91,17 +82,15 @@ export default {
             'characterZeny',
             'travelingToLocation',
             'restInProgress',
-            'inventory'
+            'inventoryWeight',
+            'characterAttributes'
         ])
     },
     watch: {
-        characterStatusPoints() {
-            this.calculateStats();
-        },
-        inventory: {
+        inventoryWeight: {
             immediate: true,
             handler() {
-                this.calculateWeight();
+                this.calculateWeightPercentage();
             }
         },
         travelingToLocation: {
@@ -112,62 +101,56 @@ export default {
                 }
             }
         },
-        restInProgress: {
+        /* restInProgress: {
             immediate: true,
             handler() {
                 if (this.restInProgress) {
                     this.getRestingTime();
                 }
             }
-        },
-        characterLocation() {
-            this.getLocation();
-        },
+        }, */
+        // Calculate exp percentage
         characterBaseExp: {
             immediate: true,
             handler() {
                 this.calculateExpPercentage();
             }
         },
-        characterJobExp: {
-            immediate: true,
-            handler() {
-                this.calculateExpPercentage();
-            }
+        characterJobExp() {
+            this.calculateExpPercentage();
         }
     },
     mounted() {
+        mo.socket.on('checkTravelingTimeComplete', (response) => {
+            // Stop traveling, save new location
+            this.$store.commit('saveLocation', {
+                location: response.locationName,
+                locationId: response.locationId
+            });
+        });
+
+        mo.socket.on('travelToMapComplete', (response) => {
+            this.$store.commit('saveTraveling', {
+                time: response.traveling.arrivalTime,
+                locationId: response.traveling.travelingId,
+                locationName: response.traveling.travelingName
+            });
+        });
+
         this.$nextTick(() => {
-            this.calculateStats();
-
-            // Detect if traveling is in progress
-            if (functions.storage('get', 'traveling')) {
-                const traveling = functions.storage('get', 'traveling');
-
-                traveling.time = Math.floor((traveling.dateTimeFinish - new Date().getTime()) / 1000);
-
-                this.$store.commit('saveTraveling', traveling);
-            } else {
-                // Otherwise display current location of the user
-                this.getLocation();
-            }
-
             // Detect if resting is in progress
-            if (functions.storage('get', 'resting')) {
+            /* if (functions.storage('get', 'resting')) {
                 this.$store.commit('saveResting', true);
-            }
-
-            const foundJob = jobs.find((job) => job.id === this.characterJobId);
-
-            this.jobTitle = foundJob.name;
+            } */
         });
     },
+    beforeDestroy() {
+        mo.socket.off('checkTravelingTimeComplete');
+        mo.socket.off('travelToMapComplete');
+    },
     methods: {
-        calculateWeight() {
-            const currentWeight = itemsUtils.getCurrentWeight(this.inventory);
-            const maxWeight = statsUtils.getWeightFormula(this.characterStats.str);
-
-            this.weightPercentage = Math.round((currentWeight * 100) / maxWeight);
+        calculateWeightPercentage() {
+            this.weightPercentage = Math.round((this.inventoryWeight * 100) / this.characterAttributes.weight);
         },
         calculateExpPercentage() {
             // Calculating base exp into percentage of how much user currently have
@@ -220,19 +203,6 @@ export default {
             // Remove traveling data from storage
             functions.storage('remove', 'resting');
         },
-        switchLocations() {
-            // Get traveling data from storage
-            const traveling = functions.storage('get', 'traveling');
-
-            this.$store.dispatch('updateLocation', traveling.locationId);
-
-            // Reset variable responsible for travel
-            this.travelingDisplay = '';
-            clearInterval(this.interval);
-
-            // Remove traveling data from storage
-            functions.storage('remove', 'traveling');
-        },
         // Display traveling time
         getRestingTime() {
             const resting = functions.storage('get', 'resting');
@@ -261,15 +231,20 @@ export default {
         },
         // Display traveling time
         getTravelingTime() {
-            const traveling = functions.storage('get', 'traveling');
+            const travelingArrivalTime = this.$store.getters.get('travelingArrivalTime');
 
             this.interval = setInterval(() => {
                 // Calculating remaining time every time from the date param
-                const remainingTime = Math.floor((traveling.dateTimeFinish - new Date().getTime()) / 1000);
+                const remainingTime = Math.floor((travelingArrivalTime - new Date().getTime()) / 1000);
 
                 // If timer reached 0, switch user locations and unlock the map
                 if (remainingTime <= 0) {
-                    this.switchLocations();
+                    mo.socket.emit('checkTravelingTime');
+                    console.log('check traveling time');
+
+                    // Reset variable responsible for travel
+                    this.travelingDisplay = '';
+                    clearInterval(this.interval);
 
                     return true;
                 }
@@ -284,16 +259,6 @@ export default {
 
                 this.travelingDisplay = `${minutes}:${seconds}`;
             }, 1000);
-        },
-        // Get current location of the character
-        getLocation() {
-            const locationItem = locationUtils.getLocation(Number(this.characterLocation));
-
-            this.location = locationItem.name;
-        },
-        calculateStats() {
-            this.maxHp = statsUtils.getHpFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.vit);
-            this.maxMp = statsUtils.getMpFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.wis, this.characterStats.int);
         }
     }
 };
