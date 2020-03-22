@@ -1,5 +1,5 @@
 <template>
-    <section :class="location"
+    <section :class="characterLocation.toLowerCase()"
         class="game"
     >
         <div class="party">
@@ -11,7 +11,9 @@
             <div class="party__name">Party: --</div>
         </div>
 
-        <div class="game__actions">
+        <div v-if="showActions"
+            class="game__actions"
+        >
             <div v-if="outsideActions"
                 :class="{'game__action--disabled': fightStatus || travelingToLocation || restInProgress}"
                 class="game__action"
@@ -91,7 +93,6 @@ import kafraActions from '../../components/kafra-actions/kafra-actions.vue';
 import innActions from '../../components/inn-actions/inn-actions.vue';
 
 // Utils
-import locationUtils from '../../utils/location.js';
 import monstersUtils from '../../utils/monsters.js';
 import statsUtils from '../../utils/stats.js';
 
@@ -102,7 +103,7 @@ const gamePage = {
     },
     data() {
         return {
-            location: '',
+            showActions: false,
             showFightModal: false,
             showKafraModal: false,
             selectedMonster: null,
@@ -116,16 +117,7 @@ const gamePage = {
     },
     computed: {
         ...mapGetters([
-            'characterName',
-            'characterBaseLevel',
-            'characterJobLevel',
-            'characterBaseExp',
-            'characterJobExp',
-            'characterJobId',
-            'characterStats',
             'characterLocation',
-            'characterSaveLocation',
-            'characterHp',
             'fightStatus',
             'travelingToLocation',
             'restInProgress'
@@ -135,24 +127,33 @@ const gamePage = {
         characterLocation: {
             immediate: true,
             handler() {
-                const locationItem = locationUtils.getLocation(Number(this.characterLocation));
-
-                // Decide if we're outside of the city or in, this will change game actions
-                if (locationItem.level) {
-                    this.outsideActions = true;
-                } else {
-                    this.outsideActions = false;
-                }
-
-                if (locationItem.monsters) {
-                    this.monsterIds = locationItem.monsters;
-                } else {
-                    this.monsterIds = [];
-                }
-
-                this.location = this.getLocationClass(locationItem.mapFile);
+                // Request to get location information from the server
+                mo.socket.emit('getCurrentMapLocationData');
             }
         }
+    },
+    mounted() {
+        mo.socket.on('getCurrentMapLocationDataComplete', (response) => {
+            const location = response.location;
+
+            // Decide if we're outside of the city or in, this will change game actions
+            if (location.level) {
+                this.outsideActions = true;
+            } else {
+                this.outsideActions = false;
+            }
+
+            if (location.monsters) {
+                this.monsterIds = location.monsters;
+            } else {
+                this.monsterIds = [];
+            }
+
+            this.showActions = true;
+        });
+    },
+    beforeDestroy() {
+        mo.socket.off('getCurrentMapLocationDataComplete');
     },
     methods: {
         trackMonster() {
@@ -340,17 +341,6 @@ const gamePage = {
             this.cancelFight = false;
             // Stopping timer
             clearInterval(this.interval);
-        },
-        getLocationClass(mapName) {
-            let location = '';
-
-            if (mapName.indexOf('fild') >= 0) {
-                location = 'field';
-            } else {
-                location = 'prontera';
-            }
-
-            return location;
         }
     }
 };
