@@ -61,12 +61,16 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['dockedMenu', 'showChat', 'socketConnection'])
+        ...mapGetters(['dockedMenu', 'showChat', 'socketConnection', 'characterStats'])
     },
     watch: {
         socketConnection() {
             if (this.$route.path !== '/' && this.socketConnection) {
                 this.setUpSocketEvents();
+            }
+
+            if (this.socketConnection && functions.storage('get', 'session')) {
+                this.setUpMainSocketEvents();
             }
         }
     },
@@ -89,15 +93,53 @@ export default {
         this.removeLoader();
     },
     methods: {
+        setUpMainSocketEvents() {
+            mo.socket.on('equipmentUpdate', (response) => {
+                if (response.message) {
+                    this.$store.commit('sendChat', [
+                        {
+                            type: 'system',
+                            character: 'System',
+                            message: response.message
+                        }
+                    ]);
+                }
+
+                this.$store.commit('setEquipment', response.equipment);
+
+                // Trigger recalculations of stats
+                mo.socket.emit('getCharacterHypotheticalAttributes', this.characterStats);
+            });
+
+            mo.socket.on('inventoryUpdate', (response) => {
+                if (response.message) {
+                    this.$store.commit('sendChat', [
+                        {
+                            type: 'system',
+                            character: 'System',
+                            message: response.message
+                        }
+                    ]);
+                }
+
+                this.$store.commit('setInventoryData', {
+                    inventory: response.inventory
+                });
+            });
+        },
         setUpSocketEvents() {
             mo.socket.emit('reconnect', functions.storage('get', 'session'));
 
             mo.socket.on('disconnect', () => {
                 this.serverWentDown = true;
+                this.$store.commit('displayDockedMenu', false);
+                this.$store.commit('showChat', false);
                 this.$store.commit('socketConnection', false);
             });
 
             mo.socket.on('reconnectFail', () => {
+                console.error('reconnect fail');
+                console.error('sending to / page');
                 mo.socket.disconnect();
                 mo.socket = null;
                 this.$router.push('/');
