@@ -68,6 +68,9 @@ export default {
     saveCharHp: (state, hp) => {
         state.characterHp = hp;
     },
+    saveZeny: (state, zeny) => {
+        state.characterZeny = zeny;
+    },
     saveLocation: (state, values) => {
         state.characterLocationId = values.locationId;
         state.characterLocation = values.location;
@@ -435,6 +438,11 @@ export default {
             state.travelingToLocation = values.traveling.travelingId;
             state.travelingToLocationName = values.traveling.travelingName;
             state.travelingArrivalTime = values.traveling.arrivalTime;
+        }
+
+        // Resting
+        if (values.restingTime) {
+            state.restInProgress = values.restingTime;
         }
     },
     displayDockedMenu: (state, values) => {

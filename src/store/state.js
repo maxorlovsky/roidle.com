@@ -93,7 +93,7 @@ export default {
     travelingToLocation: 0,
     travelingToLocationName: '',
     travelingArrivalTime: 0,
-    restInProgress: false,
+    restInProgress: 0,
     party: [],
     dockedMenu: false,
     fightStatus: false,

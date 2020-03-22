@@ -39,9 +39,6 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
-// Globals functions
-import { functions } from '../../functions.js';
-
 // Configs
 import exp from '../../../config/exp.json';
 
@@ -74,8 +71,6 @@ export default {
             'characterJobLevel',
             'characterBaseExp',
             'characterJobExp',
-            'characterStats',
-            'characterStatusPoints',
             'characterHp',
             'characterMp',
             'characterLocation',
@@ -101,14 +96,14 @@ export default {
                 }
             }
         },
-        /* restInProgress: {
+        restInProgress: {
             immediate: true,
             handler() {
                 if (this.restInProgress) {
                     this.getRestingTime();
                 }
             }
-        }, */
+        },
         // Calculate exp percentage
         characterBaseExp: {
             immediate: true,
@@ -137,16 +132,21 @@ export default {
             });
         });
 
-        this.$nextTick(() => {
-            // Detect if resting is in progress
-            /* if (functions.storage('get', 'resting')) {
-                this.$store.commit('saveResting', true);
-            } */
+        mo.socket.on('checkRestingTimeComplete', () => {
+            // Set hp/mp to max
+            this.$store.commit('setHpMp', {
+                hp: this.characterAttributes.maxHp,
+                mp: this.characterAttributes.maxMp
+            });
+
+            // Removing rest
+            this.$store.commit('saveResting', false);
         });
     },
     beforeDestroy() {
         mo.socket.off('checkTravelingTimeComplete');
         mo.socket.off('travelToMapComplete');
+        mo.socket.off('checkRestingTimeComplete');
     },
     methods: {
         calculateWeightPercentage() {
@@ -180,40 +180,21 @@ export default {
                 this.jobExpPercentage = '100';
             }
         },
-        finishRest() {
-            // Get resting data from storage
-            const resting = functions.storage('get', 'resting');
-
-            if (resting.type === 4) {
-                // Add delux bonuses
-            }
-
-            this.$store.dispatch('updateHpMp', {
-                hp: this.maxHp,
-                mp: this.maxMp
-            });
-
-            // Reset variable responsible for travel
-            this.restingDisplay = '';
-            clearInterval(this.interval);
-
-            // Put rest in progress
-            this.$store.commit('saveResting', false);
-
-            // Remove traveling data from storage
-            functions.storage('remove', 'resting');
-        },
         // Display traveling time
         getRestingTime() {
-            const resting = functions.storage('get', 'resting');
+            const restingDateTimeFinish = this.$store.getters.get('restInProgress');
 
             this.interval = setInterval(() => {
                 // Calculating remaining time every time from the date param
-                const remainingTime = Math.floor((resting.dateTimeFinish - new Date().getTime()) / 1000);
+                const remainingTime = Math.floor((restingDateTimeFinish - new Date().getTime()) / 1000);
 
                 // If timer reached 0, switch user locations and unlock the map
                 if (remainingTime <= 0) {
-                    this.finishRest();
+                    mo.socket.emit('checkRestingTime');
+
+                    // Reset variable responsible for rest
+                    this.restingDisplay = '';
+                    clearInterval(this.interval);
 
                     return true;
                 }
@@ -240,7 +221,6 @@ export default {
                 // If timer reached 0, switch user locations and unlock the map
                 if (remainingTime <= 0) {
                     mo.socket.emit('checkTravelingTime');
-                    console.log('check traveling time');
 
                     // Reset variable responsible for travel
                     this.travelingDisplay = '';
