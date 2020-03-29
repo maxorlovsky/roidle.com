@@ -12,25 +12,14 @@ export default {
     showChat: (state, value) => {
         state.showChat = value;
     },
-    setBonusStats: (state, values) => {
-        state.bonusStats.str = values.str;
-        state.bonusStats.dex = values.dex;
-        state.bonusStats.int = values.int;
-        state.bonusStats.vit = values.vit;
-        state.bonusStats.wis = values.wis;
-        state.bonusStats.luk = values.luk;
-        state.bonusStats.patk = values.patk;
-        state.bonusStats.pdef = values.pdef;
-        state.bonusStats.matk = values.matk;
-        state.bonusStats.mdef = values.mdef;
-        state.bonusStats.hp = values.hp;
-        state.bonusStats.mp = values.mp;
-        state.bonusStats.hit = values.hit;
-        state.bonusStats.eva = values.eva;
-    },
     setHpMp: (state, values) => {
-        state.characterHp = values.hp;
-        state.characterMp = values.mp;
+        if (values.hp) {
+            state.characterHp = values.hp;
+        }
+
+        if (values.mp) {
+            state.characterMp = values.mp;
+        }
     },
     saveResting: (state, value) => {
         state.restInProgress = value;
@@ -58,15 +47,20 @@ export default {
         if (values.jobExp) {
             state.characterJobExp = values.jobExp;
         }
+
+        if (values.baseExpPercentage) {
+            state.characterBaseExpPercentage = values.baseExpPercentage;
+        }
+
+        if (values.jobExpPercentage) {
+            state.characterJobExpPercentage = values.jobExpPercentage;
+        }
     },
     sendChat: (state, values) => {
         state.chatContent = values;
     },
     fightStatus: (state, value) => {
         state.fightStatus = value;
-    },
-    saveCharHp: (state, hp) => {
-        state.characterHp = hp;
     },
     saveZeny: (state, zeny) => {
         state.characterZeny = zeny;
@@ -129,6 +123,12 @@ export default {
         }
         if (values.jobId) {
             state.characterJobId = values.jobId;
+        }
+        if (values.baseExpPercentage) {
+            state.characterBaseExpPercentage = values.baseExpPercentage;
+        }
+        if (values.jobExpPercentage) {
+            state.characterJobExpPercentage = values.jobExpPercentage;
         }
 
         // Stats
@@ -284,8 +284,14 @@ export default {
         }
 
         // Location
+        if (values.locationId) {
+            state.characterLocationId = values.locationId;
+        }
         if (values.location) {
             state.characterLocation = values.location;
+        }
+        if (values.saveLocationId) {
+            state.characterSaveLocationId = values.saveLocationId;
         }
         if (values.saveLocation) {
             state.characterSaveLocation = values.saveLocation;
@@ -345,6 +351,8 @@ export default {
         state.characterBaseLevel = values.character.baseLevel;
         state.characterJobLevel = values.character.jobLevel;
         state.characterBaseExp = values.character.baseExp;
+        state.characterBaseExpPercentage = values.character.baseExpPercentage;
+        state.characterJobExpPercentage = values.character.jobExpPercentage;
         state.characterJobExp = values.character.jobExp;
         state.characterJobId = values.character.jobId;
         state.characterJob = values.character.job;

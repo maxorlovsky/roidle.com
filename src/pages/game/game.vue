@@ -50,7 +50,7 @@
             <div v-if="fightStatus"
                 class="game__action-in-progress"
             >
-                <div>Fight in progress</div>
+                <div>Hunt in progress</div>
                 <div>{{ fightTimer }}</div>
                 <button v-if="!cancelFight"
                     class="btn btn-secondary"
@@ -70,15 +70,20 @@
         >
             <div class="modal__header">Confirm hunt</div>
             <div class="modal__content">
-                <p>Start the hunt</p>
+                <p>Position</p>
+                <select>
+                    <option>Frontline</option>
+                    <option>Middleline</option>
+                    <option>Backline</option>
+                </select>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showFightModal = false"
                 >Cancel</button>
-                <button class="btn btn-primary"
+                <button class="btn btn-success"
                     @click="startHunt()"
-                >GO</button>
+                >Start</button>
             </div>
         </div>
     </section>
@@ -92,10 +97,6 @@ import { mapGetters } from 'vuex';
 import kafraActions from '../../components/kafra-actions/kafra-actions.vue';
 import innActions from '../../components/inn-actions/inn-actions.vue';
 
-// Utils
-import monstersUtils from '../../utils/monsters.js';
-import statsUtils from '../../utils/stats.js';
-
 const gamePage = {
     components: {
         kafraActions,
@@ -106,12 +107,9 @@ const gamePage = {
             showActions: false,
             showFightModal: false,
             showKafraModal: false,
-            selectedMonster: null,
-            roundTime: 10000,
-            fightTimer: 10,
+            fightTimer: '',
             interval: null,
             outsideActions: false,
-            monsterIds: [],
             cancelFight: false
         };
     },
@@ -120,7 +118,8 @@ const gamePage = {
             'characterLocation',
             'fightStatus',
             'travelingToLocation',
-            'restInProgress'
+            'restInProgress',
+            'socketConnection'
         ])
     },
     watch: {
@@ -128,209 +127,101 @@ const gamePage = {
             immediate: true,
             handler() {
                 // Request to get location information from the server
-                mo.socket.emit('getCurrentMapLocationData');
+                if (mo.socket) {
+                    mo.socket.emit('getCurrentMapLocationData');
+                }
+            }
+        },
+        socketConnection: {
+            immediate: true,
+            handler() {
+                if (this.socketConnection) {
+                    this.setUpSocketEvents();
+                    this.checkHuntState();
+                }
             }
         }
     },
-    mounted() {
-        mo.socket.on('getCurrentMapLocationDataComplete', (response) => {
-            const location = response.location;
-
-            // Decide if we're outside of the city or in, this will change game actions
-            if (location.level) {
-                this.outsideActions = true;
-            } else {
-                this.outsideActions = false;
-            }
-
-            if (location.monsters) {
-                this.monsterIds = location.monsters;
-            } else {
-                this.monsterIds = [];
-            }
-
-            this.showActions = true;
-        });
-    },
     beforeDestroy() {
-        mo.socket.off('getCurrentMapLocationDataComplete');
+        if (mo.socket) {
+            mo.socket.off('getCurrentMapLocationDataComplete');
+            mo.socket.off('startHuntComplete');
+            mo.socket.off('stopHuntComplete');
+        }
     },
     methods: {
-        trackMonster() {
-            this.$store.dispatch('updateExp', {
-                baseExp: this.characterBaseExp + 5,
-                jobExp: this.characterJobExp + 5
+        setUpSocketEvents() {
+            mo.socket.on('getCurrentMapLocationDataComplete', (response) => {
+                const location = response.location;
+
+                // Decide if we're outside of the city or in, this will change game actions
+                if (location.level) {
+                    this.outsideActions = true;
+                } else {
+                    this.outsideActions = false;
+                }
+
+                this.showActions = true;
             });
+
+            mo.socket.on('startHuntComplete', (response) => {
+                this.cancelFight = false;
+                this.fightTimer = '';
+
+                // Marking character as in fight status
+                if (response && response.status) {
+                    this.$store.commit('fightStatus', true);
+
+                    this.interval = setInterval(() => {
+                        // Calculating remaining time every time from the date param
+                        const remainingTime = Math.floor((response.timeFinish - new Date().getTime()) / 1000);
+
+                        // If timer reached 0, switch user locations and unlock the map
+                        if (remainingTime <= 0) {
+                            this.fightTimer = 'Finishing the Hunt...';
+                            this.cancelFight = true;
+
+                            clearInterval(this.interval);
+
+                            return true;
+                        }
+
+                        // Making display of resting time user friendly
+                        const minutes = Math.floor(remainingTime / 60);
+                        let seconds = remainingTime - minutes * 60;
+
+                        if (seconds <= 9) {
+                            seconds = `0${seconds}`;
+                        }
+
+                        this.fightTimer = `${minutes}:${seconds}`;
+                    }, 1000);
+                }
+            });
+
+            mo.socket.on('stopHuntComplete', () => {
+                this.$store.commit('fightStatus', false);
+            });
+
+            // After all events are set, check just in case
+        },
+        checkHuntState() {
+            // If fight status is on, we need to display active hunt details
+            mo.socket.emit('getHunt');
         },
         stopHunt() {
             this.cancelFight = true;
         },
         startHunt() {
             // If fight in progress, we don't start another one
-            // If there are no monster ids on the map, we have nothing to hunt for
-            if (this.fightStatus && this.monsterIds) {
+            if (this.fightStatus) {
                 return false;
             }
 
             this.showFightModal = false;
-            this.$store.commit('fightStatus', true);
 
-            const randomMonster = this.monsterIds[Math.floor(Math.random() * this.monsterIds.length)];
-
-            this.selectedMonster = monstersUtils.getMonster(randomMonster);
-
-            const charAttributes = {
-                patk: statsUtils.getPatkFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.str, this.characterStats.dex, this.characterStats.luk),
-                matk: statsUtils.getMatkFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.int, this.characterStats.dex, this.characterStats.luk),
-                pdef: statsUtils.getPdefFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.vit, this.characterStats.wis),
-                mdef: statsUtils.getMdefFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.wis, this.characterStats.vit),
-                hit: statsUtils.getHitFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.dex, this.characterStats.luk),
-                eva: statsUtils.getEvaFormula(this.characterJobId, this.characterBaseLevel, this.characterJobLevel, this.characterStats.dex, this.characterStats.luk),
-                speed: statsUtils.getSpeedFormula(this.characterStats.dex)
-            };
-
-            this.roundTime = Math.floor(this.roundTime - (this.roundTime * (charAttributes.speed / 100)));
-            this.fightTimer = Math.ceil(this.roundTime / 1000);
-            // 1 console.log(this.selectedMonster);
-            // 1 console.log(charAttributes);
-
-            this.interval = setInterval(() => {
-                this.fightTimer--;
-            }, 1000);
-
-            setTimeout(() => {
-                this.calculateRound(charAttributes);
-            }, this.roundTime);
-        },
-        calculateRound(charAttributes) {
-            let restartFight = false;
-
-            this.fightTimer = Math.ceil(this.roundTime / 1000);
-
-            // Fight calculate if char hit the mob
-            let characterHitChance = Math.floor((charAttributes.hit * 200) / (charAttributes.hit + this.selectedMonster.eva));
-
-            if (characterHitChance > 95) {
-                characterHitChance = 95;
-            } else if (characterHitChance < 5) {
-                characterHitChance = 5;
-            }
-
-            let mobHitChance = Math.floor((this.selectedMonster.hit * 200) / (this.selectedMonster.hit + charAttributes.eva));
-
-            if (mobHitChance > 95) {
-                mobHitChance = 95;
-            } else if (mobHitChance < 5) {
-                mobHitChance = 5;
-            }
-
-            const charHit = characterHitChance >= Math.random() * 100;
-            const mobHit = mobHitChance >= Math.random() * 100;
-            const chat = [];
-
-            if (charHit) {
-                const damage = Math.floor(charAttributes.patk - (charAttributes.patk * (this.selectedMonster.pdef / 100))) +
-                    Math.floor(charAttributes.matk - (charAttributes.matk * (this.selectedMonster.mdef / 100)));
-
-                this.selectedMonster.currentHp -= damage;
-
-                chat.push({
-                    type: 'battle',
-                    character: 'Battle',
-                    message: `${this.characterName} dealt damage to ${this.selectedMonster.name} -${damage}`
-                });
-            } else {
-                chat.push({
-                    type: 'battle',
-                    character: 'Battle',
-                    message: `${this.characterName} missed ${this.selectedMonster.name}`
-                });
-            }
-
-            if (mobHit) {
-                const damage = Math.floor(this.selectedMonster.patk - (this.selectedMonster.patk * (charAttributes.pdef / 100))) +
-                    Math.floor(this.selectedMonster.matk - (this.selectedMonster.matk * (charAttributes.mdef / 100)));
-
-                // Updating char HP
-                this.$store.dispatch('updateHpMp', {
-                    hp: this.characterHp - damage > 0 ? this.characterHp - damage : 0
-                });
-
-                chat.push({
-                    type: 'battle',
-                    character: 'Battle',
-                    message: `${this.selectedMonster.name} dealt damage to ${this.characterName} -${damage}`
-                });
-            } else {
-                chat.push({
-                    type: 'battle',
-                    character: 'Battle',
-                    message: `${this.selectedMonster.name} missed ${this.characterName}`
-                });
-            }
-
-            if (this.characterHp <= 0) {
-                // Character dead
-                this.stopFight();
-                this.charDeath();
-
-                chat.push({
-                    type: 'battle',
-                    character: 'Battle',
-                    message: `${this.characterName} was defeated`
-                });
-
-                // Do something with char death
-            } else if (this.selectedMonster.currentHp <= 0) {
-                // Mob dead
-                this.stopFight();
-                this.rewards();
-
-                restartFight = true;
-
-                chat.push({
-                    type: 'battle',
-                    character: 'Battle',
-                    message: `${this.selectedMonster.name} was defeated, finishing blow was dealt by ${this.characterName}`
-                });
-            } else if (!this.cancelFight) {
-                // Call same function again for recurse
-                // Unless fight was canceled pre-emptively
-                setTimeout(() => {
-                    this.calculateRound(charAttributes);
-                }, this.roundTime);
-            }
-
-            // Sending array of battle logs
-            this.$store.commit('sendChat', chat);
-
-            if (this.cancelFight) {
-                this.stopFight();
-            } else if (restartFight) {
-                this.startHunt();
-            }
-        },
-        rewards() {
-            this.$store.dispatch('updateExp', {
-                baseExp: this.characterBaseExp + this.selectedMonster.exp,
-                jobExp: this.characterJobExp + this.selectedMonster.jexp
-            });
-
-            // Give out items
-        },
-        charDeath() {
-            // Decrease exp by 5% in case of death
-            const baseExpPenalty = this.characterBaseExp - Math.floor((this.characterBaseExp / 5));
-            const jobExpPenalty = this.characterJobExp - Math.floor((this.characterJobExp / 5));
-
-            // In case job penalty went into minus, we drop it to 0
-            this.$store.dispatch('updateExp', {
-                baseExp: baseExpPenalty < 0 ? 0 : baseExpPenalty,
-                jobExp: jobExpPenalty < 0 ? 0 : jobExpPenalty
-            });
-
-            // Teleport character back to saveLocation
-            this.$store.dispatch('updateLocation', this.characterSaveLocation);
+            // Start hunt for 1 minute
+            mo.socket.emit('startHunt', (60 * 1000));
         },
         stopFight() {
             // Stopping the fight

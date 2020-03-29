@@ -16,8 +16,8 @@
         </div>
 
         <div class="char-info__levels">
-            <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ baseExpPercentage }}%)</span>
-            <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ jobExpPercentage }}%)</span>
+            <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ characterBaseExpPercentage }}%)</span>
+            <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ characterJobExpPercentage }}%)</span>
         </div>
 
         <div class="char-info__location">
@@ -38,9 +38,6 @@
 <script>
 // 3rd party libs
 import { mapGetters } from 'vuex';
-
-// Configs
-import exp from '../../../config/exp.json';
 
 // Components
 import avatar from '../avatar/avatar.vue';
@@ -71,6 +68,8 @@ export default {
             'characterJobLevel',
             'characterBaseExp',
             'characterJobExp',
+            'characterBaseExpPercentage',
+            'characterJobExpPercentage',
             'characterHp',
             'characterMp',
             'characterLocation',
@@ -103,16 +102,6 @@ export default {
                     this.getRestingTime();
                 }
             }
-        },
-        // Calculate exp percentage
-        characterBaseExp: {
-            immediate: true,
-            handler() {
-                this.calculateExpPercentage();
-            }
-        },
-        characterJobExp() {
-            this.calculateExpPercentage();
         }
     },
     mounted() {
@@ -142,43 +131,30 @@ export default {
             // Removing rest
             this.$store.commit('saveResting', false);
         });
+
+        mo.socket.on('characterHp', (hp) => {
+            // Set hp to max
+            this.$store.commit('setHpMp', {
+                hp: hp
+            });
+        });
+
+        mo.socket.on('characterMp', (mp) => {
+            // Set mp to max
+            this.$store.commit('setHpMp', {
+                mp: mp
+            });
+        });
     },
     beforeDestroy() {
         mo.socket.off('checkTravelingTimeComplete');
         mo.socket.off('travelToMapComplete');
         mo.socket.off('checkRestingTimeComplete');
+        mo.socket.off('characterHp');
     },
     methods: {
         calculateWeightPercentage() {
             this.weightPercentage = Math.round((this.inventoryWeight * 100) / this.characterAttributes.weight);
-        },
-        calculateExpPercentage() {
-            // Calculating base exp into percentage of how much user currently have
-            let expTable = exp.exp.split(',');
-
-            // Check if there is a next level, if yes show percentage, otherwise user reached max leve
-            if (expTable[this.characterBaseLevel]) {
-                this.baseExpPercentage = parseFloat(this.characterBaseExp * 100 / expTable[this.characterBaseLevel]).toFixed(2);
-            } else {
-                this.baseExpPercentage = '100';
-            }
-
-            // Calculating job exp into percentage of how much user currently have
-            expTable = null;
-            if (this.characterJobId === 0) {
-                expTable = exp.noviceExp.split(',');
-            } else if (this.characterJobId > 1 && this.characterJobId < 6) {
-                expTable = exp.firstJobs.split(',');
-            } else {
-                expTable = exp.secondJobs.split(',');
-            }
-
-            // Check if there is a next level, if yes show percentage, otherwise user reached max leve
-            if (expTable[this.characterJobLevel]) {
-                this.jobExpPercentage = parseFloat(this.characterJobExp * 100 / expTable[this.characterJobLevel]).toFixed(2);
-            } else {
-                this.jobExpPercentage = '100';
-            }
         },
         // Display traveling time
         getRestingTime() {
