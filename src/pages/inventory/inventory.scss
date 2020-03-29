@@ -18,7 +18,7 @@
         background-color: rgba(0, 0, 0, 0.8);
         color: #fff;
         font-size: 1rem;
-        width: calc(100% - 2rem);
+        width: 100%;
         border-radius: 2px;
 
         &--critical {
@@ -32,7 +32,7 @@
         position: relative;
         border: 3px solid #808080;
         border-radius: 8px;
-        margin: 1rem 0 1rem 1rem;
+        margin: 1rem 0.5rem;
         background-color: rgba(0, 0, 0, 0.8);
         display: flex;
         align-items: center;
