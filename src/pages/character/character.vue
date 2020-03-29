@@ -174,15 +174,9 @@ const characterPage = {
                 ]);
             }
         });
-
-        mo.socket.on('equipmentUpdate', () => {
-            this.showEquipmentModal = false;
-        });
     },
     beforeDestroy() {
         mo.socket.off('getEquipableItemsComplete');
-        mo.socket.off('equipItemComplete');
-        mo.socket.off('unequipItemComplete');
     },
     methods: {
         uneqipItem(slot) {
@@ -190,6 +184,8 @@ const characterPage = {
             mo.socket.emit('unequipItem', {
                 slot: slot
             });
+
+            this.showEquipmentModal = false;
         },
         equipItem(id, itemId) {
             // Triggering equip of an item on server
@@ -198,6 +194,8 @@ const characterPage = {
                 itemId,
                 slot: this.slot
             });
+
+            this.showEquipmentModal = false;
         },
         equimentList(slot) {
             // Reset items
