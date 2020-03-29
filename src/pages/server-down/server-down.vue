@@ -27,8 +27,11 @@ const serverDownPage = {
                 // In case of message OK sent, server are back up, we redirect user to home page
                 if (response.data.message === 'OK') {
                     this.$router.replace('/');
+                } else {
+                    this.seconds = 10;
+                    this.runTimer();
                 }
-            } finally {
+            } catch (error) {
                 // Resetting timer
                 this.seconds = 10;
                 this.runTimer();
