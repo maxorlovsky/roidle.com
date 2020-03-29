@@ -4,11 +4,11 @@
             <div class="chat__tabs">
                 <div :class="{'chat__tabs__tab--selected': selectedTab === 0, 'chat__tabs__tab--notification': tabNotification[0]}"
                     class="chat__tabs__tab"
-                    @click="selectedTab = 0; tabNotification[0] = false;"
+                    @click="selectedTab = 0; tabNotification[0] = false; scrollChat()"
                 >Regular chat</div>
                 <div :class="{'chat__tabs__tab--selected': selectedTab === 1, 'chat__tabs__tab--notification': tabNotification[1]}"
                     class="chat__tabs__tab"
-                    @click="selectedTab = 1; tabNotification[1] = false;"
+                    @click="selectedTab = 1; tabNotification[1] = false; scrollChat()"
                 >Battle chat</div>
             </div>
             <div v-show="selectedTab === 0"
@@ -129,7 +129,7 @@ export default {
 
             if (this.$refs.chatBodyBattle.scrollTop >= this.$refs.chatBodyBattle.scrollHeight - this.$refs.chatBodyBattle.clientHeight - 2) {
                 this.$nextTick(() => {
-                    this.$refs.chatBodyBattle.scrollTop = this.$refs.chatBodyBattle.scrollTop;
+                    this.$refs.chatBodyBattle.scrollTop = this.$refs.chatBodyBattle.scrollHeight;
                 });
             }
         },
