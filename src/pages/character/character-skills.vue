@@ -35,14 +35,16 @@
                     <div>Lv: {{ tempSkills[skill.id] }} / {{ skill.maxLevel }}</div>
                 </div>
 
-                <div :class="{'skills-list__incdec--disabled': (characterSkills[skill.id] || 0) === tempSkills[skill.id]}"
-                    class="skills-list__incdec"
-                    @click="decreaseTempSkill(skill)"
-                >-</div>
-                <div :class="{'skills-list__incdec--disabled': tempSkillPoints <= 0 || tempSkills[skill.id] >= skill.maxLevel || !skillRequirementMet(skill)}"
-                    class="skills-list__incdec"
-                    @click="increaseTempSkill(skill)"
-                >+</div>
+                <template v-if="skillRequirementMet(skill)">
+                    <div :class="{'skills-list__incdec--disabled': (characterSkills[skill.id] || 0) === tempSkills[skill.id]}"
+                        class="skills-list__incdec"
+                        @click="decreaseTempSkill(skill)"
+                    >-</div>
+                    <div :class="{'skills-list__incdec--disabled': tempSkillPoints <= 0 || tempSkills[skill.id] >= skill.maxLevel}"
+                        class="skills-list__incdec"
+                        @click="increaseTempSkill(skill)"
+                    >+</div>
+                </template>
             </div>
         </div>
 
@@ -66,9 +68,6 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
-// Configs
-import allSkills from '../../../config/skills.json';
-
 const characterSkillsPage = {
     data() {
         return {
@@ -79,7 +78,7 @@ const characterSkillsPage = {
                 explanation: ''
             },
             availableSkills: [],
-            tempSkills: [],
+            tempSkills: {},
             tempSkillPoints: 0
         };
     },
@@ -87,20 +86,35 @@ const characterSkillsPage = {
         ...mapGetters(['characterSkillPoints', 'characterSkills', 'characterJobId'])
     },
     mounted() {
-        this.$nextTick(() => {
-            this.tempSkillPoints = this.characterSkillPoints;
-            this.tempSkills = Object.assign({}, this.characterSkills);
+        mo.socket.on('saveSkillsComplete', (response) => {
+            this.$store.commit('saveSkills', response);
+        });
 
-            this.populateAvailableSkills();
+        mo.socket.on('getSkillsDataComplete', (response) => {
+            this.availableSkills = response;
 
             this.populateTempSkills();
+
+            this.tempSkillPoints = this.characterSkillPoints;
+            this.tempSkills = Object.assign(this.tempSkills, this.characterSkills);
         });
+
+        mo.socket.emit('getSkillsData');
+    },
+    beforeDestroy() {
+        mo.socket.off('saveSkillsComplete');
+        mo.socket.off('getSkillsDataComplete');
     },
     methods: {
         skillRequirementMet(skill) {
+            // In case there are no requirements, everything is cool
+            if (!skill.requirements) {
+                return true;
+            }
+
             for (const [key, value] of Object.entries(skill.requirements)) {
                 // If skills is not found or lower level than required, return false
-                if (!this.characterSkills || this.characterSkills[key] < value) {
+                if (!this.characterSkills || !this.characterSkills[key] || this.characterSkills[key] < value) {
                     return false;
                 }
             }
@@ -108,22 +122,16 @@ const characterSkillsPage = {
             return true;
         },
         saveSkills() {
-            this.$store.dispatch('saveSkills', {
+            mo.socket.emit('saveSkills', {
                 skills: Object.assign({}, this.tempSkills),
                 skillPoints: this.tempSkillPoints
             });
         },
-        populateAvailableSkills() {
-            // Display skills that match jobId
-            this.availableSkills = allSkills.filter((skill) => skill.jobs.includes(this.characterJobId));
-        },
         populateTempSkills() {
             // Populating tempSkills array with availableSkills IDs/amounts to not have errors
             // Real skills will be dealth with separately
-            for (let i = 0; i <= this.availableSkills.length; ++i) {
-                if (!this.tempSkills[i]) {
-                    this.tempSkills[i] = 0;
-                }
+            for (const skill of Object.keys(this.availableSkills)) {
+                this.tempSkills[this.availableSkills[skill].id] = 0;
             }
         },
         openSkillInfo(skill) {
@@ -157,7 +165,7 @@ const characterSkillsPage = {
         },
         increaseTempSkill(skill) {
             // Check if player have skill points and that skill is not already maximum
-            if (this.tempSkillPoints <= 0 || this.tempSkills[skill.id] >= skill.maxLevel || !this.skillRequirementMet(skill)) {
+            if (this.tempSkillPoints <= 0 || this.tempSkills[skill.id] >= skill.maxLevel) {
                 return false;
             }
 
