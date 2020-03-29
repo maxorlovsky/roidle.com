@@ -4,11 +4,11 @@
             <div class="chat__tabs">
                 <div :class="{'chat__tabs__tab--selected': selectedTab === 0, 'chat__tabs__tab--notification': tabNotification[0]}"
                     class="chat__tabs__tab"
-                    @click="selectedTab = 0; tabNotification[0] = false"
+                    @click="selectedTab = 0; tabNotification[0] = false;"
                 >Regular chat</div>
                 <div :class="{'chat__tabs__tab--selected': selectedTab === 1, 'chat__tabs__tab--notification': tabNotification[1]}"
                     class="chat__tabs__tab"
-                    @click="selectedTab = 1; tabNotification[1] = false"
+                    @click="selectedTab = 1; tabNotification[1] = false;"
                 >Battle chat</div>
             </div>
             <div v-show="selectedTab === 0"
@@ -32,12 +32,16 @@
                 <input v-model="whisperName"
                     type="text"
                     class="chat__input__whisper"
+                    @keyup.enter="sendChat()"
                 >
                 <input v-model="message"
                     type="text"
                     class="chat__input__message"
+                    @keyup.enter="sendChat()"
                 >
-                <button class="btn btn-primary btn-sm chat__input__button">&#62;</button>
+                <button class="btn btn-primary btn-sm chat__input__button"
+                    @click="sendChat()"
+                >&#62;</button>
 
                 <div v-if="disabledChat"
                     class="chat__input__limit"
@@ -55,7 +59,7 @@ export default {
     name: 'chat',
     data() {
         return {
-            whisperName: '',
+            whisperName: '#map',
             message: '',
             chatLog: [],
             battleChatLog: [],
@@ -117,17 +121,29 @@ export default {
             });
         },
         scrollChat() {
-            if (this.$refs.chatBody.scrollTop === this.$refs.chatBody.scrollHeight - this.$refs.chatBody.clientHeight) {
+            if (this.$refs.chatBody.scrollTop >= this.$refs.chatBody.scrollHeight - this.$refs.chatBody.clientHeight - 2) {
                 this.$nextTick(() => {
                     this.$refs.chatBody.scrollTop = this.$refs.chatBody.scrollHeight;
                 });
             }
 
-            if (this.$refs.chatBodyBattle.scrollTop === this.$refs.chatBodyBattle.scrollHeight - this.$refs.chatBodyBattle.clientHeight) {
+            if (this.$refs.chatBodyBattle.scrollTop >= this.$refs.chatBodyBattle.scrollHeight - this.$refs.chatBodyBattle.clientHeight - 2) {
                 this.$nextTick(() => {
-                    this.$refs.chatBodyBattle.scrollTop = this.$refs.chatBodyBattle.scrollHeight;
+                    this.$refs.chatBodyBattle.scrollTop = this.$refs.chatBodyBattle.scrollTop;
                 });
             }
+        },
+        sendChat() {
+            if (!this.message.trim()) {
+                return false;
+            }
+
+            mo.socket.emit('sendChatMessage', {
+                to: this.whisperName,
+                message: this.message
+            });
+
+            this.message = '';
         }
     }
 };

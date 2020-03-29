@@ -77,11 +77,13 @@ $chat-tabs-height: 35px;
             width: 25%;
             border: 0;
             border-right: 5px solid #ccc;
+            padding: 0 0.25rem;
         }
 
         &__message {
             width: 65%;
             border: 0;
+            padding: 0 0.25rem;
         }
 
         &__button {
