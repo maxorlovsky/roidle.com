@@ -38,14 +38,9 @@
             <inn-actions v-if="!outsideActions"
                 :class="{'game__action--disabled': fightStatus || travelingToLocation || restInProgress}"
             />
-
-            <div v-if="!outsideActions"
+            <shop-actions v-if="!outsideActions"
                 :class="{'game__action--disabled': fightStatus || travelingToLocation || restInProgress}"
-                class="game__action"
-            >
-                <img src="/dist/assets/images/shopping.png">
-                <span class="game__action__name">Shop Dealers</span>
-            </div>
+            />
 
             <div v-if="fightStatus"
                 class="game__action-in-progress"
@@ -96,11 +91,13 @@ import { mapGetters } from 'vuex';
 // Components
 import kafraActions from '../../components/kafra-actions/kafra-actions.vue';
 import innActions from '../../components/inn-actions/inn-actions.vue';
+import shopActions from '../../components/shop-actions/shop-actions.vue';
 
 const gamePage = {
     components: {
         kafraActions,
-        innActions
+        innActions,
+        shopActions
     },
     data() {
         return {

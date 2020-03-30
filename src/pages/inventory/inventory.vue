@@ -39,7 +39,6 @@ import { mapGetters } from 'vuex';
 const inventoryPage = {
     data() {
         return {
-            items: [],
             itemInfo: {
                 show: false,
                 name: '',
