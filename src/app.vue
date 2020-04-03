@@ -14,6 +14,8 @@
 
             <level-up />
 
+            <item-info />
+
             <docked-menu v-if="dockedMenu" />
 
             <div v-if="serverWentDown"
@@ -42,6 +44,7 @@ import charInfoTop from './components/char-info-top/char-info-top.vue';
 import dockedMenu from './components/docked-menu/docked-menu.vue';
 import loading from './components/loading/loading.vue';
 import levelUp from './components/level-up/level-up.vue';
+import itemInfo from './components/item-info/item-info.vue';
 
 export default {
     name: 'app',
@@ -50,7 +53,8 @@ export default {
         charInfoTop,
         dockedMenu,
         loading,
-        levelUp
+        levelUp,
+        itemInfo
     },
     store: store,
     data() {

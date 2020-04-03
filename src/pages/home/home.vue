@@ -73,7 +73,7 @@
             </div>
         </template>
         <template v-else>
-            <div class="home__logo"><img src=""></div>
+            <div class="home__logo"><img src="/dist/assets/images/logo.png"></div>
             <loading v-if="loading" />
             <div v-else
                 class="home__tap"
@@ -163,7 +163,7 @@ const homePage = {
                 this.loading = false;
             }
         },
-        chooseCharacter(characterId) {
+        async chooseCharacter(characterId) {
             // If socket connection is already established, we ignore it
             if (mo.socket) {
                 return false;
@@ -174,7 +174,7 @@ const homePage = {
 
             // If authentication succeeded and character is selected we connect to socket
             // Storring it in global variable
-            mo.socket = io({
+            mo.socket = await io({
                 reconnection: true,
                 reconnectionDelay: 1000,
                 reconnectionDelayMax: 5000,
