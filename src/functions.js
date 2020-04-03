@@ -9,7 +9,7 @@ const functions = {
         // Set item
         if (func === 'set') {
             // If any parameter is empty, we don't do anything
-            if (!func || !key || !args[0]) {
+            if (!func || !key || (!args[0] && args[0] !== false)) {
                 return false;
             }
 

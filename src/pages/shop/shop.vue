@@ -1,17 +1,25 @@
 <template>
     <div v-if="!loading"
+        :class="$route.query.action"
         class="shop"
     >
         <div class="shop__wrapper shop__left">
-            <div class="shop__header shop__left__header">Items available to sell</div>
+            <div v-if="$route.query.action === 'sell'"
+                class="shop__header shop__left__header"
+            >Items available to sell</div>
+            <div v-else
+                class="shop__header shop__left__header"
+            >Items available to buy</div>
             <template v-if="itemsLeft.length">
                 <div v-for="(item, index) in itemsLeft"
                     :key="index"
                     class="shop__item"
                 >
-                    <div class="shop__item__image-amount">
+                    <div class="shop__item__image-amount"
+                        @click="showItemInfo(item.itemId)"
+                    >
                         <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
-                        <span>{{ item.amount }}</span>
+                        <span v-if="$route.query.action === 'sell'">{{ item.amount }}</span>
                     </div>
                     <div class="shop__item__name-price">
                         <div class="shop__item__name-price__name">{{ item.itemName }}</div>
@@ -28,7 +36,9 @@
                 <div class="shop__empty">Empty</div>
             </template>
 
-            <div class="shop__summary">
+            <div v-if="$route.query.action === 'sell' && $route.query.type === 'tools'"
+                class="shop__summary"
+            >
                 <div class="shop__summary__value">
                     <label for="amountToggle">Toggle Item Amount</label>
                     <input id="amountToggle"
@@ -40,7 +50,12 @@
         </div>
 
         <div class="shop__wrapper shop__right">
-            <div class="shop__header">Selling items</div>
+            <div v-if="$route.query.action === 'sell'"
+                class="shop__header"
+            >Selling items</div>
+            <div v-else
+                class="shop__header"
+            >Buying items</div>
             <template v-if="itemsRight.length">
                 <div v-for="(item, index) in itemsRight"
                     :key="index"
@@ -66,11 +81,21 @@
             </template>
 
             <div class="shop__summary">
-                <div class="shop__summary__value">Total: {{ totalValue }} Z</div>
-                <button :disabled="!totalValue"
+                <div :class="{'shop__summary__value--not-enough': totalValue > characterZeny}"
+                    class="shop__summary__value"
+                >
+                    Total: {{ totalValue }} Z
+                </div>
+                <button v-if="$route.query.action === 'sell'"
+                    :disabled="!totalValue"
                     class="btn btn-success"
                     @click="initiateSell()"
                 >Sell</button>
+                <button v-else
+                    :disabled="!totalValue || totalValue > characterZeny"
+                    class="btn btn-success"
+                    @click="initiateBuy()"
+                >Buy</button>
             </div>
         </div>
 
@@ -80,6 +105,7 @@
             <div class="modal__content">
                 <input v-model="amountModal"
                     type="number"
+                    size="4"
                 >
             </div>
             <div class="modal__buttons">
@@ -96,6 +122,9 @@
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
 // Globals functions
 import { functions } from '@src/functions.js';
 
@@ -115,6 +144,9 @@ const shopPage = {
             moveTo: null
         };
     },
+    computed: {
+        ...mapGetters(['characterZeny'])
+    },
     watch: {
         amountToggle() {
             functions.storage('set', 'itemAmountToggle', this.amountToggle);
@@ -127,14 +159,12 @@ const shopPage = {
         }
 
         // Check if type is correct
-        if (!this.$route.query.type || !['weapon', 'armor', 'tools'].includes(this.$route.query.type)) {
+        if (!this.$route.query.type || !['equipment', 'tools'].includes(this.$route.query.type)) {
             this.$router.push('/game');
         }
 
         if (this.$route.query.action === 'buy') {
-            mo.socket.emit('getShopItems', {
-                type: this.$route.query.type
-            });
+            mo.socket.emit('getShopItemsForBuy', this.$route.query.type);
         } else {
             mo.socket.emit('getUserItemsForSell', this.$route.query.type);
         }
@@ -142,9 +172,27 @@ const shopPage = {
         // Hiding chat
         this.$store.commit('showChat', false);
 
+        mo.socket.on('getShopItemsForBuyComplete', (response) => {
+            this.itemsLeft = response;
+            this.loading = false;
+        });
+
         mo.socket.on('getUserItemsForSellComplete', (response) => {
             this.itemsLeft = response;
             this.loading = false;
+        });
+
+        mo.socket.on('buyItemsComplete', (response) => {
+            this.$store.commit('setInventoryData', {
+                inventory: response.inventory,
+                inventoryWeight: response.inventoryWeight
+            });
+
+            this.$store.commit('saveZeny', response.zeny);
+
+            // Reset item lists and other variables
+            this.itemsRight = [];
+            this.totalValue = 0;
         });
 
         mo.socket.on('sellItemsComplete', (response) => {
@@ -161,13 +209,18 @@ const shopPage = {
         });
     },
     beforeDestroy() {
+        mo.socket.off('getShopItemsForBuyComplete');
         mo.socket.off('getUserItemsForSellComplete');
+        mo.socket.off('buyItemsComplete');
         mo.socket.off('sellItemsComplete');
 
         // Showing chat
         this.$store.commit('showChat', true);
     },
     methods: {
+        showItemInfo(itemId) {
+            mo.socket.emit('getItemsInfo', [itemId]);
+        },
         moveItem(index, moveFrom, moveTo) {
             const movingItem = this[moveFrom][index];
 
@@ -177,17 +230,31 @@ const shopPage = {
             // Checking if item is already in selling items array
             this.moveItemFoundIndex = this[moveTo].findIndex((item) => item.id === movingItem.id);
 
-            // In case toggle is off and there are more than 1 item, we check if we need to display amount popup
-            if (movingItem.amount > 1 && !this.amountToggle) {
+            // In case of buy, we always ask for amount
+            if (this.$route.query.action === 'buy' && this.$route.query.type === 'tools') {
                 this.toggledMovedItem = index;
                 this.displayChoseAmount(index, movingItem);
+            // In case toggle is off and there are more than 1 item, we check if we need to display amount popup
+            } else if (movingItem.amount > 1 && !this.amountToggle) {
+                this.toggledMovedItem = index;
+                this.displayChoseAmount(index, movingItem);
+            // Otherwise we move the whole batch
             } else {
-                // Remove from item list
-                const movingItem = this[moveFrom].splice(index, 1)[0];
+                let movingItem = null;
 
-                // Add to list of potentially sold items
+                // In case it's not buy and not left items, we remove item from the list
+                if (this.$route.query.action === 'buy' && this.$route.query.type === 'equipment' && this.moveFrom === 'itemsLeft') {
+                    movingItem = { ...this[moveFrom][index] };
+                } else {
+                    movingItem = this[moveFrom].splice(index, 1)[0];
+                }
+
+                // Add to list of potentially bought/sold items
                 // We first check if item that we suppose to move is already in the right list, if yes we need to just add amount
-                if (this.moveItemFoundIndex >= 0) {
+                if (this.$route.query.action === 'buy' && this.$route.query.type === 'equipment' && this.moveFrom === 'itemsLeft') {
+                    movingItem.amount = 1;
+                    this[moveTo].push(movingItem);
+                } else if (this.moveItemFoundIndex >= 0) {
                     this[moveTo][this.moveItemFoundIndex].amount += movingItem.amount;
                 } else {
                     this[moveTo].push(movingItem);
@@ -212,7 +279,14 @@ const shopPage = {
 
             //  Check if this is full amount, if that's the case we delete item from array fully
             if (this[this.moveFrom][index].amount === amount) {
-                const movingItem = this[this.moveFrom].splice(index, 1)[0];
+                let movingItem = null;
+
+                // In case of window of buy we never remove item from itemsLeft
+                if (this.$route.query.action === 'buy' && this.moveFrom === 'itemsLeft') {
+                    movingItem = this[this.moveFrom][index];
+                } else {
+                    movingItem = this[this.moveFrom].splice(index, 1)[0];
+                }
 
                 if (this.moveItemFoundIndex >= 0) {
                     this[this.moveTo][this.moveItemFoundIndex].amount += movingItem.amount;
@@ -224,7 +298,10 @@ const shopPage = {
                 const movingItem = { ...this[this.moveFrom][index] };
 
                 movingItem.amount = amount;
-                this[this.moveFrom][index].amount -= amount;
+                // In case of window of sale, we decrease the amount of leftItems
+                if (this.$route.query.action === 'sell' || (this.$route.query.action === 'buy' && this.moveFrom === 'itemsRight')) {
+                    this[this.moveFrom][index].amount -= amount;
+                }
 
                 if (this.moveItemFoundIndex >= 0) {
                     this[this.moveTo][this.moveItemFoundIndex].amount += movingItem.amount;
@@ -246,6 +323,12 @@ const shopPage = {
             }
 
             this.totalValue = value;
+        },
+        initiateBuy() {
+            mo.socket.emit('buyItems', {
+                type: this.$route.query.type,
+                items: this.itemsRight
+            });
         },
         initiateSell() {
             mo.socket.emit('sellItems', this.itemsRight);
