@@ -61,11 +61,13 @@ export default {
                 });
             });
 
-            mo.socket.on('levelUpBase', (level) => {
+            mo.socket.on('levelUpBase', (response) => {
                 // Updating level
                 this.$store.commit('saveLevels', {
-                    baseLevel: level
+                    baseLevel: response.level
                 });
+
+                this.$store.commit('saveStatusPoints', response.statusPoints);
 
                 // Delaying angel animation a bit, because of audio
                 setTimeout(() => {
