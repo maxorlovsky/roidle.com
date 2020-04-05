@@ -13,12 +13,13 @@
                 <button class="btn btn-primary"
                     @click="saveLocation()"
                 >Save Location</button>
-                <button class="btn btn-primary"
+                <button :class="{'btn-disabled': characterSkills[1] < 6}"
+                    class="btn btn-primary"
                     @click="openStorage()"
                 >Use Storage (60 Z)</button>
-                <button class="btn btn-primary"
+                <!--<button class="btn btn-primary"
                     @click="openGuildStorage()"
-                >Use Guild storage (600 Z)</button>
+                >Use Guild storage (600 Z)</button>-->
                 <button class="btn btn-primary"
                     @click="openTeleportService()"
                 >Use Teleport Service</button>
@@ -44,22 +45,44 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['characterLocation'])
+        ...mapGetters(['characterLocation', 'characterZeny', 'characterSkills'])
     },
     methods: {
         saveLocation() {
-            if (!Number(this.characterLocation)) {
-                console.error('[ERROR] Selected location is not found');
-
-                return false;
-            }
-
-            this.$store.dispatch('updateSaveLocation', Number(this.characterLocation));
+            mo.socket.emit('saveLocation');
 
             this.showKafraModal = false;
         },
         openStorage() {
-            //
+            // If character don't have enough zeny, we dissallow him to use kafra storage service
+            if (this.characterZeny < 60) {
+                this.$store.commit('sendChat', [
+                    {
+                        type: 'system',
+                        character: 'System',
+                        message: 'Insufficient Zeny to use Kafra Storage Service'
+                    }
+                ]);
+
+                return false;
+            }
+
+            // If character basic skill level is less than 6 he is not allowed to use kafra service yet
+            if (this.characterSkills[1] < 6) {
+                this.$store.commit('sendChat', [
+                    {
+                        type: 'system',
+                        character: 'System',
+                        message: 'You need basic level 6 to start using Kafra Storage Services'
+                    }
+                ]);
+
+                return false;
+            }
+
+            this.showKafraModal = false;
+
+            this.$router.push('/kafra-storage');
         },
         openGuildStorage() {
             //
