@@ -34,5 +34,6 @@ export default {
     characterEquipment: (state) => state.characterEquipment,
     showChat: (state) => state.showChat,
     socketConnection: (state) => state.socketConnection,
-    allMaps: (state) => state.allMaps
+    allMaps: (state) => state.allMaps,
+    closeItemInfo: (state) => state.closeItemInfo
 };

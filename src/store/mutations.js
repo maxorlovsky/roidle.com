@@ -455,5 +455,8 @@ export default {
     },
     displayDockedMenu: (state, values) => {
         state.dockedMenu = values;
+    },
+    closeItemInfo: (state) => {
+        state.closeItemInfo = new Date();
     }
 };

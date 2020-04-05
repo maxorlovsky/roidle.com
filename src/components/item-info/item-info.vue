@@ -37,13 +37,16 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['socketConnection'])
+        ...mapGetters(['socketConnection', 'closeItemInfo'])
     },
     watch: {
         socketConnection() {
             if (this.socketConnection) {
                 this.setUpSocketEvents();
             }
+        },
+        closeItemInfo() {
+            this.show = false;
         }
     },
     beforeDestroy() {

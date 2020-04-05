@@ -1,6 +1,7 @@
 // Vue
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { store } from './store/index.js';
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     window.scrollTo(0, 0);
+
+    // To hide item info in case user redirect from one page to the other and it's open
+    store.commit('closeItemInfo');
 
     next();
 });

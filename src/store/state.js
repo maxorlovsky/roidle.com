@@ -120,5 +120,6 @@ export default {
     },
     showChat: false,
     socketConnection: false,
-    allMaps: null
+    allMaps: null,
+    closeItemInfo: null
 };
