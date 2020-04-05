@@ -31,6 +31,14 @@ const inventoryPage = {
             return (this.inventoryWeight * 100) / this.characterAttributes.weight > 90;
         }
     },
+    mounted() {
+        // Hiding chat
+        this.$store.commit('showChat', false);
+    },
+    beforeDestroy() {
+        // Showing chat
+        this.$store.commit('showChat', true);
+    },
     methods: {
         showItemInfo(itemId) {
             mo.socket.emit('getItemsInfo', [itemId]);
