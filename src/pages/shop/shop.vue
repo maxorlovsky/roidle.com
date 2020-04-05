@@ -103,9 +103,11 @@
             class="modal"
         >
             <div class="modal__content">
-                <input v-model="amountModal"
+                <input ref="amountModal"
+                    v-model="amountModal"
                     type="number"
                     size="4"
+                    placeholder="Amount"
                 >
             </div>
             <div class="modal__buttons">
@@ -267,6 +269,11 @@ const shopPage = {
             this.displayAmountModal = true;
             this.amountModal = 1;
             this.amountModalMax = movingItem.amount;
+
+            // Focus on field when it appears
+            this.$nextTick(() => {
+                this.$refs.amountModal.focus();
+            });
         },
         confirmChosenAmount() {
             // In case user put it more than he should
