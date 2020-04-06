@@ -22,9 +22,9 @@
                     @click="typeChosen = 'deluxe'"
                 >Deluxe room - 1 min (100 Z)</button>
 
-                <button class="btn btn-primary"
+                <!--<button class="btn btn-primary"
                     @click="typeChosen = 'premier'"
-                >Premier room - 1 min + Buff (500 Z)</button>
+                >Premier room - 1 min + Buff (500 Z)</button>-->
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
