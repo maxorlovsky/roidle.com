@@ -4,7 +4,11 @@
     background-position: center;
 
     &.prontera {
-        background-image: url("#{$assets}/images/prontera.jpg");
+        background-image: url("#{$assets}/images/locations/prontera.jpg");
+    }
+
+    &.izlude {
+        background-image: url("#{$assets}/images/locations/izlude.jpg");
     }
 
     &.payon {
