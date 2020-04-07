@@ -71,12 +71,39 @@
                     <option>Middleline</option>
                     <option>Backline</option>
                 </select>
+
+                <p>Time</p>
+                <button class="btn btn-primary"
+                    @click="huntTime = 60"
+                >1 min</button>
+
+                <button class="btn btn-primary"
+                    @click="huntTime = 300"
+                >5 min</button>
+
+                <button class="btn btn-primary"
+                    @click="huntTime = 600"
+                >10 min</button>
+
+                <template v-if="enableLongerHunt">
+                    <button class="btn btn-primary"
+                        @click="huntTime = 1800"
+                    >30 min</button>
+                    <button class="btn btn-primary"
+                        @click="huntTime = 2700"
+                    >45 min</button>
+                    <button class="btn btn-primary"
+                        @click="huntTime = 3600"
+                    >1 hour</button>
+                </template>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
-                    @click="showFightModal = false"
+                    @click="cancelHunt()"
                 >Cancel</button>
-                <button class="btn btn-success"
+                <button :disabled="!huntTime"
+                    :class="{'disabled': !huntTime}"
+                    class="btn btn-success"
                     @click="startHunt()"
                 >Start</button>
             </div>
@@ -107,7 +134,9 @@ const gamePage = {
             fightTimer: '',
             interval: null,
             outsideActions: false,
-            cancelFight: false
+            cancelFight: false,
+            huntTime: null,
+            enableLongerHunt: false
         };
     },
     computed: {
@@ -116,7 +145,8 @@ const gamePage = {
             'fightStatus',
             'travelingToLocation',
             'restInProgress',
-            'socketConnection'
+            'socketConnection',
+            'characterSkills'
         ])
     },
     watch: {
@@ -126,6 +156,14 @@ const gamePage = {
                 // Request to get location information from the server
                 if (mo.socket) {
                     mo.socket.emit('getCurrentMapLocationData');
+                }
+            }
+        },
+        characterSkills: {
+            immediate: true,
+            handler() {
+                if (this.characterSkills[1] >= 8) {
+                    this.enableLongerHunt = true;
                 }
             }
         },
@@ -209,6 +247,10 @@ const gamePage = {
         stopHunt() {
             this.cancelFight = true;
         },
+        cancelHunt() {
+            this.showFightModal = false;
+            this.huntTime = null;
+        },
         startHunt() {
             // If fight in progress, we don't start another one
             if (this.fightStatus) {
@@ -218,7 +260,7 @@ const gamePage = {
             this.showFightModal = false;
 
             // Start hunt for 1 minute
-            mo.socket.emit('startHunt', (60 * 1000));
+            mo.socket.emit('startHunt', this.huntTime);
         },
         stopFight() {
             // Stopping the fight
