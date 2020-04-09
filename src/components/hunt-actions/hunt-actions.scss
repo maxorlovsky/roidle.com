@@ -80,4 +80,15 @@
             margin-top: 0;
         }
     }
+
+    .hunt-time-buttons {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .btn {
+            width: 30%;
+            margin-bottom: 0.25rem;
+        }
+    }
 }

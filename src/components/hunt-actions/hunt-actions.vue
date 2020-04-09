@@ -20,29 +20,31 @@
                 </select>
 
                 <p>Time</p>
-                <button class="btn btn-primary"
-                    @click="huntTime = 60"
-                >1 min</button>
-
-                <button class="btn btn-primary"
-                    @click="huntTime = 300"
-                >5 min</button>
-
-                <button class="btn btn-primary"
-                    @click="huntTime = 600"
-                >10 min</button>
-
-                <template v-if="enableLongerHunt">
+                <div class="hunt-time-buttons">
                     <button class="btn btn-primary"
-                        @click="huntTime = 1800"
-                    >30 min</button>
+                        @click="huntTime = 60"
+                    >1 min</button>
+
                     <button class="btn btn-primary"
-                        @click="huntTime = 2700"
-                    >45 min</button>
+                        @click="huntTime = 300"
+                    >5 min</button>
+
                     <button class="btn btn-primary"
-                        @click="huntTime = 3600"
-                    >1 hour</button>
-                </template>
+                        @click="huntTime = 600"
+                    >10 min</button>
+
+                    <template v-if="enableLongerHunt">
+                        <button class="btn btn-primary"
+                            @click="huntTime = 1800"
+                        >30 min</button>
+                        <button class="btn btn-primary"
+                            @click="huntTime = 2700"
+                        >45 min</button>
+                        <button class="btn btn-primary"
+                            @click="huntTime = 3600"
+                        >1 hour</button>
+                    </template>
+                </div>
 
                 <p>Healing items</p>
                 <div class="healing-items">
@@ -136,19 +138,22 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Globals functions
+import { functions } from '@src/functions.js';
+
 export default {
     name: 'hunt-actions',
     data() {
         return {
             showHuntModal: false,
             showHealingModal: false,
-            huntTime: null,
+            huntTime: functions.storage('get', 'huntSelectedTime') || null,
             enableLongerHunt: false,
             huntHealingItems: [null, null, null],
             huntHealingItemsAmount: [1, 1, 1],
             healingItemsList: [],
             healingSelectedSlot: null,
-            healingWhen: '10'
+            healingWhen: functions.storage('get', 'huntHealingWhen') || '10'
         };
     },
     computed: {
@@ -166,6 +171,12 @@ export default {
                 }
             }
         },
+        healingWhen() {
+            functions.storage('set', 'huntHealingWhen', this.healingWhen);
+        },
+        huntTime() {
+            functions.storage('set', 'huntSelectedTime', this.huntTime);
+        }
     },
     mounted() {
         mo.socket.on('startHuntComplete', (response) => {
@@ -179,6 +190,9 @@ export default {
         });
 
         mo.socket.on('stopHuntComplete', () => {
+            this.huntHealingItems = [null, null, null];
+            this.huntHealingItemsAmount = [1, 1, 1];
+
             this.$store.commit('huntStatus', {
                 status: false,
                 timeFinish: null
