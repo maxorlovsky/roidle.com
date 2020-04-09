@@ -59,8 +59,9 @@ export default {
     sendChat: (state, values) => {
         state.chatContent = values;
     },
-    fightStatus: (state, value) => {
-        state.fightStatus = value;
+    huntStatus: (state, value) => {
+        state.huntStatus = value.status;
+        state.huntEndTimer = value.timeFinish;
     },
     saveZeny: (state, zeny) => {
         state.characterZeny = zeny;

@@ -9,7 +9,7 @@
         >
             <div v-for="location in piece"
                 :key="location.id"
-                :class="{'map__piece--selected': location.id === characterLocationId, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': (travelingToLocation || restInProgress || fightStatus) && location.id !== travelingToLocation}"
+                :class="{'map__piece--selected': location.id === characterLocationId, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': (travelingToLocation || restInProgress || huntStatus) && location.id !== travelingToLocation}"
                 class="map__piece"
                 @click="selectMap(location.id)"
             >
@@ -69,7 +69,7 @@ const mapPage = {
             'characterStats',
             'travelingToLocation',
             'restInProgress',
-            'fightStatus',
+            'huntStatus',
             'allMaps'
         ])
     },
@@ -123,7 +123,7 @@ const mapPage = {
         },
         selectMap(locationId) {
             // If it's a black square or user is on the same location, we don't do anything
-            if (locationId >= 999 || locationId === this.characterLocationId || this.travelingToLocation || this.restInProgress || this.fightStatus) {
+            if (locationId >= 999 || locationId === this.characterLocationId || this.travelingToLocation || this.restInProgress || this.huntStatus) {
                 return false;
             }
 

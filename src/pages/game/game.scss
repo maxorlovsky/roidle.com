@@ -3,6 +3,10 @@
     background-repeat: no-repeat;
     background-position: center;
 
+    p {
+        margin: 0.2rem 0;
+    }
+
     &.prontera {
         background-image: url("#{$assets}/images/locations/prontera.jpg");
     }
@@ -79,7 +83,7 @@
             width: calc(33% - 1rem);
         }
 
-        img {
+        &__image {
             display: block;
             margin: 0 auto;
             width: 65px;
@@ -125,6 +129,7 @@
 
         .btn {
             display: block;
+            margin: 0 auto;
         }
     }
 }

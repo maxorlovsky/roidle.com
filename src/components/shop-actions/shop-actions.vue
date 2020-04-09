@@ -1,7 +1,9 @@
 <template>
     <div class="kafra-actions game__action">
         <div @click="showModal = true">
-            <img src="/dist/assets/images/shopping.png">
+            <img class="game__action__image"
+                src="/dist/assets/images/shopping.png"
+            >
             <span class="game__action__name">Shop Dealers</span>
         </div>
 

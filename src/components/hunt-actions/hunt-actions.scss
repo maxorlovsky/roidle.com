@@ -1,0 +1,83 @@
+
+.hunt-actions {
+    text-align: left;
+
+    .healing-items {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        &__item {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            border: 3px solid #808080;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 60%;
+            }
+
+            &__amount {
+                position: absolute;
+                bottom: -5px;
+                right: 0;
+                font-size: 1rem;
+                color: #fff;
+            }
+        }
+
+        &__incdec {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            color: #fff;
+            background-color: rgb(22, 179, 252);
+            text-align: center;
+            font-size: 1.25rem;
+            margin-left: 1rem;
+    
+            &--disabled {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .healing-modal {
+        width: 80%;
+        max-width: 425px;
+        padding: 0;
+
+        &__item {
+            padding: 1rem;
+            border-bottom: 2px solid #fff;
+            display: flex;
+            align-items: center;
+
+            &__image {
+                padding-right: 1rem;
+
+                > img {
+                    width: 35px;
+                }
+            }
+
+            &__desc {
+                font-size: 0.8rem;
+            }
+
+            &:last-child {
+                border-bottom: 0;
+            }
+        }
+
+        &__buttons {
+            padding: 1rem;
+            margin-top: 0;
+        }
+    }
+}
