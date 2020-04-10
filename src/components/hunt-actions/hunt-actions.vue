@@ -181,9 +181,10 @@ export default {
     mounted() {
         mo.socket.on('startHuntComplete', (response) => {
             // Marking character as in fight status
-            if (response && response.status) {
+            // In case of retreat / retreating we don't retrigger the hunt
+            if (response && response.status && this.huntStatus !== 'retreating') {
                 this.$store.commit('huntStatus', {
-                    status: true,
+                    status: 'hunting',
                     timeFinish: response.timeFinish
                 });
             }

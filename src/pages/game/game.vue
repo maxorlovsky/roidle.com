@@ -45,10 +45,10 @@
                 <div v-if="huntStatus">
                     <div>Hunt in progress</div>
                     <div>{{ huntStatusTimerDisplay }}</div>
-                    <button v-if="!cancelFight"
+                    <button v-if="!retreatFromHunt"
                         class="btn btn-secondary"
-                        @click="stopHunt()"
-                    >Cancel hunt</button>
+                        @click="initRetreatFromHunt()"
+                    >Retreat from hunt</button>
                 </div>
             </div>
         </div>
@@ -77,9 +77,8 @@ const gamePage = {
             showActions: false,
             outsideActions: false,
             huntInterval: null,
-            huntStatusTimerDisplay: '',
-            // Need to be removed with retreat implementation
-            cancelFight: false,
+            huntStatusTimerDisplay: '*',
+            retreatFromHunt: false,
         };
     },
     computed: {
@@ -114,13 +113,26 @@ const gamePage = {
         huntStatus: {
             immediate: true,
             handler() {
-                this.runHuntTimer();
+                // Displaying timer and status of the hunt
+                if (this.huntStatus === 'hunting') {
+                    this.runHuntTimer();
+                // In case retreating, just mark hunt as retreat without any timers
+                } else if (this.huntStatus === 'retreating') {
+                    this.markHuntAsRetreating();
+                // Reseting the hunt
+                } else {
+                    this.huntStatusTimerDisplay = '*';
+                    this.retreatFromHunt = false;
+                    clearInterval(this.huntInterval);
+                    this.huntInterval = null;
+                }
             }
         }
     },
     beforeDestroy() {
         if (mo.socket) {
             mo.socket.off('getCurrentMapLocationDataComplete');
+            mo.socket.off('retreatFromHuntComplete');
         }
     },
     methods: {
@@ -137,6 +149,24 @@ const gamePage = {
 
                 this.showActions = true;
             });
+
+            mo.socket.on('retreatFromHuntComplete', () => {
+                this.markHuntAsRetreating();
+
+                // Updating status prematurely, to not show
+                this.$store.commit('huntStatus', {
+                    status: 'retreating',
+                    timeFinish: null
+                });
+            });
+        },
+        markHuntAsRetreating() {
+            // Marking hunt as retreated
+            this.huntStatusTimerDisplay = 'Retreating from the Hunt...';
+            this.retreatFromHunt = true;
+            if (this.huntInterval) {
+                clearInterval(this.huntInterval);
+            }
         },
         checkHuntState() {
             // If fight status is on, we need to display active hunt details
@@ -150,7 +180,7 @@ const gamePage = {
                 // If timer reached 0, switch user locations and unlock the map
                 if (remainingTime <= 0) {
                     this.huntStatusTimerDisplay = 'Finishing the Hunt...';
-                    this.cancelFight = true;
+                    this.retreatFromHunt = true;
 
                     clearInterval(this.huntInterval);
 
@@ -167,6 +197,10 @@ const gamePage = {
 
                 this.huntStatusTimerDisplay = `${minutes}:${seconds}`;
             }, 1000);
+        },
+        initRetreatFromHunt() {
+            // If fight status is on, we need to display active hunt details
+            mo.socket.emit('retreatFromHunt');
         }
     }
 };
