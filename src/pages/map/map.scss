@@ -1,9 +1,11 @@
+$amountOfMapsPerRow: 7;
+
 .map {
     position: relative;
 
     &__row {
         display: flex;
-        width: calc(205px * 3);
+        width: calc(205px * #{$amountOfMapsPerRow});
     }
 
     &__piece {
