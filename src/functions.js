@@ -32,7 +32,7 @@ const functions = {
                 // If older than 30 min
                 (returnValue.time <= new Date().getTime()) ||
                 // Or if version is now different, ignoring session token
-                (returnValue.version !== mo.version && key !== 'token')
+                (returnValue.version !== mo.version && key !== 'session')
             ) {
                 // Cleanup
                 functions.storage('remove', key);
