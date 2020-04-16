@@ -83,11 +83,14 @@ const characterSkillsPage = {
         };
     },
     computed: {
-        ...mapGetters(['characterSkillPoints', 'characterSkills', 'characterJobId'])
+        ...mapGetters(['characterSkillPoints', 'characterSkills', 'characterJobId', 'characterStats'])
     },
     mounted() {
         mo.socket.on('saveSkillsComplete', (response) => {
             this.$store.commit('saveSkills', response);
+
+            // Trigger recalculations of stats
+            mo.socket.emit('getCharacterStatsAttributes', this.characterStats);
         });
 
         mo.socket.on('getSkillsDataComplete', (response) => {
@@ -100,10 +103,16 @@ const characterSkillsPage = {
         });
 
         mo.socket.emit('getSkillsData');
+
+        // Hiding chat
+        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('saveSkillsComplete');
         mo.socket.off('getSkillsDataComplete');
+
+        // Showing chat
+        this.$store.commit('showChat', true);
     },
     methods: {
         skillRequirementMet(skill) {

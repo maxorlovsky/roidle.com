@@ -2,6 +2,7 @@
     <div class="char-info">
         <avatar :head-style="characterHeadStyle"
             :gender="characterGender"
+            :job="characterJob"
             :just-head="true"
         />
 

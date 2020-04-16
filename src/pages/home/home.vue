@@ -12,6 +12,7 @@
                 >
                     <avatar :head-style="item.headStyle"
                         :gender="item.gender"
+                        :job="item.job"
                         :just-head="true"
                     />
                     <div class="home__select-character__info">
@@ -178,7 +179,8 @@ const homePage = {
                 reconnection: true,
                 reconnectionDelay: 1000,
                 reconnectionDelayMax: 5000,
-                reconnectionAttempts: Infinity
+                reconnectionAttempts: Infinity,
+                timeout: 60000
             });
 
             this.$store.commit('socketConnection', true);
@@ -197,6 +199,11 @@ const homePage = {
                 this.$store.commit('showChat', true);
 
                 this.$router.push('/game');
+            });
+
+            mo.socket.on('connect_timeout', (timeout) => {
+                console.error('TIMEOUT');
+                console.error(timeout);
             });
         },
         switchToCreateCharacter() {

@@ -20,6 +20,7 @@
             <div class="equipment__avatar">
                 <avatar :head-style="characterHeadStyle"
                     :gender="characterGender"
+                    :job="characterJob"
                 />
             </div>
 
@@ -155,6 +156,7 @@ const characterPage = {
             'characterHeadStyle',
             'characterGender',
             'characterEquipment',
+            'characterJob',
             'inventory'
         ])
     },
