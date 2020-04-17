@@ -13,6 +13,7 @@
             <div v-if="weaponLevel">Weapon Level: {{ weaponLevel }}</div>
             <div v-if="requiredLevel">Required Level: {{ requiredLevel }}</div>
             <div>Weight: {{ weight }}</div>
+            <div v-if="description">{{ description }}</div>
             <div v-if="applicableJobs">Applicable Job: {{ applicableJobs }}</div>
         </div>
     </div>
@@ -29,6 +30,7 @@ export default {
             show: false,
             name: '',
             type: '',
+            description: '',
             params: '',
             weaponLevel: 0,
             requiredLevel: 0,
@@ -66,6 +68,7 @@ export default {
             this.id = item.id;
             this.name = item.name;
             this.type = item.class ? item.class : item.type;
+            this.description = item.description ? item.description : '';
             this.params = '';
             this.weaponLevel = 0;
             this.requiredLevel = 0;
