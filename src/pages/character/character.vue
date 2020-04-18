@@ -42,33 +42,36 @@
         </div>
 
         <div v-if="showEquipmentModal"
-            class="equiment-modal modal"
+            class="equipment-modal modal"
         >
             <div v-if="characterEquipment[slot].itemId"
-                class="equiment-modal__item"
+                class="equipment-modal__item"
                 @click="uneqipItem(slot)"
             >
                 <img :src="`/dist/assets/images/cancel.png`">
-                <span class="equiment-modal__item__amount">Unequip item</span>
+                <span class="equipment-modal__item__amount">Unequip item</span>
             </div>
 
             <template v-if="items && items.length">
                 <div v-for="(item, index) in items"
                     :key="index"
-                    class="equiment-modal__item"
+                    class="equipment-modal__item"
                     @click="equipItem(item.id, item.itemId)"
                 >
                     <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
-                    <span class="equiment-modal__item__amount">{{ item.name }}</span>
+                    <div class="equipment-modal__item__amount">
+                        {{ item.name }}
+                        <div>{{ itemClassNameCorrection(item.class, item.twoHanded) }}, {{ itemDisplayParams(item.params) }}</div>
+                    </div>
                 </div>
             </template>
             <div v-else
-                class="equiment-modal__item"
+                class="equipment-modal__item"
             >
                 No items to equip
             </div>
 
-            <div class="modal__buttons equiment-modal__buttons">
+            <div class="modal__buttons equipment-modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showEquipmentModal = false"
                 >Cancel</button>
@@ -187,6 +190,40 @@ const characterPage = {
         this.$store.commit('showChat', true);
     },
     methods: {
+        itemDisplayParams(params) {
+            let paramsString = '';
+
+            for (const key of Object.keys(params)) {
+                paramsString += `${this.attributeNameCorrection(key)} ${params[key]}`;
+            }
+
+            return paramsString;
+        },
+        attributeNameCorrection(name) {
+            switch (name) {
+                case 'patk':
+                    return 'P.Atk';
+                case 'matk':
+                    return 'M.Atk';
+                case 'pdef':
+                    return 'P.Def';
+                case 'mdef':
+                    return 'M.Def';
+                case 'maxHp':
+                    return 'M.HP';
+                case 'maxMp':
+                    return 'M.MP';
+                default:
+                    return name.charAt(0).toUpperCase() + name.slice(1);
+            }
+        },
+        itemClassNameCorrection(name, twoHanded = false) {
+            if (name === 'sword' && twoHanded) {
+                return 'Two-handed Sword';
+            }
+
+            return name.charAt(0).toUpperCase() + name.slice(1);
+        },
         uneqipItem(slot) {
             // Triggering equip of an item on server
             mo.socket.emit('unequipItem', {
