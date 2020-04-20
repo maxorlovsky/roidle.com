@@ -173,6 +173,7 @@ export default {
                 mo.socket.disconnect();
                 mo.socket = null;
                 this.$router.push('/');
+                this.serverWentDown = false;
             });
 
             // If socket is registered, we're progressing by fetching user data
