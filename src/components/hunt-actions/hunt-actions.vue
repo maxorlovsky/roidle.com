@@ -53,12 +53,10 @@
                         class="healing-items__item"
                         @click="chooseHuntHealingItem(index)"
                     >
-                        <img v-if="item"
-                            :src="`/dist/assets/images/items/${item}.gif`"
-                        >
-                        <span v-if="item"
-                            class="healing-items__item__amount"
-                        >{{ huntHealingItemsAmount[index] }}</span>
+                        <template v-if="item">
+                            <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                            <span class="healing-items__item__amount">{{ item.amount }}</span>
+                        </template>
                     </div>
                 </div>
 
@@ -108,7 +106,7 @@
                 <div v-for="(item, index) in healingItemsList"
                     :key="index"
                     class="healing-modal__item"
-                    @click="addHealingItem(item.itemId, item.amount)"
+                    @click="addHealingItem(item)"
                 >
                     <div class="healing-modal__item__image">
                         <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
@@ -150,7 +148,6 @@ export default {
             huntTime: functions.storage('get', 'huntSelectedTime') || null,
             enableLongerHunt: false,
             huntHealingItems: [null, null, null],
-            huntHealingItemsAmount: [1, 1, 1],
             healingItemsList: [],
             healingSelectedSlot: null,
             healingWhen: functions.storage('get', 'huntHealingWhen') || '10'
@@ -192,7 +189,6 @@ export default {
 
         mo.socket.on('stopHuntComplete', () => {
             this.huntHealingItems = [null, null, null];
-            this.huntHealingItemsAmount = [1, 1, 1];
 
             this.$store.commit('huntStatus', {
                 status: false,
@@ -216,6 +212,9 @@ export default {
             mo.socket.emit('getHealingItems');
         },
         cancelHunt() {
+            this.huntHealingItems = [null, null, null];
+            this.showHealingModal = false;
+            this.healingItemsList = [];
             this.showHuntModal = false;
             this.huntTime = null;
         },
@@ -232,8 +231,8 @@ export default {
             for (let i = 0; i <= 2; ++i) {
                 if (this.huntHealingItems[i]) {
                     itemToUseInHunt.push({
-                        itemId: this.huntHealingItems[i],
-                        amount: this.huntHealingItemsAmount[i]
+                        itemId: this.huntHealingItems[i].itemId,
+                        amount: this.huntHealingItems[i].amount
                     });
                 }
             }
@@ -249,16 +248,34 @@ export default {
             this.showHealingModal = true;
             this.healingSelectedSlot = index;
         },
-        addHealingItem(itemId, amount) {
-            this.huntHealingItems[this.healingSelectedSlot] = itemId;
-            this.huntHealingItemsAmount[this.healingSelectedSlot] = amount;
+        addHealingItem(item) {
+            // If items is already in this slot, we first need to return it
+            if (this.huntHealingItems[this.healingSelectedSlot]) {
+                this.returnHealingItem(this.healingSelectedSlot);
+            }
+
+            // Add item
+            this.huntHealingItems[this.healingSelectedSlot] = item;
             this.showHealingModal = false;
+
+            // Finding index of item that we want to remove
+            const itemIndex = this.healingItemsList.findIndex((findItem) => findItem.itemId === item.itemId);
+
+            // Remove item from healing item list
+            this.healingItemsList.splice(itemIndex, 1);
         },
         removeHealingItem(slot) {
+            // Add item back to healing list items
+            this.returnHealingItem(slot);
+
+            // Cleaning up the slot
             this.huntHealingItems[slot] = null;
-            this.huntHealingItemsAmount[slot] = null;
             this.showHealingModal = false;
         },
+        returnHealingItem(slot) {
+            // Add item back to healing list items
+            this.healingItemsList.push(this.huntHealingItems[slot]);
+        }
     }
 };
 </script>
