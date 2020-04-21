@@ -64,7 +64,7 @@ export default {
             mo.socket.on('levelUpBase', (response) => {
                 // Updating level
                 this.$store.commit('saveLevels', {
-                    baseLevel: response.level
+                    baseLevel: response.baseLevel
                 });
 
                 this.$store.commit('saveStatusPoints', response.statusPoints);
