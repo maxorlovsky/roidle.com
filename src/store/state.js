@@ -122,5 +122,6 @@ export default {
     showChat: false,
     socketConnection: false,
     allMaps: null,
+    selfBagItemInfo: false,
     closeItemInfo: null
 };

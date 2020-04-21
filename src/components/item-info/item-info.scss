@@ -11,7 +11,13 @@
     border-radius: 4px;
     z-index: 3;
     padding: 1rem;
-    display: flex;
+
+    .item-info-wrapper {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        overflow: hidden;
+    }
 
     &__illustration {
         width: 75px;
@@ -25,5 +31,41 @@
 
     &__requirement {
         color: #900;
+    }
+
+    &__actions {
+        width: 100%;
+        margin-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+        z-index: 4;
+    }
+
+    &__discard {
+        position: absolute;
+        top: calc(50% - 30% - 2rem);
+        left: calc(50% - 40% - 2rem);
+        border: 2px solid #000;
+        border-radius: 4px;
+        background-color: rgba(255, 255, 255, 0.95);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        text-align: center;
+        padding: 1rem;
+        z-index: 5;
+
+        &__caution-text {
+            margin-bottom: 0.5rem;
+        }
+
+        &__amount {
+            width: 100%;
+            margin-bottom: 0.5rem;
+
+            > input {
+                width: 50%;
+            }
+        }
     }
 }

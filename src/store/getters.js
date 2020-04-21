@@ -36,5 +36,6 @@ export default {
     showChat: (state) => state.showChat,
     socketConnection: (state) => state.socketConnection,
     allMaps: (state) => state.allMaps,
-    closeItemInfo: (state) => state.closeItemInfo
+    closeItemInfo: (state) => state.closeItemInfo,
+    selfBagItemInfo: (state) => state.selfBagItemInfo
 };

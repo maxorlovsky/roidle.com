@@ -457,7 +457,11 @@ export default {
     displayDockedMenu: (state, values) => {
         state.dockedMenu = values;
     },
+    itemInfoInventoryPage: (state) => {
+        state.selfBagItemInfo = true;
+    },
     closeItemInfo: (state) => {
+        state.selfBagItemInfo = false;
         state.closeItemInfo = new Date();
     }
 };

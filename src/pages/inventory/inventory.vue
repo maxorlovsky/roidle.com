@@ -41,6 +41,9 @@ const inventoryPage = {
     },
     methods: {
         showItemInfo(itemId) {
+            // Marking that item is open in inventory of a user
+            this.$store.commit('itemInfoInventoryPage');
+
             mo.socket.emit('getItemsInfo', [itemId]);
         }
     }
