@@ -28,6 +28,9 @@
             <span v-else-if="restingDisplay"
                 class="char-info__location__place"
             >Resting ({{ restingDisplay }})</span>
+            <span v-else-if="huntingDisplay"
+                class="char-info__location__place"
+            >Hunting ({{ huntingDisplay }})</span>
             <span v-else
                 class="char-info__location__place"
             >Location: {{ characterLocation }}</span>
@@ -53,6 +56,7 @@ export default {
             location: '',
             travelingDisplay: '',
             restingDisplay: '',
+            huntingDisplay: '',
             interval: null,
             baseExpPercentage: '0.00',
             jobExpPercentage: '0.00',
@@ -78,7 +82,9 @@ export default {
             'travelingToLocation',
             'restInProgress',
             'inventoryWeight',
-            'characterAttributes'
+            'characterAttributes',
+            'huntStatus',
+            'huntEndTimer'
         ])
     },
     watch: {
@@ -92,7 +98,7 @@ export default {
             immediate: true,
             handler() {
                 if (this.travelingToLocation) {
-                    this.getTravelingTime();
+                    this.showTimer('travel');
                 }
             }
         },
@@ -100,7 +106,15 @@ export default {
             immediate: true,
             handler() {
                 if (this.restInProgress) {
-                    this.getRestingTime();
+                    this.showTimer('rest');
+                }
+            }
+        },
+        huntStatus: {
+            immediate: true,
+            handler() {
+                if (this.huntStatus === 'hunting') {
+                    this.showTimer('hunt');
                 }
             }
         }
@@ -146,31 +160,55 @@ export default {
                 mp: mp
             });
         });
+
+        mo.socket.on('stopHuntComplete', () => {
+            this.$store.commit('huntStatus', {
+                status: false,
+                timeFinish: null
+            });
+        });
     },
     beforeDestroy() {
         mo.socket.off('checkTravelingTimeComplete');
         mo.socket.off('travelToMapComplete');
         mo.socket.off('checkRestingTimeComplete');
         mo.socket.off('characterHp');
+        mo.socket.off('stopHuntComplete');
     },
     methods: {
         calculateWeightPercentage() {
             this.weightPercentage = Math.round((this.inventoryWeight * 100) / this.characterAttributes.weight);
         },
-        // Display traveling time
-        getRestingTime() {
-            const restingDateTimeFinish = this.$store.getters.get('restInProgress');
+        showTimer(action) {
+            // By default we show timer for travel
+            let getter = 'travelingArrivalTime';
+            let emitAction = 'checkTravelingTime';
+            let displayVariable = 'travelingDisplay';
+
+            if (action === 'rest') {
+                getter = 'restInProgress';
+                emitAction = 'checkRestingTime';
+                displayVariable = 'restingDisplay';
+            } else if (action === 'hunt') {
+                getter = 'huntEndTimer';
+                emitAction = '';
+                displayVariable = 'huntingDisplay';
+            }
+
+            const dateTimeFinish = this.$store.getters.get(getter);
 
             this.interval = setInterval(() => {
                 // Calculating remaining time every time from the date param
-                const remainingTime = Math.floor((restingDateTimeFinish - new Date().getTime()) / 1000);
+                const remainingTime = Math.floor((dateTimeFinish - new Date().getTime()) / 1000);
 
                 // If timer reached 0, switch user locations and unlock the map
                 if (remainingTime <= 0) {
-                    mo.socket.emit('checkRestingTime');
+                    if (emitAction) {
+                        mo.socket.emit(emitAction);
+                    }
 
                     // Reset variable responsible for rest
-                    this.restingDisplay = '';
+                    this[displayVariable] = '';
                     clearInterval(this.interval);
 
                     return true;
@@ -184,37 +222,7 @@ export default {
                     seconds = `0${seconds}`;
                 }
 
-                this.restingDisplay = `${minutes}:${seconds}`;
-            }, 1000);
-        },
-        // Display traveling time
-        getTravelingTime() {
-            const travelingArrivalTime = this.$store.getters.get('travelingArrivalTime');
-
-            this.interval = setInterval(() => {
-                // Calculating remaining time every time from the date param
-                const remainingTime = Math.floor((travelingArrivalTime - new Date().getTime()) / 1000);
-
-                // If timer reached 0, switch user locations and unlock the map
-                if (remainingTime <= 0) {
-                    mo.socket.emit('checkTravelingTime');
-
-                    // Reset variable responsible for travel
-                    this.travelingDisplay = '';
-                    clearInterval(this.interval);
-
-                    return true;
-                }
-
-                // Making display of traveling time user friendly
-                const minutes = Math.floor(remainingTime / 60);
-                let seconds = remainingTime - minutes * 60;
-
-                if (seconds <= 9) {
-                    seconds = `0${seconds}`;
-                }
-
-                this.travelingDisplay = `${minutes}:${seconds}`;
+                this[displayVariable] = `${minutes}:${seconds}`;
             }, 1000);
         }
     }

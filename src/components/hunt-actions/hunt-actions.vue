@@ -187,36 +187,34 @@ export default {
             }
         });
 
-        mo.socket.on('stopHuntComplete', () => {
-            this.huntHealingItems = [null, null, null];
-
-            this.$store.commit('huntStatus', {
-                status: false,
-                timeFinish: null
-            });
-        });
-
         mo.socket.on('getHealingItemsComplete', (response) => {
             this.healingItemsList = response.items;
         });
     },
     beforeDestroy() {
         mo.socket.off('startHuntComplete');
-        mo.socket.off('stopHuntComplete');
         mo.socket.off('getHealingItemsComplete');
     },
     methods: {
         // Open hunt dialog
         openHunt() {
+            // Reset dialogs and variables for the hunt
+            this.huntHealingItems = [null, null, null];
+            this.showHealingModal = false;
+            this.healingItemsList = [];
+
+            // Showing hunt modal
             this.showHuntModal = true;
+
+            // Trigger to fetch healing items
             mo.socket.emit('getHealingItems');
         },
         cancelHunt() {
+            // Reset all variables and dialogs
             this.huntHealingItems = [null, null, null];
             this.showHealingModal = false;
             this.healingItemsList = [];
             this.showHuntModal = false;
-            this.huntTime = null;
         },
         startHunt() {
             // If fight in progress, we don't start another one
