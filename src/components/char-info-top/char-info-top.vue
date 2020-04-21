@@ -115,10 +115,6 @@ export default {
             handler() {
                 if (this.huntStatus === 'hunting') {
                     this.showTimer('hunt');
-                } else {
-                    // Reset variable responsible for rest
-                    this.huntingDisplay = '';
-                    clearInterval(this.interval);
                 }
             }
         }
