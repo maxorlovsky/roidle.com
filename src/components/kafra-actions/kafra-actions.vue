@@ -2,7 +2,7 @@
     <div class="kafra-actions game__action">
         <div @click="showKafraModal = true">
             <img class="game__action__image"
-                src="/dist/assets/images/illust/kafra_01.bmp"
+                src="/dist/assets/images/illust/kafra1.bmp"
             >
             <span class="game__action__name">Kafra Services</span>
         </div>
