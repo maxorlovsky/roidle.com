@@ -1,40 +1,42 @@
 <template>
     <div class="char-info">
-        <avatar :head-style="characterHeadStyle"
-            :gender="characterGender"
-            :job="characterJob"
-            :just-head="true"
-        />
+        <div class="char-info-wrapper">
+            <avatar :head-style="characterHeadStyle"
+                :gender="characterGender"
+                :job="characterJob"
+                :just-head="true"
+            />
 
-        <div class="char-info__description">
-            <span class="char-info__description__name">{{ characterName }}</span>
-            <span class="char-info__description__job">{{ characterJob }}</span>
-        </div>
+            <div class="char-info__description">
+                <span class="char-info__description__name">{{ characterName }}</span>
+                <span class="char-info__description__job">{{ characterJob }}</span>
+            </div>
 
-        <div class="char-info__health">
-            <span class="char-info__health__hp"><span>HP:</span> {{ characterHp }} / {{ characterAttributes.maxHp }}</span>
-            <span class="char-info__health__mp"><span>MP:</span> {{ characterMp }} / {{ characterAttributes.maxMp }}</span>
-        </div>
+            <div class="char-info__health">
+                <span class="char-info__health__hp"><span>HP:</span> {{ characterHp }} / {{ characterAttributes.maxHp }}</span>
+                <span class="char-info__health__mp"><span>MP:</span> {{ characterMp }} / {{ characterAttributes.maxMp }}</span>
+            </div>
 
-        <div class="char-info__levels">
-            <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ characterBaseExpPercentage }}%)</span>
-            <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ characterJobExpPercentage }}%)</span>
-        </div>
+            <div class="char-info__levels">
+                <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ characterBaseExpPercentage }}%)</span>
+                <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ characterJobExpPercentage }}%)</span>
+            </div>
 
-        <div class="char-info__location">
-            <span v-if="travelingDisplay"
-                class="char-info__location__place"
-            >Traveling ({{ travelingDisplay }})</span>
-            <span v-else-if="restingDisplay"
-                class="char-info__location__place"
-            >Resting ({{ restingDisplay }})</span>
-            <span v-else-if="huntingDisplay"
-                class="char-info__location__place"
-            >Hunting ({{ huntingDisplay }})</span>
-            <span v-else
-                class="char-info__location__place"
-            >Location: {{ characterLocation }}</span>
-            <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: {{ weightPercentage }}%</span>
+            <div class="char-info__location">
+                <span v-if="travelingDisplay"
+                    class="char-info__location__place"
+                >Traveling ({{ travelingDisplay }})</span>
+                <span v-else-if="restingDisplay"
+                    class="char-info__location__place"
+                >Resting ({{ restingDisplay }})</span>
+                <span v-else-if="huntingDisplay"
+                    class="char-info__location__place"
+                >Hunting ({{ huntingDisplay }})</span>
+                <span v-else
+                    class="char-info__location__place"
+                >Location: {{ characterLocation }}</span>
+                <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage > 90 }">{{ weightPercentage }}%</span></span>
+            </div>
         </div>
     </div>
 </template>

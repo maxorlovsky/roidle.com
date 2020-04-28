@@ -9,7 +9,7 @@
         >
             <div v-for="location in piece"
                 :key="location.id"
-                :class="{'map__piece--selected': location.id === characterLocationId, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': (travelingToLocation || restInProgress || huntStatus) && location.id !== travelingToLocation}"
+                :class="{'map__piece--selected': location.id === characterLocationId, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': (travelingToLocation || restInProgress || huntStatus || userOverweight) && location.id !== travelingToLocation}"
                 class="map__piece"
                 @click="selectMap(location.id)"
             >
@@ -44,6 +44,15 @@
                 >GO</button>
             </div>
         </div>
+
+        <div v-if="userOverweight"
+            class="modal"
+        >
+            <div class="modal__header">Overweight</div>
+            <div class="modal__content">
+                <p>Character is overweight, you can not travel to another location. Your character need to be below 90% of weight. Discard some items, use them or give it to someone else.</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -59,7 +68,8 @@ const mapPage = {
             humanReadableDate: '',
             travelDestinationName: '',
             travelDestinationId: 0,
-            travelTime: 0
+            travelTime: 0,
+            userOverweight: false
         };
     },
     computed: {
@@ -70,7 +80,9 @@ const mapPage = {
             'travelingToLocation',
             'restInProgress',
             'huntStatus',
-            'allMaps'
+            'allMaps',
+            'inventoryWeight',
+            'characterAttributes'
         ])
     },
     watch: {
@@ -94,6 +106,10 @@ const mapPage = {
         });
 
         this.$store.commit('showChat', false);
+
+        if (Math.round((this.inventoryWeight * 100) / this.characterAttributes.weight) > 90) {
+            this.userOverweight = true;
+        }
     },
     beforeDestroy() {
         mo.socket.off('getMapsComplete');
@@ -123,7 +139,7 @@ const mapPage = {
         },
         selectMap(locationId) {
             // If it's a black square or user is on the same location, we don't do anything
-            if (locationId >= 999 || locationId === this.characterLocationId || this.travelingToLocation || this.restInProgress || this.huntStatus) {
+            if (locationId >= 999 || locationId === this.characterLocationId || this.travelingToLocation || this.restInProgress || this.huntStatus || this.userOverweight) {
                 return false;
             }
 

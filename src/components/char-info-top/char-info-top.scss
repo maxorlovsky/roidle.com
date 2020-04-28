@@ -1,13 +1,15 @@
 .char-info {
-    display: flex;
-    flex-wrap: wrap;
-    border: 1px solid #ff0;
-    outline: 1px solid #000;
-    border-radius: 4px;
-    background-color: rgb(184, 135, 2);
-    color: #fff;
-    padding: 0.5rem;
-    font-size: 1rem;
+    background-image: url("#{$assets}/images/character.jpg");
+    background-position: 50% 30%;
+
+    .char-info-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        border-bottom: 1px solid #16b3fc;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 0.5rem;
+        font-size: 1rem;
+    }
 
     &__description {
         width: 40%;
@@ -54,5 +56,9 @@
         &__zeny {
             white-space: nowrap;
         }
+    }
+
+    &__overweight {
+        color: #c00;
     }
 }
