@@ -14,7 +14,7 @@ import './pages/game/game.vue';
 import './pages/inventory/inventory.vue';
 import './pages/home/home.vue';
 import './pages/map/map.vue';
-import './pages/missions/missions.vue';
+import './pages/quests/quests.vue';
 import './pages/server-down/server-down.vue';
 import './pages/shop/shop.vue';
 import './pages/kafra-storage/kafra-storage.vue';

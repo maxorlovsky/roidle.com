@@ -15,7 +15,7 @@
                 class="docked-menu__button"
             ><img src="/dist/assets/images/compass.png"></router-link>
 
-            <router-link to="/missions"
+            <router-link to="/quests"
                 class="docked-menu__button"
             ><img src="/dist/assets/images/tasks.png"></router-link>
 
