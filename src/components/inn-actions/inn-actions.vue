@@ -18,11 +18,11 @@
 
                 <button class="btn btn-primary"
                     @click="typeChosen = 'regular'"
-                >Regular room - 5 min (10 Z)</button>
+                >Regular room - 5 min (100 Z)</button>
 
                 <button class="btn btn-primary"
                     @click="typeChosen = 'deluxe'"
-                >Deluxe room - 1 min (100 Z)</button>
+                >Deluxe room - 1 min (1000 Z)</button>
 
                 <!--<button class="btn btn-primary"
                     @click="typeChosen = 'premier'"
