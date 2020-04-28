@@ -144,6 +144,10 @@ export default {
                 });
             });
 
+            mo.socket.on('zenyUpdate', (zeny) => {
+                this.$store.commit('saveZeny', zeny);
+            });
+
             mo.socket.on('characterDied', (response) => {
                 this.$store.commit('setCharacterData', {
                     baseExp: response.baseExp,
