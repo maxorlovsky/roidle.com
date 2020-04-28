@@ -87,6 +87,8 @@ a {
     padding: 0.5rem 1rem;
     z-index: 10;
     text-align: left;
+    width: 80%;
+    max-width: 400px;
 
     /* Overwrite bootstrap bullshit */
     bottom: initial;
