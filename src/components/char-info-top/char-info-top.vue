@@ -179,7 +179,7 @@ export default {
     },
     methods: {
         calculateWeightPercentage() {
-            this.weightPercentage = Math.round((this.inventoryWeight * 100) / this.characterAttributes.weight);
+            this.weightPercentage = Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight);
         },
         showTimer(action) {
             // By default we show timer for travel
