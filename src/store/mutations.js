@@ -160,7 +160,7 @@ export default {
         if (values.stats && values.stats.luk) {
             characterStats.luk = values.stats.luk;
         }
-        if (values.statusPoints) {
+        if (values.statusPoints || values.statusPoints === 0) {
             state.characterStatusPoints = values.statusPoints;
         }
 
