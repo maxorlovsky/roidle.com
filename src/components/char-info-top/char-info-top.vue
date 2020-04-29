@@ -117,6 +117,9 @@ export default {
             handler() {
                 if (this.huntStatus === 'hunting') {
                     this.showTimer('hunt');
+                } else if (this.huntStatus === 'retreating') {
+                    clearInterval(this.interval);
+                    this.huntingDisplay = '';
                 }
             }
         }
