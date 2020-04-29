@@ -16,7 +16,7 @@
                 <div class="quests-details__text"
                     v-html="currentDialogText"
                 />
-                <div v-if="neededProgress >= 0"
+                <div v-if="neededProgress"
                     class="quests-details__progress"
                 >{{ currentProgress }} / {{ neededProgress }}</div>
                 <div class="quests-details__actions">
