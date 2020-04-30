@@ -151,14 +151,14 @@ const characterSkillsPage = {
             this.skillInfo.requirements = '';
 
             // Transform object of requirements into readable text
-            for (const [key, value] of Object.entries(skill.requirements)) {
-                const foundSkill = this.availableSkills.find((skill) => skill.id === Number(key));
+            if (skill.requirements) {
+                for (const [key, value] of Object.entries(skill.requirements)) {
+                    const foundSkill = this.availableSkills.find((skill) => skill.id === Number(key));
 
-                this.skillInfo.requirements += `${foundSkill.name} (${value}), `;
-            }
+                    this.skillInfo.requirements += `${foundSkill.name} (${value}), `;
+                }
 
-            // Stripping last 2 elements, in case it's even populated
-            if (this.skillInfo.requirements) {
+                // Stripping last 2 elements, in case it's even populated
                 this.skillInfo.requirements = this.skillInfo.requirements.substring(0, this.skillInfo.requirements.length - 2);
             }
         },
