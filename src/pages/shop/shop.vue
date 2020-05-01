@@ -81,7 +81,7 @@
             </template>
 
             <div class="shop__summary">
-                <div :class="{'shop__summary__value--not-enough': totalValue > characterZeny}"
+                <div :class="{'shop__summary__value--not-enough': totalValue > characterZeny && $route.query.action === 'buy'}"
                     class="shop__summary__value"
                 >
                     Total: {{ totalValue }} Z
@@ -253,7 +253,7 @@ const shopPage = {
 
                 // Add to list of potentially bought/sold items
                 // We first check if item that we suppose to move is already in the right list, if yes we need to just add amount
-                if (this.$route.query.action === 'buy' && this.$route.query.type === 'equipment' && this.moveFrom === 'itemsLeft') {
+                if (this.$route.query.type === 'equipment') {
                     movingItem.amount = 1;
                     this[moveTo].push(movingItem);
                 } else if (this.moveItemFoundIndex >= 0) {
