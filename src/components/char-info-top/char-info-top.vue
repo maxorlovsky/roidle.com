@@ -113,7 +113,6 @@ export default {
             }
         },
         huntStatus: {
-            immediate: true,
             handler() {
                 if (this.huntStatus === 'hunting') {
                     this.showTimer('hunt');
