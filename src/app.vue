@@ -163,11 +163,12 @@ export default {
 
             mo.socket.on('jobChangeUpdate', (response) => {
                 this.$store.commit('setCharacterData', {
-                    jobId: response.jobId,
-                    job: response.job,
-                    jobLevel: response.jobLevel,
-                    jobExp: response.jobExp,
-                    jobExpPercentage: response.jobExpPercentage
+                    jobId: response.character.jobId,
+                    job: response.character.job,
+                    jobLevel: response.character.jobLevel,
+                    jobExp: response.character.jobExp,
+                    jobExpPercentage: response.character.jobExpPercentage,
+                    attributes: response.attributes
                 });
             });
         },
