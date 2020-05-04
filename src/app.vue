@@ -160,6 +160,16 @@ export default {
                     location: response.location,
                 });
             });
+
+            mo.socket.on('jobChangeUpdate', (response) => {
+                this.$store.commit('setCharacterData', {
+                    jobId: response.jobId,
+                    job: response.job,
+                    jobLevel: response.jobLevel,
+                    jobExp: response.jobExp,
+                    jobExpPercentage: response.jobExpPercentage
+                });
+            });
         },
         setUpSocketEvents() {
             mo.socket.emit('reconnect', functions.storage('get', 'session'));

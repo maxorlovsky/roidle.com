@@ -125,6 +125,9 @@ export default {
         if (values.jobId) {
             state.characterJobId = values.jobId;
         }
+        if (values.job) {
+            state.characterJob = values.job;
+        }
         if (values.baseExpPercentage) {
             state.characterBaseExpPercentage = values.baseExpPercentage;
         }
