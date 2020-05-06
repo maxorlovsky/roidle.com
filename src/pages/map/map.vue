@@ -17,7 +17,7 @@
                     <img :src="`/dist/assets/images/map/${location.mapFile}.png`">
                     <div class="map__piece__name">{{ location.name }}</div>
                     <div v-if="location.level"
-                        :class="{'map__piece__levels--too-high': location.level[0] > characterBaseLevel, 'map__piece__levels--too-low': location.level[1] < characterBaseLevel }"
+                        :class="{'map__piece__levels--too-high': location.level[0] > characterBaseLevel, 'map__piece__levels--too-low': location.level[1] < characterBaseLevel - 5 }"
                         class="map__piece__levels"
                     >Lv: {{ location.level[0] }} - {{ location.level[1] }}</div>
                     <div v-else
