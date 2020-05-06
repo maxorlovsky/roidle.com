@@ -206,16 +206,19 @@ export default {
                 const remainingTime = Math.floor((dateTimeFinish - new Date().getTime()) / 1000);
 
                 // If timer reached 0, switch user locations and unlock the map
-                if (remainingTime <= 0) {
+                if (remainingTime < 0) {
                     if (emitAction) {
                         // Reseting traveling, just in case action will fail
                         this.$store.commit('saveTraveling', {
                             time: 0,
-                            locationId: 9999,
+                            locationId: -1,
                             locationName: ''
                         });
 
-                        mo.socket.emit(emitAction);
+                        // We add artificial delay to emit action later, as communication with server have a delay
+                        setTimeout(() => {
+                            mo.socket.emit(emitAction);
+                        }, 1000);
                     }
 
                     // Reset variable responsible for rest
