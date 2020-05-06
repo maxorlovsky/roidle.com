@@ -211,7 +211,7 @@ export default {
                         // Reseting traveling, just in case action will fail
                         this.$store.commit('saveTraveling', {
                             time: 0,
-                            locationId: 0,
+                            locationId: 9999,
                             locationName: ''
                         });
 
