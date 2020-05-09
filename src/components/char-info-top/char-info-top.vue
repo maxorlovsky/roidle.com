@@ -207,19 +207,19 @@ export default {
 
                 // If timer reached 0, switch user locations and unlock the map
                 if (remainingTime < 0) {
-                    if (emitAction) {
-                        // Reseting traveling, just in case action will fail
+                    // Reseting traveling, just in case action will fail
+                    if (emitAction === 'checkTravelingTime') {
                         this.$store.commit('saveTraveling', {
                             time: 0,
                             locationId: -1,
                             locationName: ''
                         });
-
-                        // We add artificial delay to emit action later, as communication with server have a delay
-                        setTimeout(() => {
-                            mo.socket.emit(emitAction);
-                        }, 1000);
                     }
+
+                    // We add artificial delay to emit action later, as communication with server have a delay
+                    setTimeout(() => {
+                        mo.socket.emit(emitAction);
+                    }, 1000);
 
                     // Reset variable responsible for rest
                     this[displayVariable] = '';
