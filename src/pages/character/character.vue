@@ -21,6 +21,7 @@
                 <avatar :head-style="characterHeadStyle"
                     :gender="characterGender"
                     :job="characterJob"
+                    :head-gear="characterEquipment.head.itemId"
                 />
             </div>
 
@@ -61,7 +62,7 @@
                     <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                     <div class="equipment-modal__item__amount">
                         {{ item.name }}
-                        <div>{{ itemClassNameCorrection(item.class, item.twoHanded) }}, {{ itemDisplayParams(item.params) }}</div>
+                        <div>{{ itemClassNameCorrection(item.class, item.twoHanded) }}{{ itemDisplayParams(item.params) }}</div>
                     </div>
                 </div>
             </template>
@@ -191,10 +192,17 @@ const characterPage = {
     },
     methods: {
         itemDisplayParams(params) {
-            let paramsString = '';
+            let paramsString = ', ';
 
-            for (const key of Object.keys(params)) {
-                paramsString += `${this.attributeNameCorrection(key)} ${params[key]}`;
+            if (params) {
+                for (const key of Object.keys(params)) {
+                    paramsString += `${this.attributeNameCorrection(key)} ${params[key]}`;
+                }
+            }
+
+            // Check if params are empty
+            if (paramsString === ', ') {
+                paramsString = '';
             }
 
             return paramsString;

@@ -5,6 +5,7 @@
                 :gender="characterGender"
                 :job="characterJob"
                 :just-head="true"
+                :head-gear="characterEquipment.head.itemId"
             />
 
             <div class="char-info__description">
@@ -86,7 +87,8 @@ export default {
             'inventoryWeight',
             'characterAttributes',
             'huntStatus',
-            'huntEndTimer'
+            'huntEndTimer',
+            'characterEquipment'
         ])
     },
     watch: {

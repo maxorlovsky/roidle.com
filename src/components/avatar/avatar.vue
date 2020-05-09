@@ -10,6 +10,11 @@
         >
             <img :src="`/dist/assets/images/heads/${headStyle}_${gender}.gif`">
         </div>
+        <div v-if="headGear"
+            class="avatar__headgear"
+        >
+            <img :src="`/dist/assets/images/headgear/${headGear}.png`">
+        </div>
     </div>
 </template>
 
@@ -32,6 +37,11 @@ export default {
         job: {
             type: String,
             default: 'novice'
+        },
+        headGear: {
+            type: Number,
+            required: false,
+            default: 0
         }
     },
     computed: {

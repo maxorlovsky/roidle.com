@@ -14,6 +14,7 @@
                         :gender="item.gender"
                         :job="item.job"
                         :just-head="true"
+                        :head-gear="item.headgearItemId"
                     />
                     <div class="home__select-character__info">
                         {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>
