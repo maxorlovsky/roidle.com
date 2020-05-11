@@ -16,7 +16,7 @@ export default {
     characterJob: '',
     characterStatusPoints: 0,
     characterSkillPoints: 0,
-    characterLocationId: 1,
+    characterLocationId: 0,
     characterLocation: '',
     characterSaveLocationId: 1,
     characterSaveLocation: 1,
