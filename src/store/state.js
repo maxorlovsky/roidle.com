@@ -1,3 +1,6 @@
+// Globals functions
+import { functions } from '@src/functions.js';
+
 export default {
     characterId: 0,
     characterName: '',
@@ -123,5 +126,11 @@ export default {
     socketConnection: false,
     allMaps: null,
     selfBagItemInfo: false,
-    closeItemInfo: null
+    closeItemInfo: null,
+    // eslint-disable-next-line
+    music: functions.storage('get', 'music') === false ? false : true,
+    musicVolume: functions.storage('get', 'musicVolume') && functions.storage('get', 'musicVolume') >= 0 ? functions.storage('get', 'musicVolume') : 0.3,
+    // eslint-disable-next-line
+    sound: functions.storage('get', 'sound') === false ? false : true,
+    soundVolume: functions.storage('get', 'soundVolume') && functions.storage('get', 'soundVolume') >= 0 ? functions.storage('get', 'soundVolume') : 0.3,
 };

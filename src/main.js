@@ -18,6 +18,7 @@ import './pages/quests/quests.vue';
 import './pages/server-down/server-down.vue';
 import './pages/shop/shop.vue';
 import './pages/kafra-storage/kafra-storage.vue';
+import './pages/settings/settings.vue';
 // Mixins
 // 1 import globalMixins from '@shared/fe-utilities/src/mixins/global-mixin.js';
 

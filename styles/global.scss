@@ -1,5 +1,5 @@
 /* Project variables */
-$mainColor: #fe980f !default;
+$mainColor: #16b3fc !default;
 $mainColorOpacity: rgba(254, 152, 15, 0.5) !default;
 $bgColor: #000 !default;
 $font: "Roboto", sans-serif !default;
@@ -18,7 +18,6 @@ $nav-link-padding-x: 0;
 
 /* Font-Awesome variables */
 $fa-font-path: "../dist/assets/fonts/";
-$icomoon-font-path: "../dist/assets/fonts/";
 $assets: "../dist/assets" !default;
 
 // Importing lib styles
@@ -26,6 +25,7 @@ $assets: "../dist/assets" !default;
 @import "../node_modules/font-awesome/scss/font-awesome.scss";
 
 // Import project styles
+@import "./fonts.scss";
 @import "./styles.scss";
 @import "../src/components/**/*.scss";
 @import "../src/pages/**/*.scss";

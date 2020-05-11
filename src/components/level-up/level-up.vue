@@ -32,7 +32,9 @@ export default {
             'characterStats',
             'characterStatusPoints',
             'characterSkillPoints',
-            'socketConnection'
+            'socketConnection',
+            'sound',
+            'soundVolume'
         ])
     },
     watch: {
@@ -40,10 +42,15 @@ export default {
             if (this.socketConnection) {
                 this.setUpSocketEvents();
             }
+        },
+        soundVolume() {
+            this.setLevelUpVolume();
         }
     },
     mounted() {
-        this.$refs.levelUpAudio.volume = 0.3;
+        this.$nextTick(() => {
+            this.setLevelUpVolume();
+        });
     },
     beforeDestroy() {
         mo.socket.off('experienceUpdate');
@@ -51,6 +58,9 @@ export default {
         mo.socket.off('levelUpJob');
     },
     methods: {
+        setLevelUpVolume() {
+            this.$refs.levelUpAudio.volume = this.soundVolume;
+        },
         setUpSocketEvents() {
             mo.socket.on('experienceUpdate', (response) => {
                 this.$store.commit('saveExp', {
@@ -75,7 +85,9 @@ export default {
                 }, 1000);
 
                 // Playing audio
-                this.$refs.levelUpAudio.play();
+                if (this.sound) {
+                    this.$refs.levelUpAudio.play();
+                }
 
                 // Trigger re-fetch of the attributes
                 mo.socket.emit('getCharacterStatsAttributes', this.characterStats);

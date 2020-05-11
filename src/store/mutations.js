@@ -3,6 +3,18 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    soundVolume: (state, value) => {
+        state.soundVolume = value;
+    },
+    musicVolume: (state, value) => {
+        state.musicVolume = value;
+    },
+    sound: (state, value) => {
+        state.sound = value;
+    },
+    music: (state, value) => {
+        state.music = value;
+    },
     allMaps: (state, value) => {
         state.allMaps = value;
     },

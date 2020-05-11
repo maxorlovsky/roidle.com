@@ -37,5 +37,9 @@ export default {
     socketConnection: (state) => state.socketConnection,
     allMaps: (state) => state.allMaps,
     closeItemInfo: (state) => state.closeItemInfo,
-    selfBagItemInfo: (state) => state.selfBagItemInfo
+    selfBagItemInfo: (state) => state.selfBagItemInfo,
+    music: (state) => state.music,
+    musicVolume: (state) => state.musicVolume,
+    sound: (state) => state.sound,
+    soundVolume: (state) => state.soundVolume
 };

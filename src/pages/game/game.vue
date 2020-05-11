@@ -11,6 +11,12 @@
             <div class="party__name">Party: --</div>
         </div>
 
+        <router-link to="/settings"
+            class="game__settings game-icon"
+        >
+            <i class="icon icon-settings" />
+        </router-link>
+
         <div v-if="showActions"
             class="game__actions"
         >

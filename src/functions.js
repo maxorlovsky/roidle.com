@@ -9,8 +9,8 @@ const functions = {
         // Set item
         if (func === 'set') {
             // If any parameter is empty, we don't do anything
-            if (!func || !key || (!args[0] && args[0] !== false)) {
-                return false;
+            if (!func || !key || (!args[0] && args[0] !== false && args[0] !== 0)) {
+                return null;
             }
 
             const saveData = {
@@ -23,7 +23,7 @@ const functions = {
         } else if (func === 'get') {
             // Check if there is something for specified key
             if (!localStorage.getItem(key)) {
-                return false;
+                return null;
             }
 
             const returnValue = JSON.parse(localStorage.getItem(key));
@@ -37,14 +37,14 @@ const functions = {
                 // Cleanup
                 functions.storage('remove', key);
 
-                return false;
+                return null;
             }
 
             return returnValue.data;
         } else if (func === 'remove') {
             localStorage.removeItem(key);
         } else {
-            return false;
+            return null;
         }
 
         return true;
