@@ -1,5 +1,7 @@
 <template>
     <div class="server-down">
+        <volume-control-home />
+
         <div class="server-down-wrapper">
             <span class="server-down__text">Our servers are currently down<br>Retrying in {{ seconds }}s</span>
         </div>
@@ -10,7 +12,13 @@
 // 3rd party libs
 import axios from 'axios';
 
+// Components
+import volumeControlHome from '@components/volume-control-home/volume-control-home.vue';
+
 const serverDownPage = {
+    components: {
+        volumeControlHome
+    },
     data() {
         return {
             seconds: 10

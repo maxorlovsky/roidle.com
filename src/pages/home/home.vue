@@ -1,7 +1,6 @@
 <template>
     <section :class="{'home--select-character': selectCharacter}"
         class="home"
-        @click="loadGame()"
     >
         <template v-if="selectCharacter">
             <div class="select-character-wrapper">
@@ -75,11 +74,15 @@
             </div>
         </template>
         <template v-else>
+            <volume-control-home />
+
             <div class="home__logo"><img src="/dist/assets/images/logo.png"></div>
+
             <loading v-if="loading" />
             <div v-else
                 class="home__tap"
-            >Tap screen</div>
+                @click="loadGame()"
+            >Tap here to start</div>
         </template>
     </section>
 </template>
@@ -95,11 +98,13 @@ import { functions } from '@src/functions.js';
 // Components
 import loading from '@components/loading/loading.vue';
 import avatar from '@components/avatar/avatar.vue';
+import volumeControlHome from '@components/volume-control-home/volume-control-home.vue';
 
 const homePage = {
     components: {
         avatar,
-        loading
+        loading,
+        volumeControlHome
     },
     data() {
         return {

@@ -14,6 +14,8 @@
 
             <level-up />
 
+            <bgm />
+
             <item-info />
 
             <docked-menu v-if="dockedMenu" />
@@ -39,6 +41,7 @@ import { store } from './store/index.js';
 import io from 'socket.io-client';
 
 // Components
+import bgm from './components/bgm/bgm.vue';
 import chat from './components/chat/chat.vue';
 import charInfoTop from './components/char-info-top/char-info-top.vue';
 import dockedMenu from './components/docked-menu/docked-menu.vue';
@@ -49,6 +52,7 @@ import itemInfo from './components/item-info/item-info.vue';
 export default {
     name: 'app',
     components: {
+        bgm,
         chat,
         charInfoTop,
         dockedMenu,
