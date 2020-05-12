@@ -48,6 +48,15 @@
                 </div>
             </div>
 
+            <div class="settings__setting settings__setting--discord">
+                <a href="https://discord.gg/PjApFha"
+                    class="game-icon"
+                    target="_blank"
+                >
+                    <img src="/dist/assets/images/discord.png">
+                </a>
+            </div>
+
             <div class="settings__setting settings__setting--centered settings__setting__version">
                 v{{ version }}
             </div>
