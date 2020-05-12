@@ -16,9 +16,8 @@ export default {
     data() {
         return {
             musicFile: '',
-            currentVolume: null,
             inteval: null,
-            seconds: 0
+            volumeChangeValue: 0
         };
     },
     computed: {
@@ -57,23 +56,17 @@ export default {
         stopBgm() {
             // In case music is disabled we don't stop it gradually, we just update the music track in case user will want to enable it
             if (this.music && this.musicVolume > 0) {
-                // Saving current volume, to bring it back in again after
-                this.currentVolume = this.musicVolume;
-                // Transforming into how much seconds we want for this thing to slowly volume down
-                this.seconds = this.currentVolume * 10;
-                // Multiplying for smoother transition
-                this.seconds *= 2;
+                // Detecting how fast volume will fade away, depending on current music volume
+                this.volumeChangeValue = this.musicVolume / 10;
 
                 this.interval = setInterval(() => {
-                    if (this.$refs.music.volume <= 0.05) {
+                    if (this.$refs.music.volume - this.volumeChangeValue <= this.volumeChangeValue) {
                         this.$refs.music.volume = 0;
                     } else {
-                        this.$refs.music.volume -= 0.05;
+                        this.$refs.music.volume -= this.volumeChangeValue;
                     }
 
-                    this.seconds--;
-
-                    if (this.seconds <= 0) {
+                    if (this.$refs.music.volume <= 0) {
                         clearInterval(this.interval);
 
                         this.$refs.music.volume = 0;
@@ -87,26 +80,22 @@ export default {
             }
         },
         startBgm() {
-            // Transforming into how much seconds we want for this thing to slowly volume down
-            this.seconds = this.currentVolume * 10;
-            // Multiplying for smoother transition
-            this.seconds *= 2;
+            // Detecting how fast volume will fade in, depending on current music volume
+            this.volumeChangeValue = this.musicVolume / 10;
 
             this.$refs.music.currentTime = 0;
             this.$refs.music.play();
 
             this.interval = setInterval(() => {
-                if (this.$refs.music.volume + 0.05 >= 1) {
+                if (this.$refs.music.volume + this.volumeChangeValue >= 1) {
                     this.$refs.music.volume = 1;
                 } else {
-                    this.$refs.music.volume += 0.05;
+                    this.$refs.music.volume += this.volumeChangeValue;
                 }
 
-                this.seconds--;
-
-                if (this.$refs.music.volume >= this.currentVolume || this.seconds <= 0) {
+                if (this.$refs.music.volume >= this.musicVolume) {
                     clearInterval(this.interval);
-                    this.$refs.music.volume = this.currentVolume;
+                    this.$refs.music.volume = this.musicVolume;
                 }
             }, 500);
         },
