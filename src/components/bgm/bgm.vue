@@ -52,6 +52,9 @@ export default {
             });
         }
     },
+    beforeDestroy() {
+        clearInterval(this.interval);
+    },
     methods: {
         stopBgm() {
             // In case music is disabled we don't stop it gradually, we just update the music track in case user will want to enable it

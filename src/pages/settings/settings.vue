@@ -1,8 +1,10 @@
 <template>
     <section class="settings">
         <div class="settings-wrapper">
-            <div class="settings__setting">
-                <div class="btn game-button">Change character</div>
+            <div class="settings__setting settings__setting--centered">
+                <div class="btn game-button"
+                    @click="selectCharacter()"
+                >Character select</div>
             </div>
             <div class="settings__setting">
                 <div class="settings__setting__slider game-icon">
@@ -45,6 +47,10 @@
                     />
                 </div>
             </div>
+
+            <div class="settings__setting settings__setting--centered settings__setting__version">
+                v{{ version }}
+            </div>
         </div>
     </section>
 </template>
@@ -54,6 +60,9 @@
 import { mapGetters, mapActions } from 'vuex';
 import RangeSlider from 'vue-range-slider';
 
+// Globals functions
+import { functions } from '@src/functions.js';
+
 const settingsPage = {
     components: {
         RangeSlider
@@ -61,7 +70,8 @@ const settingsPage = {
     data() {
         return {
             musicSliderValue: this.$store.state.musicVolume,
-            soundSliderValue: this.$store.state.soundVolume
+            soundSliderValue: this.$store.state.soundVolume,
+            version: mo.version
         };
     },
     computed: {
@@ -94,7 +104,8 @@ const settingsPage = {
             'changeMusicVolume',
             'soundOff',
             'soundOn',
-            'changeSoundVolume'
+            'changeSoundVolume',
+            'resetState'
         ]),
 
         musicToggle() {
@@ -110,6 +121,23 @@ const settingsPage = {
             } else {
                 this.soundOn();
             }
+        },
+        selectCharacter() {
+            this.$store.commit('displayDockedMenu', false);
+
+            // Logout from character
+            functions.storage('remove', 'selectedCharacter');
+
+            this.$store.commit('socketConnection', false);
+
+            this.$nextTick(() => {
+                this.$store.commit('resetState');
+
+                mo.socket.emit('exit');
+                mo.socket = null;
+            });
+
+            this.$router.push('/?characters=1');
         }
     }
 };

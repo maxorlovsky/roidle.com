@@ -41,5 +41,6 @@ export default {
     music: (state) => state.music,
     musicVolume: (state) => state.musicVolume,
     sound: (state) => state.sound,
-    soundVolume: (state) => state.soundVolume
+    soundVolume: (state) => state.soundVolume,
+    resetChat: (state) => state.resetChat
 };

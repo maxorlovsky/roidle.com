@@ -14,7 +14,7 @@
 
             <level-up />
 
-            <bgm />
+            <bgm v-if="showBgm" />
 
             <item-info />
 
@@ -65,11 +65,18 @@ export default {
         return {
             loading: true,
             serverInitialCheck: true,
-            serverWentDown: false
+            serverWentDown: false,
+            showBgm: true
         };
     },
     computed: {
-        ...mapGetters(['dockedMenu', 'showChat', 'socketConnection', 'characterStats'])
+        ...mapGetters([
+            'dockedMenu',
+            'showChat',
+            'socketConnection',
+            'characterStats',
+            'resetChat'
+        ])
     },
     watch: {
         socketConnection() {
@@ -80,6 +87,13 @@ export default {
             if (this.socketConnection && functions.storage('get', 'session')) {
                 this.setUpMainSocketEvents();
             }
+        },
+        resetChat() {
+            // If reset chat was sent, it means that user logged out to char select, we need to reset bgm component
+            this.showBgm = false;
+            this.$nextTick(() => {
+                this.showBgm = true;
+            });
         }
     },
     async mounted() {

@@ -478,5 +478,139 @@ export default {
     closeItemInfo: (state) => {
         state.selfBagItemInfo = false;
         state.closeItemInfo = new Date();
+    },
+    resetState(state) {
+        state.resetChat = new Date();
+
+        state.characterId = 0;
+        state.characterName = '';
+        state.characterGender = 'm';
+        state.characterHeadStyle = 0;
+        state.characterBaseLevel = 1;
+        state.characterJobLevel = 1;
+        state.characterBaseExp = 0;
+        state.characterBaseExpPercentage = '0.00';
+        state.characterJobExp = 0;
+        state.characterJobExpPercentage = '0.00';
+        state.characterJobId = 0;
+        state.characterJob = '';
+        state.characterStatusPoints = 0;
+        state.characterSkillPoints = 0;
+        state.characterLocationId = 0;
+        state.characterLocation = '';
+        state.characterSaveLocationId = 1;
+        state.characterSaveLocation = 1;
+        state.characterHp = 42;
+        state.characterMp = 13;
+        state.characterZeny = 0;
+
+        state.characterStats = {
+            str: 0,
+            dex: 0,
+            int: 0,
+            vit: 0,
+            wis: 0,
+            luk: 0
+        };
+
+        state.characterBonusStats = {
+            str: 0,
+            dex: 0,
+            int: 0,
+            vit: 0,
+            wis: 0,
+            luk: 0,
+            patk: 0,
+            pdef: 0,
+            matk: 0,
+            mdef: 0,
+            hp: 0,
+            mp: 0,
+            hit: 0,
+            eva: 0
+        };
+
+        state.characterAttributes = {
+            patk: 0,
+            matk: 0,
+            pdef: 0,
+            mdef: 0,
+            hit: 0,
+            eva: 0,
+            speed: 0,
+            maxHp: 0,
+            maxMp: 0,
+            weight: 0
+        };
+
+        state.characterSkills = {};
+
+        state.characterEquipment = {
+            head: {
+                itemId: 0,
+                name: '',
+                refined: 0
+            },
+            rhand: {
+                itemId: 0,
+                name: '',
+                refined: 0
+            },
+            garment: {
+                itemId: 0,
+                name: '',
+                refined: 0
+            },
+            body: {
+                itemId: 0,
+                name: '',
+                refined: 0
+            },
+            lhand: {
+                itemId: 0,
+                name: '',
+                refined: 0
+            },
+            footgear: {
+                itemId: 0,
+                name: '',
+                refined: 0
+            }
+        };
+
+        state.travelingToLocation = 0;
+        state.travelingToLocationName = '';
+        state.travelingArrivalTime = 0;
+        state.restInProgress = 0;
+        state.party = [];
+        state.dockedMenu = false;
+        state.huntStatus = false;
+        state.huntEndTimer = null;
+        state.chatContent = [];
+        state.inventory = [];
+        state.inventoryWeight = 0;
+
+        state.bonusStats = {
+            str: 0,
+            dex: 0,
+            int: 0,
+            vit: 0,
+            wis: 0,
+            luk: 0,
+            patk: 0,
+            pdef: 0,
+            matk: 0,
+            mdef: 0,
+            hp: 0,
+            mp: 0,
+            hit: 0,
+            eva: 0
+        };
+
+        state.showChat = false;
+        state.socketConnection = false;
+        state.allMaps = null;
+        state.selfBagItemInfo = false;
+        state.closeItemInfo = null;
     }
 };

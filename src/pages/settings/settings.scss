@@ -17,6 +17,16 @@
         align-items: center;
         margin-bottom: 1rem;
 
+        &--centered {
+            text-align: center;
+            display: block;
+        }
+
+        &__version {
+            font-size: 0.85rem;
+            color: #333;
+        }
+
         &__title {
             color: #fff;
         }

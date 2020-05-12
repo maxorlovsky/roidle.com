@@ -69,13 +69,22 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['characterSkills', 'chatContent', 'socketConnection'])
+        ...mapGetters([
+            'characterSkills',
+            'chatContent',
+            'socketConnection',
+            'resetChat'
+        ])
     },
     watch: {
         socketConnection() {
             if (this.socketConnection) {
                 this.setUpSocketEvents();
             }
+        },
+        resetChat() {
+            this.chatLog = [];
+            this.battleChatLog = [];
         },
         characterSkills: {
             immediate: true,

@@ -123,6 +123,13 @@ const homePage = {
     beforeDestroy() {
         mo.socket.off('selectCharacterComplete');
     },
+    mounted() {
+        this.$nextTick(() => {
+            if (this.$route.query.characters) {
+                this.loadGame();
+            }
+        });
+    },
     methods: {
         loadGame() {
             // In case we're already loading, stop click events

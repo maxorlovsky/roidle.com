@@ -31,5 +31,5 @@ export default {
         commit('soundVolume', value);
 
         functions.storage('set', 'soundVolume', value);
-    },
+    }
 };
