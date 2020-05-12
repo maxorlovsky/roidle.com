@@ -51,6 +51,8 @@ export default {
                 this.detectMusicSettings();
             });
         }
+
+        this.$refs.music.volume = this.musicVolume;
     },
     beforeDestroy() {
         clearInterval(this.interval);
