@@ -83,6 +83,21 @@
                 class="home__tap"
                 @click="loadGame()"
             >Tap here to start</div>
+
+            <div class="home__footer">
+                <div class="home__footer__online game-icon">
+                    Online: {{ online }}<br>
+                    Hunts: {{ idle }}
+                </div>
+                <a href="https://discord.gg/PjApFha"
+                    class="home__footer__discord game-icon"
+                    target="_blank"
+                >
+                    <img src="/dist/assets/images/discord.png">
+                </a>
+            </div>
+
+            <div class="home__version">v{{ version }}</div>
         </template>
     </section>
 </template>
@@ -117,7 +132,10 @@ const homePage = {
             gender: 'm',
             headStyle: 1,
             message: '',
-            maxAmountCharacter: 5
+            maxAmountCharacter: 5,
+            online: 0,
+            idle: 0,
+            version: mo.version
         };
     },
     beforeDestroy() {
@@ -129,8 +147,20 @@ const homePage = {
                 this.loadGame();
             }
         });
+
+        this.getOnline();
     },
     methods: {
+        async getOnline() {
+            try {
+                const response = await axios.get('/api/online');
+
+                this.online = response.data.online;
+                this.idle = response.data.idle;
+            } catch (error) {
+                console.error(error);
+            }
+        },
         loadGame() {
             // In case we're already loading, stop click events
             if (this.loading || this.selectCharacter || this.createCharacter) {
