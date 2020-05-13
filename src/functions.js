@@ -27,12 +27,14 @@ const functions = {
             }
 
             const returnValue = JSON.parse(localStorage.getItem(key));
+            // Persistent key to not delete between version
+            const persistentKeys = ['session', 'itemAmountToggle', 'music', 'musicVolume', 'sound', 'soundVolume', 'huntSelectedTime'];
 
             if (
                 // If older than 30 min
                 (returnValue.time <= new Date().getTime()) ||
                 // Or if version is now different, ignoring session token
-                (returnValue.version !== mo.version && key !== 'session')
+                (returnValue.version !== mo.version && !persistentKeys.includes(key))
             ) {
                 // Cleanup
                 functions.storage('remove', key);
