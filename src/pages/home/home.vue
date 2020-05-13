@@ -87,7 +87,8 @@
             <div class="home__footer">
                 <div class="home__footer__online game-icon">
                     Online: {{ online }}<br>
-                    Hunts: {{ idle }}
+                    Hunts: {{ idle }}<br>
+                    Players: {{ players }}
                 </div>
                 <a href="https://discord.gg/PjApFha"
                     class="home__footer__discord game-icon"
@@ -135,6 +136,7 @@ const homePage = {
             maxAmountCharacter: 5,
             online: 0,
             idle: 0,
+            players: 0,
             version: mo.version
         };
     },
@@ -157,6 +159,7 @@ const homePage = {
 
                 this.online = response.data.online;
                 this.idle = response.data.idle;
+                this.players = response.data.registered;
             } catch (error) {
                 console.error(error);
             }
