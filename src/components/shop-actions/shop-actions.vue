@@ -12,19 +12,19 @@
         >
             <div class="modal__header">Shop Dealers</div>
             <div class="modal__content kafra-actions__buttons">
-                <button class="btn btn-primary"
+                <button class="btn game-button"
                     @click="$router.push('/shop?action=buy&type=equipment')"
                 >Equipment Dealer - Buy</button>
 
-                <button class="btn btn-primary"
+                <button class="btn game-button"
                     @click="$router.push('/shop?action=sell&type=equipment')"
                 >Equipment Dealer - Sell</button>
 
-                <button class="btn btn-primary"
+                <button class="btn game-button"
                     @click="$router.push('/shop?action=buy&type=tools')"
                 >Tool Dealer - Buy</button>
 
-                <button class="btn btn-primary"
+                <button class="btn game-button"
                     @click="$router.push('/shop?action=sell&type=tools')"
                 >Tool Dealer - Sell</button>
             </div>

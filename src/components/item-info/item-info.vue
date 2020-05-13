@@ -27,7 +27,7 @@
                     @click="discardItem(id)"
                 >Discard</button>
                 <button v-if="type === 'healing'"
-                    class="btn btn-success"
+                    class="btn game-button"
                     @click="useItem(id)"
                 >Use</button>
             </div>

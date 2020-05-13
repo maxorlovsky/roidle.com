@@ -39,7 +39,7 @@
                     class="chat__input__message"
                     @keyup.enter="sendChat()"
                 >
-                <button class="btn btn-primary btn-sm chat__input__button"
+                <button class="btn game-button btn-sm chat__input__button"
                     @click="sendChat()"
                 >&#62;</button>
 

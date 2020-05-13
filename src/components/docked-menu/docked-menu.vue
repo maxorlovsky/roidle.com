@@ -1,7 +1,7 @@
 <template>
     <div class="docked-menu">
         <a v-if="displayBackButton"
-            class="btn btn-secondary btn-lg"
+            class="btn game-button btn-lg"
             href="#"
             @click="$router.go(-1)"
         >&#8592;</a>

@@ -13,8 +13,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #b88702;
-        border: 1px solid #ff0;
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 1px solid $mainColor;
         position: fixed;
         top: 125px;
         z-index: 3;
@@ -23,14 +23,14 @@
             width: 50%;
             padding: 0.5rem 0;
             text-align: center;
-            border-right: 1px solid #ff0;
-            color: #fff;
+            border-right: 1px solid $mainColor;
+            color: #000;
             font-size: 1rem;
             text-transform: capitalize;
 
             &--active {
-                background-color: #246db7;
-                color: #d2d2d2;
+                background-color: $mainColor;
+                color: #f5f5f5;
             }
 
             &:nth-last-child() {
@@ -61,19 +61,8 @@
         width: 100%;
     }
 
-    &__header {
-        font-size: 0.9rem;
-        padding: 0.1rem 0.5rem;
-        background-color: #b88702;
-        color: #fff;
-    }
-
     &__left {
         width: 50%;
-
-        &__header {
-            border-right: 1px solid #fff;
-        }
     }
 
     &__right {
@@ -103,6 +92,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
 
             img {
                 width: 60%;
@@ -138,6 +128,7 @@
             justify-content: center;
             color: #fff;
             font-size: 1rem;
+            cursor: pointer;
 
             &--disabled {
                 opacity: 0.5;
@@ -173,5 +164,9 @@
         .shop__wrapper {
             height: calc(100vh - 88px);
         }
+    }
+
+    &__amount {
+        text-align: center;
     }
 }

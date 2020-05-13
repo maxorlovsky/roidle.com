@@ -13,15 +13,17 @@
     &__header {
         font-size: 0.9rem;
         padding: 0.1rem 0.5rem;
-        background-color: #b88702;
+        border-right: 1px solid #999;
+        border-bottom: 1px solid #999;
         color: #fff;
+        background-color: $mainColor;
     }
 
     &__left {
         width: 50%;
 
         &__header {
-            border-right: 1px solid #fff;
+            border-right: 1px solid #999;
         }
     }
 
@@ -112,5 +114,9 @@
                 padding-right: 0.5rem;
             }
         }
+    }
+
+    &__amount {
+        text-align: center;
     }
 }

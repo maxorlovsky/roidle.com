@@ -39,7 +39,7 @@
                 <button class="btn btn-secondary"
                     @click="showModal = false"
                 >Cancel</button>
-                <button class="btn btn-primary"
+                <button class="btn game-button"
                     @click="confirmTravel()"
                 >GO</button>
             </div>

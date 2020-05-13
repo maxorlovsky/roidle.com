@@ -57,7 +57,7 @@
             </div>
 
             <button :disabled="tempSkillPoints === characterSkillPoints"
-                class="btn btn-primary skills-list__apply"
+                class="btn game-button skills-list__apply"
                 @click="saveSkills()"
             >Save</button>
         </div>

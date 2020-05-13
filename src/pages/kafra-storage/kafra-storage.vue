@@ -65,7 +65,7 @@
         <div v-if="displayAmountModal"
             class="modal"
         >
-            <div class="modal__content">
+            <div class="modal__content kafra-storage__amount">
                 <input ref="amountModal"
                     v-model="amountModal"
                     type="number"
@@ -78,7 +78,7 @@
                     @click="displayAmountModal = false"
                 >Cancel</button>
                 <button :disabled="amountModal < 1 || amountModal > amountModalMax"
-                    class="btn btn-primary"
+                    class="btn game-button"
                     @click="confirmChosenAmount()"
                 >Confirm</button>
             </div>

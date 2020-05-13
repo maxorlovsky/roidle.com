@@ -12,19 +12,23 @@
         >
             <div class="modal__header">Inn rooms</div>
             <div class="modal__content kafra-actions__buttons">
-                <button class="btn btn-primary"
+                <button :class="{'game-button--selected': typeChosen === 'cheap'}"
+                    class="btn game-button"
                     @click="typeChosen = 'cheap'"
                 >Cheap room - 10 min (1 Z)</button>
 
-                <button class="btn btn-primary"
+                <button :class="{'game-button--selected': typeChosen === 'regular'}"
+                    class="btn game-button"
                     @click="typeChosen = 'regular'"
                 >Regular room - 5 min (100 Z)</button>
 
-                <button class="btn btn-primary"
+                <button :class="{'game-button--selected': typeChosen === 'deluxe'}"
+                    class="btn game-button"
                     @click="typeChosen = 'deluxe'"
                 >Deluxe room - 1 min (1000 Z)</button>
 
-                <!--<button class="btn btn-primary"
+                <!--<button :class="{'game-button--selected': typeChosen === 'premier'}"
+                    class="btn game-button"
                     @click="typeChosen = 'premier'"
                 >Premier room - 1 min + Buff (500 Z)</button>-->
             </div>
@@ -35,7 +39,7 @@
 
                 <button :disabled="!typeChosen"
                     :class="{'disabled': !typeChosen}"
-                    class="btn btn-success"
+                    class="btn game-button"
                     @click="startRest()"
                 >Approve</button>
             </div>

@@ -88,12 +88,12 @@
                 </div>
                 <button v-if="$route.query.action === 'sell'"
                     :disabled="!totalValue"
-                    class="btn btn-success"
+                    class="btn game-button"
                     @click="initiateSell()"
                 >Sell</button>
                 <button v-else
                     :disabled="!totalValue || totalValue > characterZeny"
-                    class="btn btn-success"
+                    class="btn game-button"
                     @click="initiateBuy()"
                 >Buy</button>
             </div>
@@ -102,7 +102,7 @@
         <div v-if="displayAmountModal"
             class="modal"
         >
-            <div class="modal__content">
+            <div class="modal__content shop__amount">
                 <input ref="amountModal"
                     v-model="amountModal"
                     type="number"
@@ -115,7 +115,7 @@
                     @click="displayAmountModal = false"
                 >Cancel</button>
                 <button :disabled="amountModal > amountModalMax"
-                    class="btn btn-primary"
+                    class="btn game-button"
                     @click="confirmChosenAmount()"
                 >GO</button>
             </div>

@@ -12,19 +12,19 @@
         >
             <div class="modal__header">Kafra Services</div>
             <div class="modal__content kafra-actions__buttons">
-                <button class="btn btn-primary"
+                <button class="btn game-button"
                     @click="saveLocation()"
                 >Save Location</button>
                 <button :class="{'btn-disabled': characterSkills[1] < 6}"
-                    class="btn btn-primary"
+                    class="btn game-button"
                     @click="openStorage()"
                 >Use Storage (60 Z)</button>
-                <!--<button class="btn btn-primary"
+                <!--<button class="btn game-button"
                     @click="openGuildStorage()"
-                >Use Guild storage (600 Z)</button>-->
-                <button class="btn btn-primary"
+                >Use Guild storage (600 Z)</button>
+                <button class="btn game-button"
                     @click="openTeleportService()"
-                >Use Teleport Service</button>
+                >Use Teleport Service</button>-->
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"

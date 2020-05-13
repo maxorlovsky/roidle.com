@@ -27,7 +27,7 @@
                     >End discussion</button>
                     <button v-else
                         :disabled="loading"
-                        class="btn btn-primary"
+                        class="btn game-button"
                         @click="proceedWithQuest()"
                     >Next</button>
                 </div>
@@ -52,7 +52,7 @@
                     <div class="quests-list__quest__buttons">
                         <button v-if="quest.currentStep === 1"
                             :disabled="loading"
-                            class="btn btn-primary"
+                            class="btn game-button"
                             @click="reviewQuest(quest.id)"
                         >Start</button>
                         <button v-else

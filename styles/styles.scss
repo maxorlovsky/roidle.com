@@ -37,6 +37,7 @@ a {
     &:hover {
         outline: none;
         text-decoration: none;
+        color: #333;
     }
 }
 
@@ -77,13 +78,12 @@ a {
     position: fixed;
     top: 50%;
     left: 50%;
-    border: 1px solid #ff0;
-    outline: 1px solid #000;
+    border: 1px solid #999;
     border-radius: 4px;
-    background-color: rgb(184, 135, 2);
+    background-color: rgba(255, 255, 255, 0.95);
     transform: translate(-50%, -50%);
     font-size: 1rem;
-    color: #fff;
+    color: #000;
     padding: 0.5rem 1rem;
     z-index: 10;
     text-align: left;
@@ -163,12 +163,14 @@ a {
     text-shadow: 1px 1px 2px #999;
     border: 1px solid #999;
 
-    &:active,
-    &:hover {
+    &:active:not(:disabled),
+    &:hover:not(:disabled),
+    &--selected {
         background-color: $mainColor;
     }
 
-    &:active {
+    &:active:not(:disabled),
+    &--selected {
         text-shadow: -1px -1px 2px #ddd;
     }
 }

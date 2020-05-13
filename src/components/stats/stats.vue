@@ -33,7 +33,7 @@
             </div>
 
             <button :disabled="tempStatusPoints === characterStatusPoints"
-                class="btn btn-primary stats__apply"
+                class="btn game-button stats__apply"
                 @click="saveStats()"
             >Save</button>
         </div>
