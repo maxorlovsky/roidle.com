@@ -28,6 +28,11 @@
                 >
                     Create new character
                 </div>
+
+                <button :disabled="buttonLoading"
+                    class="character-view__proceed btn game-button"
+                    @click="backToMain()"
+                >Back to main screen</button>
             </div>
         </template>
         <template v-else-if="createCharacter">
@@ -153,6 +158,10 @@ const homePage = {
         this.getOnline();
     },
     methods: {
+        backToMain() {
+            this.$router.push('/');
+            this.selectCharacter = false;
+        },
         async getOnline() {
             try {
                 const response = await axios.get('/api/online');

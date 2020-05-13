@@ -3,7 +3,7 @@
         @click="musicToggle"
     >
         <i :class="{'icon-volume-on': music, 'icon-volume-off': !music}"
-            class="icon "
+            class="icon"
         />
     </div>
 </template>

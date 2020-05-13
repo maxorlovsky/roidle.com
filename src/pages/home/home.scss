@@ -37,6 +37,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 
     &__footer {
@@ -63,6 +64,7 @@
         margin-top: 1rem;
         display: flex;
         align-items: center;
+        cursor: pointer;
 
         &--create-new {
             justify-content: center;
