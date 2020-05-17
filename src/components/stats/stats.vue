@@ -84,6 +84,14 @@
                 <span class="stats__params__label">Speed</span>
                 <span class="stats__params__value">+{{ attributes.speed }}%</span>
             </div>
+            <div class="stats__params">
+                <span class="stats__params__label">Crit Atk</span>
+                <span class="stats__params__value">{{ attributes.crit }}%</span>
+            </div>
+            <div class="stats__params">
+                <span class="stats__params__label">Crit Def</span>
+                <span class="stats__params__value">{{ attributes.critDef }}%</span>
+            </div>
         </div>
 
         <div v-if="statExplanation.show"
@@ -141,6 +149,8 @@ export default {
                 hit: 0,
                 eva: 0,
                 speed: 0,
+                crit: 0,
+                critDef: 0,
                 maxHp: 0,
                 maxMp: 0
             },

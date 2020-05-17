@@ -255,6 +255,8 @@ export default {
             hit: state.characterAttributes.hit,
             eva: state.characterAttributes.eva,
             speed: state.characterAttributes.speed,
+            crit: state.characterAttributes.crit,
+            critDef: state.characterAttributes.critDef,
             weight: state.characterAttributes.weight
         };
 
@@ -278,6 +280,12 @@ export default {
         }
         if (values.attributes && values.attributes.speed) {
             characterAttributes.speed = values.attributes.speed || 0;
+        }
+        if (values.attributes && values.attributes.crit) {
+            characterAttributes.crit = values.attributes.crit;
+        }
+        if (values.attributes && values.attributes.critDef) {
+            characterAttributes.critDef = values.attributes.critDef;
         }
         if (values.attributes && values.attributes.maxHp) {
             characterAttributes.maxHp = values.attributes.maxHp;
@@ -415,6 +423,8 @@ export default {
         state.characterAttributes.hit = values.stats.attributes.hit;
         state.characterAttributes.eva = values.stats.attributes.eva;
         state.characterAttributes.speed = values.stats.attributes.speed;
+        state.characterAttributes.crit = values.stats.attributes.crit;
+        state.characterAttributes.critDef = values.stats.attributes.critDef;
         state.characterAttributes.maxHp = values.stats.attributes.maxHp;
         state.characterAttributes.maxMp = values.stats.attributes.maxMp;
         state.characterAttributes.weight = values.stats.attributes.weight;

@@ -56,6 +56,8 @@ export default {
         hit: 0,
         eva: 0,
         speed: 0,
+        crit: 0,
+        critDef: 0,
         maxHp: 0,
         maxMp: 0,
         weight: 0
