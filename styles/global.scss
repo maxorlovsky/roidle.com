@@ -17,12 +17,10 @@ $nav-link-padding-y: 0;
 $nav-link-padding-x: 0;
 
 /* Font-Awesome variables */
-$fa-font-path: "../dist/assets/fonts/";
-$assets: "../dist/assets" !default;
+$assets: "/dist/assets" !default;
 
 // Importing lib styles
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
-@import "../node_modules/font-awesome/scss/font-awesome.scss";
 
 // Import project styles
 @import "./fonts.scss";

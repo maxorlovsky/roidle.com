@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const packageFile = fs.readFileSync('package.json');
 const version = JSON.parse(packageFile).version;
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
@@ -10,11 +9,7 @@ const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
 const globImporter = require('node-sass-glob-importer');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-
-const extractSass = new ExtractTextPlugin({
-    filename: '[name].css',
-    allChunks: true
-});
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const config = {
     mode: 'development',
@@ -49,21 +44,26 @@ const config = {
             },
             {
                 test: /\.scss$/,
-                use: extractSass.extract([
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
                     {
-                        loader: 'raw-loader'
-                    },
-                    {
-                        loader: 'postcss-loader'
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: './postcss.config.js'
+                            }
+                        }
                     },
                     {
                         loader: 'sass-loader',
                         options: {
-                            importer: globImporter(),
-                            data: ''
+                            sassOptions: {
+                                importer: globImporter()
+                            }
                         }
                     }
-                ])
+                ]
             }
         ]
     },
@@ -78,7 +78,9 @@ const config = {
         }
     },
     plugins: [
-        extractSass,
+        new MiniCssExtractPlugin({
+            filename: '[name].css'
+        }),
         new HtmlWebpackPlugin({
             template: './index.html',
             filename: '../index.html',
@@ -149,30 +151,18 @@ module.exports = (env = {}) => {
         }));
     }
 
-    if (env.dashboard) {
-        const Dashboard = require('webpack-dashboard');
-        const DashboardPlugin = require('webpack-dashboard/plugin');
-        const dashboard = new Dashboard({ port: 9000 });
-
-        config.plugins.push(new DashboardPlugin(dashboard.setData));
-    }
-
-    const copyFiles = [
-        {
-            from: './assets/',
-            to: 'assets/'
-        },
-        {
-            from: './node_modules/font-awesome/fonts/',
-            to: 'assets/fonts'
-        },
-        {
-            from: './node_modules/socket.io-client/dist/socket.io.js',
-            to: 'socket.io.js'
-        }
-    ];
-
-    config.plugins.push(new CopyWebpackPlugin(copyFiles));
+    config.plugins.push(new CopyWebpackPlugin({
+        patterns: [
+            {
+                from: './assets/',
+                to: 'assets/'
+            },
+            {
+                from: './node_modules/socket.io-client/dist/socket.io.js',
+                to: 'socket.io.js'
+            }
+        ]
+    }));
 
     const replaceInFileRules = [
         {

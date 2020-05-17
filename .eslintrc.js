@@ -18,7 +18,7 @@ module.exports = {
     },
     "parserOptions": {
         "sourceType": "module",
-        "ecmaVersion": 8
+        "ecmaVersion": 2018
     },
     "rules": {
         "accessor-pairs": "error",
@@ -29,7 +29,7 @@ module.exports = {
         ],
         "array-callback-return": "error",
         "array-element-newline": "off",
-        "arrow-body-style": "error",
+        "arrow-body-style": "off",
         "arrow-parens": [
             "error",
             "always"
@@ -135,7 +135,7 @@ module.exports = {
         "max-len": "off",
         "max-lines": "off",
         "max-nested-callbacks": "error",
-        "max-params": "off",
+        "max-params": "error",
         "max-statements": "off",
         "max-statements-per-line": "error",
         "multiline-comment-style": "off",
@@ -143,7 +143,7 @@ module.exports = {
         "newline-after-var": "error",
         "newline-before-return": "error",
         "newline-per-chained-call": "error",
-        "no-alert": "error",
+        "no-alert": "off",
         "no-array-constructor": "error",
         "no-await-in-loop": "error",
         "no-bitwise": "error",
@@ -151,13 +151,14 @@ module.exports = {
         "no-caller": "error",
         "no-catch-shadow": "error",
         "no-confusing-arrow": "error",
-        "no-continue": "off",
+        "no-continue": "error",
         "no-console": [
             "error",
             {
                 allow: ["warn", "error"]
             }
         ],
+        "no-constant-condition": "off",
         "no-div-regex": "error",
         "no-duplicate-imports": "error",
         "no-else-return": "error",
@@ -169,7 +170,7 @@ module.exports = {
         "no-extra-label": "error",
         "no-extra-parens": ["error", "functions"],
         "no-floating-decimal": "error",
-        "no-implicit-coercion": "off",
+        "no-implicit-coercion": "error",
         "no-implicit-globals": "error",
         "no-implied-eval": "error",
         "no-inline-comments": "error",
@@ -203,7 +204,7 @@ module.exports = {
         "no-process-env": "off",
         "no-process-exit": "off",
         "no-proto": "error",
-        "no-prototype-builtins": "error",
+        "no-prototype-builtins": "off",
         "no-restricted-globals": "error",
         "no-restricted-imports": "error",
         "no-restricted-modules": "error",
@@ -286,10 +287,7 @@ module.exports = {
         "sort-keys": "off",
         "sort-vars": "error",
         "space-before-blocks": "error",
-        "space-before-function-paren": [
-            "error",
-            "never"
-        ],
+        "space-before-function-paren": "off",
         "space-in-parens": [
             "error",
             "never"
@@ -338,6 +336,7 @@ module.exports = {
         }],
         "vue/multiline-html-element-content-newline": "off",
         "vue/name-property-casing": ["error", "kebab-case"],
+        "vue/no-v-html": "off",
         "vue/singleline-html-element-content-newline": "off",
         "wrap-iife": "error",
         "wrap-regex": "error",
