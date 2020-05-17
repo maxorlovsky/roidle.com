@@ -10,10 +10,18 @@
         justify-content: space-evenly;
     }
 
+    &__icon {
+        margin-right: 0.5rem;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+    }
+
     &__label {
         font-size: 1.1rem;
         width: 50px;
         text-transform: capitalize;
+        cursor: pointer;
     }
 
     &__numbers {

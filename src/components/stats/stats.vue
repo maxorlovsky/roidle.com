@@ -4,7 +4,14 @@
             :key="stat"
             class="stats__stat"
         >
-            <span class="stats__label">{{ stat }}:</span>
+            <div class="stats__icon game-icon"
+                @click="showStatInfo(stat)"
+            >
+                <img :src="`/dist/assets/images/${stat}.png`">
+            </div>
+            <span class="stats__label"
+                @click="showStatInfo(stat)"
+            >{{ stat }}:</span>
             <div class="stats__numbers">
                 <span class="stats__numbers__base">{{ stats[stat] }}</span>
                 <span class="stats__numbers__bonus">+{{ bonusStats[stat] }}</span>
@@ -78,6 +85,12 @@
                 <span class="stats__params__value">+{{ attributes.speed }}%</span>
             </div>
         </div>
+
+        <div v-if="statExplanation.show"
+            class="modal"
+            @click="statExplanation.show = false"
+            v-html="statExplanation.statInfo"
+        />
     </div>
 </template>
 
@@ -132,6 +145,10 @@ export default {
                 maxMp: 0
             },
             tempStatusPoints: 0,
+            statExplanation: {
+                show: false,
+                statInfo: ''
+            }
         };
     },
     computed: {
@@ -182,6 +199,23 @@ export default {
         mo.socket.off('saveCharacterStatsComplete');
     },
     methods: {
+        showStatInfo(stat) {
+            this.statExplanation.show = true;
+
+            if (stat === 'str') {
+                this.statExplanation.statInfo = '<b>Strength (STR)</b>: This stat affects the physical power (P.Atk) of the character, be that of melee or range, melee benefit more from Strength than range.<br>Primary stat for jobs: <b>Fighter, Thief</b><br>Secondary stat for jobs: <b>Merchant</b>';
+            } else if (stat === 'dex') {
+                this.statExplanation.statInfo = '<b>Dexterity (DEX)</b>: This stat affect character HIT(Accuracy) and EVA(Evade) parameters. This stat affects the speed of how fast character can finish missions and travel. Speed affects whole party. This stat affect physical power of the character by a little. Range weapons benefit more from this stat.<br>Primary stat for jobs: <b>Archer, Thief</b>';
+            } else if (stat === 'int') {
+                this.statExplanation.statInfo = '<b>Intellect (INT)</b>: This stat affects the mental power (M.Atk) of the character, allowing to deal massive magic damage<br>Primary stat for jobs: <b>Mage</b>';
+            } else if (stat === 'vit') {
+                this.statExplanation.statInfo = '<b>Vitality (VIT)</b>: This stat affects the physical defense (P.Def) and HP and is a mandatory stat for protectors<br>Secondary stat for jobs: <b>Fighter</b>';
+            } else if (stat === 'wis') {
+                this.statExplanation.statInfo = '<b>Wisdom (WIS)</b>: This stat affects the healing capabilities of acolyte, magical defense (M.Def) and MP<br>Primary stat for jobs: <b>Acolyte</b><br>Secondary stat for jobs: <b>Mage</b>';
+            } else if (stat === 'luk') {
+                this.statExplanation.statInfo = '<b>Luck (LUK)</b>: This stat affects the luck of a character and every other stat and attribute in many ways, primarily it is used for crafts, crit chance defense and crit chance attack<br>Primary stat for jobs: <b>Merchant</b><br>Secondary stat for jobs: <b>Thief, Archer</b>';
+            }
+        },
         renewStats() {
             // Renew stats after the save, to represent what we have on backend
             this.$store.commit('setCharacterData', {
