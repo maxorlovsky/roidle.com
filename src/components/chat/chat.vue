@@ -2,29 +2,36 @@
     <section class="chat">
         <div class="chat-wrapper">
             <div class="chat__tabs">
-                <div :class="{'chat__tabs__tab--selected': selectedTab === 0, 'chat__tabs__tab--notification': tabNotification[0]}"
+                <div v-for="(chat, index) in chats"
+                    :key="chat"
+                    :class="{'chat__tabs__tab--selected': selectedTab === index, 'chat__tabs__tab--notification': tabNotification[index]}"
                     class="chat__tabs__tab"
-                    @click="selectedTab = 0; tabNotification[0] = false; scrollChat()"
-                >Regular chat</div>
-                <div :class="{'chat__tabs__tab--selected': selectedTab === 1, 'chat__tabs__tab--notification': tabNotification[1]}"
-                    class="chat__tabs__tab"
-                    @click="selectedTab = 1; tabNotification[1] = false; scrollChat()"
-                >Battle chat</div>
+                    @click="selectedTab = index; tabNotification[index] = false; scrollChat()"
+                >{{ chat }} chat</div>
             </div>
+
             <div v-show="selectedTab === 0"
-                ref="chatBody"
+                ref="chatBody-regular"
                 class="chat__body"
             >
-                <p v-for="(chat, index) in chatLog"
+                <p v-for="(chat, index) in chatLog.regular"
                     :key="index"
                     :class="`chat__body__${chat.type}`"
                 >[ #{{ chat.type }} ] <span @click="whisperName = chat.character">{{ chat.character }}</span> : {{ chat.message }}</p>
             </div>
             <div v-show="selectedTab === 1"
-                ref="chatBodyBattle"
+                ref="chatBody-system"
                 class="chat__body"
             >
-                <p v-for="(chat, index) in battleChatLog"
+                <p v-for="(chat, index) in chatLog.system"
+                    :key="index"
+                >{{ chat.message }}</p>
+            </div>
+            <div v-show="selectedTab === 2"
+                ref="chatBody-battle"
+                class="chat__body"
+            >
+                <p v-for="(chat, index) in chatLog.battle"
                     :key="index"
                 >{{ chat.message }}</p>
             </div>
@@ -61,11 +68,15 @@ export default {
         return {
             whisperName: '#map',
             message: '',
-            chatLog: [],
-            battleChatLog: [],
+            chats: ['Regular', 'System', 'Battle'],
+            chatLog: {
+                regular: [],
+                system: [],
+                battle: []
+            },
             disabledChat: true,
             selectedTab: 0,
-            tabNotification: [false, false]
+            tabNotification: [false, false, false]
         };
     },
     computed: {
@@ -83,8 +94,9 @@ export default {
             }
         },
         resetChat() {
-            this.chatLog = [];
-            this.battleChatLog = [];
+            this.chatLog.regular = [];
+            this.chatLog.system = [];
+            this.chatLog.battle = [];
         },
         characterSkills: {
             immediate: true,
@@ -97,11 +109,19 @@ export default {
         chatContent() {
             for (const chat of this.chatContent) {
                 if (chat.type === 'battle') {
+                    if (this.selectedTab !== 2) {
+                        this.tabNotification[2] = true;
+                    }
+
+                    this.chatLog.battle.push({
+                        message: chat.message
+                    });
+                } else if (chat.type === 'system') {
                     if (this.selectedTab !== 1) {
                         this.tabNotification[1] = true;
                     }
 
-                    this.battleChatLog.push({
+                    this.chatLog.system.push({
                         message: chat.message
                     });
                 } else {
@@ -109,7 +129,7 @@ export default {
                         this.tabNotification[0] = true;
                     }
 
-                    this.chatLog.push({
+                    this.chatLog.regular.push({
                         type: chat.type,
                         character: chat.character,
                         message: chat.message
@@ -130,16 +150,14 @@ export default {
             });
         },
         scrollChat() {
-            if (this.$refs.chatBody.scrollTop >= this.$refs.chatBody.scrollHeight - this.$refs.chatBody.clientHeight - 2) {
-                this.$nextTick(() => {
-                    this.$refs.chatBody.scrollTop = this.$refs.chatBody.scrollHeight;
-                });
-            }
+            for (const chat of this.chats) {
+                const chatBody = `chatBody-${chat.toLowerCase()}`;
 
-            if (this.$refs.chatBodyBattle.scrollTop >= this.$refs.chatBodyBattle.scrollHeight - this.$refs.chatBodyBattle.clientHeight - 2) {
-                this.$nextTick(() => {
-                    this.$refs.chatBodyBattle.scrollTop = this.$refs.chatBodyBattle.scrollHeight;
-                });
+                if (this.$refs[chatBody].scrollTop >= this.$refs[chatBody].scrollHeight - this.$refs[chatBody].clientHeight - 2) {
+                    this.$nextTick(() => {
+                        this.$refs[chatBody].scrollTop = this.$refs[chatBody].scrollHeight;
+                    });
+                }
             }
         },
         sendChat() {
