@@ -85,7 +85,15 @@ const config = {
             template: './index.html',
             filename: '../index.html',
             alwaysWriteToDisk: true,
-            inject: false
+            inject: false,
+            minify: {
+                collapseWhitespace: true,
+                removeComments: false,
+                removeRedundantAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                useShortDoctype: true
+            }
         }),
         new HtmlWebpackHarddiskPlugin(),
         new VueLoaderPlugin()
