@@ -7,9 +7,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
 const globImporter = require('node-sass-glob-importer');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const config = {
     mode: 'development',
@@ -144,11 +144,7 @@ module.exports = (env = {}) => {
 
         config.resolve.alias.vue = 'vue/dist/vue.min';
 
-        config.optimization.minimizer.push(new UglifyJSPlugin({
-            cache: true,
-            parallel: true,
-            sourceMap: false
-        }));
+        config.plugins.push(new MinifyPlugin());
     }
 
     config.plugins.push(new CopyWebpackPlugin({
