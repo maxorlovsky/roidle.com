@@ -81,7 +81,7 @@
 
         <stats />
 
-        <button class="btn btn-warning btn-lg skills-button"
+        <button class="btn game-button btn-lg skills-button"
             @click="goToSkills()"
         >Skills</button>
     </section>

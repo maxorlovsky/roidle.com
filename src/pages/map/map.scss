@@ -15,7 +15,7 @@ $amountOfMapsPerRow: 6;
         position: relative;
 
         &--selected {
-            border: 2px solid #00f;
+            border: 2px solid $mainColor;
         }
 
         &--traveling {

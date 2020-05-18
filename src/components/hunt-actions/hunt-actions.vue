@@ -21,26 +21,32 @@
 
                 <p>Time</p>
                 <div class="hunt-time-buttons">
-                    <button class="btn btn-primary"
+                    <button :class="{'selected': huntTime === 60}"
+                        class="btn btn-light"
                         @click="huntTime = 60"
                     >1 min</button>
 
-                    <button class="btn btn-primary"
+                    <button :class="{'selected': huntTime === 300}"
+                        class="btn btn-light"
                         @click="huntTime = 300"
                     >5 min</button>
 
-                    <button class="btn btn-primary"
+                    <button :class="{'selected': huntTime === 600}"
+                        class="btn btn-light"
                         @click="huntTime = 600"
                     >10 min</button>
 
                     <template v-if="enableLongerHunt">
-                        <button class="btn btn-primary"
+                        <button :class="{'selected': huntTime === 1800}"
+                        class="btn btn-light"
                             @click="huntTime = 1800"
                         >30 min</button>
-                        <button class="btn btn-primary"
+                        <button :class="{'selected': huntTime === 2700}"
+                        class="btn btn-light"
                             @click="huntTime = 2700"
                         >45 min</button>
-                        <button class="btn btn-primary"
+                        <button :class="{'selected': huntTime === 3600}"
+                        class="btn btn-light"
                             @click="huntTime = 3600"
                         >1 hour</button>
                     </template>
@@ -81,7 +87,7 @@
                 >Cancel</button>
                 <button :disabled="!huntTime"
                     :class="{'disabled': !huntTime}"
-                    class="btn btn-success"
+                    class="btn game-button"
                     @click="startHunt()"
                 >Start</button>
             </div>
