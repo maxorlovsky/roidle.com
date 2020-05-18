@@ -499,8 +499,8 @@ export default {
         state.characterName = '';
         state.characterGender = 'm';
         state.characterHeadStyle = 0;
-        state.characterBaseLevel = 1;
-        state.characterJobLevel = 1;
+        state.characterBaseLevel = 0;
+        state.characterJobLevel = 0;
         state.characterBaseExp = 0;
         state.characterBaseExpPercentage = '0.00';
         state.characterJobExp = 0;
