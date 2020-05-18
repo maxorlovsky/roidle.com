@@ -8,19 +8,19 @@
 
         <template v-if="!displayBackButton">
             <router-link to="/character"
-                class="docked-menu__button"
+                class="docked-menu__button docked-menu__button--character"
             ><img src="/dist/assets/images/char.png"></router-link>
 
             <router-link to="/map"
-                class="docked-menu__button"
+                class="docked-menu__button docked-menu__button--map"
             ><img src="/dist/assets/images/compass.png"></router-link>
 
             <router-link to="/quests"
-                class="docked-menu__button"
+                class="docked-menu__button docked-menu__button--quests"
             ><img src="/dist/assets/images/tasks.png"></router-link>
 
             <router-link to="/inventory"
-                class="docked-menu__button"
+                class="docked-menu__button docked-menu__button--inventory"
             ><img src="/dist/assets/images/backpack.png"></router-link>
 
             <!-- <router-link to="/"

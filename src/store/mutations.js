@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    closeTutorial: (state) => {
+        state.closeTutorial = new Date();
+    },
     soundVolume: (state, value) => {
         state.soundVolume = value;
     },

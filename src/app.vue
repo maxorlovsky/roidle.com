@@ -18,6 +18,8 @@
 
             <item-info />
 
+            <tutorial v-if="showTutorial" />
+
             <docked-menu v-if="dockedMenu" />
 
             <div v-if="serverWentDown"
@@ -48,6 +50,7 @@ import dockedMenu from './components/docked-menu/docked-menu.vue';
 import loading from './components/loading/loading.vue';
 import levelUp from './components/level-up/level-up.vue';
 import itemInfo from './components/item-info/item-info.vue';
+import tutorial from './components/tutorial/tutorial.vue';
 
 export default {
     name: 'app',
@@ -58,7 +61,8 @@ export default {
         dockedMenu,
         loading,
         levelUp,
-        itemInfo
+        itemInfo,
+        tutorial
     },
     store: store,
     data() {
@@ -66,7 +70,8 @@ export default {
             loading: true,
             serverInitialCheck: true,
             serverWentDown: false,
-            showBgm: true
+            showBgm: true,
+            showTutorial: false
         };
     },
     computed: {
@@ -75,7 +80,9 @@ export default {
             'showChat',
             'socketConnection',
             'characterStats',
-            'resetChat'
+            'resetChat',
+            'characterBaseLevel',
+            'closeTutorial'
         ])
     },
     watch: {
@@ -94,6 +101,17 @@ export default {
             this.$nextTick(() => {
                 this.showBgm = true;
             });
+        },
+        characterBaseLevel: {
+            immediate: true,
+            handler() {
+                if (this.characterBaseLevel === 1) {
+                    this.showTutorial = true;
+                }
+            }
+        },
+        closeTutorial() {
+            this.showTutorial = false;
         }
     },
     async mounted() {

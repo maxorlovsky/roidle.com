@@ -6,8 +6,8 @@ export default {
     characterName: '',
     characterGender: 'm',
     characterHeadStyle: 0,
-    characterBaseLevel: 1,
-    characterJobLevel: 1,
+    characterBaseLevel: 0,
+    characterJobLevel: 0,
     characterBaseExp: 0,
     characterBaseExpPercentage: '0.00',
     characterJobExp: 0,
@@ -135,5 +135,6 @@ export default {
     // eslint-disable-next-line
     sound: functions.storage('get', 'sound') === false ? false : true,
     soundVolume: functions.storage('get', 'soundVolume') && functions.storage('get', 'soundVolume') >= 0 ? functions.storage('get', 'soundVolume') : 0.3,
-    resetChat: null
+    resetChat: null,
+    closeTutorial: null
 };
