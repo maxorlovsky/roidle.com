@@ -48,7 +48,7 @@ export default {
                     text: 'Here are your main game actions, they are used to hunt, to shop, to store items, save your location and basically for all random stuff in the game'
                 },
                 {
-                    text: 'Your chat. Regular chat to talk with players. System chat for messages like what you used, what you equiped, sold, error messages and Battle chat for battle logs.',
+                    text: 'Your chat. Chat is NOT persistent meaning you will lose all of chat logs on page refresh. Regular chat to talk with players. System chat for messages like what you used, what you equiped, sold, error messages and Battle chat for battle logs.',
                     element: '.chat'
                 },
                 {
