@@ -200,6 +200,11 @@ export default {
                     locationId: response.locationId,
                     location: response.location,
                 });
+
+                this.$store.commit('huntStatus', {
+                    status: 'retreating',
+                    timeFinish: null
+                });
             });
 
             mo.socket.on('jobChangeUpdate', (response) => {
