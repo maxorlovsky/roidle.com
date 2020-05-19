@@ -15,7 +15,17 @@
 
             <div class="char-info__health">
                 <span class="char-info__health__hp"><span>HP:</span> {{ characterHp }} / {{ characterAttributes.maxHp }}</span>
+                <div class="char-info__health__bar">
+                    <div :style="{ 'width': currentHpPercentage + '%' }"
+                        class="char-info__health__bar__hp"
+                    />
+                </div>
                 <span class="char-info__health__mp"><span>MP:</span> {{ characterMp }} / {{ characterAttributes.maxMp }}</span>
+                <div class="char-info__health__bar">
+                    <div :style="{ 'width': currentMpPercentage + '%' }"
+                        class="char-info__health__bar__mp"
+                    />
+                </div>
             </div>
 
             <div class="char-info__levels">
@@ -89,7 +99,14 @@ export default {
             'huntStatus',
             'huntEndTimer',
             'characterEquipment'
-        ])
+        ]),
+
+        currentHpPercentage() {
+            return Math.floor(this.characterHp / this.characterAttributes.maxHp * 100) || 0;
+        },
+        currentMpPercentage() {
+            return Math.floor(this.characterMp / this.characterAttributes.maxMp * 100) || 0;
+        }
     },
     watch: {
         inventoryWeight: {

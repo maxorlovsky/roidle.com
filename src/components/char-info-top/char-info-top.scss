@@ -35,6 +35,27 @@
             display: flex;
             justify-content: space-between;
         }
+
+        &__bar {
+            width: 100%;
+            height: 5px;
+            background-color: #a00;
+            position: relative;
+
+            &__hp,
+            &__mp {
+                position: absolute;
+                height: 5px;
+            }
+
+            &__hp {
+                background-color: #080;
+            }
+
+            &__mp {
+                background-color: #08d;
+            }
+        }
     }
 
     &__levels {
