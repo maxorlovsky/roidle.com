@@ -23,10 +23,12 @@
 
             <docked-menu v-if="dockedMenu" />
 
-            <div v-if="serverWentDown"
+            <a v-if="serverWentDown"
+                href="/"
                 class="modal"
-            >Disconnected from server</div>
-            <div v-if="serverWentDown"
+            >Disconnected from server</a>
+            <a v-if="serverWentDown"
+                href="/"
                 class="server-down-modal"
             />
         </template>
