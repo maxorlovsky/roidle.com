@@ -1,6 +1,8 @@
 <template>
     <div class="tutorial">
-        <div class="modal">
+        <div :class="modalPosition"
+            class="modal"
+        >
             <div class="modal__header">Tutorial</div>
             <div class="modal__content kafra-actions__buttons"
                 v-html="displayedText"
@@ -45,11 +47,14 @@ export default {
                     element: '.game__settings'
                 },
                 {
-                    text: 'Here are your main game actions, they are used to hunt, to shop, to store items, save your location and basically for all random stuff in the game'
+                    text: 'Here are your main game actions, they are used to hunt, to shop, to store items, save your location and basically for all random stuff in the game',
+                    element: '.game__actions',
+                    modal: 'modal--down'
                 },
                 {
                     text: 'Your chat. Chat is NOT persistent meaning you will lose all of chat logs on page refresh. Regular chat to talk with players. System chat for messages like what you used, what you equiped, sold, error messages and Battle chat for battle logs.',
-                    element: '.chat'
+                    element: '.chat',
+                    modal: 'modal--up'
                 },
                 {
                     text: 'In here you will find everything related to your character. Equipment, stats, skills, attributes and everything character related',
@@ -75,7 +80,8 @@ export default {
             displayedText: '',
             currentStep: 0,
             storedZIndex: null,
-            storedPosition: null
+            storedPosition: null,
+            modalPosition: ''
         };
     },
     mounted() {
@@ -86,6 +92,8 @@ export default {
             this.$store.commit('closeTutorial');
         },
         nextStep() {
+            this.modalPosition = '';
+
             if (this.steps[this.currentStep].element) {
                 this.resetHighlight(this.steps[this.currentStep].element, this.steps[this.currentStep].position);
             }
@@ -103,6 +111,10 @@ export default {
 
             if (this.steps[this.currentStep].element) {
                 this.highlightElement(this.steps[this.currentStep].element, this.steps[this.currentStep].position);
+            }
+
+            if (this.steps[this.currentStep].modal) {
+                this.modalPosition = this.steps[this.currentStep].modal;
             }
         },
         highlightElement(className, position) {

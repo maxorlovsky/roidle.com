@@ -19,6 +19,7 @@
             <item-info />
 
             <tutorial v-if="showTutorial" />
+            <tutorial-blocker v-if="showTutorial" />
 
             <docked-menu v-if="dockedMenu" />
 
@@ -51,6 +52,7 @@ import loading from './components/loading/loading.vue';
 import levelUp from './components/level-up/level-up.vue';
 import itemInfo from './components/item-info/item-info.vue';
 import tutorial from './components/tutorial/tutorial.vue';
+import tutorialBlocker from './components/tutorial/tutorial-blocker.vue';
 
 export default {
     name: 'app',
@@ -62,7 +64,8 @@ export default {
         loading,
         levelUp,
         itemInfo,
-        tutorial
+        tutorial,
+        tutorialBlocker
     },
     store: store,
     data() {
