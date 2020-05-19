@@ -196,12 +196,18 @@ export default {
         mo.socket.on('getHealingItemsComplete', (response) => {
             this.healingItemsList = response.items;
         });
+
+        this.checkHuntState();
     },
     beforeDestroy() {
         mo.socket.off('startHuntComplete');
         mo.socket.off('getHealingItemsComplete');
     },
     methods: {
+        checkHuntState() {
+            // If fight status is on, we need to display active hunt details
+            mo.socket.emit('getHunt');
+        },
         // Open hunt dialog
         openHunt() {
             // Reset dialogs and variables for the hunt

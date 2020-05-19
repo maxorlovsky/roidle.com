@@ -112,7 +112,6 @@ const gamePage = {
             handler() {
                 if (this.socketConnection) {
                     this.setUpSocketEvents();
-                    this.checkHuntState();
                 }
             }
         },
@@ -173,10 +172,6 @@ const gamePage = {
             if (this.huntInterval) {
                 clearInterval(this.huntInterval);
             }
-        },
-        checkHuntState() {
-            // If fight status is on, we need to display active hunt details
-            mo.socket.emit('getHunt');
         },
         runHuntTimer() {
             this.huntInterval = setInterval(() => {
