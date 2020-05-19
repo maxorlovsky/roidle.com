@@ -149,11 +149,6 @@ const questsPage = {
         showQuest(quest) {
             this.selectedMission = quest;
 
-            // In case there is an illustration for NPC, we show it
-            if (quest.npcImage) {
-                this.displayNPC = quest.npcImage;
-            }
-
             if (quest.neededProgress >= 0) {
                 this.currentProgress = quest.currentProgress;
                 this.neededProgress = quest.neededProgress;
@@ -161,6 +156,11 @@ const questsPage = {
 
             this.currentDialogStep = 0;
             this.currentDialogText = this.transformText(this.selectedMission.steps[this.selectedMission.currentStep].messages[this.currentDialogStep]);
+
+            // In case there is an illustration for NPC for the first step, we show it
+            if (this.selectedMission.steps[this.selectedMission.currentStep].npcImage) {
+                this.displayNPC = this.selectedMission.steps[this.selectedMission.currentStep].npcImage;
+            }
 
             // When displaying quest, we need to identify which button to display
             this.checkQuestAction();
@@ -190,6 +190,11 @@ const questsPage = {
             const text = this.transformText(this.selectedMission.steps[this.selectedMission.currentStep].messages[this.currentDialogStep]);
 
             this.currentDialogText = text;
+
+            // In case there is an illustration for NPC for the first step, we show it
+            if (this.selectedMission.steps[this.selectedMission.currentStep].npcImage) {
+                this.displayNPC = this.selectedMission.steps[this.selectedMission.currentStep].npcImage;
+            }
 
             // Trigger check if there will be another dialog or we should finish
             this.checkQuestAction();
