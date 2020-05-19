@@ -127,6 +127,21 @@
         &__progress {
             text-align: center;
             padding-bottom: 0.5rem;
+
+            &__bar {
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
+                height: 5px;
+                background-color: #ccc;
+                position: relative;
+
+                &__current {
+                    position: absolute;
+                    height: 5px;
+                    background-color: #080;
+                }
+            }
         }
 
         &__actions {

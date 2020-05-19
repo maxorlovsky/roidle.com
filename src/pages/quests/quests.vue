@@ -18,7 +18,15 @@
                 />
                 <div v-if="neededProgress"
                     class="quests-details__progress"
-                >{{ currentProgress }} / {{ neededProgress }}</div>
+                >
+                    <span>{{ currentProgress }} / {{ neededProgress }}</span>
+
+                    <div class="quests-details__progress__bar">
+                        <div :style="{ 'width': currentProgressPercentage + '%' }"
+                            class="quests-details__progress__bar__current"
+                        />
+                    </div>
+                </div>
                 <div class="quests-details__actions">
                     <button v-if="selectedMissionAction"
                         :disabled="loading"
@@ -97,7 +105,11 @@ const questsPage = {
             'characterBaseLevel',
             'characterJob',
             'characterName'
-        ])
+        ]),
+
+        currentProgressPercentage() {
+            return Math.floor(this.currentProgress / this.neededProgress * 100) || 0;
+        }
     },
     mounted() {
         mo.socket.on('finishQuestComplete', () => {
