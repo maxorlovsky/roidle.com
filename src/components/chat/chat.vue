@@ -66,7 +66,7 @@ export default {
     name: 'chat',
     data() {
         return {
-            whisperName: '#map',
+            whisperName: '#global',
             message: '',
             chats: ['Regular', 'System', 'Battle'],
             chatLog: {
