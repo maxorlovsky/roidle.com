@@ -164,7 +164,7 @@ const homePage = {
         },
         async getOnline() {
             try {
-                const response = await axios.get('/api/online');
+                const response = await axios.get(`/api/online?cache=${new Date().getTime()}`);
 
                 this.online = response.data.online;
                 this.idle = response.data.idle;
