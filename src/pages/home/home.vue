@@ -7,7 +7,6 @@
                 <div v-for="item in characters"
                     :key="item.id"
                     class="home__select-character"
-                    @click="chooseCharacter(item.id)"
                 >
                     <avatar :head-style="item.headStyle"
                         :gender="item.gender"
@@ -19,6 +18,17 @@
                         {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>
                         {{ item.job }}<br>
                         Location: {{ item.location }}
+                    </div>
+
+                    <div class="home__select-character__buttons">
+                        <button :disabled="buttonLoading"
+                            class="btn btn-sm btn-danger"
+                            @click="deleteCharacter(item.id)"
+                        >Delete</button>
+                        <button :disabled="buttonLoading"
+                            class="btn game-button"
+                            @click="chooseCharacter(item.id)"
+                        >Select character</button>
                     </div>
                 </div>
 
@@ -33,6 +43,18 @@
                     class="character-view__proceed btn game-button"
                     @click="backToMain()"
                 >Back to main screen</button>
+
+                <div v-if="showDelete"
+                    class="home__select-character__delete"
+                >
+                    <div class="home__select-character__delete__caution-text">Are you sure you want to delete this character?</div>
+                    <button class="btn btn-secondary"
+                        @click="closeDeleteModal()"
+                    >No</button>
+                    <button class="btn btn-danger"
+                        @click="deleteConfirm()"
+                    >Yes</button>
+                </div>
             </div>
         </template>
         <template v-else-if="createCharacter">
@@ -69,9 +91,14 @@
                 </div>
 
                 <button :disabled="buttonLoading"
-                    class="character-view__proceed btn btn-warning btn-lg"
+                    class="character-view__proceed btn game-button btn-lg"
                     @click="registerCharacter()"
                 >Create New Character</button>
+
+                <button :disabled="buttonLoading"
+                    class="character-view__proceed btn btn-secondary"
+                    @click="switchToCharacterSelect()"
+                >Back to character select</button>
 
                 <div :class="{'character-view__message--visible': message}"
                     class="character-view__message"
@@ -133,6 +160,8 @@ const homePage = {
             buttonLoading: false,
             selectCharacter: false,
             createCharacter: false,
+            showDelete: false,
+            deleteCharacterId: 0,
             characters: [],
             name: '',
             gender: 'm',
@@ -219,11 +248,41 @@ const homePage = {
                 this.loading = false;
             }
         },
+        async deleteConfirm() {
+            this.buttonLoading = true;
+
+            try {
+                const response = await axios.post('/api/delete-character', {
+                    sessionToken: functions.storage('get', 'session'),
+                    characterId: this.deleteCharacterId
+                });
+
+                this.characters = response.data.characters;
+
+                this.closeDeleteModal();
+            } catch (error) {
+                console.error('ERROR #2');
+                console.error(error);
+                console.error(error.response);
+            } finally {
+                this.buttonLoading = false;
+            }
+        },
+        closeDeleteModal() {
+            this.deleteCharacterId = 0;
+            this.showDelete = false;
+        },
+        deleteCharacter(characterId) {
+            this.deleteCharacterId = characterId;
+            this.showDelete = true;
+        },
         async chooseCharacter(characterId) {
             // If socket connection is already established, we ignore it
             if (mo.socket) {
                 return false;
             }
+
+            this.buttonLoading = true;
 
             // Saving selected character
             functions.storage('set', 'selectedCharacter', characterId);
@@ -253,6 +312,8 @@ const homePage = {
                 this.$store.commit('displayDockedMenu', true);
                 this.$store.commit('showChat', true);
 
+                this.buttonLoading = false;
+
                 this.$router.push('/game');
             });
 
@@ -260,6 +321,10 @@ const homePage = {
                 console.error('TIMEOUT');
                 console.error(timeout);
             });
+        },
+        switchToCharacterSelect() {
+            this.createCharacter = false;
+            this.selectCharacter = true;
         },
         switchToCreateCharacter() {
             this.createCharacter = true;
