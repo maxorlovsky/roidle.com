@@ -343,6 +343,16 @@ export default {
             state.characterEquipment.head.name = values.equipment.head.name || '';
             state.characterEquipment.head.refined = values.equipment.head.refined || 0;
         }
+        if (values.equipment && values.equipment.face) {
+            state.characterEquipment.face.itemId = values.equipment.face.itemId || 0;
+            state.characterEquipment.face.name = values.equipment.face.name || '';
+            state.characterEquipment.face.refined = values.equipment.face.refined || 0;
+        }
+        if (values.equipment && values.equipment.mouth) {
+            state.characterEquipment.mouth.itemId = values.equipment.mouth.itemId || 0;
+            state.characterEquipment.mouth.name = values.equipment.mouth.name || '';
+            state.characterEquipment.mouth.refined = values.equipment.mouth.refined || 0;
+        }
         if (values.equipment && values.equipment.rhand) {
             state.characterEquipment.rhand.itemId = values.equipment.rhand.itemId || 0;
             state.characterEquipment.rhand.name = values.equipment.rhand.name || '';

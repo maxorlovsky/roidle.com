@@ -71,6 +71,16 @@ export default {
             name: '',
             refined: 0
         },
+        face: {
+            itemId: 0,
+            name: '',
+            refined: 0
+        },
+        mouth: {
+            itemId: 0,
+            name: '',
+            refined: 0
+        },
         rhand: {
             itemId: 0,
             name: '',

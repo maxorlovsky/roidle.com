@@ -109,6 +109,8 @@ const characterPage = {
             slot: '',
             equipment: {
                 head: null,
+                face: null,
+                mouth: null,
                 body: null,
                 rhand: null,
                 lhand: null,
@@ -121,6 +123,10 @@ const characterPage = {
                 {
                     slot: 'head',
                     name: 'head'
+                },
+                {
+                    slot: 'mouth',
+                    name: 'mouth'
                 },
                 {
                     slot: 'rhand',
@@ -136,6 +142,10 @@ const characterPage = {
                 }
             ],
             rightSlots: [
+                {
+                    slot: 'face',
+                    name: 'face'
+                },
                 {
                     slot: 'body',
                     name: 'body'
