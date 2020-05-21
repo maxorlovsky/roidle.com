@@ -2,7 +2,7 @@
     <div class="docked-menu">
         <a v-if="displayBackButton"
             class="btn game-button btn-lg"
-            href="#"
+            href="javascript:void(0);"
             @click="$router.go(-1)"
         >&#8592;</a>
 
