@@ -23,11 +23,14 @@
 
             <docked-menu v-if="dockedMenu" />
 
-            <a v-if="serverWentDown"
+            <a v-if="serverWentDown || loginClosed"
                 href="/"
                 class="modal"
-            >Disconnected from server</a>
-            <a v-if="serverWentDown"
+            >
+                <span v-if="loginClosed">Login servers went down or closed, probably because of server restart, wait 5 minutes</span>
+                <span v-else>Disconnected from server</span>
+            </a>
+            <a v-if="serverWentDown || loginClosed"
                 href="/"
                 class="server-down-modal"
             />
@@ -76,7 +79,8 @@ export default {
             serverInitialCheck: true,
             serverWentDown: false,
             showBgm: true,
-            showTutorial: false
+            showTutorial: false,
+            loginClosed: false
         };
     },
     computed: {
@@ -216,6 +220,11 @@ export default {
                     jobExpPercentage: response.character.jobExpPercentage,
                     attributes: response.attributes
                 });
+            });
+
+            mo.socket.on('loginClosed', () => {
+                this.loginClosed = true;
+                this.$store.commit('socketConnection', false);
             });
         },
         setUpSocketEvents() {

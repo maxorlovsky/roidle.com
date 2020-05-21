@@ -136,5 +136,6 @@ export default {
     sound: functions.storage('get', 'sound') === false ? false : true,
     soundVolume: functions.storage('get', 'soundVolume') && functions.storage('get', 'soundVolume') >= 0 ? functions.storage('get', 'soundVolume') : 0.3,
     resetChat: null,
-    closeTutorial: null
+    closeTutorial: null,
+    admin: 0
 };

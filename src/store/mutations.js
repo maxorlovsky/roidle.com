@@ -481,6 +481,11 @@ export default {
         if (values.restingTime) {
             state.restInProgress = values.restingTime;
         }
+
+        // Setting admin state
+        if (values.character.admin) {
+            state.admin = values.character.admin;
+        }
     },
     displayDockedMenu: (state, values) => {
         state.dockedMenu = values;

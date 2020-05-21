@@ -43,5 +43,6 @@ export default {
     sound: (state) => state.sound,
     soundVolume: (state) => state.soundVolume,
     resetChat: (state) => state.resetChat,
-    closeTutorial: (state) => state.closeTutorial
+    closeTutorial: (state) => state.closeTutorial,
+    admin: (state) => state.admin
 };

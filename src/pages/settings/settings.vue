@@ -43,7 +43,7 @@
                     @click="soundToggle"
                 >
                     <i :class="{'icon-volume-on': sound, 'icon-volume-off': !sound}"
-                        class="icon "
+                        class="icon"
                     />
                 </div>
             </div>
@@ -59,6 +59,36 @@
 
             <div class="settings__setting settings__setting--centered settings__setting__version">
                 v{{ version }}
+            </div>
+
+            <div v-if="admin"
+                class="settings__setting"
+            >
+                <div class="settings__setting__slider game-icon">
+                    <div class="settings__setting__title">Close logins</div>
+                </div>
+
+                <div class="settings__setting__icon game-icon"
+                    @click="closeLogin()"
+                >
+                    <i :class="{'icon-volume-on': allowLogins, 'icon-volume-off': !allowLogins}"
+                        class="icon"
+                    />
+                </div>
+            </div>
+
+            <div v-if="admin"
+                class="settings__setting"
+            >
+                <div class="settings__setting__slider game-icon">
+                    <div class="settings__setting__title">Kick online users</div>
+                </div>
+
+                <div class="settings__setting__icon game-icon"
+                    @click="kickUsers()"
+                >
+                    <i class="icon icon-volume-on" />
+                </div>
             </div>
         </div>
     </section>
@@ -80,11 +110,16 @@ const settingsPage = {
         return {
             musicSliderValue: this.$store.state.musicVolume,
             soundSliderValue: this.$store.state.soundVolume,
-            version: mo.version
+            version: mo.version,
+            allowLogins: true
         };
     },
     computed: {
-        ...mapGetters(['music', 'sound']),
+        ...mapGetters([
+            'music',
+            'sound',
+            'admin'
+        ]),
     },
     watch: {
         musicSliderValue() {
@@ -101,10 +136,22 @@ const settingsPage = {
     mounted() {
         // Hiding chat
         this.$store.commit('showChat', false);
+
+        if (this.admin) {
+            mo.socket.on('getAdminConfigComplete', (response) => {
+                this.allowLogins = response.gameConfig.allowLogins;
+            });
+
+            mo.socket.emit('getAdminConfig');
+        }
     },
     beforeDestroy() {
         // Showing chat
         this.$store.commit('showChat', true);
+
+        if (this.admin) {
+            mo.socket.off('getAdminConfigComplete');
+        }
     },
     methods: {
         ...mapActions([
@@ -117,6 +164,16 @@ const settingsPage = {
             'resetState'
         ]),
 
+        kickUsers() {
+            mo.socket.emit('adminKickUsers');
+        },
+        closeLogin() {
+            this.allowLogins = !this.allowLogins;
+
+            mo.socket.emit('adminConfig', {
+                allowLogins: this.allowLogins
+            });
+        },
         musicToggle() {
             if (this.music) {
                 this.musicOff();
