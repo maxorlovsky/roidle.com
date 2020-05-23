@@ -134,7 +134,7 @@ export default {
         }
 
         // In case it's not a home page that we're trying to get into we will try
-        if (!['/', '/server-down'].includes(this.$route.path) && functions.storage('get', 'session')) {
+        if (!['/', '/server-down'].includes(this.$route.path) && functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')) {
             this.$router.push('/game');
             await this.reconnect();
         }
@@ -225,6 +225,8 @@ export default {
             mo.socket.on('loginClosed', () => {
                 this.loginClosed = true;
                 this.$store.commit('socketConnection', false);
+                mo.socket.disconnect();
+                mo.socket = null;
             });
         },
         setUpSocketEvents() {
