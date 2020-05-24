@@ -316,11 +316,6 @@ const homePage = {
 
                 this.$router.push('/game');
             });
-
-            mo.socket.on('connect_timeout', (timeout) => {
-                console.error('TIMEOUT');
-                console.error(timeout);
-            });
         },
         switchToCharacterSelect() {
             this.createCharacter = false;

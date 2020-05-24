@@ -23,14 +23,15 @@
 
             <docked-menu v-if="dockedMenu" />
 
-            <a v-if="serverWentDown || loginClosed"
+            <a v-if="serverWentDown || loginClosed || loggedInFromAnotherSource"
                 href="/"
                 class="modal"
             >
                 <span v-if="loginClosed">Login servers went down or closed, probably because of server restart, wait 5 minutes</span>
+                <span v-else-if="loggedInFromAnotherSource">Someone logged in on to this character from another source. Session lost.</span>
                 <span v-else>Disconnected from server</span>
             </a>
-            <a v-if="serverWentDown || loginClosed"
+            <a v-if="serverWentDown || loginClosed || loggedInFromAnotherSource"
                 href="/"
                 class="server-down-modal"
             />
@@ -78,6 +79,7 @@ export default {
             loading: true,
             serverInitialCheck: true,
             serverWentDown: false,
+            loggedInFromAnotherSource: false,
             showBgm: true,
             showTutorial: false,
             loginClosed: false
@@ -228,6 +230,15 @@ export default {
                 mo.socket.disconnect();
                 mo.socket = null;
             });
+
+            mo.socket.on('kickAnotherLogin', () => {
+                this.loggedInFromAnotherSource = true;
+                mo.socket.disconnect();
+                mo.socket = null;
+                this.$store.commit('displayDockedMenu', false);
+                this.$store.commit('showChat', false);
+                this.$store.commit('socketConnection', false);
+            });
         },
         setUpSocketEvents() {
             mo.socket.emit('reconnect', functions.storage('get', 'session'));
@@ -246,6 +257,11 @@ export default {
                 mo.socket = null;
                 this.$router.push('/');
                 this.serverWentDown = false;
+            });
+
+            mo.socket.on('connect_timeout', (timeout) => {
+                console.error('TIMEOUT');
+                console.error(timeout);
             });
 
             // If socket is registered, we're progressing by fetching user data
