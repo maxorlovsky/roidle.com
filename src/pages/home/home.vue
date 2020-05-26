@@ -126,7 +126,7 @@
 
             <div class="home__discord">
                 <div class="home__discord__wrapper game-icon">
-                    <div class="home__discord__disclaimer">For bugs, problems, questions, suggestions and persitent communication, join our discord</div>
+                    <div class="home__discord__disclaimer">For suggestions, problems, questions, bugs and persitent communication, join our discord by clicking logo below</div>
                     <a href="https://discord.gg/PjApFha"
                         class="home__discord__discord-link game-icon"
                         target="_blank"
