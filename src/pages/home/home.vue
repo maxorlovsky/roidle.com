@@ -118,16 +118,22 @@
 
             <div class="home__footer">
                 <div class="home__footer__online game-icon">
-                    Online: {{ online }}<br>
-                    Hunts: {{ idle }}<br>
-                    Players: {{ players }}
+                    <div>Online: {{ online }}</div>
+                    <div>Hunts: {{ idle }}</div>
+                    <div>Players: {{ players }}</div>
                 </div>
-                <a href="https://discord.gg/PjApFha"
-                    class="home__footer__discord game-icon"
-                    target="_blank"
-                >
-                    <img src="/dist/assets/images/discord.png">
-                </a>
+            </div>
+
+            <div class="home__discord">
+                <div class="home__discord__wrapper game-icon">
+                    <div class="home__discord__disclaimer">For bugs, problems, questions, suggestions and persitent communication, join our discord</div>
+                    <a href="https://discord.gg/PjApFha"
+                        class="home__discord__discord-link game-icon"
+                        target="_blank"
+                    >
+                        <img src="/dist/assets/images/discord.png">
+                    </a>
+                </div>
             </div>
 
             <div class="home__version">v{{ version }}</div>

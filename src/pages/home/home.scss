@@ -47,10 +47,37 @@
         align-items: center;
 
         &__online {
+            display: flex;
+            justify-content: space-around;
             color: #fff;
-            width: auto;
+            width: 80%;
             height: auto;
             padding: 1rem;
+        }
+    }
+
+    &__discord {
+        width: 100%;
+
+        &__wrapper {
+            width: 80%;
+            padding: 0.5rem 1rem;
+            height: auto;
+            color: #fff;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        &__disclaimer {
+            width: 100%;
+        }
+
+        &__discord-link {
+            transition: 0.3s;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.8);
+            }
         }
     }
 
