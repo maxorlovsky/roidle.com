@@ -27,6 +27,7 @@
             color: #000;
             font-size: 1rem;
             text-transform: capitalize;
+            cursor: pointer;
 
             &--active {
                 background-color: $mainColor;
