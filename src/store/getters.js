@@ -1,6 +1,7 @@
 export default {
     get: (state) => (name) => state[name],
     dockedMenu: (state) => state.dockedMenu,
+    characterId: (state) => state.characterId,
     characterName: (state) => state.characterName,
     characterStats: (state) => state.characterStats,
     characterBonusStats: (state) => state.characterBonusStats,
@@ -44,5 +45,12 @@ export default {
     soundVolume: (state) => state.soundVolume,
     resetChat: (state) => state.resetChat,
     closeTutorial: (state) => state.closeTutorial,
-    admin: (state) => state.admin
+    admin: (state) => state.admin,
+    party: (state) => state.party,
+    partyName: (state) => state.partyName,
+    partyMembers: (state) => state.partyMembers,
+    partyLeader: (state) => state.partyLeader,
+    partyLeaderId: (state) => state.partyLeaderId,
+    partyLoot: (state) => state.partyLoot,
+    partyHunt: (state) => state.partyHunt
 };

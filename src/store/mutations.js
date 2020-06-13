@@ -3,6 +3,31 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    newPartyInvite: (state) => {
+        state.partyInvites++;
+    },
+    leaveParty: (state) => {
+        state.party = false;
+        state.partyName = null;
+        state.partyMembers = [];
+        state.partyLoot = null;
+        state.partyHunt = null;
+        state.partyLeader = false;
+        state.partyLeaderId = 0;
+    },
+    updateParty: (state, value) => {
+        state.partyLoot = value.loot;
+        state.partyHunt = value.hunt;
+    },
+    setParty: (state, value) => {
+        state.party = true;
+        state.partyName = value.name;
+        state.partyMembers = value.members;
+        state.partyLoot = value.loot;
+        state.partyHunt = value.hunt;
+        state.partyLeader = value.leader === state.characterId;
+        state.partyLeaderId = value.leader;
+    },
     closeTutorial: (state) => {
         state.closeTutorial = new Date();
     },

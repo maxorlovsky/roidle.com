@@ -2,13 +2,30 @@
     <section :class="characterLocation.toLowerCase()"
         class="game"
     >
-        <div class="party">
-            <div class="party__slot">+</div>
-            <div class="party__slot">+</div>
-            <div class="party__slot">+</div>
-            <div class="party__slot">+</div>
+        <div class="game__party"
+            @click="partyClick()"
+        >
+            <div v-for="(member, index) in partyMembersList"
+                :key="index"
+                class="game__party__slot"
+            >
+                <template v-if="member">
+                    <div class="game__party__slot__name">{{ member.name }}</div>
+                    <avatar :head-style="member.headStyle"
+                        :gender="member.gender"
+                        :just-head="true"
+                        job="Novice"
+                    />
+                    <div class="game__party__slot__bar">
+                        <div :style="{ 'width': `${Math.floor(member.hp / member.maxHp * 100) || 100}%` }"
+                            class="game__party__slot__bar__hp"
+                        />
+                    </div>
+                </template>
+                <template v-else>+</template>
+            </div>
 
-            <div class="party__name">Party: --</div>
+            <div class="game__party__name">Party: {{ partyName || '--' }}</div>
         </div>
 
         <router-link to="/settings"
@@ -66,17 +83,19 @@
 import { mapGetters } from 'vuex';
 
 // Components
-import kafraActions from '../../components/kafra-actions/kafra-actions.vue';
-import innActions from '../../components/inn-actions/inn-actions.vue';
-import shopActions from '../../components/shop-actions/shop-actions.vue';
-import huntActions from '../../components/hunt-actions/hunt-actions.vue';
+import kafraActions from '@components/kafra-actions/kafra-actions.vue';
+import innActions from '@components/inn-actions/inn-actions.vue';
+import shopActions from '@components/shop-actions/shop-actions.vue';
+import huntActions from '@components/hunt-actions/hunt-actions.vue';
+import avatar from '@components/avatar/avatar.vue';
 
 const gamePage = {
     components: {
         kafraActions,
         innActions,
         shopActions,
-        huntActions
+        huntActions,
+        avatar
     },
     data() {
         return {
@@ -85,19 +104,51 @@ const gamePage = {
             huntInterval: null,
             huntStatusTimerDisplay: '*',
             retreatFromHunt: false,
+            partyMembersList: [null, null, null, null]
         };
     },
     computed: {
         ...mapGetters([
+            'characterId',
             'characterLocation',
             'huntStatus',
             'huntEndTimer',
             'travelingToLocation',
             'restInProgress',
             'socketConnection',
+            'partyName',
+            'partyMembers'
         ])
     },
     watch: {
+        partyMembers: {
+            immediate: true,
+            handler() {
+                // Reset party member list
+                this.partyMembersList = [null, null, null, null];
+
+                if (!this.partyMembers || !this.partyMembers.length) {
+                    return false;
+                }
+
+                const partyMembers = [];
+
+                // Loop through members and remove the player himself, to not overlap
+                for (let i = 0; i < 5; i++) {
+                    // In case party member is the same member, we ignore him and don't mention him in the list
+                    if (this.partyMembers[i] && this.partyMembers[i].id === this.characterId) {
+                        // eslint-disable-next-line
+                        continue;
+                    } else if (this.partyMembers[i]) {
+                        partyMembers.push(this.partyMembers[i]);
+                    } else {
+                        partyMembers.push(null);
+                    }
+                }
+
+                this.partyMembersList = partyMembers;
+            }
+        },
         characterLocation: {
             immediate: true,
             handler() {
@@ -141,6 +192,10 @@ const gamePage = {
         }
     },
     methods: {
+        partyClick() {
+            // Need to create a party
+            this.$router.push('/party');
+        },
         setUpSocketEvents() {
             mo.socket.on('getCurrentMapLocationDataComplete', (response) => {
                 const location = response.location;
@@ -164,6 +219,8 @@ const gamePage = {
                     timeFinish: null
                 });
             });
+
+            mo.socket.emit('getParty');
         },
         markHuntAsRetreating() {
             // Marking hunt as retreated

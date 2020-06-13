@@ -239,6 +239,20 @@ export default {
                 this.$store.commit('showChat', false);
                 this.$store.commit('socketConnection', false);
             });
+
+            mo.socket.on('getPartyComplete', (response) => {
+                this.$store.commit('setParty', response);
+            });
+
+            mo.socket.on('partyInvitationReceived', () => {
+                this.$store.commit('newPartyInvite');
+            });
+
+            mo.socket.on('kickedFromParty', () => {
+                this.$store.commit('leaveParty');
+            });
+
+            mo.socket.emit('getParty');
         },
         setUpSocketEvents() {
             mo.socket.emit('reconnect', functions.storage('get', 'session'));
@@ -277,7 +291,8 @@ export default {
                 reconnection: true,
                 reconnectionDelay: 1000,
                 reconnectionDelayMax: 5000,
-                reconnectionAttempts: Infinity
+                reconnectionAttempts: Infinity,
+                timeout: 60000
             });
 
             this.$store.commit('socketConnection', true);

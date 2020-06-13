@@ -111,7 +111,6 @@ export default {
     travelingToLocationName: '',
     travelingArrivalTime: 0,
     restInProgress: 0,
-    party: [],
     dockedMenu: false,
     huntStatus: false,
     huntEndTimer: null,
@@ -147,5 +146,13 @@ export default {
     soundVolume: functions.storage('get', 'soundVolume') && functions.storage('get', 'soundVolume') >= 0 ? functions.storage('get', 'soundVolume') : 0.3,
     resetChat: null,
     closeTutorial: null,
-    admin: 0
+    admin: 0,
+    party: false,
+    partyName: null,
+    partyMembers: [],
+    partyLeader: false,
+    partyLeaderId: 0,
+    partyInvites: 0,
+    partyLoot: null,
+    partyHunt: null
 };
