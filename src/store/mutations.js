@@ -3,6 +3,22 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    resetStats: (state, values) => {
+        state.characterStats = {
+            str: 1,
+            dex: 1,
+            int: 1,
+            vit: 1,
+            wis: 1,
+            luk: 1
+        };
+
+        state.characterStatusPoints = values.statusPoints;
+        state.characterAttributes = values.attributes;
+
+        state.characterHp = values.attributes.maxHp;
+        state.characterMp = values.attributes.maxMp;
+    },
     newPartyInvite: (state) => {
         state.partyInvites++;
     },
