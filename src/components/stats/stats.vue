@@ -45,54 +45,22 @@
             >Save</button>
         </div>
 
-        <div v-if="!hideParams"
-            class="stats__attributes"
-        >
-            <div class="stats__params">
-                <span class="stats__params__label">M.HP</span>
-                <span class="stats__params__value">{{ attributes.maxHp }}</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">M.MP</span>
-                <span class="stats__params__value">{{ attributes.maxMp }}</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">P.Atk</span>
-                <span class="stats__params__value">{{ attributes.patk }}</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">M.Atk</span>
-                <span class="stats__params__value">{{ attributes.matk }}</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">P.Def</span>
-                <span class="stats__params__value">{{ attributes.pdef }}</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">M.Def</span>
-                <span class="stats__params__value">{{ attributes.mdef }}</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">Hit</span>
-                <span class="stats__params__value">{{ attributes.hit }}</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">Eva</span>
-                <span class="stats__params__value">{{ attributes.eva }}</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">Speed</span>
-                <span class="stats__params__value">+{{ attributes.speed }}%</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">Crit Atk</span>
-                <span class="stats__params__value">{{ attributes.crit }}%</span>
-            </div>
-            <div class="stats__params">
-                <span class="stats__params__label">Crit Def</span>
-                <span class="stats__params__value">{{ attributes.critDef }}%</span>
-            </div>
-        </div>
+        <attributes :patk="attributes.patk"
+            :matk="attributes.matk"
+            :pdef="attributes.pdef"
+            :mdef="attributes.mdef"
+            :hit="attributes.hit"
+            :eva="attributes.eva"
+            :speed="attributes.speed"
+            :crit="attributes.crit"
+            :crit-def="attributes.critDef"
+            :max-hp="attributes.maxHp"
+            :max-mp="attributes.maxMp"
+            :party-name="partyName"
+            :job="characterJob"
+            :base-level="characterBaseLevel"
+            :job-level="characterJobLevel"
+        />
 
         <div v-if="statExplanation.show"
             class="modal"
@@ -106,13 +74,13 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Components
+import attributes from '@components/attributes/attributes.vue';
+
 export default {
     name: 'stats',
-    props: {
-        hideParams: {
-            type: Boolean,
-            default: false
-        }
+    components: {
+        attributes
     },
     data() {
         return {
@@ -170,7 +138,9 @@ export default {
             'characterStatusPoints',
             'characterBaseLevel',
             'characterJobLevel',
-            'characterJobId'
+            'characterJobId',
+            'characterJob',
+            'partyName'
         ])
     },
     watch: {
