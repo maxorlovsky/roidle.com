@@ -48,12 +48,20 @@ $chat-tabs-height: 35px;
         height: calc(100% - #{$chat-input-height} - #{$chat-tabs-height});
         background-color: rgba(0, 0, 0, 0.8);
 
+        &__self {
+            color: #02f102;
+        }
+
         &__main {
             color: #deff9c;
         }
 
         &__map {
             color: #ff8c00;
+        }
+
+        &__party {
+            color: #f09bff;
         }
 
         p {

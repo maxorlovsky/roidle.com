@@ -16,8 +16,8 @@
             >
                 <p v-for="(chat, index) in chatLog.regular"
                     :key="index"
-                    :class="`chat__body__${chat.type}`"
-                >[ #{{ chat.type }} ] <span @click="whisperName = chat.character">{{ chat.character }}</span> : {{ chat.message }}</p>
+                    :class="[`chat__body__${chat.type}`, { 'chat__body__self': chat.self }]"
+                >[ #{{ chat.type }} ] <span @click="whisperName = chat.character">{{ chat.character }}</span>: {{ chat.message }}</p>
             </div>
             <div v-show="selectedTab === 1"
                 ref="chatBody-system"
@@ -84,7 +84,8 @@ export default {
             'characterSkills',
             'chatContent',
             'socketConnection',
-            'resetChat'
+            'resetChat',
+            'characterName'
         ])
     },
     watch: {
@@ -132,7 +133,8 @@ export default {
                     this.chatLog.regular.push({
                         type: chat.type,
                         character: chat.character,
-                        message: chat.message
+                        message: chat.message,
+                        self: this.characterName === chat.character
                     });
                 }
             }
