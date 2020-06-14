@@ -44,7 +44,7 @@
                             <button v-if="item.id !== characterId"
                                 :disabled="buttonLoading"
                                 class="btn game-button"
-                                @click="viewCharacter(item.id)"
+                                @click="viewCharacter(item.name)"
                             >View profile</button>
                         </div>
                     </div>
@@ -423,10 +423,10 @@ const partyPage = {
 
             mo.socket.emit('kickFromParty', id);
         },
-        viewCharacter(id) {
+        viewCharacter(name) {
             this.buttonLoading = true;
 
-            this.$router.push(`/profile/${id}`);
+            this.$router.push(`/profile/${name}`);
         },
         leaveTeam() {
             this.buttonLoading = true;
