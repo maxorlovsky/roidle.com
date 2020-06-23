@@ -171,9 +171,14 @@ export default {
         });
 
         mo.socket.on('characterHp', (hp) => {
-            // Set hp to max
             this.$store.commit('setHpMp', {
                 hp: hp
+            });
+        });
+
+        mo.socket.on('characterMp', (mp) => {
+            this.$store.commit('setHpMp', {
+                mp: mp
             });
         });
 
@@ -196,6 +201,7 @@ export default {
         mo.socket.off('travelToMapComplete');
         mo.socket.off('checkRestingTimeComplete');
         mo.socket.off('characterHp');
+        mo.socket.off('characterMp');
         mo.socket.off('stopHuntComplete');
     },
     methods: {
