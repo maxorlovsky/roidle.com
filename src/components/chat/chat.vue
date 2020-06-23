@@ -33,7 +33,8 @@
             >
                 <p v-for="(chat, index) in chatLog.battle"
                     :key="index"
-                >{{ chat.message }}</p>
+                    v-html="chat.message"
+                />
             </div>
             <div class="chat__input">
                 <input v-model="whisperName"
@@ -113,6 +114,14 @@ export default {
                     if (this.selectedTab !== 2) {
                         this.tabNotification[2] = true;
                     }
+
+                    // Update name variable with character name
+                    chat.message = chat.message.replace(/{name}/g, this.characterName)
+                        .replace(/(&skill;)/g, '<span class="chat__input__message--skill">')
+                        .replace(/(&endskill;)/g, '</span>')
+                        .replace(/(&bold;)/g, '<span class="chat__input__message--bold">')
+                        .replace(/(&endbold;)/g, '</span>')
+                        .replace(/(\n)/g, '<br>');
 
                     this.chatLog.battle.push({
                         message: chat.message

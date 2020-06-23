@@ -96,6 +96,15 @@ $chat-tabs-height: 35px;
             border: 0;
             padding: 0 0.25rem;
             outline: 0;
+
+            &--skill {
+                color: #4db5ff;
+            }
+
+            &--bold {
+                font-weight: bold;
+                color: #ffc800;
+            }
         }
 
         &__button {
