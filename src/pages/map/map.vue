@@ -23,6 +23,18 @@
                     <div v-else
                         class="map__piece__levels"
                     >City</div>
+                    <div class="map__piece__players">
+                        <div v-for="player in ifPlayerDetected(location)"
+                            :key="player.id"
+                            class="map__piece__players__player"
+                        >
+                            <div class="map__piece__players__player__name">{{ player.name }}</div>
+                            <avatar :head-style="player.headStyle"
+                                :gender="player.gender"
+                                :just-head="true"
+                            />
+                        </div>
+                    </div>
                 </template>
             </div>
         </div>
@@ -60,7 +72,13 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Components
+import avatar from '@components/avatar/avatar.vue';
+
 const mapPage = {
+    components: {
+        avatar
+    },
     data() {
         return {
             loading: true,
@@ -82,7 +100,8 @@ const mapPage = {
             'huntStatus',
             'allMaps',
             'inventoryWeight',
-            'characterAttributes'
+            'characterAttributes',
+            'partyMembers'
         ])
     },
     watch: {
@@ -118,6 +137,17 @@ const mapPage = {
         this.$store.commit('showChat', true);
     },
     methods: {
+        ifPlayerDetected(location) {
+            const foundMembers = [];
+
+            for (const member of this.partyMembers) {
+                if (member.locationId === location.id) {
+                    foundMembers.push(member);
+                }
+            }
+
+            return foundMembers;
+        },
         loadMaps() {
             // In case all maps is set, remove loading and display map immediately
             if (this.allMaps) {

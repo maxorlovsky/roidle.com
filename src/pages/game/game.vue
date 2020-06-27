@@ -14,7 +14,6 @@
                     <avatar :head-style="member.headStyle"
                         :gender="member.gender"
                         :just-head="true"
-                        job="Novice"
                     />
                     <div class="game__party__slot__bar">
                         <div :style="{ 'width': `${Math.floor(member.hp / member.maxHp * 100) || 100}%` }"

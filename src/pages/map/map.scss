@@ -30,7 +30,8 @@ $amountOfMapsPerRow: 6;
             width: 100%;
         }
 
-        &__name {
+        &__name,
+        &__levels {
             position: absolute;
             top: 20px;
             color: #fff;
@@ -44,23 +45,67 @@ $amountOfMapsPerRow: 6;
         }
 
         &__levels {
-            position: absolute;
             top: 60px;
-            color: #fff;
             font-size: 1rem;
-            background-color: rgba(0, 0, 0, 0.9);
             border-radius: 4px;
-            padding: 0.2rem 0.4rem;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-
+            
             &--too-high {
                 color: #c00;
             }
 
             &--too-low {
                 color: rgb(98, 98, 255);
+            }
+        }
+
+        &__players {
+            position: absolute;
+            top: 95px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+
+            &__player {
+                padding-right: 0.5rem;
+                position: relative;
+                border: 1px solid #fff;
+                box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+                text-align: center;
+                background-color: rgba(0, 0, 0, 0.9);
+                border-radius: 7px;
+                margin: 0 0.5rem;
+                width: 50px;
+                height: 50px;
+
+                &__name {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    text-overflow: ellipsis;
+                    font-size: 0.5rem;
+                    color: #fff;
+                }
+
+                &:last-child {
+                    padding-right: 0;
+                }
+
+                .avatar--just-head {
+                    border: 0;
+                }
+                
+                .avatar__body {
+                    display: none;
+                }
+
+                .avatar__head {
+                    left: calc(50% - 20px);
+                }
             }
         }
     }
