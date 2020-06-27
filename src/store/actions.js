@@ -2,6 +2,24 @@
 import { functions } from '@src/functions.js';
 
 export default {
+    setPartyMembers({ commit, state }, value) {
+        const members = state.partyMembers || [];
+
+        // Check if party member that we're trying to add is already in the party, if that's the case we just run update
+        for (const partyMember of value) {
+            const findMemberIndex = members.findIndex((member) => member.id === partyMember.id);
+
+            // If found we just update his data
+            if (findMemberIndex >= 0) {
+                members[findMemberIndex] = partyMember;
+            } else {
+                // In case it's a new member, we add it
+                members.push(partyMember);
+            }
+        }
+
+        commit('setPartyMembers', members);
+    },
     musicOff({ commit }) {
         commit('music', false);
 

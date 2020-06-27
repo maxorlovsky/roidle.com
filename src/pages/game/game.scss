@@ -86,7 +86,23 @@
                     background-color: #080;
                     border-bottom-left-radius: 7px;
                 }
+            }
 
+            &__online {
+                position: absolute;
+                top: 2px;
+                right: 3px;
+                border-radius: 50%;
+                width: 6px;
+                height: 6px;
+
+                &--online {
+                    background-color: #090;
+                }
+
+                &--offline {
+                    background-color: #900;
+                }
             }
         }
 

@@ -41,7 +41,7 @@
 
 <script>
 // 3rd party libs
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
 
 // Globals functions
@@ -93,10 +93,14 @@ export default {
             'characterStats',
             'resetChat',
             'characterBaseLevel',
-            'closeTutorial'
+            'closeTutorial',
+            'characterId'
         ])
     },
     watch: {
+        characterId() {
+            mo.socket.emit('getParty');
+        },
         socketConnection() {
             if (this.$route.path !== '/' && this.socketConnection) {
                 this.setUpSocketEvents();
@@ -149,6 +153,8 @@ export default {
         }
     },
     methods: {
+        ...mapActions(['setPartyMembers']),
+
         setUpMainSocketEvents() {
             mo.socket.on('equipmentUpdate', (response) => {
                 if (response.message) {
@@ -240,8 +246,30 @@ export default {
                 this.$store.commit('socketConnection', false);
             });
 
+            mo.socket.on('partyMemberUpdate', (membersIds) => {
+                mo.socket.emit('getPartyMembers', membersIds);
+            });
+
+            mo.socket.on('partyConfigChanged', (response) => {
+                this.$store.commit('updateParty', response);
+            });
+
+            mo.socket.on('partyMembersChanged', () => {
+                // Refetching the whole party
+                mo.socket.emit('getParty');
+            });
+
             mo.socket.on('getPartyComplete', (response) => {
                 this.$store.commit('setParty', response);
+
+                // In case  there is a party, we send a request to fetch data about party members, all of them
+                if (response) {
+                    mo.socket.emit('getPartyMembers', response.members);
+                }
+            });
+
+            mo.socket.on('getPartyMembersComplete', (response) => {
+                this.setPartyMembers(response);
             });
 
             mo.socket.on('partyInvitationReceived', () => {
@@ -251,8 +279,6 @@ export default {
             mo.socket.on('kickedFromParty', () => {
                 this.$store.commit('leaveParty');
             });
-
-            mo.socket.emit('getParty');
         },
         setUpSocketEvents() {
             mo.socket.emit('reconnect', functions.storage('get', 'session'));

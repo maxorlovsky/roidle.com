@@ -5,10 +5,6 @@
     background-image: url("#{$assets}/images/character.jpg");
     position: relative;
 
-    &__wrapper {
-        margin-top: 42px;
-    }
-
     &__tabs {
         width: 100%;
         max-width: 425px;
@@ -17,8 +13,7 @@
         justify-content: center;
         background-color: rgba(255, 255, 255, 0.95);
         border: 1px solid $mainColor;
-        position: fixed;
-        top: 125px;
+        position: relative;
         z-index: 3;
 
         &__tab {
@@ -133,6 +128,19 @@
                 &__info {
                     width: 65%;
                     font-size: 1rem;
+
+                    &--online,
+                    &--offline {
+                        font-size: 0.75rem;
+                    }
+
+                    &--online {
+                        color: #090;
+                    }
+
+                    &--offline {
+                        color: #900;
+                    }
                 }
         
                 &__buttons {

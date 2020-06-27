@@ -28,6 +28,12 @@
                             {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>
                             {{ item.job }}<br>
                             Location: {{ item.location }}
+                            <div v-if="item.online"
+                                class="party__window__members__member__info--online"
+                            >Online</div>
+                            <div v-else
+                                class="party__window__members__member__info--offline"
+                            >Offline</div>
                         </div>
 
                         <div class="party__window__members__member__buttons">
@@ -195,7 +201,7 @@
             <button class="btn btn-secondary"
                 @click="closeInviteModal()"
             >Cancel</button>
-            <button :disabled="buttonLoading"
+            <button :disabled="buttonLoading || !inviteToPartyName"
                 class="btn game-button"
                 @click="inviteConfirm()"
             >Invite</button>
@@ -266,19 +272,25 @@ const partyPage = {
         partyName: {
             immediate: true,
             handler() {
-                this.createParty.name = this.partyName;
+                if (this.partyName) {
+                    this.createParty.name = this.partyName;
+                }
             }
         },
         partyLoot: {
             immediate: true,
             handler() {
-                this.createParty.loot = this.partyLoot;
+                if (this.partyLoot) {
+                    this.createParty.loot = this.partyLoot;
+                }
             }
         },
         partyHunt: {
             immediate: true,
             handler() {
-                this.createParty.hunt = this.partyHunt;
+                if (this.partyHunt) {
+                    this.createParty.hunt = this.partyHunt;
+                }
             }
         }
     },
@@ -395,6 +407,10 @@ const partyPage = {
         },
         inviteConfirm() {
             this.buttonLoading = true;
+
+            if (!this.inviteToPartyName) {
+                return false;
+            }
 
             mo.socket.emit('partyInvite', this.inviteToPartyName);
         },

@@ -21,6 +21,9 @@
                             class="game__party__slot__bar__hp"
                         />
                     </div>
+                    <div :class="{'game__party__slot__online--online': member.online, 'game__party__slot__online--offline': !member.online}"
+                        class="game__party__slot__online"
+                    />
                 </template>
                 <template v-else>+</template>
             </div>
@@ -219,8 +222,6 @@ const gamePage = {
                     timeFinish: null
                 });
             });
-
-            mo.socket.emit('getParty');
         },
         markHuntAsRetreating() {
             // Marking hunt as retreated

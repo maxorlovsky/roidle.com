@@ -35,10 +35,15 @@ export default {
         state.partyLoot = value.loot;
         state.partyHunt = value.hunt;
     },
+    setPartyMembers: (state, value) => {
+        // Reactively update party members
+        for (const [key, memberValue] of Object.entries(value)) {
+            Vue.set(state.partyMembers, key, memberValue);
+        }
+    },
     setParty: (state, value) => {
         state.party = true;
         state.partyName = value.name;
-        state.partyMembers = value.members;
         state.partyLoot = value.loot;
         state.partyHunt = value.hunt;
         state.partyLeader = value.leader === state.characterId;
