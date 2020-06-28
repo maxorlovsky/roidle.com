@@ -64,11 +64,11 @@
         </div>
         <div class="attributes__params attributes__params--half">
             <span class="attributes__params__label">Party</span>
-            <span class="attributes__params__value">{{ partyName }}</span>
+            <span class="attributes__params__value">{{ partyName || '--' }}</span>
         </div>
         <div class="attributes__params attributes__params--half">
             <span class="attributes__params__label">Guild</span>
-            <span class="attributes__params__value">{{ guildName }}</span>
+            <span class="attributes__params__value">{{ guildName || '--' }}</span>
         </div>
     </div>
 </template>
