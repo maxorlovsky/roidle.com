@@ -33,13 +33,14 @@
                         <div class="kafra-storage__item__name-price__name">{{ item.itemName }}</div>
                     </div>
                     <div v-if="selectedMainTab === 'withdraw'"
+                        :class="{'kafra-storage__item__move--disabled': buttonLoading}"
                         class="kafra-storage__item__move"
                         @click="moveItem(index)"
                     >
                         &lt;
                     </div>
                     <div v-else
-                        :class="{'kafra-storage__item__move--disabled': storageSpace >= storageSpaceMax && !itemInStorage(item.itemId)}"
+                        :class="{'kafra-storage__item__move--disabled': (storageSpace >= storageSpaceMax && !itemInStorage(item.itemId) || buttonLoading) }"
                         class="kafra-storage__item__move"
                         @click="moveItem(index)"
                     >
@@ -97,6 +98,7 @@ const kafraStoragePage = {
     data() {
         return {
             loading: true,
+            buttonLoading: false,
             itemsTransfer: [],
             mainTabs: ['deposit', 'withdraw'],
             selectedMainTab: 'deposit',
@@ -144,6 +146,7 @@ const kafraStoragePage = {
 
         mo.socket.on('openKafraStorageComplete', (response) => {
             this.loading = false;
+            this.buttonLoading = false;
 
             this.itemsInventory = response.itemsInventory;
             this.itemsStorage = response.itemsStorage;
@@ -164,6 +167,8 @@ const kafraStoragePage = {
         });
 
         mo.socket.on('storageUpdateComplete', (response) => {
+            this.buttonLoading = false;
+
             this.$store.commit('setInventoryData', {
                 inventory: response.inventory,
                 inventoryWeight: response.inventoryWeight
@@ -188,6 +193,7 @@ const kafraStoragePage = {
             mo.socket.emit('getItemsInfo', [itemId]);
         },
         moveItem(index) {
+            this.buttonLoading = true;
             this.movingItem = this.itemsTransfer[index];
 
             // If user reached max storage amount, we don't allow him to move items inside
@@ -225,12 +231,14 @@ const kafraStoragePage = {
 
             const amount = Number(this.amountModal);
 
-            this.movingItem.amount = amount;
+            const movingItem = { ...this.movingItem };
+
+            movingItem.amount = amount;
 
             if (this.selectedMainTab === 'withdraw') {
-                mo.socket.emit('withdrawItem', this.movingItem);
+                mo.socket.emit('withdrawItem', movingItem);
             } else {
-                mo.socket.emit('depositItem', this.movingItem);
+                mo.socket.emit('depositItem', movingItem);
             }
 
             this.displayAmountModal = false;
