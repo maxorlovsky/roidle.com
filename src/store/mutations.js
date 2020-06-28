@@ -676,7 +676,6 @@ export default {
         state.travelingToLocationName = '';
         state.travelingArrivalTime = 0;
         state.restInProgress = 0;
-        state.party = [];
         state.dockedMenu = false;
         state.huntStatus = false;
         state.huntEndTimer = null;
@@ -706,5 +705,18 @@ export default {
         state.allMaps = null;
         state.selfBagItemInfo = false;
         state.closeItemInfo = null;
+
+        state.party = false;
+        state.partyName = null;
+        state.partyMembers = [];
+        state.partyLoot = null;
+        state.partyHunt = null;
+        state.partyLeader = false;
+        state.partyLeaderId = 0;
+        state.partyInvites = 0;
+        state.partyLoot = null;
+        state.partyHunt = null;
+
+        state.admin = 0;
     }
 };

@@ -99,7 +99,9 @@ export default {
     },
     watch: {
         characterId() {
-            mo.socket.emit('getParty');
+            if (this.socketConnection) {
+                mo.socket.emit('getParty');
+            }
         },
         socketConnection() {
             if (this.$route.path !== '/' && this.socketConnection) {
@@ -247,6 +249,11 @@ export default {
             });
 
             mo.socket.on('partyMemberUpdate', (membersIds) => {
+                // Sometimes it might trigger on logout, so we check if character ID is still there
+                if (!this.characterId) {
+                    return false;
+                }
+
                 mo.socket.emit('getPartyMembers', membersIds);
             });
 
