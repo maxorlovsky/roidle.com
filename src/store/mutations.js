@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    resetPartyMembers: (state) => {
+        state.partyMembers = [];
+    },
     resetStats: (state, values) => {
         state.characterStats = {
             str: 1,
@@ -34,6 +37,9 @@ export default {
     updateParty: (state, value) => {
         state.partyLoot = value.loot;
         state.partyHunt = value.hunt;
+    },
+    setPartyMembersIds: (state, value) => {
+        state.partyMembersIds = value;
     },
     setPartyMembers: (state, value) => {
         // Reactively update party members
@@ -205,30 +211,40 @@ export default {
             wis: state.characterStats.wis,
             luk: state.characterStats.luk
         };
+        let statsUpdate = false;
 
         if (values.stats && values.stats.str) {
             characterStats.str = values.stats.str;
+            statsUpdate = true;
         }
         if (values.stats && values.stats.dex) {
             characterStats.dex = values.stats.dex;
+            statsUpdate = true;
         }
         if (values.stats && values.stats.int) {
             characterStats.int = values.stats.int;
+            statsUpdate = true;
         }
         if (values.stats && values.stats.vit) {
             characterStats.vit = values.stats.vit;
+            statsUpdate = true;
         }
         if (values.stats && values.stats.wis) {
             characterStats.wis = values.stats.wis;
+            statsUpdate = true;
         }
         if (values.stats && values.stats.luk) {
             characterStats.luk = values.stats.luk;
+            statsUpdate = true;
         }
         if (values.statusPoints || values.statusPoints === 0) {
             state.characterStatusPoints = values.statusPoints;
         }
 
-        Vue.set(state, 'characterStats', characterStats);
+        // Trigger forced update only when there IS an update to the stats
+        if (statsUpdate) {
+            Vue.set(state, 'characterStats', characterStats);
+        }
 
         // Bonus stats
         const characterBonusStats = {

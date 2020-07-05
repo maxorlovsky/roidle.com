@@ -150,6 +150,7 @@ export default {
     party: false,
     partyName: null,
     partyMembers: [],
+    partyMembersIds: [],
     partyLeader: false,
     partyLeaderId: 0,
     partyInvites: 0,

@@ -149,6 +149,16 @@ export default {
             handler() {
                 this.updateTempStats();
             }
+        },
+        characterBonusStats: {
+            handler() {
+                this.bonusStats = Object.assign({}, this.characterBonusStats);
+            }
+        },
+        characterAttributes: {
+            handler() {
+                this.attributes = Object.assign({}, this.characterAttributes);
+            }
         }
     },
     mounted() {

@@ -88,9 +88,6 @@ export default {
                 if (this.sound) {
                     this.$refs.levelUpAudio.play();
                 }
-
-                // Trigger re-fetch of the attributes
-                mo.socket.emit('getCharacterStatsAttributes', this.characterStats);
             });
 
             mo.socket.on('levelUpJob', (level) => {
@@ -101,9 +98,6 @@ export default {
 
                 // Add skill point
                 this.$store.commit('saveSkillPoints', this.$store.state.characterSkillPoints + 1);
-
-                // Trigger re-fetch of the attributes
-                mo.socket.emit('getCharacterStatsAttributes', this.characterStats);
             });
         },
         showLevelAnim() {

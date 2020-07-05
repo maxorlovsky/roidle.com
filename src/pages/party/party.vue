@@ -297,8 +297,6 @@ const partyPage = {
     mounted() {
         mo.socket.on('kickFromPartyComplete', () => {
             this.buttonLoading = false;
-
-            mo.socket.emit('getParty');
         });
 
         mo.socket.on('partyInviteDeclineComplete', () => {
@@ -317,6 +315,9 @@ const partyPage = {
 
                 // Reset invites to 0 since they are suppose to be all removed when user joins the party
                 this.invites = [];
+
+                // Sending request to get party data
+                mo.socket.emit('getParty');
             }
         });
 

@@ -83,14 +83,14 @@ const characterSkillsPage = {
         };
     },
     computed: {
-        ...mapGetters(['characterSkillPoints', 'characterSkills', 'characterJobId', 'characterStats'])
+        ...mapGetters(['characterSkillPoints', 'characterSkills', 'characterJobId'])
     },
     mounted() {
         mo.socket.on('saveSkillsComplete', (response) => {
             this.$store.commit('saveSkills', response);
 
             // Trigger recalculations of stats
-            mo.socket.emit('getCharacterStatsAttributes', this.characterStats);
+            mo.socket.emit('characterStatsRecalculation');
         });
 
         mo.socket.on('getSkillsDataComplete', (response) => {

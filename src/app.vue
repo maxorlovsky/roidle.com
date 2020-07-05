@@ -94,7 +94,8 @@ export default {
             'resetChat',
             'characterBaseLevel',
             'closeTutorial',
-            'characterId'
+            'characterId',
+            'partyMembersIds'
         ])
     },
     watch: {
@@ -155,9 +156,26 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['setPartyMembers']),
+        ...mapActions([
+            'setPartyMembers',
+            'removePartyMember'
+        ]),
 
         setUpMainSocketEvents() {
+            mo.socket.on('forceBonusStatsRecalculation', () => {
+                // Trigger in the events when we require to update user stats, be that there is something with party or some debuffs applied
+                mo.socket.emit('characterStatsRecalculation');
+            });
+
+            mo.socket.on('characterStatsRecalculationComplete', (response) => {
+                if (response) {
+                    this.$store.commit('setCharacterData', {
+                        bonusStats: response.bonusStats,
+                        attributes: response.attributes
+                    });
+                }
+            });
+
             mo.socket.on('equipmentUpdate', (response) => {
                 if (response.message) {
                     this.$store.commit('sendChat', [
@@ -170,16 +188,6 @@ export default {
                 }
 
                 this.$store.commit('setEquipment', response.equipment);
-
-                // Trigger recalculations of stats
-                mo.socket.emit('getCharacterStatsAttributes', this.characterStats);
-            });
-
-            mo.socket.on('getCharacterStatsAttributesComplete', (response) => {
-                this.$store.commit('setCharacterData', {
-                    bonusStats: response.bonusStats,
-                    attributes: response.attributes
-                });
             });
 
             mo.socket.on('inventoryUpdate', (response) => {
@@ -261,16 +269,16 @@ export default {
                 this.$store.commit('updateParty', response);
             });
 
-            mo.socket.on('partyMembersChanged', () => {
-                // Refetching the whole party
-                mo.socket.emit('getParty');
+            mo.socket.on('partyMemberRemoved', (memberId) => {
+                // Removing member from the store
+                this.removePartyMember(memberId);
             });
 
             mo.socket.on('getPartyComplete', (response) => {
-                this.$store.commit('setParty', response);
-
                 // In case  there is a party, we send a request to fetch data about party members, all of them
                 if (response) {
+                    this.$store.commit('setParty', response);
+
                     mo.socket.emit('getPartyMembers', response.members);
                 }
             });

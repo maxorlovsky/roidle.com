@@ -2,8 +2,24 @@
 import { functions } from '@src/functions.js';
 
 export default {
+    removePartyMember({ commit, state }, value) {
+        const members = state.partyMembers || [];
+        const membersIds = state.partyMembersIds || [];
+
+        const findPartyMemberIndex = state.partyMembers.findIndex((member) => member.id === value);
+        const findPartyMemberIdIndex = state.partyMembersIds.findIndex((member) => member.id === value);
+
+        if (findPartyMemberIndex) {
+            members.splice(findPartyMemberIndex, 1);
+            membersIds.splice(findPartyMemberIdIndex, 1);
+        }
+
+        commit('setPartyMembers', members);
+        commit('setPartyMembersIds', membersIds);
+    },
     setPartyMembers({ commit, state }, value) {
         const members = state.partyMembers || [];
+        const membersIds = state.partyMembersIds || [];
 
         // Check if party member that we're trying to add is already in the party, if that's the case we just run update
         for (const partyMember of value) {
@@ -15,10 +31,12 @@ export default {
             } else {
                 // In case it's a new member, we add it
                 members.push(partyMember);
+                membersIds.push(partyMember.id);
             }
         }
 
         commit('setPartyMembers', members);
+        commit('setPartyMembersIds', membersIds);
     },
     musicOff({ commit }) {
         commit('music', false);

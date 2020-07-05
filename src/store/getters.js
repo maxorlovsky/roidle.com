@@ -49,6 +49,7 @@ export default {
     party: (state) => state.party,
     partyName: (state) => state.partyName,
     partyMembers: (state) => state.partyMembers,
+    partyMembersIds: (state) => state.partyMembersIds,
     partyLeader: (state) => state.partyLeader,
     partyLeaderId: (state) => state.partyLeaderId,
     partyLoot: (state) => state.partyLoot,
