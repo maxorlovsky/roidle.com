@@ -99,6 +99,28 @@ export default {
         ])
     },
     watch: {
+        $route: {
+            immediate: true,
+            handler() {
+                // Check if user is on main page and characterId is present, it means that on back button something went wrong and user actually went back to home screen
+                if (this.$route.path === '/' && this.characterId) {
+                    // In this case we log user out
+                    this.$store.commit('displayDockedMenu', false);
+
+                    // Logout from character
+                    functions.storage('remove', 'selectedCharacter');
+
+                    this.$store.commit('socketConnection', false);
+
+                    this.$nextTick(() => {
+                        this.$store.commit('resetState');
+
+                        mo.socket.emit('exit');
+                        mo.socket = null;
+                    });
+                }
+            }
+        },
         characterId() {
             if (this.socketConnection) {
                 mo.socket.emit('getParty');
