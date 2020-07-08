@@ -24,6 +24,7 @@
     &__logo {
         width: 100%;
         text-align: center;
+        margin-top: 2rem;
     }
 
     &__tap {
@@ -38,6 +39,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        margin-bottom: 1rem;
     }
 
     &__footer {
@@ -53,11 +55,13 @@
             width: 80%;
             height: auto;
             padding: 1rem;
+            margin-bottom: 1rem;
         }
     }
 
     &__discord {
         width: 100%;
+        margin-bottom: 1rem;
 
         &__wrapper {
             width: 80%;
@@ -182,6 +186,69 @@
                 visibility: visible;
             }
         }
+    }
+
+    &__auth-form {
+        width: 100%;
+
+        &__email {
+            width: 90%;
+            margin: 1rem auto 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        &__input {
+            width: 100%;
+            outline: 0;
+            margin-bottom: 1rem;
+            padding: 0.3rem 0.5rem;
+            border-radius: 3px;
+            border: 1px solid #fff;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #fff;
+        }
+
+        &__button {
+            margin: 0 auto;
+        }
+
+        &__helpers {
+            padding: 1rem 0;
+            text-align: center;
+
+            > span {
+                width: 45%;
+                text-decoration: underline;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+
+        &__message {
+            color: #f00;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid #fff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            width: 80%;
+            margin: 1rem auto 0 auto;
+            visibility: hidden;
+            height: 32px;
+
+            &--visible {
+                visibility: visible;
+            }
+        }
+    }
+
+    &__logout {
+        width: 100%;
+        margin-bottom: 1rem;
+        text-align: center;
     }
 }
 

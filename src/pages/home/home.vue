@@ -111,10 +111,53 @@
             <div class="home__logo"><img src="/dist/assets/images/logo.png"></div>
 
             <loading v-if="loading" />
-            <div v-else
+
+            <div v-if="!loading && !isLoggedIn"
+                class="home__auth-form"
+            >
+                <div class="home__auth-form__email">
+                    <input v-model="form.email"
+                        class="home__auth-form__input"
+                        type="text"
+                        placeholder="Email"
+                    >
+                    <input v-model="form.password"
+                        class="home__auth-form__input"
+                        type="password"
+                        placeholder="Password"
+                    >
+                    <button :disabled="buttonLoading"
+                        class="btn btn-lg game-button home__auth-form__button"
+                        @click="login()"
+                    >Login</button>
+
+                    <div :class="{'home__auth-form__message--visible': form.message}"
+                        class="home__auth-form__message"
+                        v-html="form.message"
+                    />
+                </div>
+                <div class="home__auth-form__helpers">
+                    <span @click="openReg()">Register account</span>
+                </div>
+            </div>
+
+            <div v-if="!loading && !isLoggedIn"
+                class="home__tap"
+                @click="registerGuest()"
+            >Play now, register later</div>
+
+            <div v-if="!loading && isLoggedIn"
                 class="home__tap"
                 @click="loadGame()"
-            >Tap here to start</div>
+            >Start the game</div>
+
+            <div v-if="isLoggedIn"
+                class="home__logout"
+            >
+                <button class="btn btn-danger home__logout__button"
+                    @click="logout()"
+                >Logout</button>
+            </div>
 
             <div class="home__footer">
                 <div class="home__footer__online game-icon">
@@ -137,6 +180,12 @@
             </div>
 
             <div class="home__version">v{{ version }}</div>
+
+            <register v-if="showRegisterModal && !isLoggedIn"
+                class="modal"
+                @closeModal="showRegisterModal = false"
+                @registrationSuccess="authenticate()"
+            />
         </template>
     </section>
 </template>
@@ -153,17 +202,20 @@ import { functions } from '@src/functions.js';
 import loading from '@components/loading/loading.vue';
 import avatar from '@components/avatar/avatar.vue';
 import volumeControlHome from '@components/volume-control-home/volume-control-home.vue';
+import register from '@components/register/register.vue';
 
 const homePage = {
     components: {
         avatar,
         loading,
-        volumeControlHome
+        volumeControlHome,
+        register
     },
     data() {
         return {
-            loading: false,
+            loading: true,
             buttonLoading: false,
+            isLoggedIn: false,
             selectCharacter: false,
             createCharacter: false,
             showDelete: false,
@@ -177,22 +229,73 @@ const homePage = {
             online: 0,
             idle: 0,
             players: 0,
-            version: mo.version
+            version: mo.version,
+            showRegisterModal: false,
+            form: {
+                login: '',
+                password: '',
+                message: ''
+            }
         };
     },
     beforeDestroy() {
         mo.socket.off('selectCharacterComplete');
     },
     mounted() {
-        this.$nextTick(() => {
-            if (this.$route.query.characters) {
-                this.loadGame();
-            }
-        });
+        // Check if user session is available and live
+        if (functions.storage('get', 'session')) {
+            this.authenticate();
+        } else {
+            // If not just remove loading state
+            this.loading = false;
+        }
 
         this.getOnline();
     },
     methods: {
+        async login() {
+            this.buttonLoading = true;
+            this.form.message = '';
+
+            try {
+                const response = await axios.post('/api/login', {
+                    email: this.form.email,
+                    password: this.form.password
+                });
+
+                // Reset form
+                this.form.email = '';
+                this.form.password = '';
+                this.form.message = '';
+
+                // Store session in local storage
+                functions.storage('set', 'session', response.data.sessionToken);
+
+                // Send authenticate request
+                this.authenticate();
+            } catch (error) {
+                if (error && error.response) {
+                    this.form.message = error.response.data.errorMessage;
+                } else {
+                    console.error('ERROR #4');
+                    console.error(error);
+                    console.error(error.response);
+                }
+            } finally {
+                this.buttonLoading = false;
+            }
+        },
+        logout() {
+            // Remove session token
+            functions.storage('remove', 'session');
+
+            // Remove flag as logged in and cleanup characters
+            this.isLoggedIn = false;
+            this.characters = [];
+        },
+        openReg() {
+            this.showRegisterModal = true;
+        },
         backToMain() {
             this.$router.push('/');
             this.selectCharacter = false;
@@ -217,10 +320,11 @@ const homePage = {
             this.loading = true;
 
             // Check if we need to authenticate user or create a new one
-            if (functions.storage('get', 'session')) {
-                this.authenticate();
+            if (this.isLoggedIn) {
+                this.selectCharacter = true;
+                this.loading = false;
             } else {
-                this.register();
+                this.registerGuest();
             }
         },
         async authenticate() {
@@ -229,8 +333,15 @@ const homePage = {
                     sessionToken: functions.storage('get', 'session')
                 });
 
+                this.isLoggedIn = true;
                 this.characters = response.data.characters;
-                this.selectCharacter = true;
+
+                // In case in query we have characters specified, we load directly into them
+                this.$nextTick(() => {
+                    if (this.$route.query.characters) {
+                        this.loadGame();
+                    }
+                });
             } catch (error) {
                 console.error('ERROR #1');
                 console.error(error);
@@ -239,13 +350,14 @@ const homePage = {
                 this.loading = false;
             }
         },
-        async register() {
+        async registerGuest() {
             try {
                 const response = await axios.post('/api/register');
 
                 functions.storage('set', 'session', response.data.sessionToken);
 
                 this.selectCharacter = true;
+                this.isLoggedIn = true;
             } catch (error) {
                 console.error('ERROR #2');
                 console.error(error);

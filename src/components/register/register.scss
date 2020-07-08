@@ -1,0 +1,27 @@
+.register {
+    &__input {
+        width: 100%;
+        outline: 0;
+        margin-bottom: 1rem;
+        padding: 0.3rem 0.5rem;
+        border-radius: 3px;
+        border: 1px solid #fff;
+        background-color: rgba(0, 0, 0, 0.85);
+        color: #fff;
+    }
+
+    &__message {
+        color: #f00;
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 1px solid #fff;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        width: 80%;
+        margin: 0 auto;
+        visibility: hidden;
+
+        &--visible {
+            visibility: visible;
+        }
+    }
+}
