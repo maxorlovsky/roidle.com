@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    setIsGuest: (state, value) => {
+        state.isGuest = value;
+    },
     resetPartyMembers: (state) => {
         state.partyMembers = [];
     },

@@ -155,5 +155,6 @@ export default {
     partyLeaderId: 0,
     partyInvites: 0,
     partyLoot: null,
-    partyHunt: null
+    partyHunt: null,
+    isGuest: false
 };

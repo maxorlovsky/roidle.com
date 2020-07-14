@@ -53,5 +53,6 @@ export default {
     partyLeader: (state) => state.partyLeader,
     partyLeaderId: (state) => state.partyLeaderId,
     partyLoot: (state) => state.partyLoot,
-    partyHunt: (state) => state.partyHunt
+    partyHunt: (state) => state.partyHunt,
+    isGuest: (state) => state.isGuest
 };

@@ -4,6 +4,16 @@
     >
         <template v-if="selectCharacter">
             <div class="select-character-wrapper">
+                <div v-if="isGuest"
+                    class="home__guest-account game-icon"
+                >
+                    You are on guest account, your data can be easily lost if you like the game consider registering account by clicking here
+                    <button :disabled="buttonLoading"
+                        class="btn game-button home__guest-account__connect-account"
+                        @click="connectGuestAccount()"
+                    >Create and Connect account</button>
+                </div>
+
                 <div v-for="item in characters"
                     :key="item.id"
                     class="home__select-character"
@@ -55,6 +65,13 @@
                         @click="deleteConfirm()"
                     >Yes</button>
                 </div>
+
+                <register v-if="showRegisterModal && isLoggedIn && isGuest"
+                    :guest="true"
+                    class="modal"
+                    @closeModal="showRegisterModal = false"
+                    @accountConnected="accountConnected()"
+                />
             </div>
         </template>
         <template v-else-if="createCharacter">
@@ -115,7 +132,10 @@
             <div v-if="!loading && !isLoggedIn"
                 class="home__auth-form"
             >
-                <div class="home__auth-form__email">
+                <form method="post"
+                    class="home__auth-form__email"
+                    @submit.prevent="login"
+                >
                     <input v-model="form.email"
                         class="home__auth-form__input"
                         type="text"
@@ -126,16 +146,15 @@
                         type="password"
                         placeholder="Password"
                     >
-                    <button :disabled="buttonLoading"
+                    <button :disabled="buttonLoading || !form.email || !form.password"
                         class="btn btn-lg game-button home__auth-form__button"
-                        @click="login()"
                     >Login</button>
 
                     <div :class="{'home__auth-form__message--visible': form.message}"
                         class="home__auth-form__message"
                         v-html="form.message"
                     />
-                </div>
+                </form>
                 <div class="home__auth-form__helpers">
                     <span @click="openReg()">Register account</span>
                 </div>
@@ -194,6 +213,7 @@
 // 3rd party libs
 import axios from 'axios';
 import io from 'socket.io-client';
+import { mapGetters } from 'vuex';
 
 // Globals functions
 import { functions } from '@src/functions.js';
@@ -238,6 +258,9 @@ const homePage = {
             }
         };
     },
+    computed: {
+        ...mapGetters(['isGuest'])
+    },
     beforeDestroy() {
         mo.socket.off('selectCharacterComplete');
     },
@@ -253,6 +276,16 @@ const homePage = {
         this.getOnline();
     },
     methods: {
+        accountConnected() {
+            // Reset is guest state
+            this.$store.commit('setIsGuest', false);
+
+            // Hiding modal
+            this.showRegisterModal = false;
+        },
+        connectGuestAccount() {
+            this.showRegisterModal = true;
+        },
         async login() {
             this.buttonLoading = true;
             this.form.message = '';
@@ -288,6 +321,9 @@ const homePage = {
         logout() {
             // Remove session token
             functions.storage('remove', 'session');
+
+            // Reset is guest state
+            this.$store.commit('setIsGuest', false);
 
             // Remove flag as logged in and cleanup characters
             this.isLoggedIn = false;
@@ -335,6 +371,10 @@ const homePage = {
 
                 this.isLoggedIn = true;
                 this.characters = response.data.characters;
+
+                if (response.data.isGuest) {
+                    this.$store.commit('setIsGuest', true);
+                }
 
                 // In case in query we have characters specified, we load directly into them
                 this.$nextTick(() => {

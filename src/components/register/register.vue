@@ -46,6 +46,12 @@ import { functions } from '@src/functions.js';
 
 export default {
     name: 'register',
+    props: {
+        guest: {
+            type: Boolean,
+            default: false
+        }
+    },
     data() {
         return {
             buttonLoading: false,
@@ -64,20 +70,36 @@ export default {
         async registerSubmit() {
             this.message = '';
             this.buttonLoading = true;
+            let response = null;
 
             try {
-                const response = await axios.post('/api/register-account', {
-                    email: this.email,
-                    password: this.password,
-                    confirmPassword: this.confirmPassword
-                });
+                if (this.guest) {
+                    response = await axios.post('/api/connect-and-register-account', {
+                        email: this.email,
+                        password: this.password,
+                        confirmPassword: this.confirmPassword,
+                        sessionToken: functions.storage('get', 'session')
+                    });
+                } else {
+                    response = await axios.post('/api/register-account', {
+                        email: this.email,
+                        password: this.password,
+                        confirmPassword: this.confirmPassword
+                    });
+                }
 
-                functions.storage('set', 'session', response.data.sessionToken);
+                if (this.guest) {
+                    this.$emit('accountConnected');
+                } else {
+                    // In case it's a new registration, we need to store session in the locastorage
+                    functions.storage('set', 'session', response.data.sessionToken);
 
-                this.$emit('registrationSuccess');
+                    // Triger to close window and run authentication
+                    this.$emit('registrationSuccess');
+                }
             } catch (error) {
                 if (error && error.response) {
-                    this.message = error.response.data.errorMessage;
+                    this.message = error.response.data.errorMessage || error.response.data.message;
                 } else {
                     console.error('ERROR #4');
                     console.error(error);
