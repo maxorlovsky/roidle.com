@@ -228,7 +228,7 @@ export default {
             showHuntModal: false,
             showHealingModal: false,
             showActiveSkillsModal: false,
-            huntTime: functions.storage('get', 'huntSelectedTime') || null,
+            huntTime: null,
             enableLongerHunt: false,
             huntHealingItems: [null, null, null],
             activeSkills: [null, null, null, null, null],
@@ -236,13 +236,14 @@ export default {
             activeSkillsList: [],
             healingSelectedSlot: null,
             skillSelectedSlot: null,
-            healingWhen: functions.storage('get', 'huntHealingWhen') || '10'
+            healingWhen: null
         };
     },
     computed: {
         ...mapGetters([
             'huntStatus',
-            'characterSkills'
+            'characterSkills',
+            'characterId'
         ])
     },
     watch: {
@@ -255,13 +256,16 @@ export default {
             }
         },
         healingWhen() {
-            functions.storage('set', 'huntHealingWhen', this.healingWhen);
+            functions.storage('set', `huntHealingWhen-${this.characterId}`, this.healingWhen);
         },
         huntTime() {
-            functions.storage('set', 'huntSelectedTime', this.huntTime);
+            functions.storage('set', `huntSelectedTime-${this.characterId}`, this.huntTime);
         }
     },
     mounted() {
+        this.huntTime = functions.storage('get', `huntSelectedTime-${this.characterId}`) || 60;
+        this.healingWhen = functions.storage('get', `huntHealingWhen-${this.characterId}`) || '10';
+
         mo.socket.on('startHuntComplete', (response) => {
             // Marking character as in fight status
             // In case of retreat / retreating we don't retrigger the hunt
