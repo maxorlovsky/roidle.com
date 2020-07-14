@@ -115,8 +115,10 @@ export default {
                     this.$nextTick(() => {
                         this.$store.commit('resetState');
 
-                        mo.socket.emit('exit');
-                        mo.socket = null;
+                        if (mo.socket) {
+                            mo.socket.emit('exit');
+                            mo.socket = null;
+                        }
                     });
                 }
             }
