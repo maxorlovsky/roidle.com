@@ -21,6 +21,7 @@ import './pages/kafra-storage/kafra-storage.vue';
 import './pages/settings/settings.vue';
 import './pages/party/party.vue';
 import './pages/profile/profile.vue';
+import './pages/hunt-configuration/hunt-configuration.vue';
 // Mixins
 // 1 import globalMixins from '@shared/fe-utilities/src/mixins/global-mixin.js';
 

@@ -22,7 +22,7 @@
                 :key="skill.id"
                 class="skills-list__skill"
             >
-                <img :src="`/dist/assets/images/skills/${skill.image}`"
+                <img :src="`/dist/assets/images/skills/${skill.id}.gif`"
                     :class="{'skills-list__skill__image--disabled': tempSkills[skill.id] === 0}"
                     class="skills-list__skill__image"
                     @click="openSkillInfo(skill)"
