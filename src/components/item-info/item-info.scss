@@ -17,6 +17,10 @@
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
+
+        @media screen and (min-height: 375px) {
+            overflow: initial;
+        }
     }
 
     &__illustration {
