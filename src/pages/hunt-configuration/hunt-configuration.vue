@@ -227,10 +227,21 @@ const huntConfigurationPage = {
     },
     mounted() {
         mo.socket.on('getHuntConfigurationComplete', (response) => {
-            this.position = response.position;
-            this.huntHealingItems = response.itemToUseInHunt;
-            this.activeSkills = response.skillsToUseInHunt;
-            this.healingWhen = response.healingHp;
+            if (response.position) {
+                this.position = response.position;
+            }
+
+            if (response.itemToUseInHunt) {
+                this.huntHealingItems = response.itemToUseInHunt;
+            }
+
+            if (response.skillsToUseInHunt) {
+                this.activeSkills = response.skillsToUseInHunt;
+            }
+
+            if (response.healingHp) {
+                this.healingWhen = response.healingHp;
+            }
 
             this.loading = false;
         });
