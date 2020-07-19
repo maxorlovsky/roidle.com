@@ -39,7 +39,7 @@ export default {
                 },
                 {
                     text: 'This is your party screen. Party doesn\'t work at the moment, expect it to start functionining in the release of 0.3',
-                    element: '.party',
+                    element: '.game__party',
                     position: true
                 },
                 {
