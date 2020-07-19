@@ -61,15 +61,10 @@
             <p>Healing when</p>
             <div class="healing-macro">
                 <select v-model="healingWhen">
-                    <option value="10">&lt; 10% HP</option>
-                    <option value="20">&lt; 20% HP</option>
-                    <option value="30">&lt; 30% HP</option>
-                    <option value="40">&lt; 40% HP</option>
-                    <option value="50">&lt; 50% HP</option>
-                    <option value="60">&lt; 60% HP</option>
-                    <option value="70">&lt; 70% HP</option>
-                    <option value="80">&lt; 80% HP</option>
-                    <option value="90">&lt; 90% HP</option>
+                    <option v-for="index in 9"
+                        :key="index"
+                        :value="10 * index"
+                    >&lt; {{ 10 * index }}% HP</option>
                 </select>
             </div>
         </div>
@@ -173,16 +168,10 @@
                         <div class="active-skill-modal__item__mp-control">
                             <p>Use while MP is higher than</p>
                             <select v-model="item.mpControl">
-                                <option value="0">0% MP</option>
-                                <option value="10">10% MP</option>
-                                <option value="20">20% MP</option>
-                                <option value="30">30% MP</option>
-                                <option value="40">40% MP</option>
-                                <option value="50">50% MP</option>
-                                <option value="60">60% MP</option>
-                                <option value="70">70% MP</option>
-                                <option value="80">80% MP</option>
-                                <option value="90">90% MP</option>
+                                <option v-for="mpControlIndex in 10"
+                                    :key="mpControlIndex"
+                                    :value="10 * (mpControlIndex - 1)"
+                                >{{ 10 * (mpControlIndex - 1) }}% MP</option>
                             </select>
                         </div>
                     </div>
