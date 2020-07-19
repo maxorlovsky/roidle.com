@@ -102,10 +102,26 @@ export default {
         ]),
 
         currentHpPercentage() {
-            return Math.floor(this.characterHp / this.characterAttributes.maxHp * 100) || 0;
+            let hp = Math.floor(this.characterHp / this.characterAttributes.maxHp * 100) || 0;
+
+            if (hp < 0) {
+                hp = 0;
+            } else if (hp > 100) {
+                hp = 100;
+            }
+
+            return hp;
         },
         currentMpPercentage() {
-            return Math.floor(this.characterMp / this.characterAttributes.maxMp * 100) || 0;
+            let mp = Math.floor(this.characterMp / this.characterAttributes.maxMp * 100) || 0;
+
+            if (mp < 0) {
+                mp = 0;
+            } else if (mp > 100) {
+                mp = 100;
+            }
+
+            return mp;
         }
     },
     watch: {
