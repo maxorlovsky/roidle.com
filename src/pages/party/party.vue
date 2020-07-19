@@ -87,7 +87,7 @@
                             type="radio"
                             value="party"
                         >
-                        <label for="loot-party">Party members (in turn)</label>
+                        <label for="loot-party">Party members (random)</label>
                     </div>
 
                     <div class="form-check">

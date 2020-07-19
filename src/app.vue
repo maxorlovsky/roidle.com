@@ -186,6 +186,10 @@ export default {
         ]),
 
         setUpMainSocketEvents() {
+            mo.socket.on('huntUpdate', () => {
+                mo.socket.emit('getHunt');
+            });
+
             mo.socket.on('forceBonusStatsRecalculation', () => {
                 // Trigger in the events when we require to update user stats, be that there is something with party or some debuffs applied
                 mo.socket.emit('characterStatsRecalculation');
