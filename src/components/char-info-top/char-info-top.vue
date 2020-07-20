@@ -206,6 +206,9 @@ export default {
         });
 
         mo.socket.on('stopHuntComplete', () => {
+            this.huntingDisplay = '';
+            clearInterval(this.interval);
+
             this.$store.commit('huntStatus', {
                 status: false,
                 timeFinish: null
