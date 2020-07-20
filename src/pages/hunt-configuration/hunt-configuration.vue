@@ -1,5 +1,16 @@
 <template>
     <section class="hunt-configuration">
+        <div class="hunt-configuration__explanation">
+            <p>Hunt pre-configuration</p>
+
+            <div class="hunt-configuration__explanation__text">
+                This is a place where you pre-configure the fights for your character, you might do it even during the fight, but it will not take effect until your turn in the hunt<br>
+                <b>Starting position</b> is a position your character starts at the beginning of the round (currently ineffective)<br>
+                <b>Healing items</b> is what kind of healing items your character will use to restore HP or MP. If there will no such items in the bag, character will not heal himself.<br>
+                <b>Active skills</b> are a rotation of skills per every 5 rounds. Skill placed in the first slot will trigger on 1st round, 6th, 11th, 16th etc.
+            </div>
+        </div>
+
         <div class="hunt-configuration__position">
             <p>Starting position</p>
 
@@ -53,7 +64,7 @@
                 >
                     <template v-if="item">
                         <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
-                        <span class="healing-items__item__amount">{{ item.amount }}</span>
+                        <!--<span class="healing-items__item__amount">{{ item.amount }}</span>-->
                     </template>
                 </div>
             </div>
@@ -323,32 +334,25 @@ const huntConfigurationPage = {
             this.healingSelectedSlot = index;
         },
         addHealingItem(item) {
-            // If items is already in this slot, we first need to return it
-            if (this.huntHealingItems[this.healingSelectedSlot]) {
-                this.returnHealingItem(this.healingSelectedSlot);
+            let i = 0;
+
+            // Check if same item is set in other slots and remove it
+            for (const healItem of this.huntHealingItems) {
+                if (healItem && healItem.itemId === item.itemId) {
+                    this.huntHealingItems[i] = null;
+                }
+
+                i++;
             }
 
             // Add item
             this.huntHealingItems[this.healingSelectedSlot] = item;
             this.showHealingModal = false;
-
-            // Finding index of item that we want to remove
-            const itemIndex = this.healingItemsList.findIndex((findItem) => findItem.itemId === item.itemId);
-
-            // Remove item from healing item list
-            this.healingItemsList.splice(itemIndex, 1);
         },
         removeHealingItem(slot) {
-            // Add item back to healing list items
-            this.returnHealingItem(slot);
-
             // Cleaning up the slot
             this.huntHealingItems[slot] = null;
             this.showHealingModal = false;
-        },
-        returnHealingItem(slot) {
-            // Add item back to healing list items
-            this.healingItemsList.push(this.huntHealingItems[slot]);
         },
         chooseHuntActiveSkills(index) {
             this.showActiveSkillsModal = true;

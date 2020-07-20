@@ -4,6 +4,7 @@
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
 
+    &__explanation,
     &__position,
     &__healing,
     &__skills {
@@ -20,6 +21,18 @@
             padding: 0.5rem 0;
             text-align: center;
             font-size: 1.5rem;
+        }
+    }
+
+    &__explanation {
+        p {
+            padding-bottom: 1rem;
+            margin-bottom: 0;
+        }
+
+        &__text {
+            font-size: 0.9rem;
+            padding: 0rem 1rem 1rem 1rem;
         }
     }
 

@@ -127,6 +127,7 @@
         align-items: center;
         flex-wrap: wrap;
         position: relative;
+        max-width: calc(100% - 95px);
     }
 
     &__action {
@@ -196,6 +197,13 @@
     &__settings {
         position: absolute;
         top: 0.5rem;
+        right: 1rem;
+        color: #fff;
+    }
+
+    &__hunt-config {
+        position: absolute;
+        top: calc(1rem + 60px);
         right: 1rem;
         color: #fff;
     }

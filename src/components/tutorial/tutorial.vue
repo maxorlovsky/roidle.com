@@ -47,6 +47,10 @@ export default {
                     element: '.game__settings'
                 },
                 {
+                    text: 'This is where you can pre-configure what your character is going to do and behave in the hunt. Like what active skills to use (when you will have those) and what healing items to consume when low on HP/MP etc.',
+                    element: '.game__hunt-config'
+                },
+                {
                     text: 'Here are your main game actions, they are used to hunt, to shop, to store items, save your location and basically for all random stuff in the game',
                     element: '.game__actions',
                     modal: 'modal--down'
