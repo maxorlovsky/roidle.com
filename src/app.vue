@@ -255,6 +255,14 @@ export default {
                     status: 'retreating',
                     timeFinish: null
                 });
+
+                // We're sending a delayed event to stop hunt completely, since mutation happening at the same time won't reach all of the elements
+                setTimeout(() => {
+                    this.$store.commit('huntStatus', {
+                        status: false,
+                        timeFinish: null
+                    });
+                }, 500);
             });
 
             mo.socket.on('jobChangeUpdate', (response) => {
