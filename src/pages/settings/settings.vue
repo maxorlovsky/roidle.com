@@ -71,8 +71,8 @@
                 <div class="settings__setting__icon game-icon"
                     @click="closeLogin()"
                 >
-                    <i :class="{'icon-volume-on': allowLogins, 'icon-volume-off': !allowLogins}"
-                        class="icon"
+                    <i :class="{'settings__setting__icon--enabled': allowLogins, 'settings__setting__icon--disabled': !allowLogins}"
+                        class="icon icon-turn-off"
                     />
                 </div>
             </div>
@@ -87,7 +87,7 @@
                 <div class="settings__setting__icon game-icon"
                     @click="kickUsers()"
                 >
-                    <i class="icon icon-volume-on" />
+                    <i class="icon icon-turn-off" />
                 </div>
             </div>
         </div>

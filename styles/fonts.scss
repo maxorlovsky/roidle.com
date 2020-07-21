@@ -23,15 +23,20 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-  
-.icon-settings:before {
+
+.icon-sword:before {
     content: "\e900";
 }
-
-.icon-volume-off:before {
+.icon-turn-off:before {
     content: "\e901";
 }
-
-.icon-volume-on:before {
+.icon-settings:before {
     content: "\e902";
 }
+.icon-volume-off:before {
+    content: "\e903";
+}
+.icon-volume-on:before {
+    content: "\e904";
+}
+  

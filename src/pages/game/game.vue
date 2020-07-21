@@ -39,7 +39,7 @@
         <router-link to="/hunt-configuration"
             class="game__hunt-config game-icon"
         >
-            <img src="/dist/assets/images/hunt-config.png">
+            <i class="icon icon-sword" />
         </router-link>
 
         <div v-if="showActions"
