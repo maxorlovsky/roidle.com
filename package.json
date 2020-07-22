@@ -1,7 +1,7 @@
 {
-  "name": "game",
-  "description": "Game",
-  "version": "0.3.4",
+  "name": "roidle.com",
+  "description": "Ragnarok Idle",
+  "version": "0.4.0",
   "license": "ISC",
   "repository": {
     "type": "git",
