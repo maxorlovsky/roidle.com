@@ -141,10 +141,6 @@
         padding: 0.5rem 0 0 0;
         margin: 0.5rem;
 
-        @media screen and (max-height: 805px) {
-            width: calc(33% - 1rem);
-        }
-
         &__image {
             display: block;
             margin: 0 auto;
@@ -152,8 +148,12 @@
         }
 
         &__name {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            padding: 0 0.3rem;
 
             @media screen and (max-height: 805px) {
                 font-size: 1rem;
