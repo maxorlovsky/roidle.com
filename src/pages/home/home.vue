@@ -465,6 +465,9 @@ const homePage = {
 
             // If socket is registered, we're progressing by fetching user data
             mo.socket.on('selectCharacterComplete', (response) => {
+                // Triggering another call to fetch inventory
+                mo.socket.emit('getInventory');
+
                 this.$store.commit('characterInit', response);
 
                 this.$store.commit('displayDockedMenu', true);

@@ -87,12 +87,12 @@
                     Total: {{ totalValue }} Z
                 </div>
                 <button v-if="$route.query.action === 'sell'"
-                    :disabled="!totalValue"
+                    :disabled="!totalValue || buttonLoading"
                     class="btn game-button"
                     @click="initiateSell()"
                 >Sell</button>
                 <button v-else
-                    :disabled="!totalValue || totalValue > characterZeny"
+                    :disabled="!totalValue || totalValue > characterZeny || buttonLoading"
                     class="btn game-button"
                     @click="initiateBuy()"
                 >Buy</button>
@@ -134,6 +134,7 @@ const shopPage = {
     data() {
         return {
             loading: true,
+            buttonLoading: false,
             itemsLeft: [],
             itemsRight: [],
             totalValue: 0,
@@ -185,29 +186,23 @@ const shopPage = {
         });
 
         mo.socket.on('buyItemsComplete', (response) => {
-            this.$store.commit('setInventoryData', {
-                inventory: response.inventory,
-                inventoryWeight: response.inventoryWeight
-            });
-
             this.$store.commit('saveZeny', response.zeny);
 
             // Reset item lists and other variables
             this.itemsRight = [];
             this.totalValue = 0;
+
+            this.buttonLoading = false;
         });
 
         mo.socket.on('sellItemsComplete', (response) => {
-            this.$store.commit('setInventoryData', {
-                inventory: response.inventory,
-                inventoryWeight: response.inventoryWeight
-            });
-
             this.$store.commit('saveZeny', response.zeny);
 
             // Reset item lists and other variables
             this.itemsRight = [];
             this.totalValue = 0;
+
+            this.buttonLoading = false;
         });
     },
     beforeDestroy() {
@@ -332,12 +327,16 @@ const shopPage = {
             this.totalValue = value;
         },
         initiateBuy() {
+            this.buttonLoading = true;
+
             mo.socket.emit('buyItems', {
                 type: this.$route.query.type,
                 items: this.itemsRight
             });
         },
         initiateSell() {
+            this.buttonLoading = true;
+
             mo.socket.emit('sellItems', this.itemsRight);
         }
     }

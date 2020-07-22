@@ -510,10 +510,6 @@ export default {
         // Skills
         state.characterSkills = values.skills;
 
-        // Inventory
-        state.inventory = values.inventory;
-        state.inventoryWeight = values.inventoryWeight;
-
         if (values.equipment && values.equipment.head) {
             state.characterEquipment.head.itemId = values.equipment.head.itemId || 0;
             state.characterEquipment.head.name = values.equipment.head.name || '';
