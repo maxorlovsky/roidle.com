@@ -62,6 +62,8 @@
     .equipment-modal {
         width: 80%;
         padding: 0;
+        max-height: 90%;
+        overflow-y: auto;
 
         &__item {
             padding: 1rem;
