@@ -4,7 +4,7 @@
         <div class="modal__content">
             <input v-model="email"
                 class="register__input"
-                type="text"
+                type="email"
                 placeholder="Email"
             >
             <input v-model="password"

@@ -138,7 +138,7 @@
                 >
                     <input v-model="form.email"
                         class="home__auth-form__input"
-                        type="text"
+                        type="email"
                         placeholder="Email"
                     >
                     <input v-model="form.password"
