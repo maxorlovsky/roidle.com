@@ -265,6 +265,8 @@ export default {
                         mo.socket.emit(emitAction);
                     }, 1000);
 
+                    document.title = 'Idle RO - Alpha';
+
                     // Reset variable responsible for rest
                     this[displayVariable] = '';
                     clearInterval(this.interval);
@@ -279,6 +281,8 @@ export default {
                 if (seconds <= 9) {
                     seconds = `0${seconds}`;
                 }
+
+                document.title = `Idle RO - Alpha - ${minutes}:${seconds}`;
 
                 this[displayVariable] = `${minutes}:${seconds}`;
             }, 1000);
