@@ -1,13 +1,24 @@
+$chat-height: 240px;
 $chat-input-height: 42px;
 $chat-tabs-height: 35px;
+$docked-menu: 60px;
 
 .chat {
     position: absolute;
     bottom: 60px;
     left: 0;
     width: 100%;
-    height: 30vh;
+    height: $chat-height;
     border-top-right-radius: 4px;
+    transition: 0.1s;
+
+    &--toggled {
+        bottom: calc(#{$docked-menu} + #{$chat-tabs-height} - #{$chat-height});
+
+        .chat__tabs__tab:not(.chat__tabs__tab__toggle) {
+            z-index: -1;
+        }
+    }
 
     .chat-wrapper {
         position: relative;
@@ -28,6 +39,8 @@ $chat-tabs-height: 35px;
             border-left: 1px solid #fff;
             background-color: rgba(0, 0, 0, 0.8);
             padding: 0.4rem 0.7rem;
+            cursor: pointer;
+            height: 35px;
 
             &--selected {
                 transform: translateY(1px);
@@ -35,6 +48,25 @@ $chat-tabs-height: 35px;
 
             &--notification {
                 color: #ff8c00;
+            }
+
+            &__toggle {
+                position: absolute;
+                right: 0;
+                min-height: 35px;
+                display: flex;
+                align-items: center;
+
+                &--toggled {
+                    .icon {
+                        transform: rotate(180deg);
+                    }
+                }
+
+                .icon {
+                    display: block;
+                    font-size: 0.9rem;
+                }
             }
         }
     }

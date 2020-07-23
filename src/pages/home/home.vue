@@ -138,7 +138,7 @@
                 >
                     <input v-model="form.email"
                         class="home__auth-form__input"
-                        type="text"
+                        type="email"
                         placeholder="Email"
                     >
                     <input v-model="form.password"
@@ -471,7 +471,7 @@ const homePage = {
                 this.$store.commit('characterInit', response);
 
                 this.$store.commit('displayDockedMenu', true);
-                this.$store.commit('showChat', true);
+                this.$store.commit('enableChat', true);
 
                 this.buttonLoading = false;
 

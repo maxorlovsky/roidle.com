@@ -82,6 +82,9 @@ export default {
     showChat: (state, value) => {
         state.showChat = value;
     },
+    enableChat: (state, value) => {
+        state.enableChat = value;
+    },
     setHpMp: (state, values) => {
         if (values.hp) {
             state.characterHp = values.hp;
@@ -715,7 +718,8 @@ export default {
             eva: 0
         };
 
-        state.showChat = false;
+        state.showChat = true;
+        state.enableChat = false;
         state.socketConnection = false;
         state.allMaps = null;
         state.selfBagItemInfo = false;
