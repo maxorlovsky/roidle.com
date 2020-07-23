@@ -471,7 +471,7 @@ const homePage = {
                 this.$store.commit('characterInit', response);
 
                 this.$store.commit('displayDockedMenu', true);
-                this.$store.commit('showChat', true);
+                this.$store.commit('enableChat', true);
 
                 this.buttonLoading = false;
 

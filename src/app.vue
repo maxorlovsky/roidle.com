@@ -10,7 +10,7 @@
                 class="body-content"
             />
 
-            <chat v-show="showChat" />
+            <chat v-show="enableChat" />
 
             <level-up />
 
@@ -88,7 +88,7 @@ export default {
     computed: {
         ...mapGetters([
             'dockedMenu',
-            'showChat',
+            'enableChat',
             'socketConnection',
             'characterStats',
             'resetChat',
@@ -288,7 +288,7 @@ export default {
                 mo.socket.disconnect();
                 mo.socket = null;
                 this.$store.commit('displayDockedMenu', false);
-                this.$store.commit('showChat', false);
+                this.$store.commit('enableChat', false);
                 this.$store.commit('socketConnection', false);
             });
 
@@ -337,7 +337,7 @@ export default {
             mo.socket.on('disconnect', () => {
                 this.serverWentDown = true;
                 this.$store.commit('displayDockedMenu', false);
-                this.$store.commit('showChat', false);
+                this.$store.commit('enableChat', false);
                 this.$store.commit('socketConnection', false);
             });
 
@@ -363,7 +363,7 @@ export default {
                 this.$store.commit('characterInit', response);
 
                 this.$store.commit('displayDockedMenu', true);
-                this.$store.commit('showChat', true);
+                this.$store.commit('enableChat', true);
             });
         },
         async reconnect() {

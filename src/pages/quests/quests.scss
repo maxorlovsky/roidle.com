@@ -3,7 +3,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
-
+    
     &--blue-color {
         color: #07c;
     }
@@ -14,6 +14,7 @@
         background-color: rgba(255, 255, 255, 0.8);
         position: relative;
         min-height: calc(100vh - 126px - 60px);
+        padding-bottom: 35px;
     }
 
     .quests-list {

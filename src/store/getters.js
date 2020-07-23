@@ -35,6 +35,7 @@ export default {
     inventoryWeight: (state) => state.inventoryWeight,
     characterEquipment: (state) => state.characterEquipment,
     showChat: (state) => state.showChat,
+    enableChat: (state) => state.enableChat,
     socketConnection: (state) => state.socketConnection,
     allMaps: (state) => state.allMaps,
     closeItemInfo: (state) => state.closeItemInfo,

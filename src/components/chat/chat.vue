@@ -1,5 +1,7 @@
 <template>
-    <section class="chat">
+    <section :class="{ 'chat--toggled': !showChat }"
+        class="chat"
+    >
         <div class="chat-wrapper">
             <div class="chat__tabs">
                 <div v-for="(chat, index) in chats"
@@ -8,6 +10,11 @@
                     class="chat__tabs__tab"
                     @click="selectedTab = index; tabNotification[index] = false; scrollChat()"
                 >{{ chat }} chat</div>
+
+                <div :class="{ 'chat__tabs__tab__toggle--toggled': !showChat }"
+                    class="chat__tabs__tab chat__tabs__tab__toggle"
+                    @click="toggleChat()"
+                ><i class="icon icon-arrow-down" /></div>
             </div>
 
             <div v-show="selectedTab === 0"
@@ -86,7 +93,8 @@ export default {
             'chatContent',
             'socketConnection',
             'resetChat',
-            'characterName'
+            'characterName',
+            'showChat'
         ])
     },
     watch: {
@@ -155,6 +163,9 @@ export default {
         mo.socket.off('chat');
     },
     methods: {
+        toggleChat() {
+            this.$store.commit('showChat', !this.showChat);
+        },
         openProfile(name) {
             if (name !== 'Map' && name !== 'System') {
                 this.$router.push(`/profile/${name}`);

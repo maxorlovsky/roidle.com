@@ -3,7 +3,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
-
+    
     .equipment {
         display: flex;
         width: 100%;
@@ -93,7 +93,7 @@
     .skills-button {
         display: flex;
         justify-content: center;
-        margin: 1rem auto;
+        margin: 1rem auto 35px auto;
         width: 90%;
     }
 

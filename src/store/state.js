@@ -133,7 +133,8 @@ export default {
         hit: 0,
         eva: 0
     },
-    showChat: false,
+    showChat: true,
+    enableChat: false,
     socketConnection: false,
     allMaps: null,
     selfBagItemInfo: false,

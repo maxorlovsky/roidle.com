@@ -124,7 +124,7 @@ const mapPage = {
             this.showModal = true;
         });
 
-        this.$store.commit('showChat', false);
+        this.$store.commit('enableChat', false);
 
         if (Math.round((this.inventoryWeight * 100) / this.characterAttributes.weight) > 90) {
             this.userOverweight = true;
@@ -134,7 +134,7 @@ const mapPage = {
         mo.socket.off('getMapsComplete');
         mo.socket.off('selectMapToTravelComplete');
 
-        this.$store.commit('showChat', true);
+        this.$store.commit('enableChat', true);
     },
     methods: {
         ifPlayerDetected(location) {
