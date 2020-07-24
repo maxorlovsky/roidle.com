@@ -282,7 +282,7 @@ export default {
                     seconds = `0${seconds}`;
                 }
 
-                document.title = `Idle RO - Alpha - ${minutes}:${seconds}`;
+                document.title = `${minutes}:${seconds} - Idle RO - Alpha`;
 
                 this[displayVariable] = `${minutes}:${seconds}`;
             }, 1000);
