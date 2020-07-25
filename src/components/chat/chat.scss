@@ -96,6 +96,10 @@ $docked-menu: 60px;
             color: #f09bff;
         }
 
+        &__message img {
+            max-height: 21px;
+        }
+
         p {
             margin-bottom: 0;
         }
