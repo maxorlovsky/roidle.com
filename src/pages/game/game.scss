@@ -20,12 +20,20 @@
         background-image: url("#{$assets}/images/payon.jpg");
     }
 
+    &.morocc {
+        background-image: url("#{$assets}/images/morocc.jpg");
+    }
+
     &.field {
         background-image: url("#{$assets}/images/field.jpg");
     }
 
     &.forest {
         background-image: url("#{$assets}/images/field.jpg");
+    }
+
+    &.desert {
+        background-image: url("#{$assets}/images/desert.jpg");
     }
 
     &__party {

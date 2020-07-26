@@ -7,8 +7,8 @@
             :key="index"
             class="map__row"
         >
-            <div v-for="location in piece"
-                :key="location.id"
+            <div v-for="(location, subIndex) in piece"
+                :key="subIndex"
                 :class="{'map__piece--selected': location.id === characterLocationId, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': (travelingToLocation || restInProgress || huntStatus || userOverweight) && location.id !== travelingToLocation}"
                 class="map__piece"
                 @click="selectMap(location.id)"
