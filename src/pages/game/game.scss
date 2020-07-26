@@ -24,6 +24,10 @@
         background-image: url("#{$assets}/images/morocc.jpg");
     }
 
+    &.morocc.ruins {
+        background-image: url("#{$assets}/images/desert.jpg");
+    }
+
     &.field {
         background-image: url("#{$assets}/images/field.jpg");
     }

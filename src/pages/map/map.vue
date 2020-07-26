@@ -20,7 +20,7 @@
                         :class="{'map__piece__levels--too-high': location.level[0] > characterBaseLevel, 'map__piece__levels--too-low': location.level[1] < characterBaseLevel - 5 }"
                         class="map__piece__levels"
                     >Lv: {{ location.level[0] }} - {{ location.level[1] }}</div>
-                    <div v-else
+                    <div v-else-if="location.city"
                         class="map__piece__levels"
                     >City</div>
                     <div class="map__piece__players">
