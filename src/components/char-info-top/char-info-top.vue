@@ -152,6 +152,8 @@ export default {
                 if (this.huntStatus === 'hunting') {
                     this.showTimer('hunt');
                 } else if (this.huntStatus === 'retreating') {
+                    document.title = 'Idle RO - Alpha';
+
                     clearInterval(this.interval);
                     this.huntingDisplay = '';
                 }
