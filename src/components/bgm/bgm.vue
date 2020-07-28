@@ -135,6 +135,39 @@ export default {
                 case 14:
                     musicTracks = ['prontera-field-3'];
                     break;
+                case 15:
+                case 16:
+                case 17:
+                case 20:
+                case 21:
+                    musicTracks = ['morocc-desert-1'];
+                    break;
+                case 22:
+                case 23:
+                case 26:
+                case 28:
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                case 34:
+                case 35:
+                    musicTracks = ['37'];
+                    break;
+                case 18:
+                case 24:
+                case 25:
+                    musicTracks = ['forest-1'];
+                    break;
+                case 19:
+                    musicTracks = ['52'];
+                    break;
+                case 27:
+                    musicTracks = ['11'];
+                    break;
+                case 33:
+                    musicTracks = ['45'];
+                    break;
                 default:
                     musicTracks = ['prontera', 'izlude'];
                     randomMusic = Math.floor(Math.random() * musicTracks.length);

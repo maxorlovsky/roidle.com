@@ -52,10 +52,11 @@
                 </router-link>
             </div>
             <div class="modal__buttons">
-                <button class="btn btn-secondary"
+                <button :disabled="buttonLoading"
+                    class="btn btn-secondary"
                     @click="cancelHunt()"
                 >Cancel</button>
-                <button :disabled="!huntTime"
+                <button :disabled="!huntTime || buttonLoading"
                     :class="{'disabled': !huntTime}"
                     class="btn game-button"
                     @click="startHunt()"
@@ -76,6 +77,7 @@ export default {
     name: 'hunt-actions',
     data() {
         return {
+            buttonLoading: false,
             showHuntModal: false,
             huntTime: null,
             enableLongerHunt: false
@@ -113,6 +115,8 @@ export default {
                     timeFinish: response.timeFinish
                 });
             }
+
+            this.buttonLoading = false;
         });
 
         this.checkHuntState();
@@ -139,6 +143,7 @@ export default {
                 return false;
             }
 
+            this.buttonLoading = true;
             this.showHuntModal = false;
 
             mo.socket.emit('startHunt', {

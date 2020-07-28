@@ -152,6 +152,8 @@ export default {
                 if (this.huntStatus === 'hunting') {
                     this.showTimer('hunt');
                 } else if (this.huntStatus === 'retreating') {
+                    document.title = 'Idle RO - Alpha';
+
                     clearInterval(this.interval);
                     this.huntingDisplay = '';
                 }
@@ -282,7 +284,7 @@ export default {
                     seconds = `0${seconds}`;
                 }
 
-                document.title = `Idle RO - Alpha - ${minutes}:${seconds}`;
+                document.title = `${minutes}:${seconds} - Idle RO - Alpha`;
 
                 this[displayVariable] = `${minutes}:${seconds}`;
             }, 1000);

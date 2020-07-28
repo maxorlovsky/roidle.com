@@ -45,7 +45,7 @@
         <div v-if="showActions"
             class="game__actions"
         >
-            <hunt-actions v-if="outsideActions"
+            <hunt-actions v-if="huntAvailable"
                 :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
             />
 
@@ -58,13 +58,13 @@
                 <span class="game__action__name">Track down</span>
             </div>-->
 
-            <kafra-actions v-if="!outsideActions"
+            <kafra-actions v-if="kafraAvailable"
                 :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
             />
-            <inn-actions v-if="!outsideActions"
+            <inn-actions v-if="innAvailable"
                 :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
             />
-            <shop-actions v-if="!outsideActions"
+            <shop-actions v-if="shopsAvailable"
                 :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
             />
 
@@ -108,11 +108,14 @@ const gamePage = {
     data() {
         return {
             showActions: false,
-            outsideActions: false,
             huntInterval: null,
             huntStatusTimerDisplay: '*',
             retreatFromHunt: false,
-            partyMembersList: [null, null, null, null]
+            partyMembersList: [null, null, null, null],
+            huntAvailable: false,
+            kafraAvailable: false,
+            innAvailable: false,
+            shopsAvailable: false,
         };
     },
     computed: {
@@ -209,10 +212,28 @@ const gamePage = {
                 const location = response.location;
 
                 // Decide if we're outside of the city or in, this will change game actions
-                if (location.level) {
-                    this.outsideActions = true;
+                if (location.monsters) {
+                    this.huntAvailable = true;
                 } else {
-                    this.outsideActions = false;
+                    this.huntAvailable = false;
+                }
+
+                if (location.kafra) {
+                    this.kafraAvailable = true;
+                } else {
+                    this.kafraAvailable = false;
+                }
+
+                if (location.inn) {
+                    this.innAvailable = true;
+                } else {
+                    this.innAvailable = false;
+                }
+
+                if (location.shops) {
+                    this.shopsAvailable = true;
+                } else {
+                    this.shopsAvailable = false;
                 }
 
                 this.showActions = true;
