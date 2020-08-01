@@ -218,6 +218,8 @@ export default {
         });
     },
     beforeDestroy() {
+        clearInterval(this.interval);
+
         mo.socket.off('checkTravelingTimeComplete');
         mo.socket.off('travelToMapComplete');
         mo.socket.off('checkRestingTimeComplete');

@@ -197,6 +197,8 @@ const gamePage = {
         }
     },
     beforeDestroy() {
+        clearInterval(this.huntInterval);
+
         if (mo.socket) {
             mo.socket.off('getCurrentMapLocationDataComplete');
             mo.socket.off('retreatFromHuntComplete');
