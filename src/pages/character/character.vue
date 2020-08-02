@@ -19,6 +19,7 @@
 
             <div class="equipment__avatar">
                 <avatar :head-style="characterHeadStyle"
+                    :head-color="characterHeadColor"
                     :gender="characterGender"
                     :job="characterJob"
                     :head-gear="characterEquipment.head.itemId"
@@ -168,6 +169,7 @@ const characterPage = {
     computed: {
         ...mapGetters([
             'characterHeadStyle',
+            'characterHeadColor',
             'characterGender',
             'characterEquipment',
             'characterJob',

@@ -24,6 +24,7 @@
                 <div class="equipment__avatar">
                     <avatar v-if="equipment && headStyle"
                         :head-style="headStyle"
+                        :head-color="headColor"
                         :gender="gender"
                         :job="job"
                         :head-gear="equipment.head.itemId"
@@ -168,6 +169,7 @@ const profilePage = {
                 this.name = response.name;
                 this.partyName = response.partyName;
                 this.headStyle = response.headStyle;
+                this.headColor = response.headColor;
                 this.gender = response.gender;
                 this.job = response.job;
                 this.equipment = response.equipment;

@@ -28,7 +28,7 @@ const inventoryPage = {
             return this.$store.getters.get('characterAttributes') || {};
         },
         criticalWeight() {
-            return Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) > 90;
+            return Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) >= 90;
         }
     },
     mounted() {

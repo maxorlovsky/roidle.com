@@ -69,6 +69,8 @@
             <div class="modal__content kafra-storage__amount">
                 <input ref="amountModal"
                     v-model="amountModal"
+                    min="1"
+                    :max="amountModalMax"
                     type="number"
                     size="4"
                     placeholder="Amount"
@@ -127,6 +129,11 @@ const kafraStoragePage = {
             } else {
                 // Switching arrays
                 this.itemsTransfer = JSON.parse(JSON.stringify(this.itemsInventory));
+            }
+        },
+        amountModal() {
+            if (this.amountModal > this.amountModalMax) {
+                this.amountModal = this.amountModalMax;
             }
         }
     },

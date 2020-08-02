@@ -19,6 +19,7 @@
                         class="party__window__members__member"
                     >
                         <avatar :head-style="item.headStyle"
+                            :head-color="item.headColor"
                             :gender="item.gender"
                             :job="item.job"
                             :just-head="true"

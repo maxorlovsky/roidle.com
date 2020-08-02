@@ -3,6 +3,10 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    updateCharacterStyle: (state, value) => {
+        state.characterHeadStyle = value.headStyle;
+        state.characterHeadColor = value.headColor;
+    },
     setIsGuest: (state, value) => {
         state.isGuest = value;
     },
@@ -180,6 +184,9 @@ export default {
         }
         if (values.headStyle) {
             state.characterHeadStyle = values.headStyle;
+        }
+        if (values.headColor) {
+            state.characterHeadColor = values.headColor;
         }
 
         // Char params
@@ -453,6 +460,7 @@ export default {
         state.characterName = values.character.name;
         state.characterGender = values.character.gender;
         state.characterHeadStyle = values.character.headStyle;
+        state.characterHeadColor = values.character.headColor;
         state.characterBaseLevel = values.character.baseLevel;
         state.characterJobLevel = values.character.jobLevel;
         state.characterBaseExp = values.character.baseExp;
@@ -588,6 +596,7 @@ export default {
         state.characterName = '';
         state.characterGender = 'm';
         state.characterHeadStyle = 0;
+        state.characterHeadColor = 0;
         state.characterBaseLevel = 0;
         state.characterJobLevel = 0;
         state.characterBaseExp = 0;

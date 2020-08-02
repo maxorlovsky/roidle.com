@@ -12,6 +12,7 @@
                 <template v-if="member">
                     <div class="game__party__slot__name">{{ member.name }}</div>
                     <avatar :head-style="member.headStyle"
+                        :head-color="member.headColor"
                         :gender="member.gender"
                         :just-head="true"
                     />
@@ -197,6 +198,8 @@ const gamePage = {
         }
     },
     beforeDestroy() {
+        clearInterval(this.huntInterval);
+
         if (mo.socket) {
             mo.socket.off('getCurrentMapLocationDataComplete');
             mo.socket.off('retreatFromHuntComplete');

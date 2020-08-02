@@ -2,6 +2,7 @@
     <div class="char-info">
         <div class="char-info-wrapper">
             <avatar :head-style="characterHeadStyle"
+                :head-color="characterHeadColor"
                 :gender="characterGender"
                 :job="characterJob"
                 :just-head="true"
@@ -46,7 +47,7 @@
                 <span v-else
                     class="char-info__location__place"
                 >Location: {{ characterLocation }}</span>
-                <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage > 90 }">{{ weightPercentage }}%</span></span>
+                <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span></span>
             </div>
         </div>
     </div>
@@ -81,6 +82,7 @@ export default {
             'characterName',
             'characterJob',
             'characterHeadStyle',
+            'characterHeadColor',
             'characterGender',
             'characterBaseLevel',
             'characterJobLevel',
@@ -218,6 +220,8 @@ export default {
         });
     },
     beforeDestroy() {
+        clearInterval(this.interval);
+
         mo.socket.off('checkTravelingTimeComplete');
         mo.socket.off('travelToMapComplete');
         mo.socket.off('checkRestingTimeComplete');

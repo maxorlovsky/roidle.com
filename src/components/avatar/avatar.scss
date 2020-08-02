@@ -7,28 +7,8 @@
 
     &__head {
         position: absolute;
-        top: 14px;
-        left: calc(50% - 14px);
-
-        /* stylelint-disable */
-        &__1.f {
-            top: 16px;
-            left: calc(50% - 13px);
-        }
-
-        &__2 {
-            top: 16px;
-
-            &.f {
-                left: calc(50% - 12px);
-            }
-        }
-
-        &__3 {
-            top: 15px;
-            left: calc(50% - 13px);
-        }
-        /* stylelint-enable */
+        top: 15px;
+        left: calc(50% - 15px);
     }
 
     &__body {

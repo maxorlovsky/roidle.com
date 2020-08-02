@@ -87,7 +87,7 @@
                     Total: {{ totalValue }} Z
                 </div>
                 <button v-if="$route.query.action === 'sell'"
-                    :disabled="!totalValue || buttonLoading"
+                    :disabled="totalValue <= 0 || buttonLoading"
                     class="btn game-button"
                     @click="initiateSell()"
                 >Sell</button>
@@ -105,6 +105,8 @@
             <div class="modal__content shop__amount">
                 <input ref="amountModal"
                     v-model="amountModal"
+                    min="1"
+                    :max="amountModalMax"
                     type="number"
                     size="4"
                     placeholder="Amount"
@@ -114,7 +116,7 @@
                 <button class="btn btn-secondary"
                     @click="displayAmountModal = false"
                 >Cancel</button>
-                <button :disabled="amountModal > amountModalMax"
+                <button :disabled="amountModal > amountModalMax || amountModal < 1"
                     class="btn game-button"
                     @click="confirmChosenAmount()"
                 >GO</button>
@@ -153,6 +155,11 @@ const shopPage = {
     watch: {
         amountToggle() {
             functions.storage('set', 'itemAmountToggle', this.amountToggle);
+        },
+        amountModal() {
+            if (this.amountModal > this.amountModalMax) {
+                this.amountModal = this.amountModalMax;
+            }
         }
     },
     mounted() {
@@ -272,7 +279,7 @@ const shopPage = {
         },
         confirmChosenAmount() {
             // In case user put it more than he should
-            if (this.amountModal > this.amountModalMax) {
+            if (this.amountModal > this.amountModalMax || this.amountModal < 1) {
                 return false;
             }
 
