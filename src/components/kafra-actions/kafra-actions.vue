@@ -20,8 +20,11 @@
                     @click="openStorage()"
                 >Use Storage (60 Z)</button>
                 <button class="btn game-button"
+                    @click="openBarberShop()"
+                >Barber Shop Service (1000 Z)</button>
+                <button class="btn game-button"
                     @click="statResetStart()"
-                >Stats reset service</button>
+                >Stats Reset Service</button>
                 <!--<button class="btn game-button"
                     @click="openGuildStorage()"
                 >Use Guild storage (600 Z)</button>
@@ -101,6 +104,24 @@ export default {
             mo.socket.emit('saveLocation');
 
             this.showKafraModal = false;
+        },
+        openBarberShop() {
+            // If character don't have enough zeny, we dissallow him to use kafra storage service
+            if (this.characterZeny < 1000) {
+                this.$store.commit('sendChat', [
+                    {
+                        type: 'system',
+                        character: 'System',
+                        message: 'Insufficient Zeny to use Barber Shop Service'
+                    }
+                ]);
+
+                return false;
+            }
+
+            this.showKafraModal = false;
+
+            this.$router.push('/barber-services');
         },
         openStorage() {
             // If character don't have enough zeny, we dissallow him to use kafra storage service

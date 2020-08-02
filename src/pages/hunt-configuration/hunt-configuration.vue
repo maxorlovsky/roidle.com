@@ -21,6 +21,7 @@
                 <avatar v-for="index in 3"
                     :key="index"
                     :head-style="characterHeadStyle"
+                    :head-color="characterHeadColor"
                     :gender="characterGender"
                     :just-head="true"
                     job="Novice"
@@ -34,6 +35,7 @@
                 <avatar v-for="index in 3"
                     :key="index"
                     :head-style="characterHeadStyle"
+                    :head-color="characterHeadColor"
                     :gender="characterGender"
                     :just-head="true"
                     job="Novice"
@@ -47,6 +49,7 @@
                 <avatar v-for="index in 3"
                     :key="index"
                     :head-style="characterHeadStyle"
+                    :head-color="characterHeadColor"
                     :gender="characterGender"
                     :just-head="true"
                     job="Novice"
@@ -232,6 +235,7 @@ const huntConfigurationPage = {
     computed: {
         ...mapGetters([
             'characterHeadStyle',
+            'characterHeadColor',
             'characterGender',
             'characterSkills'
         ])

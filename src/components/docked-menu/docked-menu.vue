@@ -11,6 +11,7 @@
                 class="docked-menu__button docked-menu__button--character"
             >
                 <avatar :head-style="characterHeadStyle"
+                    :head-color="characterHeadColor"
                     :gender="characterGender"
                     :just-head="true"
                     job="Novice"
@@ -56,6 +57,7 @@ export default {
     computed: {
         ...mapGetters([
             'characterHeadStyle',
+            'characterHeadColor',
             'characterGender'
         ])
     },

@@ -19,6 +19,7 @@
                     class="home__select-character"
                 >
                     <avatar :head-style="item.headStyle"
+                        :head-color="item.headColor"
                         :gender="item.gender"
                         :job="item.job"
                         :just-head="true"
@@ -77,6 +78,7 @@
         <template v-else-if="createCharacter">
             <div class="character-view">
                 <avatar :head-style="headStyle"
+                    :head-color="headColor"
                     :gender="gender"
                 />
 
@@ -95,6 +97,14 @@
                         > &#60; </Button>
                         <Button class="btn btn-secondary"
                             @click="setStyle('next')"
+                        > &#62; </Button>
+                    </div>
+                    <div class="character-pickers__buttons">
+                        <Button class="btn btn-secondary"
+                            @click="setColor('prev')"
+                        > &#60; </Button>
+                        <Button class="btn btn-secondary"
+                            @click="setColor('next')"
                         > &#62; </Button>
                     </div>
                 </div>
@@ -244,8 +254,9 @@ const homePage = {
             name: '',
             gender: 'm',
             headStyle: 1,
+            headColor: 1,
             message: '',
-            maxAmountCharacter: 5,
+            maxAmountCharacter: 10,
             online: 0,
             idle: 0,
             players: 0,
@@ -499,12 +510,32 @@ const homePage = {
             }
 
             if (style < 1) {
-                style = 3;
-            } else if (style > 3) {
+                style = 23;
+            } else if (style > 23) {
                 style = 1;
             }
 
             this.headStyle = style;
+        },
+        setColor(pos) {
+            let color = 0;
+
+            switch (pos) {
+                case 'prev':
+                    color = this.headColor - 1;
+                    break;
+                default:
+                    color = this.headColor + 1;
+                    break;
+            }
+
+            if (color < 1) {
+                color = 8;
+            } else if (color > 8) {
+                color = 1;
+            }
+
+            this.headColor = color;
         },
         setGender(gender) {
             switch (gender) {
@@ -515,8 +546,6 @@ const homePage = {
                     this.gender = 'm';
                     break;
             }
-
-            this.headStyle = 1;
         },
         async registerCharacter() {
             // Cleaning up message in case it's a second try
@@ -541,6 +570,7 @@ const homePage = {
                     name: this.name,
                     gender: this.gender,
                     headStyle: this.headStyle,
+                    headColor: this.headColor,
                     sessionToken: functions.storage('get', 'session')
                 });
 

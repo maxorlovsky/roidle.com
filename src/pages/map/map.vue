@@ -30,6 +30,7 @@
                         >
                             <div class="map__piece__players__player__name">{{ player.name }}</div>
                             <avatar :head-style="player.headStyle"
+                                :head-color="player.headColor"
                                 :gender="player.gender"
                                 :just-head="true"
                             />

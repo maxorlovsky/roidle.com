@@ -1,0 +1,40 @@
+.barber-services {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("#{$assets}/images/character.jpg");
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    
+    &__wrapper {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding-top: 40px;
+        width: 100%;
+        padding-bottom: 35px;
+    }
+
+    &__character-pickers {
+        text-align: center;
+        width: 100%;
+
+        &__buttons {
+            margin-top: 1rem;
+
+            .btn:first-child {
+                margin-right: 0.8rem;
+            }
+        }
+    }
+
+    &__character-view {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__save-button {
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
+    }
+}

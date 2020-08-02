@@ -23,6 +23,10 @@
 
             .avatar {
                 left: calc(50% - 60px);
+
+                &__head {
+                    top: 17px;
+                }
             }
         }
 

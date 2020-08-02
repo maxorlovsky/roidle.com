@@ -8,7 +8,7 @@
         <div :class="[`avatar__head__${headStyle}`, gender]"
             class="avatar__head"
         >
-            <img :src="`/dist/assets/images/heads/${headStyle}_${gender}.gif`">
+            <img :src="`/dist/assets/images/heads/${gender}/${headStyle}-${headColor}.gif`">
         </div>
         <div v-if="headGear"
             class="avatar__headgear"
@@ -23,6 +23,10 @@ export default {
     name: 'avatar',
     props: {
         headStyle: {
+            type: Number,
+            required: true
+        },
+        headColor: {
             type: Number,
             required: true
         },

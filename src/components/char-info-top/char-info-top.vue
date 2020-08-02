@@ -2,6 +2,7 @@
     <div class="char-info">
         <div class="char-info-wrapper">
             <avatar :head-style="characterHeadStyle"
+                :head-color="characterHeadColor"
                 :gender="characterGender"
                 :job="characterJob"
                 :just-head="true"
@@ -81,6 +82,7 @@ export default {
             'characterName',
             'characterJob',
             'characterHeadStyle',
+            'characterHeadColor',
             'characterGender',
             'characterBaseLevel',
             'characterJobLevel',

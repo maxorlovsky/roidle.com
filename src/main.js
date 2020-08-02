@@ -8,6 +8,7 @@ import VueI18n from 'vue-i18n';
 import App from './app.vue';
 
 // Pages
+import './pages/barber-services/barber-services.vue';
 import './pages/character/character.vue';
 import './pages/character/character-skills.vue';
 import './pages/game/game.vue';
