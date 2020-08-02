@@ -46,7 +46,7 @@
                 <span v-else
                     class="char-info__location__place"
                 >Location: {{ characterLocation }}</span>
-                <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage > 90 }">{{ weightPercentage }}%</span></span>
+                <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span></span>
             </div>
         </div>
     </div>

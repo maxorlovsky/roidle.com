@@ -126,7 +126,7 @@ const mapPage = {
 
         this.$store.commit('enableChat', false);
 
-        if (Math.round((this.inventoryWeight * 100) / this.characterAttributes.weight) > 90) {
+        if (Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) >= 90) {
             this.userOverweight = true;
         }
     },
