@@ -137,12 +137,24 @@ export default {
                         .replace(/(&endbold;)/g, '</span>')
                         .replace(/(\n)/g, '<br>');
 
+                    // Check if chat is becoming too large and cleaning up first properties to not consume so much memory
+                    // For battle chat we try to log a lot of stuff, so holding up to 1000 lines
+                    if (this.chatLog.battle.length > 1000) {
+                        this.chatLog.battle.shift();
+                    }
+
                     this.chatLog.battle.push({
                         message: chat.message
                     });
                 } else if (chat.type === 'system') {
                     if (this.selectedTab !== 1) {
                         this.tabNotification[1] = true;
+                    }
+
+                    // Check if chat is becoming too large and cleaning up first properties to not consume so much memory
+                    // For system chat we try to preserve stuff for when user is afk, so holding up to 300 lines
+                    if (this.chatLog.system.length > 300) {
+                        this.chatLog.system.shift();
                     }
 
                     this.chatLog.system.push({
@@ -156,6 +168,11 @@ export default {
                     // Add emotes recognition, because of nature of regex, we need to loop through it two times, otherwise some text might go through
                     chat.message = this.addEmotes(chat.message);
                     chat.message = this.addEmotes(chat.message);
+
+                    // Check if chat is becoming too large and cleaning up first properties to not consume so much memory
+                    if (this.chatLog.regular.length > 100) {
+                        this.chatLog.regular.shift();
+                    }
 
                     this.chatLog.regular.push({
                         type: chat.type,
