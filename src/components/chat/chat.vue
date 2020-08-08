@@ -51,11 +51,13 @@
                 <input v-model="whisperName"
                     type="text"
                     class="chat__input__whisper"
+                    maxlength="100"
                     @keyup.enter="sendChat()"
                 >
                 <input v-model="message"
                     type="text"
                     class="chat__input__message"
+                    maxlength="150"
                     @keyup.enter="sendChat()"
                 >
                 <button class="btn game-button btn-sm chat__input__button"
