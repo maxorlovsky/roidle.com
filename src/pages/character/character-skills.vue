@@ -14,6 +14,7 @@
             <b>{{ skillInfo.name }}</b>
             <div v-if="skillInfo.requirements">Requirements: <b class="skill-info__requirement">{{ skillInfo.requirements }}</b></div>
             <div>Max Level: <b>{{ skillInfo.maxLevel }}</b></div>
+            <div v-if="skillInfo.mp">Mana Cost: <b>{{ skillInfo.mp }}</b></div>
             <span v-html="skillInfo.explanation" />
         </div>
 
@@ -75,6 +76,7 @@ const characterSkillsPage = {
                 show: false,
                 name: '',
                 maxLevel: 0,
+                mp: '',
                 explanation: ''
             },
             availableSkills: [],
@@ -83,7 +85,11 @@ const characterSkillsPage = {
         };
     },
     computed: {
-        ...mapGetters(['characterSkillPoints', 'characterSkills', 'characterJobId'])
+        ...mapGetters([
+            'characterSkillPoints',
+            'characterSkills',
+            'characterJobId'
+        ])
     },
     mounted() {
         mo.socket.on('saveSkillsComplete', (response) => {
@@ -149,6 +155,12 @@ const characterSkillsPage = {
             this.skillInfo.maxLevel = skill.maxLevel;
             this.skillInfo.explanation = skill.explanation;
             this.skillInfo.requirements = '';
+
+            if (skill.mp && Array.isArray(skill.mp)) {
+                this.skillInfo.mp = `[${skill.mp.join(', ')}]`;
+            } else if (skill.mp) {
+                this.skillInfo.mp = skill.mp;
+            }
 
             // Transform object of requirements into readable text
             if (skill.requirements) {
