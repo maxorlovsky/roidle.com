@@ -23,22 +23,6 @@
         &:hover {
             background-color: rgba(255, 255, 255, 0.75);
         }
-
-        &--character {
-            .avatar {
-                border: 0;
-
-                &__head {
-                    top: 5px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                }
-
-                &__body {
-                    display: none;
-                }
-            }
-        }
     }
 
     img {

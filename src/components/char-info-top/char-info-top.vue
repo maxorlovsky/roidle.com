@@ -5,7 +5,7 @@
                 :head-color="characterHeadColor"
                 :gender="characterGender"
                 :job="characterJob"
-                :just-head="true"
+                :framed="true"
                 :head-gear="characterEquipment.head.itemId"
             />
 
