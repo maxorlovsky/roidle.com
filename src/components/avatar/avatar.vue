@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'avatar--just-head': justHead}"
+    <div :class="{'avatar--just-head': justHead, 'avatar--framed': framed}"
         class="avatar"
     >
         <div class="avatar__body">
@@ -13,7 +13,7 @@
         <div v-if="headGear"
             class="avatar__headgear"
         >
-            <img :src="`/dist/assets/images/headgear/${headGear}.png`">
+            <img :src="`/dist/assets/images/headgear/${headGear}.gif`">
         </div>
     </div>
 </template>
@@ -33,6 +33,10 @@ export default {
         gender: {
             type: String,
             required: true
+        },
+        framed: {
+            type: Boolean,
+            default: false
         },
         justHead: {
             type: Boolean,

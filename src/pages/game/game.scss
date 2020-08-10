@@ -60,17 +60,8 @@
             cursor: pointer;
             position: relative;
 
-            .avatar--just-head {
-                border: 0;
-            }
-            
-            .avatar__body {
-                display: none;
-            }
-
             .avatar__head {
-                top: 5px;
-                left: calc(50% - 20px);
+                left: calc(50% - 5px);
             }
 
             &__name {

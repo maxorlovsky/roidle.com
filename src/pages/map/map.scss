@@ -95,16 +95,8 @@ $amountOfMapsPerRow: 7;
                     padding-right: 0;
                 }
 
-                .avatar--just-head {
-                    border: 0;
-                }
-                
-                .avatar__body {
-                    display: none;
-                }
-
                 .avatar__head {
-                    left: calc(50% - 22px);
+                    left: calc(50% - 5px);
                 }
             }
         }
