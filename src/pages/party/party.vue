@@ -20,7 +20,7 @@
                     >
                         <avatar :head-style="item.headStyle"
                             :head-color="item.headColor"
-                            :head-gear="item.headGears[0]"
+                            :head-gears="item.headGears"
                             :gender="item.gender"
                             :job="item.job"
                             :framed="true"

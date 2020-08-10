@@ -6,7 +6,11 @@
                 :gender="characterGender"
                 :job="characterJob"
                 :framed="true"
-                :head-gear="characterEquipment.head.itemId"
+                :head-gears="[
+                    characterEquipment.head.itemId,
+                    characterEquipment.face.itemId,
+                    characterEquipment.mouth.itemId
+                ]"
             />
 
             <div class="char-info__description">

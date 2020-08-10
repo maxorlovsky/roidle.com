@@ -20,10 +20,10 @@
                 >
                     <avatar :head-style="item.headStyle"
                         :head-color="item.headColor"
+                        :head-gears="item.headgearItemIds"
                         :gender="item.gender"
                         :job="item.job"
                         :framed="true"
-                        :head-gear="item.headgearItemId"
                     />
                     <div class="home__select-character__info">
                         {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>

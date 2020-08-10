@@ -31,7 +31,7 @@
                             <div class="map__piece__players__player__name">{{ player.name }}</div>
                             <avatar :head-style="player.headStyle"
                                 :head-color="player.headColor"
-                                :head-gear="player.headGears[0]"
+                                :head-gears="player.headGears"
                                 :gender="player.gender"
                                 :just-head="true"
                             />

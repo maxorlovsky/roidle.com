@@ -22,7 +22,11 @@
                     :head-color="characterHeadColor"
                     :gender="characterGender"
                     :job="characterJob"
-                    :head-gear="characterEquipment.head.itemId"
+                    :head-gears="[
+                        characterEquipment.head.itemId,
+                        characterEquipment.face.itemId,
+                        characterEquipment.mouth.itemId
+                    ]"
                 />
             </div>
 

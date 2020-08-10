@@ -6,7 +6,6 @@
                     :head-color="headColor"
                     :gender="characterGender"
                     :job="characterJob"
-                    :head-gear="characterEquipment.head.itemId"
                 />
 
                 <div class="barber-services__character-pickers">
