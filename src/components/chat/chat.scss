@@ -107,6 +107,10 @@ $docked-menu: 60px;
         p {
             margin-bottom: 0;
         }
+
+        &__chat--type--message {
+            cursor: pointer;
+        }
     }
 
     &__input {
@@ -162,6 +166,19 @@ $docked-menu: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+    }
+
+    &__modal {
+        position: absolute;
+
+        .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 }
