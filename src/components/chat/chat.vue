@@ -24,10 +24,16 @@
                 <p v-for="(chat, index) in chatLog.regular"
                     :key="index"
                     :class="[`chat__body__${chat.type}`, { 'chat__body__self': chat.self }]"
-                >[
-                    <span class="chat__body__chat--type--message"
+                >
+                    <span v-if="chat.type === 'private'"
+                        class="chat__body__chat--type--message"
+                        @click="sendPrivateMessage(`${chat.character}`)"
+                    >[ #private ] <span v-if="chat.to">To</span><span v-else>From</span> </span>
+                    <span v-else
+                        class="chat__body__chat--type--message"
                         @click="sendPrivateMessage(`#${chat.type}`)"
-                    >#{{ chat.type }}</span> ] <span @click="openModal(chat.character)">{{ chat.character }}</span>:
+                    >[ #{{ chat.type }} ]</span>
+                    <span @click="openModal(chat.character)">{{ chat.character }}</span>:
                     <span class="chat__body__message"
                         v-html="chat.message"
                     />
@@ -209,6 +215,7 @@ export default {
 
                     this.chatLog.regular.push({
                         type: chat.type,
+                        to: chat.to ? chat.to : null,
                         character: chat.character,
                         message: chat.message,
                         self: this.characterName === chat.character
