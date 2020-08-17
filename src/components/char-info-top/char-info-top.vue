@@ -222,6 +222,13 @@ export default {
                 timeFinish: null
             });
         });
+
+        mo.socket.on('interruptRestComplete', () => {
+            this.$store.commit('saveResting', 0);
+
+            this.restingDisplay = '';
+            clearInterval(this.interval);
+        });
     },
     beforeDestroy() {
         clearInterval(this.interval);

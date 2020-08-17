@@ -74,7 +74,13 @@
                 class="game__action-in-progress"
             >
                 <div v-if="travelingToLocation">Traveling in Progress</div>
-                <div v-if="restInProgress">Rest in Progress</div>
+                <div v-if="restInProgress">
+                    <div>Rest in Progress</div>
+                    <button v-if="!cancelingRest"
+                        class="btn btn-secondary"
+                        @click="cancelRest()"
+                    >Interrupt rest</button>
+                </div>
                 <div v-if="huntStatus">
                     <div>Hunt in progress</div>
                     <div>{{ huntStatusTimerDisplay }}</div>
@@ -118,6 +124,7 @@ const gamePage = {
             kafraAvailable: false,
             innAvailable: false,
             shopsAvailable: false,
+            cancelingRest: false
         };
     },
     computed: {
@@ -207,6 +214,9 @@ const gamePage = {
         }
     },
     methods: {
+        cancelRest() {
+            mo.socket.emit('interruptRest');
+        },
         partyClick() {
             // Need to create a party
             this.$router.push('/party');
