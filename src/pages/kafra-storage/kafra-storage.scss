@@ -40,19 +40,33 @@
         }
     }
 
-    &__limit {
-        text-align: right;
-        padding: 0.5rem;
-        font-size: 1rem;
+    &__top-bar {
         background-color: rgba(255, 255, 255, 0.8);
         position: fixed;
         top: calc(125px + 42px);
         width: 100%;
         max-width: 425px;
         z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__limit {
+        padding: 0.5rem 1rem 0.5rem 0.5rem;
+        font-size: 1rem;
 
         &--exceeded {
             color: #c00;
+        }
+    }
+
+    &__toggle {
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        font-size: 1rem;
+
+        label {
+            margin-bottom: 0;
         }
     }
 
