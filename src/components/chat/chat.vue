@@ -158,6 +158,8 @@ export default {
             handler() {
                 if (this.characterSkills[1] >= 1) {
                     this.disabledChat = false;
+                } else {
+                    this.disabledChat = true;
                 }
             }
         },
