@@ -25,6 +25,9 @@
                 <button class="btn game-button"
                     @click="statResetStart()"
                 >Stats Reset Service</button>
+                <button class="btn game-button"
+                    @click="skillsResetStart()"
+                >Skills Reset Service</button>
                 <!--<button class="btn game-button"
                     @click="openGuildStorage()"
                 >Use Guild storage (600 Z)</button>
@@ -39,7 +42,7 @@
             </div>
         </div>
 
-        <div v-if="showResetConfirmation"
+        <div v-if="showResetStatsConfirmation"
             class="modal"
         >
             <div class="modal__header">Reset stats</div>
@@ -53,12 +56,36 @@
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
-                    @click="showResetConfirmation = false; showKafraModal = true"
+                    @click="showResetStatsConfirmation = false; showKafraModal = true"
                 >Cancel</button>
 
                 <button :disabled="characterZeny < resetPrice || characterBaseLevel > 80"
                     class="btn game-button"
                     @click="resetStats()"
+                >I'm ready, reset!</button>
+            </div>
+        </div>
+
+        <div v-if="showResetSkillsConfirmation"
+            class="modal"
+        >
+            <div class="modal__header">Reset skills</div>
+            <div class="modal__content kafra-actions__buttons">
+                <template v-if="characterBaseLevel <= 80">
+                    You wish to rebuild your mental state? It is painful, ever heard about lobotomy? Well it's not that, but never the less, changing your mental state even by using magic is really hard. The more experience you gain, the more problems it will cause. Until the point of no return is reached.<br>
+                    Current price: <b>{{ resetPrice }}</b><br>
+                    Zeny available: {{ characterZeny }}
+                </template>
+                <template v-else>You have grown beyond our magic and alchemy to rebuild you the way you want. Sorry.</template>
+            </div>
+            <div class="modal__buttons">
+                <button class="btn btn-secondary"
+                    @click="showResetSkillsConfirmation = false; showKafraModal = true"
+                >Cancel</button>
+
+                <button :disabled="characterZeny < resetPrice || characterBaseLevel > 80"
+                    class="btn game-button"
+                    @click="resetSkills()"
                 >I'm ready, reset!</button>
             </div>
         </div>
@@ -74,7 +101,8 @@ export default {
     data() {
         return {
             showKafraModal: false,
-            showResetConfirmation: false
+            showResetStatsConfirmation: false,
+            showResetSkillsConfirmation: false
         };
     },
     computed: {
@@ -93,11 +121,27 @@ export default {
         mo.socket.on('characterResetStatsComplete', (response) => {
             this.$store.commit('resetStats', response);
             this.showKafraModal = false;
-            this.showResetConfirmation = false;
+            this.showResetStatsConfirmation = false;
+        });
+
+        mo.socket.on('characterResetSkillsComplete', (response) => {
+            this.$store.commit('setCharacterData', {
+                attributes: response.attributes,
+                skills: response.skills,
+                skillPoints: response.skillPoints
+            });
+            this.$store.commit('setHpMp', {
+                hp: response.attributes.maxHp,
+                mp: response.attributes.maxMp
+            });
+
+            this.showKafraModal = false;
+            this.showResetSkillsConfirmation = false;
         });
     },
     beforeDestroy() {
         mo.socket.off('characterResetStatsComplete');
+        mo.socket.off('characterResetSkillsComplete');
     },
     methods: {
         saveLocation() {
@@ -156,10 +200,17 @@ export default {
         },
         statResetStart() {
             this.showKafraModal = false;
-            this.showResetConfirmation = true;
+            this.showResetStatsConfirmation = true;
+        },
+        skillsResetStart() {
+            this.showKafraModal = false;
+            this.showResetSkillsConfirmation = true;
         },
         resetStats() {
             mo.socket.emit('characterResetStats');
+        },
+        resetSkills() {
+            mo.socket.emit('characterResetSkills');
         }
     }
 };
