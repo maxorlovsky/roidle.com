@@ -154,6 +154,7 @@ const characterSkillsPage = {
             this.skillInfo.name = skill.name;
             this.skillInfo.maxLevel = skill.maxLevel;
             this.skillInfo.explanation = skill.explanation;
+            this.skillInfo.mp = '';
             this.skillInfo.requirements = '';
 
             if (skill.mp && Array.isArray(skill.mp)) {
