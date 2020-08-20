@@ -24,7 +24,16 @@
                 <p v-for="(chat, index) in chatLog.regular"
                     :key="index"
                     :class="[`chat__body__${chat.type}`, { 'chat__body__self': chat.self }]"
-                >[ #{{ chat.type }} ] <span @click="openProfile(chat.character)">{{ chat.character }}</span>:
+                >
+                    <span v-if="chat.type === 'private'"
+                        class="chat__body__chat--type--message"
+                        @click="sendPrivateMessage(`${chat.character}`)"
+                    >[ #private ] <span v-if="chat.to">To</span><span v-else>From</span> </span>
+                    <span v-else
+                        class="chat__body__chat--type--message"
+                        @click="sendPrivateMessage(`#${chat.type}`)"
+                    >[ #{{ chat.type }} ]</span>
+                    <span @click="openModal(chat.character)">{{ chat.character }}</span>:
                     <span class="chat__body__message"
                         v-html="chat.message"
                     />
@@ -68,6 +77,33 @@
                     class="chat__input__limit"
                 >Need Basic Level 1 to use chat</div>
             </div>
+
+            <div v-if="showChatModal"
+                class="modal chat__modal"
+            >
+                <div class="modal__header">{{ modalCharacterName }}</div>
+                <div class="modal__content chat__modal__buttons">
+                    <button class="btn game-button"
+                        @click="openProfile(modalCharacterName)"
+                    >View profile</button>
+                    <button class="btn game-button"
+                        @click="sendPrivateMessage(modalCharacterName)"
+                    >Message</button>
+                    <button v-if="admin"
+                        class="btn btn-warning"
+                        @click="mute(modalCharacterName)"
+                    >Mute</button>
+                    <button v-if="admin"
+                        class="btn btn-danger"
+                        @click="ban(modalCharacterName)"
+                    >Ban</button>
+                </div>
+                <div class="modal__buttons">
+                    <button class="btn btn-secondary"
+                        @click="showChatModal = false"
+                    >Cancel</button>
+                </div>
+            </div>
         </div>
     </section>
 </template>
@@ -90,7 +126,9 @@ export default {
             },
             disabledChat: true,
             selectedTab: 0,
-            tabNotification: [false, false, false]
+            tabNotification: [false, false, false],
+            showChatModal: false,
+            modalCharacterName: ''
         };
     },
     computed: {
@@ -100,7 +138,8 @@ export default {
             'socketConnection',
             'resetChat',
             'characterName',
-            'showChat'
+            'showChat',
+            'admin'
         ])
     },
     watch: {
@@ -119,6 +158,8 @@ export default {
             handler() {
                 if (this.characterSkills[1] >= 1) {
                     this.disabledChat = false;
+                } else {
+                    this.disabledChat = true;
                 }
             }
         },
@@ -176,6 +217,7 @@ export default {
 
                     this.chatLog.regular.push({
                         type: chat.type,
+                        to: chat.to ? chat.to : null,
                         character: chat.character,
                         message: chat.message,
                         self: this.characterName === chat.character
@@ -190,6 +232,24 @@ export default {
         mo.socket.off('chat');
     },
     methods: {
+        ban(name) {
+            if (!this.admin) {
+                return false;
+            }
+
+            console.warn(`Ban: ${name}`);
+        },
+        mute(name) {
+            if (!this.admin) {
+                return false;
+            }
+
+            console.warn(`Mute: ${name}`);
+        },
+        openModal(characterName) {
+            this.modalCharacterName = characterName;
+            this.showChatModal = true;
+        },
         addEmotes(message) {
             message = message.replace(/(?:^|\W)\/bawi(?:$|\W)/g, ' <img src="/dist/assets/images/emote/bawi.png"> ')
                 .replace(/(?:^|\W)\/bo(?:$|\W)/g, ' <img src="/dist/assets/images/emote/bo.png"> ')
@@ -249,9 +309,15 @@ export default {
             this.$store.commit('showChat', !this.showChat);
         },
         openProfile(name) {
+            this.showChatModal = false;
+
             if (name !== 'Map' && name !== 'System') {
                 this.$router.push(`/profile/${name}`);
             }
+        },
+        sendPrivateMessage(name) {
+            this.showChatModal = false;
+            this.whisperName = name;
         },
         setUpSocketEvents() {
             mo.socket.on('chat', (message) => {

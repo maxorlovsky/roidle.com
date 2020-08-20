@@ -217,13 +217,18 @@
                 img {
                     width: 60%;
                 }
-    
-                &__amount {
+
+                &__hp-control,
+                &__mp-control {
                     position: absolute;
                     bottom: -5px;
                     right: 0;
-                    font-size: 1rem;
+                    font-size: 0.8rem;
                     color: #fff;
+                }
+
+                &__hp-control {
+                    left: 0;
                 }
             }
     
@@ -248,25 +253,44 @@
         width: 90%;
         max-width: 425px;
         padding: 0;
+        overflow: auto;
 
         &__item {
-            padding: 1rem;
+            padding: 0.5rem;
             border-bottom: 2px solid #333;
             display: flex;
             align-items: center;
+
+            &__name {
+                padding: 0.2rem 0.5rem 0.2rem 0;
+                width: 40%;
+                text-align: center;
+                position: relative;
+
+                > img {
+                    width: 35px;
+                }
+
+                &--remove {
+                    width: 100%;
+                }
+
+                &--add:hover {
+                    .active-skill-modal__add-notice {
+                        display: flex;
+                    }
+                }
+            }
 
             &__macros {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                width: 100%;
-            }
+                flex-wrap: wrap;
+                width: 60%;
 
-            &__image {
-                padding-right: 1rem;
-
-                > img {
-                    width: 35px;
+                p {
+                    margin-bottom: 0.2rem;
                 }
             }
 
@@ -282,6 +306,20 @@
         &__buttons {
             padding: 1rem;
             margin-top: 0;
+        }
+
+        &__add-notice {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 95%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
         }
     }
 

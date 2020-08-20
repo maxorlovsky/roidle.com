@@ -11,10 +11,22 @@
             >{{ tab }}</div>
         </div>
 
-        <div :class="{'kafra-storage__limit--exceeded': storageSpace > storageSpaceMax}"
-            class="kafra-storage__limit"
-        >
-            {{ storageSpace }} / {{ storageSpaceMax }}
+        <div class="kafra-storage__top-bar">
+            <div class="kafra-storage__toggle">
+                <div class="kafra-storage__toggle__value">
+                    <label for="amountToggle">Toggle Item Amount</label>
+                    <input id="amountToggle"
+                        v-model="amountToggle"
+                        type="checkbox"
+                    >
+                </div>
+            </div>
+
+            <div :class="{'kafra-storage__limit--exceeded': storageSpace > storageSpaceMax}"
+                class="kafra-storage__limit"
+            >
+                {{ storageSpace }} / {{ storageSpaceMax }}
+            </div>
         </div>
 
         <div class="kafra-storage__wrapper">
@@ -51,16 +63,6 @@
             <template v-else>
                 <div class="kafra-storage__empty">Empty</div>
             </template>
-
-            <div class="kafra-storage__summary">
-                <div class="kafra-storage__summary__value">
-                    <label for="amountToggle">Toggle Item Amount</label>
-                    <input id="amountToggle"
-                        v-model="amountToggle"
-                        type="checkbox"
-                    >
-                </div>
-            </div>
         </div>
 
         <div v-if="displayAmountModal"

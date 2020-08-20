@@ -27,7 +27,11 @@
                         :head-color="headColor"
                         :gender="gender"
                         :job="job"
-                        :head-gear="equipment.head.itemId"
+                        :head-gears="[
+                            equipment.head.itemId,
+                            equipment.face.itemId,
+                            equipment.mouth.itemId
+                        ]"
                     />
                 </div>
 

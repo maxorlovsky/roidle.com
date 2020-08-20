@@ -93,7 +93,11 @@
                 >
                     <template v-if="item">
                         <img :src="`/dist/assets/images/skills/${item.id}.gif`">
-                        <span class="active-skills__item__amount">{{ item.mpControl }}%</span>
+                        <span v-if="item.hpControl"
+                            class="active-skills__item__hp-control"
+                        >{{ item.hpControl }}%</span>
+
+                        <span class="active-skills__item__mp-control">{{ item.mpControl }}%</span>
                     </template>
                 </div>
             </div>
@@ -155,11 +159,9 @@
                 class="active-skill-modal__item"
                 @click="removeActiveSkill(skillSelectedSlot)"
             >
-                <div class="active-skill-modal__item__image">
+                <div class="active-skill-modal__item__name active-skill-modal__item__name--remove">
                     <img src="/dist/assets/images/cancel.png">
-                </div>
-                <div>
-                    <div class="active-skill-modal__item__name">Remove skill</div>
+                    <div>Remove skill</div>
                 </div>
             </div>
 
@@ -168,17 +170,14 @@
                     :key="index"
                     class="active-skill-modal__item"
                 >
-                    <div class="active-skill-modal__item__image"
+                    <div class="active-skill-modal__item__name active-skill-modal__item__name--add"
                         @click="addActiveSkill(item)"
                     >
                         <img :src="`/dist/assets/images/skills/${item.id}.gif`">
+                        <div>{{ item.name }} (Lv. {{ item.currentLevel }})</div>
+                        <div class="active-skill-modal__add-notice">Add skill</div>
                     </div>
                     <div class="active-skill-modal__item__macros">
-                        <div class="active-skill-modal__item__name"
-                            @click="addActiveSkill(item)"
-                        >
-                            {{ item.name }} (Lv. {{ item.currentLevel }})
-                        </div>
                         <div class="active-skill-modal__item__mp-control">
                             <p>Use while MP is higher than</p>
                             <select v-model="item.mpControl">
@@ -186,6 +185,19 @@
                                     :key="mpControlIndex"
                                     :value="10 * (mpControlIndex - 1)"
                                 >{{ 10 * (mpControlIndex - 1) }}% MP</option>
+                            </select>
+                        </div>
+
+                        <!-- Heal -->
+                        <div v-if="item.id === 20"
+                            class="active-skill-modal__item__hp-control"
+                        >
+                            <p>Use when HP is lower than</p>
+                            <select v-model="item.hpControl">
+                                <option v-for="hpControlIndex in 10"
+                                    :key="hpControlIndex"
+                                    :value="10 * (hpControlIndex - 1)"
+                                >{{ 10 * (hpControlIndex - 1) }}% HP</option>
                             </select>
                         </div>
                     </div>
@@ -274,6 +286,8 @@ const huntConfigurationPage = {
                     skill.currentLevel = this.characterSkills[skill.id];
                     // Add default MP control parameter
                     skill.mpControl = 0;
+                    // Add default HP control parameter
+                    skill.hpControl = 0;
                     this.activeSkillsList.push(skill);
                 }
             }
@@ -318,7 +332,8 @@ const huntConfigurationPage = {
                     skillsToUseInHunt.push({
                         id: this.activeSkills[i].id,
                         level: parseInt(this.activeSkills[i].level),
-                        mpControl: parseInt(this.activeSkills[i].mpControl)
+                        mpControl: parseInt(this.activeSkills[i].mpControl),
+                        hpControl: parseInt(this.activeSkills[i].hpControl)
                     });
                 } else {
                     // For basic attack
@@ -366,7 +381,8 @@ const huntConfigurationPage = {
             this.activeSkills[this.skillSelectedSlot] = {
                 id: item.id,
                 level: parseInt(item.currentLevel),
-                mpControl: parseInt(item.mpControl)
+                mpControl: parseInt(item.mpControl),
+                hpControl: parseInt(item.hpControl)
             };
             this.showActiveSkillsModal = false;
         },

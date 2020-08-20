@@ -3,13 +3,43 @@
         :class="$route.query.action"
         class="shop"
     >
-        <div class="shop__wrapper shop__left">
-            <div v-if="$route.query.action === 'sell'"
-                class="shop__header shop__left__header"
-            >Items available to sell</div>
-            <div v-else
-                class="shop__header shop__left__header"
-            >Items available to buy</div>
+        <div class="shop__tabs">
+            <div class="shop__tabs__left">
+                <div v-if="$route.query.action === 'sell'"
+                    class="shop__tabs__header"
+                >Items available to sell</div>
+                <div v-else
+                    class="shop__tabs__header"
+                >Items available to buy</div>
+            </div>
+
+            <div class="shop__tabs__right">
+                <div v-if="$route.query.action === 'sell'"
+                    class="shop__tabs__header"
+                >Selling items</div>
+                <div v-else
+                    class="shop__tabs__header"
+                >Buying items</div>
+            </div>
+        </div>
+
+        <div v-if="$route.query.action === 'sell' && $route.query.type === 'tools'"
+            class="shop__top-bar"
+        >
+            <div class="shop__toggle">
+                <div class="shop__toggle__value">
+                    <label for="amountToggle">Toggle Item Amount</label>
+                    <input id="amountToggle"
+                        v-model="amountToggle"
+                        type="checkbox"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div :class="{'shop__wrapper--margin': $route.query.action === 'sell' && $route.query.type === 'tools'}"
+            class="shop__wrapper shop__left"
+        >
             <template v-if="itemsLeft.length">
                 <div v-for="(item, index) in itemsLeft"
                     :key="index"
@@ -35,27 +65,11 @@
             <template v-else>
                 <div class="shop__empty">Empty</div>
             </template>
-
-            <div v-if="$route.query.action === 'sell' && $route.query.type === 'tools'"
-                class="shop__summary"
-            >
-                <div class="shop__summary__value">
-                    <label for="amountToggle">Toggle Item Amount</label>
-                    <input id="amountToggle"
-                        v-model="amountToggle"
-                        type="checkbox"
-                    >
-                </div>
-            </div>
         </div>
 
-        <div class="shop__wrapper shop__right">
-            <div v-if="$route.query.action === 'sell'"
-                class="shop__header"
-            >Selling items</div>
-            <div v-else
-                class="shop__header"
-            >Buying items</div>
+        <div :class="{'shop__wrapper--margin': $route.query.action === 'sell' && $route.query.type === 'tools'}"
+            class="shop__wrapper shop__right"
+        >
             <template v-if="itemsRight.length">
                 <div v-for="(item, index) in itemsRight"
                     :key="index"

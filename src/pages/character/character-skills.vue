@@ -122,6 +122,11 @@ const characterSkillsPage = {
     },
     methods: {
         skillRequirementMet(skill) {
+            // Check if user is under, so he need to spend 9 skills in Basic Skill
+            if (skill.id !== 1 && (!this.characterSkills[1] || this.characterSkills[1] < 9)) {
+                return false;
+            }
+
             // In case there are no requirements, everything is cool
             if (!skill.requirements) {
                 return true;
@@ -154,6 +159,7 @@ const characterSkillsPage = {
             this.skillInfo.name = skill.name;
             this.skillInfo.maxLevel = skill.maxLevel;
             this.skillInfo.explanation = skill.explanation;
+            this.skillInfo.mp = '';
             this.skillInfo.requirements = '';
 
             if (skill.mp && Array.isArray(skill.mp)) {

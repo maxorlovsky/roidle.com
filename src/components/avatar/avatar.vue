@@ -10,10 +10,13 @@
         >
             <img :src="`/dist/assets/images/heads/${gender}/${headStyle}-${headColor}.gif`">
         </div>
-        <div v-if="headGear"
+        <div v-for="(gear, index) in headGears"
+            :key="index"
             class="avatar__headgear"
         >
-            <img :src="`/dist/assets/images/headgear/${headGear}.gif`">
+            <template v-if="gear">
+                <img :src="`/dist/assets/images/headgear/${gear}.gif`">
+            </template>
         </div>
     </div>
 </template>
@@ -46,10 +49,10 @@ export default {
             type: String,
             default: 'novice'
         },
-        headGear: {
-            type: Number,
+        headGears: {
+            type: Array,
             required: false,
-            default: 0
+            default: () => [0, 0, 0]
         }
     },
     computed: {
