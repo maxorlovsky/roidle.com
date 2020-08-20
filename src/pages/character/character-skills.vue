@@ -122,6 +122,11 @@ const characterSkillsPage = {
     },
     methods: {
         skillRequirementMet(skill) {
+            // Check if user is under, so he need to spend 9 skills in Basic Skill
+            if (skill.id !== 1 && (!this.characterSkills[1] || this.characterSkills[1] < 9)) {
+                return false;
+            }
+
             // In case there are no requirements, everything is cool
             if (!skill.requirements) {
                 return true;
