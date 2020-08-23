@@ -1,0 +1,8 @@
+{
+    "reconnection": true,
+    "reconnectionDelay": 1000,
+    "reconnectionDelayMax": 5000,
+    "timeout": 180000,
+    "transports": ["websocket"],
+    "upgrade": false
+}
