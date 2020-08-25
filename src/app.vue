@@ -98,7 +98,8 @@ export default {
             'characterBaseLevel',
             'closeTutorial',
             'characterId',
-            'partyMembersIds'
+            'partyMembersIds',
+            'pushNotification'
         ])
     },
     watch: {
@@ -379,6 +380,11 @@ export default {
 
                 this.$store.commit('displayDockedMenu', true);
                 this.$store.commit('enableChat', true);
+
+                // In case character login successful, we need to send push token ID to the server to check if it exists in the system
+                if (this.pushNotification) {
+                    mo.socket.emit('notificationRegister', this.pushNotification);
+                }
 
                 if (this.$route.path !== '/game') {
                     this.$router.push('/game');

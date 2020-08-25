@@ -74,7 +74,8 @@ const config = {
             vue: 'vue/dist/vue.js',
             '@src': path.resolve('./src'),
             '@pages': path.resolve('./src/pages'),
-            '@components': path.resolve('./src/components')
+            '@components': path.resolve('./src/components'),
+            '@config': path.resolve('./src/config')
         }
     },
     plugins: [
@@ -164,6 +165,10 @@ module.exports = (env = {}) => {
             {
                 from: './node_modules/socket.io-client/dist/socket.io.js',
                 to: 'socket.io.js'
+            },
+            {
+                from: './src/firebase-messaging-sw.js',
+                to: 'firebase-messaging-sw.js'
             }
         ]
     }));

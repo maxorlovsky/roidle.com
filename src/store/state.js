@@ -158,5 +158,6 @@ export default {
     partyInvites: 0,
     partyLoot: null,
     partyHunt: null,
-    isGuest: false
+    isGuest: false,
+    pushNotification: ''
 };

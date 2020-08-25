@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    pushToken: (state, value) => {
+        state.pushNotification = value;
+    },
     updateCharacterStyle: (state, value) => {
         state.characterHeadStyle = value.headStyle;
         state.characterHeadColor = value.headColor;
