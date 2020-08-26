@@ -247,6 +247,10 @@ export default {
             console.warn(`Mute: ${name}`);
         },
         openModal(characterName) {
+            if (['map', 'system', 'party', 'admin', 'kafra'].includes(characterName.toLowerCase())) {
+                return false;
+            }
+
             this.modalCharacterName = characterName;
             this.showChatModal = true;
         },
@@ -311,9 +315,7 @@ export default {
         openProfile(name) {
             this.showChatModal = false;
 
-            if (name !== 'Map' && name !== 'System') {
-                this.$router.push(`/profile/${name}`);
-            }
+            this.$router.push(`/profile/${name}`);
         },
         sendPrivateMessage(name) {
             this.showChatModal = false;
