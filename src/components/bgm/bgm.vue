@@ -168,6 +168,12 @@ export default {
                 case 33:
                     musicTracks = ['45'];
                     break;
+                case 2000:
+                case 2001:
+                case 2002:
+                case 2003:
+                    musicTracks = ['19'];
+                    break;
                 default:
                     musicTracks = ['prontera', 'izlude'];
                     randomMusic = Math.floor(Math.random() * musicTracks.length);
