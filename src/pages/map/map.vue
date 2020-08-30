@@ -9,7 +9,11 @@
         >
             <div v-for="(location, subIndex) in piece"
                 :key="subIndex"
-                :class="{'map__piece--selected': location.id === characterLocationId, 'map__piece--traveling': location.id === travelingToLocation, 'map__piece--disabled': (travelingToLocation || restInProgress || huntStatus || userOverweight) && location.id !== travelingToLocation}"
+                :class="{
+                    'map__piece--selected': location.id === characterLocationId,
+                    'map__piece--traveling': location.id === travelingToLocation,
+                    'map__piece--disabled': (travelingToLocation || restInProgress || huntStatus || userOverweight || currentLocation.dungeon) && location.id !== travelingToLocation
+                }"
                 class="map__piece"
                 @click="selectMap(location.id)"
             >
@@ -89,7 +93,7 @@ const mapPage = {
             travelDestinationName: '',
             travelDestinationId: 0,
             travelTime: 0,
-            userOverweight: false
+            userOverweight: false,
         };
     },
     computed: {
@@ -103,7 +107,8 @@ const mapPage = {
             'allMaps',
             'inventoryWeight',
             'characterAttributes',
-            'partyMembers'
+            'partyMembers',
+            'currentLocation',
         ])
     },
     watch: {
@@ -171,7 +176,7 @@ const mapPage = {
         },
         selectMap(locationId) {
             // If it's a black square or user is on the same location, we don't do anything
-            if (locationId >= 999 || locationId === this.characterLocationId || this.travelingToLocation || this.restInProgress || this.huntStatus || this.userOverweight) {
+            if (locationId >= 999 || locationId === this.characterLocationId || this.travelingToLocation || this.restInProgress || this.huntStatus || this.userOverweight || this.currentLocation.dungeon) {
                 return false;
             }
 

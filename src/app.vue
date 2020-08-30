@@ -49,16 +49,19 @@ import { functions } from '@src/functions.js';
 import { store } from './store/index.js';
 import io from 'socket.io-client';
 
+// Config
+import ioConfig from '@config/io.json';
+
 // Components
-import bgm from './components/bgm/bgm.vue';
-import chat from './components/chat/chat.vue';
-import charInfoTop from './components/char-info-top/char-info-top.vue';
-import dockedMenu from './components/docked-menu/docked-menu.vue';
-import loading from './components/loading/loading.vue';
-import levelUp from './components/level-up/level-up.vue';
-import itemInfo from './components/item-info/item-info.vue';
-import tutorial from './components/tutorial/tutorial.vue';
-import tutorialBlocker from './components/tutorial/tutorial-blocker.vue';
+import bgm from '@components/bgm/bgm.vue';
+import chat from '@components/chat/chat.vue';
+import charInfoTop from '@components/char-info-top/char-info-top.vue';
+import dockedMenu from '@components/docked-menu/docked-menu.vue';
+import loading from '@components/loading/loading.vue';
+import levelUp from '@components/level-up/level-up.vue';
+import itemInfo from '@components/item-info/item-info.vue';
+import tutorial from '@components/tutorial/tutorial.vue';
+import tutorialBlocker from '@components/tutorial/tutorial-blocker.vue';
 
 export default {
     name: 'app',
@@ -95,7 +98,8 @@ export default {
             'characterBaseLevel',
             'closeTutorial',
             'characterId',
-            'partyMembersIds'
+            'partyMembersIds',
+            'pushNotification'
         ])
     },
     watch: {
@@ -129,8 +133,12 @@ export default {
             }
         },
         socketConnection() {
-            if (this.$route.path !== '/' && this.socketConnection) {
+            // In case socket connection is on, we need to put it socket event
+            if (this.socketConnection) {
                 this.setUpSocketEvents();
+            } else {
+                // In case remove socket need to be triggered, we trigger it just in case
+                this.removeSocketEvents();
             }
 
             if (this.socketConnection && functions.storage('get', 'session')) {
@@ -168,7 +176,10 @@ export default {
 
         // In case it's not a home page that we're trying to get into we will try
         if (!['/', '/server-down'].includes(this.$route.path) && functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')) {
-            this.$router.push('/game');
+            if (this.$route.path !== '/game') {
+                this.$router.push('/game');
+            }
+
             await this.reconnect();
         }
 
@@ -336,11 +347,14 @@ export default {
         setUpSocketEvents() {
             mo.socket.emit('reconnect', functions.storage('get', 'session'));
 
-            mo.socket.on('disconnect', () => {
-                this.serverWentDown = true;
-                this.$store.commit('displayDockedMenu', false);
-                this.$store.commit('enableChat', false);
-                this.$store.commit('socketConnection', false);
+            mo.socket.on('disconnect', (message) => {
+                // Trigger only on server disconnect
+                if (message === 'transport close') {
+                    this.serverWentDown = true;
+                    this.$store.commit('displayDockedMenu', false);
+                    this.$store.commit('enableChat', false);
+                    this.$store.commit('socketConnection', false);
+                }
             });
 
             mo.socket.on('reconnectFail', () => {
@@ -366,16 +380,27 @@ export default {
 
                 this.$store.commit('displayDockedMenu', true);
                 this.$store.commit('enableChat', true);
+
+                // In case character login successful, we need to send push token ID to the server to check if it exists in the system
+                if (this.pushNotification) {
+                    mo.socket.emit('notificationRegister', this.pushNotification);
+                }
+
+                if (this.$route.path !== '/game') {
+                    this.$router.push('/game');
+                }
             });
         },
+        removeSocketEvents() {
+            if (mo.socket) {
+                mo.socket.off('disconnect');
+                mo.socket.off('reconnectFail');
+                mo.socket.off('connect_timeout');
+                mo.socket.off('selectCharacterComplete');
+            }
+        },
         async reconnect() {
-            mo.socket = await io({
-                reconnection: true,
-                reconnectionDelay: 1000,
-                reconnectionDelayMax: 5000,
-                reconnectionAttempts: Infinity,
-                timeout: 60000
-            });
+            mo.socket = await io(ioConfig);
 
             this.$store.commit('socketConnection', true);
 

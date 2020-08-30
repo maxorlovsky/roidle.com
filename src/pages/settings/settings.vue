@@ -199,6 +199,8 @@ const settingsPage = {
             this.$nextTick(() => {
                 this.$store.commit('resetState');
 
+                document.title = 'Idle RO - Alpha';
+
                 mo.socket.emit('exit');
                 mo.socket = null;
             });

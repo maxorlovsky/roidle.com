@@ -104,7 +104,8 @@ export default {
             'characterAttributes',
             'huntStatus',
             'huntEndTimer',
-            'characterEquipment'
+            'characterEquipment',
+            'puzzleChallenge'
         ]),
 
         currentHpPercentage() {
@@ -131,6 +132,15 @@ export default {
         }
     },
     watch: {
+        characterLocation: {
+            immediate: true,
+            handler() {
+                // Request to get location information from the server
+                if (mo.socket) {
+                    mo.socket.emit('getCurrentMapLocationData');
+                }
+            }
+        },
         inventoryWeight: {
             immediate: true,
             handler() {
@@ -142,6 +152,8 @@ export default {
             handler() {
                 if (this.travelingToLocation) {
                     this.showTimer('travel');
+                } else {
+                    this.resetTimer();
                 }
             }
         },
@@ -160,13 +172,22 @@ export default {
                 } else if (this.huntStatus === 'retreating') {
                     document.title = 'Idle RO - Alpha';
 
-                    clearInterval(this.interval);
-                    this.huntingDisplay = '';
+                    this.resetTimer();
                 }
             }
         }
     },
     mounted() {
+        mo.socket.on('dungeonChallengeInitiate', (response) => {
+            // In case puzzle challenge is active, we ignore the second one that might come delayed
+            if (this.puzzleChallenge) {
+                return false;
+            }
+
+            // Stop traveling, save new location
+            this.$store.commit('puzzleChallenge', response);
+        });
+
         mo.socket.on('checkTravelingTimeComplete', (response) => {
             // Stop traveling, save new location
             this.$store.commit('saveLocation', {
@@ -214,8 +235,7 @@ export default {
         });
 
         mo.socket.on('stopHuntComplete', () => {
-            this.huntingDisplay = '';
-            clearInterval(this.interval);
+            this.resetTimer();
 
             this.$store.commit('huntStatus', {
                 status: false,
@@ -226,13 +246,19 @@ export default {
         mo.socket.on('interruptRestComplete', () => {
             this.$store.commit('saveResting', 0);
 
-            this.restingDisplay = '';
-            clearInterval(this.interval);
+            this.resetTimer();
+        });
+
+        mo.socket.on('getCurrentMapLocationDataComplete', (location) => {
+            // Saving current location in a state, so we can access it outside of game.vue
+            this.$store.commit('currentLocation', location);
         });
     },
     beforeDestroy() {
-        clearInterval(this.interval);
+        this.resetTimer();
 
+        mo.socket.off('dungeonChallengeInitiate');
+        mo.socket.off('getCurrentMapLocationDataComplete');
         mo.socket.off('checkTravelingTimeComplete');
         mo.socket.off('travelToMapComplete');
         mo.socket.off('checkRestingTimeComplete');
@@ -241,6 +267,12 @@ export default {
         mo.socket.off('stopHuntComplete');
     },
     methods: {
+        resetTimer() {
+            clearInterval(this.interval);
+            this.restingDisplay = '';
+            this.travelingDisplay = '';
+            this.huntingDisplay = '';
+        },
         calculateWeightPercentage() {
             this.weightPercentage = Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight);
         },
@@ -279,14 +311,18 @@ export default {
 
                     // We add artificial delay to emit action later, as communication with server have a delay
                     setTimeout(() => {
+                        // In case puzzle challenge already displayed we don't retrigger checktravelingtime again
+                        if (emitAction === 'checkTravelingTime' && this.puzzleChallenge) {
+                            return false;
+                        }
+
                         mo.socket.emit(emitAction);
                     }, 1000);
 
                     document.title = 'Idle RO - Alpha';
 
                     // Reset variable responsible for rest
-                    this[displayVariable] = '';
-                    clearInterval(this.interval);
+                    this.resetTimer();
 
                     return true;
                 }
@@ -299,7 +335,9 @@ export default {
                     seconds = `0${seconds}`;
                 }
 
+                /* Temporary disabled ,there seems to be a vue-router bug on go(-1) action
                 document.title = `${minutes}:${seconds} - Idle RO - Alpha`;
+                */
 
                 this[displayVariable] = `${minutes}:${seconds}`;
             }, 1000);

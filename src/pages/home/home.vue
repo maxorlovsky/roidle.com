@@ -228,6 +228,9 @@ import { mapGetters } from 'vuex';
 // Globals functions
 import { functions } from '@src/functions.js';
 
+// Config
+import ioConfig from '@config/io.json';
+
 // Components
 import loading from '@components/loading/loading.vue';
 import avatar from '@components/avatar/avatar.vue';
@@ -271,9 +274,6 @@ const homePage = {
     },
     computed: {
         ...mapGetters(['isGuest'])
-    },
-    beforeDestroy() {
-        mo.socket.off('selectCharacterComplete');
     },
     mounted() {
         // Check if user session is available and live
@@ -458,13 +458,7 @@ const homePage = {
 
             // If authentication succeeded and character is selected we connect to socket
             // Storring it in global variable
-            mo.socket = await io({
-                reconnection: true,
-                reconnectionDelay: 1000,
-                reconnectionDelayMax: 5000,
-                reconnectionAttempts: Infinity,
-                timeout: 60000
-            });
+            mo.socket = await io(ioConfig);
 
             this.$store.commit('socketConnection', true);
 
@@ -472,21 +466,6 @@ const homePage = {
             mo.socket.emit('selectCharacter', {
                 sessionToken: functions.storage('get', 'session'),
                 characterId: characterId
-            });
-
-            // If socket is registered, we're progressing by fetching user data
-            mo.socket.on('selectCharacterComplete', (response) => {
-                // Triggering another call to fetch inventory
-                mo.socket.emit('getInventory');
-
-                this.$store.commit('characterInit', response);
-
-                this.$store.commit('displayDockedMenu', true);
-                this.$store.commit('enableChat', true);
-
-                this.buttonLoading = false;
-
-                this.$router.push('/game');
             });
         },
         switchToCharacterSelect() {

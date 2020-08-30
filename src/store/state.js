@@ -111,6 +111,7 @@ export default {
     travelingToLocation: 0,
     travelingToLocationName: '',
     travelingArrivalTime: 0,
+    travelingDungeon: false,
     restInProgress: 0,
     dockedMenu: false,
     huntStatus: false,
@@ -158,5 +159,9 @@ export default {
     partyInvites: 0,
     partyLoot: null,
     partyHunt: null,
-    isGuest: false
+    isGuest: false,
+    pushNotification: '',
+    currentLocation: '',
+    puzzleChallenge: null,
+    puzzleChallengeNr: 0,
 };

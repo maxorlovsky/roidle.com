@@ -12,6 +12,10 @@
         background-image: url("#{$assets}/images/locations/prontera.jpg");
     }
 
+    &.prontera.culvert {
+        background-image: url("#{$assets}/images/locations/sewers.jpg");
+    }
+
     &.izlude {
         background-image: url("#{$assets}/images/locations/izlude.jpg");
     }
@@ -193,7 +197,7 @@
 
         .btn {
             display: block;
-            margin: 0 auto;
+            margin: 1rem auto 0 auto;
         }
     }
 
