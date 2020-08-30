@@ -18,9 +18,10 @@
                 />
             </router-link>
 
-            <router-link to="/map"
+            <div :class="{'docked-menu__button--disabled': currentLocation.dungeon}"
                 class="docked-menu__button docked-menu__button--map"
-            ><img src="/dist/assets/images/compass.png"></router-link>
+                @click="travelToMap()"
+            ><img src="/dist/assets/images/compass.png"></div>
 
             <router-link to="/quests"
                 class="docked-menu__button docked-menu__button--quests"
@@ -58,7 +59,8 @@ export default {
         ...mapGetters([
             'characterHeadStyle',
             'characterHeadColor',
-            'characterGender'
+            'characterGender',
+            'currentLocation'
         ])
     },
     watch: {
@@ -72,6 +74,15 @@ export default {
                 }
             }
         }
-    }
+    },
+    methods: {
+        travelToMap() {
+            if (this.currentLocation.dungeon) {
+                return false;
+            }
+
+            this.$router.push('/map');
+        }
+    },
 };
 </script>

@@ -57,5 +57,8 @@ export default {
     partyLoot: (state) => state.partyLoot,
     partyHunt: (state) => state.partyHunt,
     isGuest: (state) => state.isGuest,
-    pushNotification: (state) => state.pushNotification
+    pushNotification: (state) => state.pushNotification,
+    currentLocation: (state) => state.currentLocation,
+    puzzleChallenge: (state) => state.puzzleChallenge,
+    puzzleChallengeNr: (state) => state.puzzleChallengeNr,
 };

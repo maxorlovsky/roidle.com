@@ -104,7 +104,8 @@ export default {
             'characterAttributes',
             'huntStatus',
             'huntEndTimer',
-            'characterEquipment'
+            'characterEquipment',
+            'puzzleChallenge'
         ]),
 
         currentHpPercentage() {
@@ -131,6 +132,15 @@ export default {
         }
     },
     watch: {
+        characterLocation: {
+            immediate: true,
+            handler() {
+                // Request to get location information from the server
+                if (mo.socket) {
+                    mo.socket.emit('getCurrentMapLocationData');
+                }
+            }
+        },
         inventoryWeight: {
             immediate: true,
             handler() {
@@ -167,6 +177,16 @@ export default {
         }
     },
     mounted() {
+        mo.socket.on('dungeonChallengeInitiate', (response) => {
+            // In case puzzle challenge is active, we ignore the second one that might come delayed
+            if (this.puzzleChallenge) {
+                return false;
+            }
+
+            // Stop traveling, save new location
+            this.$store.commit('puzzleChallenge', response);
+        });
+
         mo.socket.on('checkTravelingTimeComplete', (response) => {
             // Stop traveling, save new location
             this.$store.commit('saveLocation', {
@@ -229,10 +249,16 @@ export default {
             this.restingDisplay = '';
             clearInterval(this.interval);
         });
+
+        mo.socket.on('getCurrentMapLocationDataComplete', (location) => {
+            // Saving current location in a state, so we can access it outside of game.vue
+            this.$store.commit('currentLocation', location);
+        });
     },
     beforeDestroy() {
         clearInterval(this.interval);
 
+        mo.socket.off('getCurrentMapLocationDataComplete');
         mo.socket.off('checkTravelingTimeComplete');
         mo.socket.off('travelToMapComplete');
         mo.socket.off('checkRestingTimeComplete');
@@ -279,6 +305,11 @@ export default {
 
                     // We add artificial delay to emit action later, as communication with server have a delay
                     setTimeout(() => {
+                        // In case puzzle challenge already displayed we don't retrigger checktravelingtime again
+                        if (emitAction === 'checkTravelingTime' && this.puzzleChallenge) {
+                            return false;
+                        }
+
                         mo.socket.emit(emitAction);
                     }, 1000);
 
@@ -299,7 +330,9 @@ export default {
                     seconds = `0${seconds}`;
                 }
 
+                /* Temporary disabled ,there seems to be a vue-router bug on go(-1) action
                 document.title = `${minutes}:${seconds} - Idle RO - Alpha`;
+                */
 
                 this[displayVariable] = `${minutes}:${seconds}`;
             }, 1000);

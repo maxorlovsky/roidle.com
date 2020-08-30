@@ -3,6 +3,13 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    puzzleChallenge: (state, value) => {
+        state.puzzleChallenge = value.puzzleText;
+        state.puzzleChallengeNr = value.puzzleNr;
+    },
+    currentLocation: (state, value) => {
+        state.currentLocation = value;
+    },
     pushToken: (state, value) => {
         state.pushNotification = value;
     },
@@ -154,11 +161,13 @@ export default {
         state.travelingToLocation = 0;
         state.travelingToLocationName = '';
         state.travelingArrivalTime = 0;
+        state.travelingDungeon = false;
     },
     saveTraveling: (state, values) => {
         state.travelingToLocation = values.locationId;
         state.travelingToLocationName = values.locationName;
         state.travelingArrivalTime = values.time;
+        state.travelingDungeon = values.dungeon;
     },
     saveSkills: (state, values) => {
         state.characterSkills = values.skills;
@@ -570,6 +579,7 @@ export default {
             state.travelingToLocation = values.traveling.travelingId;
             state.travelingToLocationName = values.traveling.travelingName;
             state.travelingArrivalTime = values.traveling.arrivalTime;
+            state.travelingDungeon = values.traveling.dungeon;
         }
 
         // Resting
@@ -705,6 +715,7 @@ export default {
         state.travelingToLocation = 0;
         state.travelingToLocationName = '';
         state.travelingArrivalTime = 0;
+        state.travelingDungeon = false;
         state.restInProgress = 0;
         state.dockedMenu = false;
         state.huntStatus = false;
