@@ -81,7 +81,7 @@
                     <button v-if="!cancelingTravel"
                         class="btn btn-secondary"
                         @click="cancelTravel()"
-                    >Interrupt rest</button>
+                    >Cancel traveling</button>
                 </div>
                 <div v-if="restInProgress">
                     <div>Rest in Progress</div>
@@ -269,6 +269,7 @@ const gamePage = {
         clearInterval(this.huntInterval);
 
         if (mo.socket) {
+            mo.socket.off('interruptTravelComplete');
             mo.socket.off('retreatFromHuntComplete');
         }
     },
@@ -284,6 +285,15 @@ const gamePage = {
             this.$router.push('/party');
         },
         setUpSocketEvents() {
+            mo.socket.on('interruptTravelComplete', () => {
+                // Stop traveling
+                this.$store.commit('saveTraveling', {
+                    time: 0,
+                    locationId: 0,
+                    locationName: ''
+                });
+            });
+
             mo.socket.on('retreatFromHuntComplete', () => {
                 this.markHuntAsRetreating();
 

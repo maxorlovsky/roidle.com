@@ -152,6 +152,8 @@ export default {
             handler() {
                 if (this.travelingToLocation) {
                     this.showTimer('travel');
+                } else {
+                    this.resetTimer();
                 }
             }
         },
@@ -170,8 +172,7 @@ export default {
                 } else if (this.huntStatus === 'retreating') {
                     document.title = 'Idle RO - Alpha';
 
-                    clearInterval(this.interval);
-                    this.huntingDisplay = '';
+                    this.resetTimer();
                 }
             }
         }
@@ -234,8 +235,7 @@ export default {
         });
 
         mo.socket.on('stopHuntComplete', () => {
-            this.huntingDisplay = '';
-            clearInterval(this.interval);
+            this.resetTimer();
 
             this.$store.commit('huntStatus', {
                 status: false,
@@ -246,8 +246,7 @@ export default {
         mo.socket.on('interruptRestComplete', () => {
             this.$store.commit('saveResting', 0);
 
-            this.restingDisplay = '';
-            clearInterval(this.interval);
+            this.resetTimer();
         });
 
         mo.socket.on('getCurrentMapLocationDataComplete', (location) => {
@@ -256,8 +255,9 @@ export default {
         });
     },
     beforeDestroy() {
-        clearInterval(this.interval);
+        this.resetTimer();
 
+        mo.socket.off('dungeonChallengeInitiate');
         mo.socket.off('getCurrentMapLocationDataComplete');
         mo.socket.off('checkTravelingTimeComplete');
         mo.socket.off('travelToMapComplete');
@@ -267,6 +267,12 @@ export default {
         mo.socket.off('stopHuntComplete');
     },
     methods: {
+        resetTimer() {
+            clearInterval(this.interval);
+            this.restingDisplay = '';
+            this.travelingDisplay = '';
+            this.huntingDisplay = '';
+        },
         calculateWeightPercentage() {
             this.weightPercentage = Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight);
         },
@@ -316,8 +322,7 @@ export default {
                     document.title = 'Idle RO - Alpha';
 
                     // Reset variable responsible for rest
-                    this[displayVariable] = '';
-                    clearInterval(this.interval);
+                    this.resetTimer();
 
                     return true;
                 }
