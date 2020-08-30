@@ -1,0 +1,19 @@
+.puzzle-challenge {
+    &__text {
+        padding: 0.5rem 0;
+    }
+
+    &__challenge {
+        padding-bottom: 1rem;
+        text-align: center;
+    }
+
+    &__answer {
+        text-align: center;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: center;
+    }
+}

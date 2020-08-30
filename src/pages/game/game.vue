@@ -69,11 +69,20 @@
             <shop-actions v-if="shopsAvailable"
                 :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
             />
+            <dungeon-actions v-if="dungeonAvailable"
+                :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+            />
 
             <div v-if="huntStatus || travelingToLocation || restInProgress"
                 class="game__action-in-progress"
             >
-                <div v-if="travelingToLocation">Traveling in Progress</div>
+                <div v-if="travelingToLocation">
+                    <div>Traveling in Progress</div>
+                    <button v-if="!cancelingTravel"
+                        class="btn btn-secondary"
+                        @click="cancelTravel()"
+                    >Interrupt rest</button>
+                </div>
                 <div v-if="restInProgress">
                     <div>Rest in Progress</div>
                     <button v-if="!cancelingRest"
@@ -91,6 +100,8 @@
                 </div>
             </div>
         </div>
+
+        <puzzle-challenge v-if="showChallenge" />
     </section>
 </template>
 
@@ -103,6 +114,8 @@ import kafraActions from '@components/kafra-actions/kafra-actions.vue';
 import innActions from '@components/inn-actions/inn-actions.vue';
 import shopActions from '@components/shop-actions/shop-actions.vue';
 import huntActions from '@components/hunt-actions/hunt-actions.vue';
+import dungeonActions from '@components/dungeon-actions/dungeon-actions.vue';
+import puzzleChallenge from '@components/puzzle-challenge/puzzle-challenge.vue';
 import avatar from '@components/avatar/avatar.vue';
 
 const gamePage = {
@@ -111,6 +124,8 @@ const gamePage = {
         innActions,
         shopActions,
         huntActions,
+        dungeonActions,
+        puzzleChallenge,
         avatar
     },
     data() {
@@ -124,7 +139,10 @@ const gamePage = {
             kafraAvailable: false,
             innAvailable: false,
             shopsAvailable: false,
-            cancelingRest: false
+            cancelingRest: false,
+            dungeonAvailable: false,
+            cancelingTravel: false,
+            showChallenge: false,
         };
     },
     computed: {
@@ -137,7 +155,9 @@ const gamePage = {
             'restInProgress',
             'socketConnection',
             'partyName',
-            'partyMembers'
+            'partyMembers',
+            'puzzleChallenge',
+            'currentLocation'
         ])
     },
     watch: {
@@ -169,15 +189,6 @@ const gamePage = {
                 this.partyMembersList = partyMembers;
             }
         },
-        characterLocation: {
-            immediate: true,
-            handler() {
-                // Request to get location information from the server
-                if (mo.socket) {
-                    mo.socket.emit('getCurrentMapLocationData');
-                }
-            }
-        },
         socketConnection: {
             immediate: true,
             handler() {
@@ -203,17 +214,68 @@ const gamePage = {
                     this.huntInterval = null;
                 }
             }
+        },
+        puzzleChallenge: {
+            immediate: true,
+            handler() {
+                if (this.puzzleChallenge) {
+                    this.showChallenge = true;
+                } else {
+                    this.showChallenge = false;
+                }
+            }
+        },
+        currentLocation: {
+            immediate: true,
+            handler() {
+                if (this.currentLocation) {
+                    // Decide if we're outside of the city or in, this will change game actions
+                    if (this.currentLocation.hunt) {
+                        this.huntAvailable = true;
+                    } else {
+                        this.huntAvailable = false;
+                    }
+
+                    if (this.currentLocation.kafra) {
+                        this.kafraAvailable = true;
+                    } else {
+                        this.kafraAvailable = false;
+                    }
+
+                    if (this.currentLocation.inn) {
+                        this.innAvailable = true;
+                    } else {
+                        this.innAvailable = false;
+                    }
+
+                    if (this.currentLocation.shops) {
+                        this.shopsAvailable = true;
+                    } else {
+                        this.shopsAvailable = false;
+                    }
+
+                    if (this.currentLocation.dungeonUp || this.currentLocation.dungeonDown) {
+                        this.dungeonAvailable = true;
+                    } else {
+                        this.dungeonAvailable = false;
+                    }
+
+                    this.showActions = true;
+                }
+            }
         }
     },
     beforeDestroy() {
         clearInterval(this.huntInterval);
 
         if (mo.socket) {
-            mo.socket.off('getCurrentMapLocationDataComplete');
             mo.socket.off('retreatFromHuntComplete');
         }
     },
     methods: {
+        cancelTravel() {
+            mo.socket.emit('interruptTravel');
+        },
         cancelRest() {
             mo.socket.emit('interruptRest');
         },
@@ -222,37 +284,6 @@ const gamePage = {
             this.$router.push('/party');
         },
         setUpSocketEvents() {
-            mo.socket.on('getCurrentMapLocationDataComplete', (response) => {
-                const location = response.location;
-
-                // Decide if we're outside of the city or in, this will change game actions
-                if (location.monsters) {
-                    this.huntAvailable = true;
-                } else {
-                    this.huntAvailable = false;
-                }
-
-                if (location.kafra) {
-                    this.kafraAvailable = true;
-                } else {
-                    this.kafraAvailable = false;
-                }
-
-                if (location.inn) {
-                    this.innAvailable = true;
-                } else {
-                    this.innAvailable = false;
-                }
-
-                if (location.shops) {
-                    this.shopsAvailable = true;
-                } else {
-                    this.shopsAvailable = false;
-                }
-
-                this.showActions = true;
-            });
-
             mo.socket.on('retreatFromHuntComplete', () => {
                 this.markHuntAsRetreating();
 

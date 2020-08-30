@@ -1,0 +1,27 @@
+.dungeon-actions {
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0.5rem;
+
+        > div {
+            cursor: pointer;
+            margin-left: 1rem;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+
+    &__overweight {
+        color: #900;
+        margin-bottom: 1rem;
+    }
+
+    &__selected-button {
+        color: #fff;
+        border-color: $mainColor;
+    }
+}
