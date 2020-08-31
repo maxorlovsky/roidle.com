@@ -7,6 +7,8 @@ import { store } from './store/index.js';
 // Plugins
 import '@firebase/messaging';
 
+let messaging = null;
+
 firebase.initializeApp({
     apiKey: 'AIzaSyCNIDSUOTbtEPY7St8cZnXAZiKboDm8SaI',
     authDomain: 'roidle.firebaseapp.com',
@@ -15,14 +17,6 @@ firebase.initializeApp({
     storageBucket: 'roidle.appspot.com',
     messagingSenderId: '211551723498',
     appId: '1:211551723498:web:ba831442daf7bc671d5c93'
-});
-
-const messaging = firebase.messaging();
-
-messaging.onTokenRefresh(() => {
-    messaging.getToken().then((refreshedToken) => {
-        store.commit('pushToken', refreshedToken);
-    });
 });
 
 const firebaseInit = {
@@ -45,4 +39,14 @@ const firebaseInit = {
     }
 };
 
-firebaseInit.init();
+if (firebase.messaging.isSupported()) {
+    messaging = firebase.messaging();
+
+    messaging.onTokenRefresh(() => {
+        messaging.getToken().then((refreshedToken) => {
+            store.commit('pushToken', refreshedToken);
+        });
+    });
+
+    firebaseInit.init();
+}
