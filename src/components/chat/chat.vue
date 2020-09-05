@@ -89,6 +89,9 @@
                     <button class="btn game-button"
                         @click="sendPrivateMessage(modalCharacterName)"
                     >Message</button>
+                    <button class="btn game-button"
+                        @click="trade(modalCharacterName)"
+                    >Trade</button>
                     <button v-if="admin"
                         class="btn btn-warning"
                         @click="mute(modalCharacterName)"
@@ -250,10 +253,19 @@ export default {
 
             console.warn(`Mute: ${name}`);
         },
+        trade(characterName) {
+            mo.socket.emit('initiateTrading', characterName);
+            this.showChatModal = false;
+        },
         openModal(characterName) {
             if (['map', 'system', 'party', 'admin', 'kafra'].includes(characterName.toLowerCase())) {
                 return false;
             }
+
+            if (characterName.toLowerCase() === this.characterName.toLowerCase()) {
+                return false;
+            }
+
 
             this.modalCharacterName = characterName;
             this.showChatModal = true;
