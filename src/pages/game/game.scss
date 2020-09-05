@@ -201,17 +201,23 @@
         }
     }
 
-    &__settings {
+    &__settings,
+    &__hunt-config,
+    &__trade {
         position: absolute;
-        top: 0.5rem;
         right: 1rem;
         color: #fff;
     }
 
+    &__settings {
+        top: 0.5rem;
+    }
+
     &__hunt-config {
-        position: absolute;
         top: calc(1rem + 60px);
-        right: 1rem;
-        color: #fff;
+    }
+
+    &__trade {
+        top: calc(1.5rem + 120px);
     }
 }

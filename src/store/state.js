@@ -164,4 +164,6 @@ export default {
     currentLocation: '',
     puzzleChallenge: null,
     puzzleChallengeNr: 0,
+    tradeRequestId: 0,
+    tradeRequestName: ''
 };
