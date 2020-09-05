@@ -75,7 +75,7 @@
 
                 <div v-if="disabledChat"
                     class="chat__input__limit"
-                >Need Basic Level 1 to use chat</div>
+                >Need Basic Level 3 to use chat</div>
             </div>
 
             <div v-if="showChatModal"
@@ -156,7 +156,7 @@ export default {
         characterSkills: {
             immediate: true,
             handler() {
-                if (this.characterSkills[1] >= 1) {
+                if (this.characterSkills[1] >= 3) {
                     this.disabledChat = false;
                 } else {
                     this.disabledChat = true;
@@ -188,7 +188,11 @@ export default {
                         message: chat.message
                     });
                 } else if (chat.type === 'system') {
-                    if (this.selectedTab !== 1) {
+                    // In case we receive an important flag, we need to show chat window and switch to system tab
+                    if (chat.important) {
+                        this.selectedTab = 1;
+                        this.$store.commit('showChat', true);
+                    } else if (this.selectedTab !== 1) {
                         this.tabNotification[1] = true;
                     }
 
