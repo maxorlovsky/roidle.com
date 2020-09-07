@@ -36,6 +36,22 @@ export default {
         ])
     },
     mounted() {
+        mo.socket.on('acceptTradeComplete', (response) => {
+            // In case response is successful we send user to trade page
+            if (response) {
+                // Do it as a delayed action, since after store commit destory will be initiated
+                this.$nextTick(() => {
+                    this.$router.push('/trading');
+                });
+            }
+
+            // In any case we do reset of trade request first, so this modal would close
+            this.$store.commit('tradeRequest', {
+                id: 0,
+                name: 0
+            });
+        });
+
         mo.socket.on('rejectTradeComplete', () => {
             // Reset trade request, so this modal would close
             this.$store.commit('tradeRequest', {
@@ -45,6 +61,7 @@ export default {
         });
     },
     beforeDestroy() {
+        mo.socket.off('acceptTradeComplete');
         mo.socket.off('rejectTradeComplete');
     },
     methods: {
@@ -54,6 +71,9 @@ export default {
         viewCharacter(name) {
             this.$router.push(`/profile/${name}`);
         },
+        acceptTrade() {
+            mo.socket.emit('acceptTrade');
+        }
     }
 };
 </script>
