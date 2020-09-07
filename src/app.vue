@@ -74,7 +74,7 @@ export default {
         levelUp,
         itemInfo,
         tutorial,
-        tutorialBlocker
+        tutorialBlocker,
     },
     store: store,
     data() {

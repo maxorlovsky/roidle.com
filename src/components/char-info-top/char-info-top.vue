@@ -178,6 +178,18 @@ export default {
         }
     },
     mounted() {
+        mo.socket.on('initiateTradingComplete', (response) => {
+            if (response) {
+                this.$router.push('/trading');
+            }
+
+            this.buttonLoading = false;
+        });
+
+        mo.socket.on('tradeRequestReceived', (response) => {
+            this.$store.commit('tradeRequest', response);
+        });
+
         mo.socket.on('dungeonChallengeInitiate', (response) => {
             // In case puzzle challenge is active, we ignore the second one that might come delayed
             if (this.puzzleChallenge) {
@@ -257,6 +269,8 @@ export default {
     beforeDestroy() {
         this.resetTimer();
 
+        mo.socket.off('initiateTradingComplete');
+        mo.socket.off('tradeRequestReceived');
         mo.socket.off('dungeonChallengeInitiate');
         mo.socket.off('getCurrentMapLocationDataComplete');
         mo.socket.off('checkTravelingTimeComplete');

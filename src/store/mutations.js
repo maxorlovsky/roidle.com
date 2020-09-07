@@ -3,6 +3,10 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    tradeRequest: (state, value) => {
+        state.tradeRequestId = value.id;
+        state.tradeRequestName = value.name;
+    },
     puzzleChallenge: (state, value) => {
         state.puzzleChallenge = value.puzzleText;
         state.puzzleChallengeNr = value.puzzleNr;

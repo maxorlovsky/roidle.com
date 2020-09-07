@@ -44,6 +44,13 @@
             <i class="icon icon-sword" />
         </router-link>
 
+        <router-link v-if="characterSkills[1] >= 4"
+            to="/trading-list"
+            class="game__trade game-icon"
+        >
+            <i class="icon icon-trade" />
+        </router-link>
+
         <div v-if="showActions"
             class="game__actions"
         >
@@ -102,6 +109,7 @@
         </div>
 
         <puzzle-challenge v-if="showChallenge" />
+        <trade-window-request v-if="showTradeRequest" />
     </section>
 </template>
 
@@ -117,6 +125,7 @@ import huntActions from '@components/hunt-actions/hunt-actions.vue';
 import dungeonActions from '@components/dungeon-actions/dungeon-actions.vue';
 import puzzleChallenge from '@components/puzzle-challenge/puzzle-challenge.vue';
 import avatar from '@components/avatar/avatar.vue';
+import tradeWindowRequest from '@components/trade-window-request/trade-window-request.vue';
 
 const gamePage = {
     components: {
@@ -126,7 +135,8 @@ const gamePage = {
         huntActions,
         dungeonActions,
         puzzleChallenge,
-        avatar
+        avatar,
+        tradeWindowRequest,
     },
     data() {
         return {
@@ -143,6 +153,7 @@ const gamePage = {
             dungeonAvailable: false,
             cancelingTravel: false,
             showChallenge: false,
+            showTradeRequest: false,
         };
     },
     computed: {
@@ -157,10 +168,22 @@ const gamePage = {
             'partyName',
             'partyMembers',
             'puzzleChallenge',
-            'currentLocation'
+            'currentLocation',
+            'characterSkills',
+            'tradeRequestId'
         ])
     },
     watch: {
+        tradeRequestId: {
+            immediate: true,
+            handler() {
+                if (this.tradeRequestId) {
+                    this.showTradeRequest = true;
+                } else {
+                    this.showTradeRequest = false;
+                }
+            }
+        },
         partyMembers: {
             immediate: true,
             handler() {

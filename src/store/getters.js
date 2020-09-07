@@ -61,4 +61,6 @@ export default {
     currentLocation: (state) => state.currentLocation,
     puzzleChallenge: (state) => state.puzzleChallenge,
     puzzleChallengeNr: (state) => state.puzzleChallengeNr,
+    tradeRequestId: (state) => state.tradeRequestId,
+    tradeRequestName: (state) => state.tradeRequestName,
 };

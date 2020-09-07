@@ -75,7 +75,7 @@
 
                 <div v-if="disabledChat"
                     class="chat__input__limit"
-                >Need Basic Level 1 to use chat</div>
+                >Need Basic Level 3 to use chat</div>
             </div>
 
             <div v-if="showChatModal"
@@ -89,6 +89,9 @@
                     <button class="btn game-button"
                         @click="sendPrivateMessage(modalCharacterName)"
                     >Message</button>
+                    <button class="btn game-button"
+                        @click="trade(modalCharacterName)"
+                    >Trade</button>
                     <button v-if="admin"
                         class="btn btn-warning"
                         @click="mute(modalCharacterName)"
@@ -156,7 +159,7 @@ export default {
         characterSkills: {
             immediate: true,
             handler() {
-                if (this.characterSkills[1] >= 1) {
+                if (this.characterSkills[1] >= 3) {
                     this.disabledChat = false;
                 } else {
                     this.disabledChat = true;
@@ -188,7 +191,12 @@ export default {
                         message: chat.message
                     });
                 } else if (chat.type === 'system') {
-                    if (this.selectedTab !== 1) {
+                    // In case we receive an important flag, we need to show chat window and switch to system tab
+                    if (chat.important) {
+                        this.selectedTab = 1;
+                        this.$store.commit('showChat', true);
+                        this.tabNotification[1] = false;
+                    } else if (this.selectedTab !== 1) {
                         this.tabNotification[1] = true;
                     }
 
@@ -246,10 +254,19 @@ export default {
 
             console.warn(`Mute: ${name}`);
         },
+        trade(characterName) {
+            mo.socket.emit('initiateTrading', characterName);
+            this.showChatModal = false;
+        },
         openModal(characterName) {
             if (['map', 'system', 'party', 'admin', 'kafra'].includes(characterName.toLowerCase())) {
                 return false;
             }
+
+            if (characterName.toLowerCase() === this.characterName.toLowerCase()) {
+                return false;
+            }
+
 
             this.modalCharacterName = characterName;
             this.showChatModal = true;
