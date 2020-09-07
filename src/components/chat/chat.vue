@@ -195,6 +195,7 @@ export default {
                     if (chat.important) {
                         this.selectedTab = 1;
                         this.$store.commit('showChat', true);
+                        this.tabNotification[1] = false;
                     } else if (this.selectedTab !== 1) {
                         this.tabNotification[1] = true;
                     }
