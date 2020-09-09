@@ -5,15 +5,21 @@
                 <div v-for="eq in leftSlots"
                     :key="eq.slot"
                     :class="`equipment__slot equipment__${eq.slot}`"
-                    @click="equimentList(eq.slot)"
                 >
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__item"
+                        @click="equimentList(eq.slot)"
                     >
                         <img :src="`/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
                         <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
                     </div>
-                    <span class="equipment__placeholder">{{ eq.name }}</span>
+                    <span class="equipment__placeholder"
+                        @click="equimentList(eq.slot)"
+                    >{{ eq.name }}</span>
+                    <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
+                        class="equipment__info"
+                        @click.prevent="showItemInfo(characterEquipment[eq.slot].itemId)"
+                    >?</div>
                 </div>
             </div>
 
@@ -34,15 +40,21 @@
                 <div v-for="eq in rightSlots"
                     :key="eq.slot"
                     :class="`equipment__slot equipment__${eq.slot}`"
-                    @click="equimentList(eq.slot)"
                 >
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__item"
+                        @click="equimentList(eq.slot)"
                     >
                         <img :src="`/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
                         <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
                     </div>
-                    <span class="equipment__placeholder">{{ eq.name }}</span>
+                    <span class="equipment__placeholder"
+                        @click="equimentList(eq.slot)"
+                    >{{ eq.name }}</span>
+                    <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
+                        class="equipment__info"
+                        @click.prevent="showItemInfo(characterEquipment[eq.slot].itemId)"
+                    >?</div>
                 </div>
             </div>
         </div>
@@ -207,6 +219,9 @@ const characterPage = {
         this.$store.commit('showChat', true);
     },
     methods: {
+        showItemInfo(itemId) {
+            mo.socket.emit('getItemsInfo', [itemId]);
+        },
         itemDisplayParams(params) {
             let paramsString = ', ';
 

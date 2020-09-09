@@ -42,6 +42,21 @@
             bottom: 0;
         }
 
+        &__info {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 22px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            font-size: 0.75rem;
+        }
+
         &__slot {
             position: relative;
             height: 50px;
@@ -52,6 +67,8 @@
             display: flex;
             align-items: center;
             height: 50px;
+            width: calc(100% - 22px);
+            z-index: 2;
     
             img {
                 width: 35px;
@@ -63,6 +80,8 @@
             &__name {
                 font-size: 1rem;
                 z-index: 2;
+                overflow: hidden;
+                height: 100%;
             }
         }
     }
