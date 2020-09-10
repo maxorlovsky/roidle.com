@@ -157,7 +157,13 @@ export default {
                 case 18:
                 case 24:
                 case 25:
-                    musicTracks = ['forest-1'];
+                case 36:
+                case 37:
+                case 38:
+                case 39:
+                case 43:
+                case 46:
+                    musicTracks = ['03'];
                     break;
                 case 19:
                     musicTracks = ['52'];
@@ -167,6 +173,16 @@ export default {
                     break;
                 case 33:
                     musicTracks = ['45'];
+                    break;
+                case 40:
+                case 41:
+                case 42:
+                case 44:
+                case 45:
+                    musicTracks = ['36'];
+                    break;
+                case 47:
+                    musicTracks = ['15'];
                     break;
                 case 2000:
                 case 2001:
