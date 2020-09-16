@@ -111,11 +111,9 @@ export default {
             switch (this.characterLocationId) {
                 case 1:
                     musicTracks = ['prontera', 'prontera-original'];
-                    randomMusic = Math.floor(Math.random() * musicTracks.length);
                     break;
                 case 8:
                     musicTracks = ['izlude', 'izlude-original'];
-                    randomMusic = Math.floor(Math.random() * musicTracks.length);
                     break;
                 case 3:
                 case 4:
@@ -163,7 +161,7 @@ export default {
                 case 39:
                 case 43:
                 case 46:
-                    musicTracks = ['03'];
+                    musicTracks = ['03', 'peaceful-forest-mix'];
                     break;
                 case 19:
                     musicTracks = ['52'];
@@ -192,8 +190,11 @@ export default {
                     break;
                 default:
                     musicTracks = ['prontera', 'izlude'];
-                    randomMusic = Math.floor(Math.random() * musicTracks.length);
                     break;
+            }
+
+            if (musicTracks && musicTracks.length > 1) {
+                randomMusic = Math.floor(Math.random() * musicTracks.length);
             }
 
             this.musicFile = musicTracks[randomMusic];
