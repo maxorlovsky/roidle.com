@@ -9,7 +9,7 @@
             >
             <div class="item-info__description">
                 <b>{{ name }}</b>
-                <div>Type: <span class="ucfirst">{{ type }}</span></div>
+                <div>Type: <span class="ucfirst">{{ type }}</span> <span v-if="twoHanded">(Two-Handed)</span></div>
                 <div v-if="params">Params: <b>{{ params }}</b></div>
                 <div v-if="weaponLevel">Weapon Level: {{ weaponLevel }}</div>
                 <div v-if="requiredLevel">Required Level: {{ requiredLevel }}</div>
@@ -71,6 +71,7 @@ export default {
             type: '',
             description: '',
             params: '',
+            twoHanded: false,
             weaponLevel: 0,
             requiredLevel: 0,
             weight: 0,
@@ -115,6 +116,7 @@ export default {
             this.id = item.id;
             this.name = item.name;
             this.type = item.class ? item.class : item.type;
+            this.twoHanded = item.twoHanded || false;
             this.description = item.description ? item.description : '';
             this.params = '';
             this.weaponLevel = 0;
