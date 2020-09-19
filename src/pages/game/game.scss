@@ -24,24 +24,28 @@
         background-image: url("#{$assets}/images/payon.jpg");
     }
 
+    &.alberta {
+        background-image: url("#{$assets}/images/locations/alberta.jpg");
+    }
+
     &.morocc {
-        background-image: url("#{$assets}/images/morocc.jpg");
+        background-image: url("#{$assets}/images/locations/morocc.jpg");
     }
 
     &.morocc.ruins {
-        background-image: url("#{$assets}/images/desert.jpg");
+        background-image: url("#{$assets}/images/locations/desert.jpg");
     }
 
     &.field {
-        background-image: url("#{$assets}/images/field.jpg");
+        background-image: url("#{$assets}/images/locations/field.jpg");
     }
 
     &.forest {
-        background-image: url("#{$assets}/images/field.jpg");
+        background-image: url("#{$assets}/images/locations/forest.jpg");
     }
 
     &.desert {
-        background-image: url("#{$assets}/images/desert.jpg");
+        background-image: url("#{$assets}/images/locations/desert.jpg");
     }
 
     &__party {
