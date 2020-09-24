@@ -243,7 +243,7 @@ const shopPage = {
             };
 
             // In case of sell, we will add item ID to display if it's broken or not and what's it durability
-            if (item.id) {
+            if (this.$route.query.action === 'sell' && this.$route.query.type === 'equipment' && item.id) {
                 params.inventoryId = item.id;
             }
 
