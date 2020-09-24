@@ -1,6 +1,6 @@
 <template>
     <div v-if="show"
-        :class="{'item-info--broken': broken, 'item-info--not-pristine': durability < defaultDurability}"
+        :class="{'item-info--broken': broken, 'item-info--not-pristine': durability >= 0 && durability !== null && durability < defaultDurability}"
         class="item-info"
         @click="!selfBagItemInfo ? show = false : null"
     >
@@ -14,7 +14,7 @@
                 <div v-if="params">Params: <b>{{ params }}</b></div>
                 <div v-if="requiredLevel">Required Level: {{ requiredLevel }}</div>
 
-                <div v-if="durability >= 0 && defaultDurability">Durability: <span :class="{'item-info__high-durability': durability > defaultDurability, 'item-info__low-durability': durability < defaultDurability}">{{ durability }}</span> / {{ defaultDurability }}</div>
+                <div v-if="durability >= 0 && durability !== null && defaultDurability">Durability: <span :class="{'item-info__high-durability': durability > defaultDurability, 'item-info__low-durability': durability < defaultDurability}">{{ durability }}</span> / {{ defaultDurability }}</div>
                 <div v-else-if="defaultDurability">Durability: {{ defaultDurability }} / {{ defaultDurability }}</div>
 
                 <div v-if="broken"
@@ -88,7 +88,7 @@ export default {
             params: '',
             twoHanded: false,
             requiredLevel: 0,
-            durability: 0,
+            durability: null,
             defaultDurability: 0,
             weight: 0,
             applicableJob: '',
@@ -145,7 +145,7 @@ export default {
             this.twoHanded = item.twoHanded || false;
             this.description = item.description ? item.description : '';
             this.params = '';
-            this.durability = 0;
+            this.durability = null;
             this.defaultDurability = 0;
             this.requiredLevel = 0;
             this.weight = item.weight;
@@ -161,7 +161,7 @@ export default {
                 this.params = this.params.substring(0, this.params.length - 2);
             }
 
-            if (item.durability) {
+            if (item.durability >= 0) {
                 this.durability = item.durability;
             }
 

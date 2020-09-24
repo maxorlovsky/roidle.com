@@ -430,44 +430,54 @@ export default {
 
         // Equipment
         if (values.equipment && values.equipment.head) {
+            state.characterEquipment.head.id = values.equipment.head.id || 0;
             state.characterEquipment.head.itemId = values.equipment.head.itemId || 0;
             state.characterEquipment.head.name = values.equipment.head.name || '';
             state.characterEquipment.head.refined = values.equipment.head.refined || 0;
+            state.characterEquipment.head.durability = values.equipment.head.durability || 0;
         }
         if (values.equipment && values.equipment.face) {
             state.characterEquipment.face.itemId = values.equipment.face.itemId || 0;
             state.characterEquipment.face.name = values.equipment.face.name || '';
-            state.characterEquipment.face.refined = values.equipment.face.refined || 0;
         }
         if (values.equipment && values.equipment.mouth) {
             state.characterEquipment.mouth.itemId = values.equipment.mouth.itemId || 0;
             state.characterEquipment.mouth.name = values.equipment.mouth.name || '';
-            state.characterEquipment.mouth.refined = values.equipment.mouth.refined || 0;
         }
         if (values.equipment && values.equipment.rhand) {
+            state.characterEquipment.rhand.id = values.equipment.rhand.id || 0;
             state.characterEquipment.rhand.itemId = values.equipment.rhand.itemId || 0;
             state.characterEquipment.rhand.name = values.equipment.rhand.name || '';
             state.characterEquipment.rhand.refined = values.equipment.rhand.refined || 0;
+            state.characterEquipment.rhand.durability = values.equipment.rhand.durability || 0;
         }
         if (values.equipment && values.equipment.garment) {
+            state.characterEquipment.garment.id = values.equipment.garment.id || 0;
             state.characterEquipment.garment.itemId = values.equipment.garment.itemId || 0;
             state.characterEquipment.garment.name = values.equipment.garment.name || '';
             state.characterEquipment.garment.refined = values.equipment.garment.refined || 0;
+            state.characterEquipment.garment.durability = values.equipment.garment.durability || 0;
         }
         if (values.equipment && values.equipment.body) {
+            state.characterEquipment.body.id = values.equipment.body.id || 0;
             state.characterEquipment.body.itemId = values.equipment.body.itemId || 0;
             state.characterEquipment.body.name = values.equipment.body.name || '';
             state.characterEquipment.body.refined = values.equipment.body.refined || 0;
+            state.characterEquipment.body.durability = values.equipment.body.durability || 0;
         }
         if (values.equipment && values.equipment.lhand) {
+            state.characterEquipment.lhand.id = values.equipment.lhand.id || 0;
             state.characterEquipment.lhand.itemId = values.equipment.lhand.itemId || 0;
             state.characterEquipment.lhand.name = values.equipment.lhand.name || '';
             state.characterEquipment.lhand.refined = values.equipment.lhand.refined || 0;
+            state.characterEquipment.lhand.durability = values.equipment.lhand.durability || 0;
         }
         if (values.equipment && values.equipment.footgear) {
+            state.characterEquipment.footgear.id = values.equipment.footgear.id || 0;
             state.characterEquipment.footgear.itemId = values.equipment.footgear.itemId || 0;
             state.characterEquipment.footgear.name = values.equipment.footgear.name || '';
             state.characterEquipment.footgear.refined = values.equipment.footgear.refined || 0;
+            state.characterEquipment.footgear.durability = values.equipment.footgear.durability || 0;
         }
     },
     characterInit: (state, values) => {
@@ -537,45 +547,52 @@ export default {
         // Skills
         state.characterSkills = values.skills;
 
+        // Equipment
         if (values.equipment && values.equipment.head) {
+            state.characterEquipment.head.id = values.equipment.head.id || 0;
             state.characterEquipment.head.itemId = values.equipment.head.itemId || 0;
             state.characterEquipment.head.name = values.equipment.head.name || '';
             state.characterEquipment.head.refined = values.equipment.head.refined || 0;
+            state.characterEquipment.head.durability = values.equipment.head.durability || 0;
         }
         if (values.equipment && values.equipment.face) {
             state.characterEquipment.face.itemId = values.equipment.face.itemId || 0;
             state.characterEquipment.face.name = values.equipment.face.name || '';
-            state.characterEquipment.face.refined = values.equipment.face.refined || 0;
         }
         if (values.equipment && values.equipment.mouth) {
             state.characterEquipment.mouth.itemId = values.equipment.mouth.itemId || 0;
             state.characterEquipment.mouth.name = values.equipment.mouth.name || '';
-            state.characterEquipment.mouth.refined = values.equipment.mouth.refined || 0;
         }
         if (values.equipment && values.equipment.rhand) {
+            state.characterEquipment.rhand.id = values.equipment.rhand.id || 0;
             state.characterEquipment.rhand.itemId = values.equipment.rhand.itemId || 0;
             state.characterEquipment.rhand.name = values.equipment.rhand.name || '';
             state.characterEquipment.rhand.refined = values.equipment.rhand.refined || 0;
+            state.characterEquipment.rhand.durability = values.equipment.rhand.durability || 0;
         }
         if (values.equipment && values.equipment.garment) {
             state.characterEquipment.garment.itemId = values.equipment.garment.itemId || 0;
             state.characterEquipment.garment.name = values.equipment.garment.name || '';
             state.characterEquipment.garment.refined = values.equipment.garment.refined || 0;
+            state.characterEquipment.garment.durability = values.equipment.garment.durability || 0;
         }
         if (values.equipment && values.equipment.body) {
             state.characterEquipment.body.itemId = values.equipment.body.itemId || 0;
             state.characterEquipment.body.name = values.equipment.body.name || '';
             state.characterEquipment.body.refined = values.equipment.body.refined || 0;
+            state.characterEquipment.body.durability = values.equipment.body.durability || 0;
         }
         if (values.equipment && values.equipment.lhand) {
             state.characterEquipment.lhand.itemId = values.equipment.lhand.itemId || 0;
             state.characterEquipment.lhand.name = values.equipment.lhand.name || '';
             state.characterEquipment.lhand.refined = values.equipment.lhand.refined || 0;
+            state.characterEquipment.lhand.durability = values.equipment.lhand.durability || 0;
         }
         if (values.equipment && values.equipment.footgear) {
             state.characterEquipment.footgear.itemId = values.equipment.footgear.itemId || 0;
             state.characterEquipment.footgear.name = values.equipment.footgear.name || '';
             state.characterEquipment.footgear.refined = values.equipment.footgear.refined || 0;
+            state.characterEquipment.footgear.durability = values.equipment.footgear.durability || 0;
         }
 
         // Traveling
@@ -675,44 +692,56 @@ export default {
 
         state.characterEquipment = {
             head: {
+                id: 0,
                 itemId: 0,
                 name: '',
-                refined: 0
+                refined: 0,
+                durability: 0
             },
             face: {
+                id: 0,
                 itemId: 0,
-                name: '',
-                refined: 0
+                name: ''
             },
             mouth: {
+                id: 0,
                 itemId: 0,
-                name: '',
-                refined: 0
+                name: ''
             },
             rhand: {
+                id: 0,
                 itemId: 0,
                 name: '',
-                refined: 0
+                refined: 0,
+                durability: 0
             },
             garment: {
+                id: 0,
                 itemId: 0,
                 name: '',
-                refined: 0
+                refined: 0,
+                durability: 0
             },
             body: {
+                id: 0,
                 itemId: 0,
                 name: '',
-                refined: 0
+                refined: 0,
+                durability: 0
             },
             lhand: {
+                id: 0,
                 itemId: 0,
                 name: '',
-                refined: 0
+                refined: 0,
+                durability: 0
             },
             footgear: {
+                id: 0,
                 itemId: 0,
                 name: '',
-                refined: 0
+                refined: 0,
+                durability: 0
             }
         };
 
