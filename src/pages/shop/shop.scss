@@ -79,6 +79,10 @@
             align-items: center;
             justify-content: center;
 
+            &--broken {
+                border: 3px solid #c00;
+            }
+
             img {
                 width: 60%;
             }

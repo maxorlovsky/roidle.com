@@ -6,7 +6,7 @@
             <template v-if="temporaryInventory.length">
                 <div v-for="(item, index) in temporaryInventory"
                     :key="index"
-                    :class="{'trading__inventory-wrapper__item--disabled': leftTradeApproved}"
+                    :class="{'trading__inventory-wrapper__item--disabled': leftTradeApproved, 'trading__inventory-wrapper__item--broken': item.broken}"
                     class="trading__inventory-wrapper__item"
                     @click="addItemToTrade(item)"
                 >
@@ -39,8 +39,9 @@
                             :key="index"
                             class="trading__item"
                         >
-                            <div class="trading__item__image-amount"
-                                @click="showItemInfo(item.itemId)"
+                            <div :class="{'trading__item__image-amount--broken': item.broken}"
+                                class="trading__item__image-amount"
+                                @click="showItemInfo(item)"
                             >
                                 <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                                 <span>{{ item.amount }}</span>
@@ -77,8 +78,9 @@
                             :key="index"
                             class="trading__item"
                         >
-                            <div class="trading__item__image-amount"
-                                @click="showItemInfo(item.itemId)"
+                            <div :class="{'trading__item__image-amount--broken': item.broken}"
+                                class="trading__item__image-amount"
+                                @click="showItemInfo(item)"
                             >
                                 <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                                 <span>{{ item.amount }}</span>
@@ -326,8 +328,11 @@ const tradingPage = {
 
             mo.socket.emit('cancelTrade');
         },
-        showItemInfo(itemId) {
-            mo.socket.emit('getItemsInfo', [itemId]);
+        showItemInfo(item) {
+            mo.socket.emit('getItemInfo', {
+                itemId: item.itemId,
+                inventoryId: item.id
+            });
         },
         addItemToTrade(item) {
             if (this.buttonLoading || this.leftTradeApproved) {

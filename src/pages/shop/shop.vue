@@ -45,8 +45,9 @@
                     :key="index"
                     class="shop__item"
                 >
-                    <div class="shop__item__image-amount"
-                        @click="showItemInfo(item.itemId)"
+                    <div :class="{'shop__item__image-amount--broken': item.broken}"
+                        class="shop__item__image-amount"
+                        @click="showItemInfo(item)"
                     >
                         <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                         <span v-if="$route.query.action === 'sell'">{{ item.amount }}</span>
@@ -236,8 +237,17 @@ const shopPage = {
         this.$store.commit('showChat', true);
     },
     methods: {
-        showItemInfo(itemId) {
-            mo.socket.emit('getItemsInfo', [itemId]);
+        showItemInfo(item) {
+            const params = {
+                itemId: item.itemId
+            };
+
+            // In case of sell, we will add item ID to display if it's broken or not and what's it durability
+            if (item.id) {
+                params.inventoryId = item.id;
+            }
+
+            mo.socket.emit('getItemInfo', params);
         },
         moveItem(index, moveFrom, moveTo) {
             const movingItem = this[moveFrom][index];

@@ -12,7 +12,7 @@
                     >
                         <div v-if="equipment[eq.slot] && equipment[eq.slot].itemId"
                             class="equipment__item"
-                            @click="getItemInfo(equipment[eq.slot].itemId)"
+                            @click="getItemInfo(equipment[eq.slot])"
                         >
                             <img :src="`/dist/assets/images/items/${equipment[eq.slot].itemId}.gif`">
                             <span class="equipment__item__name">{{ equipment[eq.slot].name }}</span>
@@ -42,7 +42,7 @@
                     >
                         <div v-if="equipment[eq.slot] && equipment[eq.slot].itemId"
                             class="equipment__item"
-                            @click="getItemInfo(equipment[eq.slot].itemId)"
+                            @click="getItemInfo(equipment[eq.slot])"
                         >
                             <img :src="`/dist/assets/images/items/${equipment[eq.slot].itemId}.gif`">
                             <span class="equipment__item__name">{{ equipment[eq.slot].name }}</span>
@@ -205,9 +205,12 @@ const profilePage = {
         this.$store.commit('showChat', true);
     },
     methods: {
-        getItemInfo(itemId) {
-            if (itemId) {
-                mo.socket.emit('getItemsInfo', [itemId]);
+        getItemInfo(item) {
+            if (item && item.itemId) {
+                mo.socket.emit('getItemInfo', {
+                    itemId: item.itemId,
+                    equipmentId: item.id
+                });
             }
         }
     }

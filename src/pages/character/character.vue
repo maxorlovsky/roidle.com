@@ -6,19 +6,19 @@
                     :key="eq.slot"
                     :class="`equipment__slot equipment__${eq.slot}`"
                 >
+                    <div class="equipment__slot--clicker"
+                        @click="equimentList(eq.slot)"
+                    />
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__item"
-                        @click="equimentList(eq.slot)"
                     >
                         <img :src="`/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
                         <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
                     </div>
-                    <span class="equipment__placeholder"
-                        @click="equimentList(eq.slot)"
-                    >{{ eq.name }}</span>
+                    <span class="equipment__placeholder">{{ eq.name }}</span>
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__info"
-                        @click.prevent="showItemInfo(characterEquipment[eq.slot].itemId)"
+                        @click.prevent="showItemInfo(characterEquipment[eq.slot])"
                     >?</div>
                 </div>
             </div>
@@ -41,19 +41,19 @@
                     :key="eq.slot"
                     :class="`equipment__slot equipment__${eq.slot}`"
                 >
+                    <div class="equipment__slot--clicker"
+                        @click="equimentList(eq.slot)"
+                    />
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__item"
-                        @click="equimentList(eq.slot)"
                     >
                         <img :src="`/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
                         <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
                     </div>
-                    <span class="equipment__placeholder"
-                        @click="equimentList(eq.slot)"
-                    >{{ eq.name }}</span>
+                    <span class="equipment__placeholder">{{ eq.name }}</span>
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__info"
-                        @click.prevent="showItemInfo(characterEquipment[eq.slot].itemId)"
+                        @click.prevent="showItemInfo(characterEquipment[eq.slot])"
                     >?</div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                 <div v-for="(item, index) in items"
                     :key="index"
                     class="equipment-modal__item"
-                    @click="equipItem(item.id, item.itemId)"
+                    @click="equipItem(item)"
                 >
                     <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                     <div class="equipment-modal__item__amount">
@@ -219,8 +219,11 @@ const characterPage = {
         this.$store.commit('showChat', true);
     },
     methods: {
-        showItemInfo(itemId) {
-            mo.socket.emit('getItemsInfo', [itemId]);
+        showItemInfo(item) {
+            mo.socket.emit('getItemInfo', {
+                itemId: item.itemId,
+                equipmentId: item.id
+            });
         },
         itemDisplayParams(params) {
             let paramsString = ', ';
@@ -265,17 +268,14 @@ const characterPage = {
         },
         uneqipItem(slot) {
             // Triggering equip of an item on server
-            mo.socket.emit('unequipItem', {
-                slot: slot
-            });
+            mo.socket.emit('unequipItem', slot);
 
             this.showEquipmentModal = false;
         },
-        equipItem(id, itemId) {
+        equipItem(item) {
             // Triggering equip of an item on server
             mo.socket.emit('equipItem', {
-                id,
-                itemId,
+                item,
                 slot: this.slot
             });
 
