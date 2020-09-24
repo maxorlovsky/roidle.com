@@ -18,7 +18,7 @@
                         :just-head="true"
                     />
                     <div class="game__party__slot__bar">
-                        <div :style="{ 'width': `${Math.floor(member.hp / member.maxHp * 100) || 100}%` }"
+                        <div :style="{ 'width': `${Math.floor(member.hp / member.maxHp * 100) || 0}%` }"
                             class="game__party__slot__bar__hp"
                         />
                     </div>
