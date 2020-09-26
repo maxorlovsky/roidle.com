@@ -27,6 +27,10 @@
                 <button class="btn game-button"
                     @click="$router.push('/shop?action=sell&type=tools')"
                 >Tool Dealer - Sell</button>
+
+                <button class="btn game-button"
+                    @click="$router.push('/shop?action=sell&type=tools')"
+                >Blacksmith - Repair Items</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"

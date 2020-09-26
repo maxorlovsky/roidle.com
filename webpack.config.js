@@ -75,7 +75,8 @@ const config = {
             '@src': path.resolve('./src'),
             '@pages': path.resolve('./src/pages'),
             '@components': path.resolve('./src/components'),
-            '@config': path.resolve('./src/config')
+            '@config': path.resolve('./src/config'),
+            '@utils': path.resolve('./src/utils'),
         }
     },
     plugins: [
