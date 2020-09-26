@@ -404,7 +404,7 @@ export default {
 
             this.$store.commit('socketConnection', true);
 
-            mo.socket.emit('reconnectRequest', {
+            mo.socket.emit('selectCharacter', {
                 sessionToken: functions.storage('get', 'session'),
                 characterId: functions.storage('get', 'selectedCharacter')
             });
