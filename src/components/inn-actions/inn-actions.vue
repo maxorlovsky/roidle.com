@@ -15,22 +15,17 @@
                 <button :class="{'game-button--selected': typeChosen === 'cheap'}"
                     class="btn game-button"
                     @click="typeChosen = 'cheap'"
-                >Cheap room - 10 min (1 Z)</button>
+                >Cheap room - 10 min ({{ cheapInnPrice }} Z)</button>
 
                 <button :class="{'game-button--selected': typeChosen === 'regular'}"
                     class="btn game-button"
                     @click="typeChosen = 'regular'"
-                >Regular room - 5 min (100 Z)</button>
+                >Regular room - 5 min ({{ regularInnPrice }} Z)</button>
 
                 <button :class="{'game-button--selected': typeChosen === 'deluxe'}"
                     class="btn game-button"
                     @click="typeChosen = 'deluxe'"
-                >Deluxe room - 1 min (1000 Z)</button>
-
-                <!--<button :class="{'game-button--selected': typeChosen === 'premier'}"
-                    class="btn game-button"
-                    @click="typeChosen = 'premier'"
-                >Premier room - 1 min + Buff (500 Z)</button>-->
+                >Deluxe room - 1 min ({{ deluxeInnPrice }} Z)</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
@@ -48,6 +43,12 @@
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
+// Utils
+import discount from '@utils/discount.js';
+
 export default {
     name: 'inn-actions',
     data() {
@@ -55,6 +56,19 @@ export default {
             typeChosen: '',
             showModal: false
         };
+    },
+    computed: {
+        ...mapGetters(['characterSkills']),
+
+        cheapInnPrice() {
+            return discount(1, this.characterSkills[25]);
+        },
+        regularInnPrice() {
+            return discount(100, this.characterSkills[25]);
+        },
+        deluxeInnPrice() {
+            return discount(1000, this.characterSkills[25]);
+        },
     },
     mounted() {
         mo.socket.on('requestRestComplete', (response) => {

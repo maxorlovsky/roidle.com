@@ -4,8 +4,9 @@
             <div class="inventory__weight">Weight: <span :class="{'inventory__weight--critical': criticalWeight}">{{ inventoryWeight }}</span> / {{ characterAttributes.weight }}</div>
             <div v-for="(item, index) in inventory"
                 :key="index"
+                :class="{'inventory__item--broken': item.broken}"
                 class="inventory__item"
-                @click="showItemInfo(item.itemId)"
+                @click="showItemInfo(item)"
             >
                 <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                 <span class="inventory__item__amount">{{ item.amount }}</span>
@@ -40,11 +41,14 @@ const inventoryPage = {
         this.$store.commit('showChat', true);
     },
     methods: {
-        showItemInfo(itemId) {
+        showItemInfo(item) {
             // Marking that item is open in inventory of a user
             this.$store.commit('itemInfoInventoryPage');
 
-            mo.socket.emit('getItemsInfo', [itemId]);
+            mo.socket.emit('getItemInfo', {
+                itemId: item.itemId,
+                inventoryId: item.id
+            });
         }
     }
 };

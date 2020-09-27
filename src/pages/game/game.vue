@@ -2,114 +2,117 @@
     <section :class="characterLocation.toLowerCase()"
         class="game"
     >
-        <div class="game__party"
-            @click="partyClick()"
-        >
-            <div v-for="(member, index) in partyMembersList"
-                :key="index"
-                class="game__party__slot"
+        <loading v-if="loading" />
+        <template v-else>
+            <div class="game__party"
+                @click="partyClick()"
             >
-                <template v-if="member">
-                    <div class="game__party__slot__name">{{ member.name }}</div>
-                    <avatar :head-style="member.headStyle"
-                        :head-color="member.headColor"
-                        :head-gears="member.headGears"
-                        :gender="member.gender"
-                        :just-head="true"
-                    />
-                    <div class="game__party__slot__bar">
-                        <div :style="{ 'width': `${Math.floor(member.hp / member.maxHp * 100) || 100}%` }"
-                            class="game__party__slot__bar__hp"
+                <div v-for="(member, index) in partyMembersList"
+                    :key="index"
+                    class="game__party__slot"
+                >
+                    <template v-if="member">
+                        <div class="game__party__slot__name">{{ member.name }}</div>
+                        <avatar :head-style="member.headStyle"
+                            :head-color="member.headColor"
+                            :head-gears="member.headGears"
+                            :gender="member.gender"
+                            :just-head="true"
                         />
+                        <div class="game__party__slot__bar">
+                            <div :style="{ 'width': `${Math.floor(member.hp / member.maxHp * 100) || 0}%` }"
+                                class="game__party__slot__bar__hp"
+                            />
+                        </div>
+                        <div :class="{'game__party__slot__online--online': member.online, 'game__party__slot__online--offline': !member.online}"
+                            class="game__party__slot__online"
+                        />
+                    </template>
+                    <template v-else>+</template>
+                </div>
+
+                <div class="game__party__name">Party: {{ partyName || '--' }}</div>
+            </div>
+
+            <router-link to="/settings"
+                class="game__settings game-icon"
+            >
+                <i class="icon icon-settings" />
+            </router-link>
+
+            <router-link to="/hunt-configuration"
+                class="game__hunt-config game-icon"
+            >
+                <i class="icon icon-sword" />
+            </router-link>
+
+            <router-link v-if="characterSkills[1] >= 4"
+                to="/trading-list"
+                class="game__trade game-icon"
+            >
+                <i class="icon icon-trade" />
+            </router-link>
+
+            <div v-if="showActions"
+                class="game__actions"
+            >
+                <hunt-actions v-if="huntAvailable"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                />
+
+                <!--<div v-if="outsideActions"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                    class="game__action"
+                    @click="trackMonster()"
+                >
+                    <img src="/dist/assets/images/eye.png">
+                    <span class="game__action__name">Track down</span>
+                </div>-->
+
+                <kafra-actions v-if="kafraAvailable"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                />
+                <inn-actions v-if="innAvailable"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                />
+                <shop-actions v-if="shopsAvailable"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                />
+                <dungeon-actions v-if="dungeonAvailable"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                />
+
+                <div v-if="huntStatus || travelingToLocation || restInProgress"
+                    class="game__action-in-progress"
+                >
+                    <div v-if="travelingToLocation">
+                        <div>Traveling in Progress</div>
+                        <button v-if="!cancelingTravel"
+                            class="btn btn-secondary"
+                            @click="cancelTravel()"
+                        >Cancel traveling</button>
                     </div>
-                    <div :class="{'game__party__slot__online--online': member.online, 'game__party__slot__online--offline': !member.online}"
-                        class="game__party__slot__online"
-                    />
-                </template>
-                <template v-else>+</template>
-            </div>
-
-            <div class="game__party__name">Party: {{ partyName || '--' }}</div>
-        </div>
-
-        <router-link to="/settings"
-            class="game__settings game-icon"
-        >
-            <i class="icon icon-settings" />
-        </router-link>
-
-        <router-link to="/hunt-configuration"
-            class="game__hunt-config game-icon"
-        >
-            <i class="icon icon-sword" />
-        </router-link>
-
-        <router-link v-if="characterSkills[1] >= 4"
-            to="/trading-list"
-            class="game__trade game-icon"
-        >
-            <i class="icon icon-trade" />
-        </router-link>
-
-        <div v-if="showActions"
-            class="game__actions"
-        >
-            <hunt-actions v-if="huntAvailable"
-                :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
-            />
-
-            <!--<div v-if="outsideActions"
-                :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
-                class="game__action"
-                @click="trackMonster()"
-            >
-                <img src="/dist/assets/images/eye.png">
-                <span class="game__action__name">Track down</span>
-            </div>-->
-
-            <kafra-actions v-if="kafraAvailable"
-                :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
-            />
-            <inn-actions v-if="innAvailable"
-                :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
-            />
-            <shop-actions v-if="shopsAvailable"
-                :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
-            />
-            <dungeon-actions v-if="dungeonAvailable"
-                :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
-            />
-
-            <div v-if="huntStatus || travelingToLocation || restInProgress"
-                class="game__action-in-progress"
-            >
-                <div v-if="travelingToLocation">
-                    <div>Traveling in Progress</div>
-                    <button v-if="!cancelingTravel"
-                        class="btn btn-secondary"
-                        @click="cancelTravel()"
-                    >Cancel traveling</button>
-                </div>
-                <div v-if="restInProgress">
-                    <div>Rest in Progress</div>
-                    <button v-if="!cancelingRest"
-                        class="btn btn-secondary"
-                        @click="cancelRest()"
-                    >Interrupt rest</button>
-                </div>
-                <div v-if="huntStatus">
-                    <div>Hunt in progress</div>
-                    <div>{{ huntStatusTimerDisplay }}</div>
-                    <button v-if="!retreatFromHunt"
-                        class="btn btn-secondary"
-                        @click="initRetreatFromHunt()"
-                    >Retreat from hunt</button>
+                    <div v-if="restInProgress">
+                        <div>Rest in Progress</div>
+                        <button v-if="!cancelingRest"
+                            class="btn btn-secondary"
+                            @click="cancelRest()"
+                        >Interrupt rest</button>
+                    </div>
+                    <div v-if="huntStatus">
+                        <div>Hunt in progress</div>
+                        <div>{{ huntStatusTimerDisplay }}</div>
+                        <button v-if="!retreatFromHunt"
+                            class="btn btn-secondary"
+                            @click="initRetreatFromHunt()"
+                        >Retreat from hunt</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <puzzle-challenge v-if="showChallenge" />
-        <trade-window-request v-if="showTradeRequest" />
+            <puzzle-challenge v-if="showChallenge" />
+            <trade-window-request v-if="showTradeRequest" />
+        </template>
     </section>
 </template>
 
@@ -118,6 +121,7 @@
 import { mapGetters } from 'vuex';
 
 // Components
+import loading from '@components/loading/loading.vue';
 import kafraActions from '@components/kafra-actions/kafra-actions.vue';
 import innActions from '@components/inn-actions/inn-actions.vue';
 import shopActions from '@components/shop-actions/shop-actions.vue';
@@ -129,6 +133,7 @@ import tradeWindowRequest from '@components/trade-window-request/trade-window-re
 
 const gamePage = {
     components: {
+        loading,
         kafraActions,
         innActions,
         shopActions,
@@ -140,6 +145,7 @@ const gamePage = {
     },
     data() {
         return {
+            loading: true,
             showActions: false,
             huntInterval: null,
             huntStatusTimerDisplay: '*',
@@ -174,6 +180,14 @@ const gamePage = {
         ])
     },
     watch: {
+        characterId: {
+            immediate: true,
+            handler() {
+                if (this.characterId) {
+                    this.loading = false;
+                }
+            }
+        },
         tradeRequestId: {
             immediate: true,
             handler() {

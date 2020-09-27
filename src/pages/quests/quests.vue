@@ -1,5 +1,10 @@
 <template>
     <section class="quests">
+        <div v-if="loading"
+            class="quests-wrapper"
+        >
+            <loading />
+        </div>
         <div class="quests-wrapper">
             <div v-if="selectedMission"
                 class="quests-details"
@@ -29,12 +34,12 @@
                 </div>
                 <div class="quests-details__actions">
                     <button v-if="selectedMissionAction"
-                        :disabled="loading"
+                        :disabled="buttonLoading"
                         class="btn btn-success"
                         @click="completeQuest()"
                     >End discussion</button>
                     <button v-else
-                        :disabled="loading"
+                        :disabled="buttonLoading"
                         class="btn game-button"
                         @click="proceedWithQuest()"
                     >Next</button>
@@ -59,12 +64,12 @@
                     </div>
                     <div class="quests-list__quest__buttons">
                         <button v-if="quest.currentStep === 1"
-                            :disabled="loading"
+                            :disabled="buttonLoading"
                             class="btn game-button"
                             @click="reviewQuest(quest.id)"
                         >Start</button>
                         <button v-else
-                            :disabled="loading"
+                            :disabled="buttonLoading"
                             class="btn btn-warning"
                             @click="reviewQuest(quest.id)"
                         >View</button>
@@ -85,10 +90,17 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Components
+import loading from '@components/loading/loading.vue';
+
 const questsPage = {
+    components: {
+        loading,
+    },
     data() {
         return {
-            loading: false,
+            loading: true,
+            buttonLoading: false,
             quests: [],
             displayNPC: null,
             selectedMission: null,
@@ -121,12 +133,13 @@ const questsPage = {
 
         mo.socket.on('fetchQuestsComplete', (response) => {
             this.loading = false;
+            this.buttonLoading = false;
 
             this.quests = response;
         });
 
         mo.socket.on('reviewQuestComplete', (response) => {
-            this.loading = false;
+            this.buttonLoading = false;
 
             if (response) {
                 this.showQuest(response);
@@ -166,7 +179,7 @@ const questsPage = {
             this.checkQuestAction();
         },
         reviewQuest(questId) {
-            this.loading = true;
+            this.buttonLoading = true;
 
             mo.socket.emit('reviewQuest', questId);
         },
@@ -200,7 +213,7 @@ const questsPage = {
             this.checkQuestAction();
         },
         completeQuest() {
-            this.loading = true;
+            this.buttonLoading = true;
 
             mo.socket.emit('finishQuest', this.selectedMission.id);
         },

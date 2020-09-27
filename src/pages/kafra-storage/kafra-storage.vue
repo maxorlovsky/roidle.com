@@ -35,8 +35,9 @@
                     :key="index"
                     class="kafra-storage__item"
                 >
-                    <div class="kafra-storage__item__image-amount"
-                        @click="showItemInfo(item.itemId)"
+                    <div :class="{'kafra-storage__item__image-amount--broken': item.broken}"
+                        class="kafra-storage__item__image-amount"
+                        @click="showItemInfo(item)"
                     >
                         <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                         <span v-if="item.type !== 'weapon' && item.type !== 'armor'">{{ item.amount }}</span>
@@ -198,8 +199,18 @@ const kafraStoragePage = {
 
             return findIndex >= 0;
         },
-        showItemInfo(itemId) {
-            mo.socket.emit('getItemsInfo', [itemId]);
+        showItemInfo(item) {
+            const params = {
+                itemId: item.itemId
+            };
+
+            if (this.selectedMainTab === 'withdraw') {
+                params.storageId = item.id;
+            } else {
+                params.inventoryId = item.id;
+            }
+
+            mo.socket.emit('getItemInfo', params);
         },
         moveItem(index) {
             this.buttonLoading = true;

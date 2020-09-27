@@ -175,6 +175,9 @@ export default {
                     this.resetTimer();
                 }
             }
+        },
+        'characterAttributes.weight'() {
+            this.calculateWeightPercentage();
         }
     },
     mounted() {

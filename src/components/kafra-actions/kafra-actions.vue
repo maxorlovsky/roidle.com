@@ -18,16 +18,16 @@
                 <button :class="{'btn-disabled': characterSkills[1] < 6}"
                     class="btn game-button"
                     @click="openStorage()"
-                >Use Storage (60 Z)</button>
+                >Use Storage ({{ storagePrice }} Z)</button>
                 <button class="btn game-button"
                     @click="openBarberShop()"
-                >Barber Shop Service (1000 Z)</button>
+                >Barber Shop Service ({{ barberPrice }} Z)</button>
                 <button class="btn game-button"
                     @click="statResetStart()"
-                >Stats Reset Service</button>
+                >Stats Reset Service ({{ resetPrice }} Z)</button>
                 <button class="btn game-button"
                     @click="skillsResetStart()"
-                >Skills Reset Service</button>
+                >Skills Reset Service ({{ resetPrice }} Z)</button>
                 <!--<button class="btn game-button"
                     @click="openGuildStorage()"
                 >Use Guild storage (600 Z)</button>
@@ -96,13 +96,16 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Utils
+import discount from '@utils/discount.js';
+
 export default {
     name: 'kafra-actions',
     data() {
         return {
             showKafraModal: false,
             showResetStatsConfirmation: false,
-            showResetSkillsConfirmation: false
+            showResetSkillsConfirmation: false,
         };
     },
     computed: {
@@ -113,8 +116,14 @@ export default {
             'characterBaseLevel'
         ]),
 
+        barberPrice() {
+            return discount(1000, this.characterSkills[25]);
+        },
+        storagePrice() {
+            return discount(60, this.characterSkills[25]);
+        },
         resetPrice() {
-            return this.characterBaseLevel * 1000;
+            return discount(this.characterBaseLevel * 1000, this.characterSkills[25]);
         }
     },
     mounted() {

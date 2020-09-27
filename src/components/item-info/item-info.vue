@@ -1,5 +1,6 @@
 <template>
     <div v-if="show"
+        :class="{'item-info--broken': broken, 'item-info--not-pristine': durability >= 0 && durability !== null && durability < defaultDurability}"
         class="item-info"
         @click="!selfBagItemInfo ? show = false : null"
     >
@@ -11,8 +12,15 @@
                 <b>{{ name }}</b>
                 <div>Type: <span class="ucfirst">{{ type }}</span> <span v-if="twoHanded">(Two-Handed)</span></div>
                 <div v-if="params">Params: <b>{{ params }}</b></div>
-                <div v-if="weaponLevel">Weapon Level: {{ weaponLevel }}</div>
                 <div v-if="requiredLevel">Required Level: {{ requiredLevel }}</div>
+
+                <div v-if="durability >= 0 && durability !== null && defaultDurability">Durability: <span :class="{'item-info__high-durability': durability > defaultDurability, 'item-info__low-durability': durability < defaultDurability}">{{ durability }}</span> / {{ defaultDurability }}</div>
+                <div v-else-if="defaultDurability">Durability: {{ defaultDurability }} / {{ defaultDurability }}</div>
+
+                <div v-if="broken"
+                    class="item-info__description--broken"
+                >BROKEN!</div>
+
                 <div>Weight: {{ weight }}</div>
                 <div v-if="description">{{ description }}</div>
                 <div v-if="applicableJobs">Applicable Job: {{ applicableJobs }}</div>
@@ -26,10 +34,16 @@
                 <button class="btn btn-danger"
                     @click="discardItem(id)"
                 >Discard</button>
+
                 <button v-if="type === 'healing'"
                     class="btn game-button"
                     @click="useItem(id)"
                 >Use</button>
+                <button v-else-if="broken"
+                    :disabled="!characterSkills[33] || characterSkills[33] <= 0"
+                    class="btn game-button"
+                    @click="repairItem(id)"
+                >Repair</button>
             </div>
 
             <div v-if="showDiscard"
@@ -67,15 +81,18 @@ export default {
     data() {
         return {
             show: false,
+            id: 0,
             name: '',
             type: '',
             description: '',
             params: '',
             twoHanded: false,
-            weaponLevel: 0,
             requiredLevel: 0,
+            durability: null,
+            defaultDurability: 0,
             weight: 0,
             applicableJob: '',
+            broken: false,
             showDiscard: false,
             showDiscardAmount: null,
             showDiscardAmountMax: null,
@@ -83,7 +100,13 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['socketConnection', 'closeItemInfo', 'selfBagItemInfo', 'inventory'])
+        ...mapGetters([
+            'socketConnection',
+            'closeItemInfo',
+            'selfBagItemInfo',
+            'inventory',
+            'characterSkills',
+        ])
     },
     watch: {
         socketConnection() {
@@ -96,16 +119,19 @@ export default {
         }
     },
     beforeDestroy() {
-        mo.socket.off('getItemsInfoComplete');
+        mo.socket.off('getItemInfoComplete');
     },
     methods: {
-        setUpSocketEvents() {
-            mo.socket.on('getItemsInfoComplete', (items) => {
-                this.showInfo(items[0]);
-            });
+        repairItem() {
+            // Check if character have the skill to repair the item
+            if (!this.characterSkills[33] || this.characterSkills[33] <= 0) {
+                //
+            }
         },
-        showItemInfo(itemId) {
-            mo.socket.emit('getItemsInfo', [itemId]);
+        setUpSocketEvents() {
+            mo.socket.on('getItemInfoComplete', (item) => {
+                this.showInfo(item);
+            });
         },
         showInfo(item) {
             if (this.selfBagItemInfo) {
@@ -119,10 +145,12 @@ export default {
             this.twoHanded = item.twoHanded || false;
             this.description = item.description ? item.description : '';
             this.params = '';
-            this.weaponLevel = 0;
+            this.durability = null;
+            this.defaultDurability = 0;
             this.requiredLevel = 0;
             this.weight = item.weight;
             this.applicableJobs = item.jobs === null ? 'All' : '';
+            this.broken = false;
 
             // Making params human readable
             if (item.params) {
@@ -133,8 +161,16 @@ export default {
                 this.params = this.params.substring(0, this.params.length - 2);
             }
 
-            if (item.weaponLevel) {
-                this.weaponLevel = item.weaponLevel;
+            if (item.durability >= 0) {
+                this.durability = item.durability;
+            }
+
+            if (item.defaultDurability) {
+                this.defaultDurability = item.defaultDurability;
+            }
+
+            if (item.broken) {
+                this.broken = true;
             }
 
             if (item.requireLevel) {

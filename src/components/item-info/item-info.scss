@@ -9,7 +9,7 @@
     left: calc(50% - 45%);
     top: 10vh;
     border-radius: 4px;
-    z-index: 3;
+    z-index: 9;
     padding: 1rem;
 
     .item-info-wrapper {
@@ -23,6 +23,14 @@
         }
     }
 
+    &__high-durability {
+        color: #090;
+    }
+
+    &__low-durability {
+        color: #ff8c2a;
+    }
+
     &__illustration {
         width: 75px;
         height: 100px;
@@ -31,6 +39,11 @@
 
     &__description {
         width: calc(100% - 75px - 0.5rem);
+
+        &--broken {
+            color: #c00;
+            font-weight: bold;
+        }
     }
 
     &__requirement {
@@ -71,5 +84,13 @@
                 width: 50%;
             }
         }
+    }
+
+    &--not-pristine {
+        border: 2px solid #ff8c2a;
+    }
+
+    &--broken {
+        border: 2px solid #c00;
     }
 }

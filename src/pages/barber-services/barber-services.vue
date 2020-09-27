@@ -35,7 +35,7 @@
                     <button :disabled="buttonLoading"
                         class="btn game-button"
                         @click="changeStyle()"
-                    >Change style (1000 Z)</button>
+                    >Change style ({{ barberPrice }} Z)</button>
                 </div>
             </div>
         </div>
@@ -48,6 +48,9 @@ import { mapGetters } from 'vuex';
 
 // Components
 import avatar from '@components/avatar/avatar.vue';
+
+// Utils
+import discount from '@utils/discount.js';
 
 const barberServicesPage = {
     components: {
@@ -66,8 +69,13 @@ const barberServicesPage = {
             'characterHeadColor',
             'characterGender',
             'characterJob',
-            'characterEquipment'
-        ])
+            'characterEquipment',
+            'characterSkills'
+        ]),
+
+        barberPrice() {
+            return discount(1000, this.characterSkills[25]);
+        },
     },
     watch: {
         characterHeadStyle: {

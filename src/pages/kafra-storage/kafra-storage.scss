@@ -110,6 +110,10 @@
             justify-content: center;
             cursor: pointer;
 
+            &--broken {
+                border: 3px solid #c00;
+            }
+
             img {
                 width: 60%;
             }
