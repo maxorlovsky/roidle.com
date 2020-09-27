@@ -571,24 +571,28 @@ export default {
             state.characterEquipment.rhand.durability = values.equipment.rhand.durability || 0;
         }
         if (values.equipment && values.equipment.garment) {
+            state.characterEquipment.garment.id = values.equipment.garment.id || 0;
             state.characterEquipment.garment.itemId = values.equipment.garment.itemId || 0;
             state.characterEquipment.garment.name = values.equipment.garment.name || '';
             state.characterEquipment.garment.refined = values.equipment.garment.refined || 0;
             state.characterEquipment.garment.durability = values.equipment.garment.durability || 0;
         }
         if (values.equipment && values.equipment.body) {
+            state.characterEquipment.body.id = values.equipment.body.id || 0;
             state.characterEquipment.body.itemId = values.equipment.body.itemId || 0;
             state.characterEquipment.body.name = values.equipment.body.name || '';
             state.characterEquipment.body.refined = values.equipment.body.refined || 0;
             state.characterEquipment.body.durability = values.equipment.body.durability || 0;
         }
         if (values.equipment && values.equipment.lhand) {
+            state.characterEquipment.lhand.id = values.equipment.lhand.id || 0;
             state.characterEquipment.lhand.itemId = values.equipment.lhand.itemId || 0;
             state.characterEquipment.lhand.name = values.equipment.lhand.name || '';
             state.characterEquipment.lhand.refined = values.equipment.lhand.refined || 0;
             state.characterEquipment.lhand.durability = values.equipment.lhand.durability || 0;
         }
         if (values.equipment && values.equipment.footgear) {
+            state.characterEquipment.footgear.id = values.equipment.footgear.id || 0;
             state.characterEquipment.footgear.itemId = values.equipment.footgear.itemId || 0;
             state.characterEquipment.footgear.name = values.equipment.footgear.name || '';
             state.characterEquipment.footgear.refined = values.equipment.footgear.refined || 0;
@@ -699,12 +703,10 @@ export default {
                 durability: 0
             },
             face: {
-                id: 0,
                 itemId: 0,
                 name: ''
             },
             mouth: {
-                id: 0,
                 itemId: 0,
                 name: ''
             },
