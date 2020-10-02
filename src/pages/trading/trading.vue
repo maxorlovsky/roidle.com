@@ -98,6 +98,7 @@
                         <input v-model="zenyRight"
                             type="number"
                             disabled="true"
+                            min="0"
                         > <span>Z</span>
                     </div>
                 </div>
@@ -106,11 +107,11 @@
                 <button class="btn btn-secondary"
                     @click="cancelTrade()"
                 >Cancel trade</button>
-                <button :disabled="buttonLoading || !leftTradeApproved || !rightTradeApproved"
+                <button :disabled="buttonLoading || !leftTradeApproved || !rightTradeApproved || zenyLeft < 0 || zenyLeft > characterZeny"
                     class="btn btn-success"
                     @click="confirmTrade()"
                 >{{ confirmTradeMessage }}</button>
-                <button :disabled="buttonLoading || leftTradeApproved"
+                <button :disabled="buttonLoading || leftTradeApproved || zenyLeft < 0 || zenyLeft > characterZeny"
                     class="btn game-button"
                     @click="lockTrade()"
                 >Lock trade</button>
