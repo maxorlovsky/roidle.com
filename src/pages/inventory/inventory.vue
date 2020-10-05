@@ -4,7 +4,10 @@
             <div class="inventory__weight">Weight: <span :class="{'inventory__weight--critical': criticalWeight}">{{ inventoryWeight }}</span> / {{ characterAttributes.weight }}</div>
             <div v-for="(item, index) in inventory"
                 :key="index"
-                :class="{'inventory__item--broken': item.broken}"
+                :class="{
+                    'inventory__item--broken': item.broken,
+                    'inventory__item--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                }"
                 class="inventory__item"
                 @click="showItemInfo(item)"
             >

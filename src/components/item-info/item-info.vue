@@ -1,6 +1,9 @@
 <template>
     <div v-if="show"
-        :class="{'item-info--broken': broken, 'item-info--not-pristine': durability >= 0 && durability !== null && durability < defaultDurability}"
+        :class="{
+            'item-info--broken': broken,
+            'item-info--not-pristine': durability >= 0 && durability !== null && durability < defaultDurability
+        }"
         class="item-info"
         @click="!selfBagItemInfo ? show = false : null"
     >

@@ -6,7 +6,11 @@
             <template v-if="temporaryInventory.length">
                 <div v-for="(item, index) in temporaryInventory"
                     :key="index"
-                    :class="{'trading__inventory-wrapper__item--disabled': leftTradeApproved, 'trading__inventory-wrapper__item--broken': item.broken}"
+                    :class="{
+                        'trading__inventory-wrapper__item--disabled': leftTradeApproved,
+                        'trading__inventory-wrapper__item--broken': item.broken,
+                        'trading__inventory-wrapper__item--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                    }"
                     class="trading__inventory-wrapper__item"
                     @click="addItemToTrade(item)"
                 >
@@ -39,7 +43,10 @@
                             :key="index"
                             class="trading__item"
                         >
-                            <div :class="{'trading__item__image-amount--broken': item.broken}"
+                            <div :class="{
+                                'trading__item__image-amount--broken': item.broken,
+                                'trading__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                            }"
                                 class="trading__item__image-amount"
                                 @click="showItemInfo(item)"
                             >
@@ -78,7 +85,10 @@
                             :key="index"
                             class="trading__item"
                         >
-                            <div :class="{'trading__item__image-amount--broken': item.broken}"
+                            <div :class="{
+                                'trading__item__image-amount--broken': item.broken,
+                                'trading__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                            }"
                                 class="trading__item__image-amount"
                                 @click="showItemInfo(item)"
                             >

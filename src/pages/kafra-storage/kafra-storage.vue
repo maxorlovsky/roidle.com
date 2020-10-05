@@ -35,7 +35,10 @@
                     :key="index"
                     class="kafra-storage__item"
                 >
-                    <div :class="{'kafra-storage__item__image-amount--broken': item.broken}"
+                    <div :class="{
+                        'kafra-storage__item__image-amount--broken': item.broken,
+                        'kafra-storage__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                    }"
                         class="kafra-storage__item__image-amount"
                         @click="showItemInfo(item)"
                     >
