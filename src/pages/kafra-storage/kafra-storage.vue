@@ -138,6 +138,8 @@ const kafraStoragePage = {
             if (this.amountModal > this.amountModalMax) {
                 this.amountModal = this.amountModalMax;
             }
+
+            this.amountModal = Math.floor(this.amountModal);
         }
     },
     mounted() {

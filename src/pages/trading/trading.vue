@@ -181,6 +181,8 @@ const tradingPage = {
             if (this.amountModal > this.amountModalMax) {
                 this.amountModal = this.amountModalMax;
             }
+
+            this.amountModal = Math.floor(this.amountModal);
         },
         zenyLeft() {
             if (this.zenyLeft > this.characterZeny) {
