@@ -32,7 +32,7 @@
                     @click="closeItemInfoModal()"
                 >Close</button>
                 <button class="btn btn-danger"
-                    @click="discardItem(id)"
+                    @click="discardItem()"
                 >Discard</button>
 
                 <button v-if="type === 'healing'"
@@ -181,10 +181,12 @@ export default {
                 this.applicableJobs = item.applicableJobs;
             }
         },
-        discardItem(itemId) {
+        discardItem() {
             this.showDiscard = true;
 
-            const foundItem = this.inventory.find((item) => item.itemId === itemId);
+            const foundItem = this.inventory.find((item) => item.itemId === this.id &&
+                item.durability === this.durability &&
+                item.broken === this.broken);
 
             if (foundItem && foundItem.amount > 1) {
                 this.showDiscardItem = foundItem;
