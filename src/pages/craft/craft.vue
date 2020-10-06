@@ -1,0 +1,84 @@
+<template>
+    <div class="craft">
+        <div v-if="loading"
+            class="craft__wrapper"
+        >
+            <loading />
+        </div>
+        <div v-else
+            class="craft__wrapper"
+        >
+            <div v-for="(item, index) in craftableItems"
+                :key="index"
+                class="craft__item"
+            >
+                <div class="craft__item__image-amount"
+                    @click="showItemInfo(item)"
+                >
+                    <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                </div>
+                <div class="craft__item__info">
+                    <div class="craft__item__info__name">{{ item.name }} (Lv: {{ item.level }})</div>
+                    <div class="craft__item__info__materials">Chance: 0% | Time: {{ item.time / 60 }}m</div>
+                    <div class="craft__item__info__chance">Reward: {{ item.reward[0] }} B.Exp, {{ item.reward[1] }} J.Exp</div>
+                </div>
+                <router-link :to="`/craft/${item.itemId}`"
+                    class="craft__item__move"
+                >
+                    <i class="icon icon-anvil" />
+                </router-link>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+// Components
+import loading from '@components/loading/loading.vue';
+
+const craftPage = {
+    components: {
+        loading,
+    },
+    data() {
+        return {
+            loading: true,
+            craftableItems: []
+        };
+    },
+    mounted() {
+        mo.socket.on('getCraftItemsComplete', (response) => {
+            if (response.status) {
+                this.loading = false;
+                this.craftableItems = response.craftableItems;
+            } else {
+                // In case response is not true, then user is not even suppose to be here
+                this.$router.push('/game');
+            }
+        });
+
+        mo.socket.emit('getCraftItems');
+
+        // Hide chat
+        this.$store.commit('showChat', false);
+    },
+    beforeDestroy() {
+        mo.socket.off('getCraftItemsComplete');
+    },
+    methods: {
+        showItemInfo(item) {
+            mo.socket.emit('getItemInfo', {
+                itemId: item.itemId
+            });
+        }
+    }
+};
+
+// Routing
+mo.routes.push({
+    path: '/craft',
+    component: craftPage
+});
+
+export default craftPage;
+</script>

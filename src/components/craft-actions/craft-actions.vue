@@ -2,31 +2,29 @@
     <div class="kafra-actions game__action">
         <div @click="showModal = true">
             <img class="game__action__image"
-                src="/dist/assets/images/shopping.png"
+                src="/dist/assets/images/craft.png"
             >
-            <span class="game__action__name">Shop Dealers</span>
+            <span class="game__action__name">Craft Services</span>
         </div>
 
         <div v-if="showModal"
             class="modal"
         >
-            <div class="modal__header">Shop Dealers</div>
+            <div class="modal__header">Craft Services</div>
             <div class="modal__content kafra-actions__buttons">
                 <button class="btn game-button"
-                    @click="$router.push('/shop?action=buy&type=equipment')"
-                >Equipment Dealer - Buy</button>
+                    @click="$router.push('/repair')"
+                >Blacksmith - Repair Items</button>
 
                 <button class="btn game-button"
-                    @click="$router.push('/shop?action=sell&type=equipment')"
-                >Equipment Dealer - Sell</button>
+                    disabled
+                    @click="$router.push('/craft')"
+                >Blacksmith - Craft item</button>
 
                 <button class="btn game-button"
-                    @click="$router.push('/shop?action=buy&type=tools')"
-                >Tool Dealer - Buy</button>
-
-                <button class="btn game-button"
-                    @click="$router.push('/shop?action=sell&type=tools')"
-                >Tool Dealer - Sell</button>
+                    disabled
+                    @click="$router.push('/craft')"
+                >Alchemy - Craft item</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
@@ -39,7 +37,7 @@
 
 <script>
 export default {
-    name: 'shop-actions',
+    name: 'craft-actions',
     data() {
         return {
             showModal: false

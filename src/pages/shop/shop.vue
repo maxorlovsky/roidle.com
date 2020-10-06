@@ -45,7 +45,10 @@
                     :key="index"
                     class="shop__item"
                 >
-                    <div :class="{'shop__item__image-amount--broken': item.broken}"
+                    <div :class="{
+                        'shop__item__image-amount--broken': item.broken,
+                        'shop__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                    }"
                         class="shop__item__image-amount"
                         @click="showItemInfo(item)"
                     >
@@ -175,6 +178,8 @@ const shopPage = {
             if (this.amountModal > this.amountModalMax) {
                 this.amountModal = this.amountModalMax;
             }
+
+            this.amountModal = Math.floor(this.amountModal);
         }
     },
     mounted() {

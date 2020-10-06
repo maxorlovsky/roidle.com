@@ -6,7 +6,11 @@
             <template v-if="temporaryInventory.length">
                 <div v-for="(item, index) in temporaryInventory"
                     :key="index"
-                    :class="{'trading__inventory-wrapper__item--disabled': leftTradeApproved, 'trading__inventory-wrapper__item--broken': item.broken}"
+                    :class="{
+                        'trading__inventory-wrapper__item--disabled': leftTradeApproved,
+                        'trading__inventory-wrapper__item--broken': item.broken,
+                        'trading__inventory-wrapper__item--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                    }"
                     class="trading__inventory-wrapper__item"
                     @click="addItemToTrade(item)"
                 >
@@ -39,7 +43,10 @@
                             :key="index"
                             class="trading__item"
                         >
-                            <div :class="{'trading__item__image-amount--broken': item.broken}"
+                            <div :class="{
+                                'trading__item__image-amount--broken': item.broken,
+                                'trading__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                            }"
                                 class="trading__item__image-amount"
                                 @click="showItemInfo(item)"
                             >
@@ -78,7 +85,10 @@
                             :key="index"
                             class="trading__item"
                         >
-                            <div :class="{'trading__item__image-amount--broken': item.broken}"
+                            <div :class="{
+                                'trading__item__image-amount--broken': item.broken,
+                                'trading__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                            }"
                                 class="trading__item__image-amount"
                                 @click="showItemInfo(item)"
                             >
@@ -98,6 +108,7 @@
                         <input v-model="zenyRight"
                             type="number"
                             disabled="true"
+                            min="0"
                         > <span>Z</span>
                     </div>
                 </div>
@@ -106,11 +117,11 @@
                 <button class="btn btn-secondary"
                     @click="cancelTrade()"
                 >Cancel trade</button>
-                <button :disabled="buttonLoading || !leftTradeApproved || !rightTradeApproved"
+                <button :disabled="buttonLoading || !leftTradeApproved || !rightTradeApproved || zenyLeft < 0 || zenyLeft > characterZeny"
                     class="btn btn-success"
                     @click="confirmTrade()"
                 >{{ confirmTradeMessage }}</button>
-                <button :disabled="buttonLoading || leftTradeApproved"
+                <button :disabled="buttonLoading || leftTradeApproved || zenyLeft < 0 || zenyLeft > characterZeny"
                     class="btn game-button"
                     @click="lockTrade()"
                 >Lock trade</button>
@@ -180,6 +191,8 @@ const tradingPage = {
             if (this.amountModal > this.amountModalMax) {
                 this.amountModal = this.amountModalMax;
             }
+
+            this.amountModal = Math.floor(this.amountModal);
         },
         zenyLeft() {
             if (this.zenyLeft > this.characterZeny) {

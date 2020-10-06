@@ -35,7 +35,10 @@
                     :key="index"
                     class="kafra-storage__item"
                 >
-                    <div :class="{'kafra-storage__item__image-amount--broken': item.broken}"
+                    <div :class="{
+                        'kafra-storage__item__image-amount--broken': item.broken,
+                        'kafra-storage__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                    }"
                         class="kafra-storage__item__image-amount"
                         @click="showItemInfo(item)"
                     >
@@ -138,6 +141,8 @@ const kafraStoragePage = {
             if (this.amountModal > this.amountModalMax) {
                 this.amountModal = this.amountModalMax;
             }
+
+            this.amountModal = Math.floor(this.amountModal);
         }
     },
     mounted() {
