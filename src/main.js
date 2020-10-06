@@ -25,6 +25,9 @@ import './pages/profile/profile.vue';
 import './pages/hunt-configuration/hunt-configuration.vue';
 import './pages/trading/trading.vue';
 import './pages/trading-list/trading-list.vue';
+import './pages/repair/repair.vue';
+import './pages/craft/craft.vue';
+import './pages/craft/craft-item.vue';
 
 // Router
 import router from './router.js';

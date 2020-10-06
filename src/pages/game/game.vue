@@ -78,6 +78,9 @@
                 <shop-actions v-if="shopsAvailable"
                     :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
                 />
+                <craft-actions v-if="craftAvailable"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                />
                 <dungeon-actions v-if="dungeonAvailable"
                     :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
                 />
@@ -126,6 +129,7 @@ import kafraActions from '@components/kafra-actions/kafra-actions.vue';
 import innActions from '@components/inn-actions/inn-actions.vue';
 import shopActions from '@components/shop-actions/shop-actions.vue';
 import huntActions from '@components/hunt-actions/hunt-actions.vue';
+import craftActions from '@components/craft-actions/craft-actions.vue';
 import dungeonActions from '@components/dungeon-actions/dungeon-actions.vue';
 import puzzleChallenge from '@components/puzzle-challenge/puzzle-challenge.vue';
 import avatar from '@components/avatar/avatar.vue';
@@ -142,6 +146,7 @@ const gamePage = {
         puzzleChallenge,
         avatar,
         tradeWindowRequest,
+        craftActions,
     },
     data() {
         return {
@@ -160,6 +165,7 @@ const gamePage = {
             cancelingTravel: false,
             showChallenge: false,
             showTradeRequest: false,
+            craftAvailable: false
         };
     },
     computed: {
@@ -289,6 +295,12 @@ const gamePage = {
                         this.shopsAvailable = true;
                     } else {
                         this.shopsAvailable = false;
+                    }
+
+                    if (this.currentLocation.craft) {
+                        this.craftAvailable = true;
+                    } else {
+                        this.craftAvailable = false;
                     }
 
                     if (this.currentLocation.dungeonUp || this.currentLocation.dungeonDown) {
