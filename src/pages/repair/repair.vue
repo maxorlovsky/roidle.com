@@ -76,9 +76,7 @@ const repairPage = {
         };
     },
     computed: {
-        computed: {
-            ...mapGetters(['characterZeny'])
-        },
+        ...mapGetters(['characterZeny']),
 
         repairCost() {
             return this.itemsToFix.reduce((acc, value) => acc + value.price, 0);
