@@ -1,6 +1,6 @@
 <template>
     <div class="kafra-actions game__action">
-        <div @click="showModal = true">
+        <div @click="openModal()">
             <img class="game__action__image"
                 src="/dist/assets/images/shopping.png"
             >
@@ -38,6 +38,9 @@
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'shop-actions',
     data() {
@@ -45,7 +48,17 @@ export default {
             showModal: false
         };
     },
+    computed: {
+        ...mapGetters(['characterCrafting'])
+    },
     methods: {
+        openModal() {
+            if (this.characterCrafting) {
+                return false;
+            }
+
+            this.showModal = true;
+        },
         closeModal() {
             this.typeChosen = '';
             this.showModal = false;

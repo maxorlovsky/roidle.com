@@ -46,7 +46,12 @@
                 <i class="icon icon-sword" />
             </router-link>
 
-            <router-link v-if="characterSkills[1] >= 4"
+            <div v-if="characterCrafting"
+                class="game__trade game-icon game__trade--disabled"
+            >
+                <i class="icon icon-trade" />
+            </div>
+            <router-link v-else-if="characterSkills[1] >= 4"
                 to="/trading-list"
                 class="game__trade game-icon"
             >
@@ -57,7 +62,7 @@
                 class="game__actions"
             >
                 <hunt-actions v-if="huntAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
                 />
 
                 <!--<div v-if="outsideActions"
@@ -70,19 +75,20 @@
                 </div>-->
 
                 <kafra-actions v-if="kafraAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
                 />
                 <inn-actions v-if="innAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                    :disabled="characterCrafting"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
                 />
                 <shop-actions v-if="shopsAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
                 />
                 <craft-actions v-if="craftAvailable"
                     :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
                 />
                 <dungeon-actions v-if="dungeonAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
                 />
 
                 <div v-if="huntStatus || travelingToLocation || restInProgress"
@@ -182,7 +188,8 @@ const gamePage = {
             'puzzleChallenge',
             'currentLocation',
             'characterSkills',
-            'tradeRequestId'
+            'tradeRequestId',
+            'characterCrafting'
         ])
     },
     watch: {

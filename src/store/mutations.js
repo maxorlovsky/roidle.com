@@ -3,6 +3,16 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    craftingComplete: (state) => {
+        state.craftTimer = null;
+        state.craftData = null;
+        state.characterCrafting = false;
+    },
+    craftInProgress: (state, value) => {
+        state.craftTimer = value.finishTime;
+        state.craftData = value.craftData;
+        state.characterCrafting = true;
+    },
     tradeRequest: (state, value) => {
         state.tradeRequestId = value.id;
         state.tradeRequestName = value.name;
@@ -610,6 +620,11 @@ export default {
         // Resting
         if (values.restingTime) {
             state.restInProgress = values.restingTime;
+        }
+
+        // Crafting
+        if (values.character.crafting) {
+            state.characterCrafting = true;
         }
 
         // Setting admin state

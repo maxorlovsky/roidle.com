@@ -48,6 +48,9 @@
                 <span v-else-if="huntingDisplay"
                     class="char-info__location__place"
                 >Hunting ({{ huntingDisplay }})</span>
+                <span v-else-if="craftingDisplay"
+                    class="char-info__location__place"
+                >Crafting ({{ craftingDisplay }})</span>
                 <span v-else
                     class="char-info__location__place"
                 >Location: {{ characterLocation }}</span>
@@ -75,10 +78,12 @@ export default {
             travelingDisplay: '',
             restingDisplay: '',
             huntingDisplay: '',
+            craftingDisplay: '',
             interval: null,
             baseExpPercentage: '0.00',
             jobExpPercentage: '0.00',
-            weightPercentage: 0
+            weightPercentage: 0,
+            timerSeconds: 0
         };
     },
     computed: {
@@ -105,7 +110,9 @@ export default {
             'huntStatus',
             'huntEndTimer',
             'characterEquipment',
-            'puzzleChallenge'
+            'puzzleChallenge',
+            'characterCrafting',
+            'craftTimer'
         ]),
 
         currentHpPercentage() {
@@ -178,9 +185,35 @@ export default {
         },
         'characterAttributes.weight'() {
             this.calculateWeightPercentage();
+        },
+        characterCrafting: {
+            immediate: true,
+            handler() {
+                if (this.characterCrafting) {
+                    mo.socket.emit('getCraft');
+                }
+            }
+        },
+        craftTimer: {
+            immediate: true,
+            handler() {
+                if (this.craftTimer) {
+                    this.showNewTimer('crafting', this.craftTimer);
+                } else {
+                    this.resetTimer();
+                }
+            }
         }
     },
     mounted() {
+        mo.socket.on('craftingComplete', () => {
+            this.$store.commit('craftingComplete');
+        });
+
+        mo.socket.on('getCraftComplete', (response) => {
+            this.$store.commit('craftInProgress', response);
+        });
+
         mo.socket.on('initiateTradingComplete', (response) => {
             if (response) {
                 this.$router.push('/trading');
@@ -272,6 +305,8 @@ export default {
     beforeDestroy() {
         this.resetTimer();
 
+        mo.socket.off('craftingComplete');
+        mo.socket.off('getCraftComplete');
         mo.socket.off('initiateTradingComplete');
         mo.socket.off('tradeRequestReceived');
         mo.socket.off('dungeonChallengeInitiate');
@@ -289,9 +324,39 @@ export default {
             this.restingDisplay = '';
             this.travelingDisplay = '';
             this.huntingDisplay = '';
+            this.craftingDisplay = '';
         },
         calculateWeightPercentage() {
             this.weightPercentage = Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight);
+        },
+        showNewTimer(action, seconds) {
+            const displayVariable = 'craftingDisplay';
+
+            this.timerSeconds = seconds;
+
+            this.interval = setInterval(() => {
+                // If timer reached 0, switch user locations and unlock the map
+                if (this.timerSeconds < 0) {
+                    // Reset variable responsible for rest
+                    this.resetTimer();
+
+                    mo.socket.emit('getCraft');
+
+                    return true;
+                }
+
+                // Making display of resting time user friendly
+                const minutes = Math.floor(this.timerSeconds / 60);
+                let seconds = this.timerSeconds - minutes * 60;
+
+                if (seconds <= 9) {
+                    seconds = `0${seconds}`;
+                }
+
+                this[displayVariable] = `${minutes}:${seconds}`;
+
+                this.timerSeconds--;
+            }, 1000);
         },
         showTimer(action) {
             // By default we show timer for travel

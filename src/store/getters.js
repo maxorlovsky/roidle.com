@@ -63,4 +63,7 @@ export default {
     puzzleChallengeNr: (state) => state.puzzleChallengeNr,
     tradeRequestId: (state) => state.tradeRequestId,
     tradeRequestName: (state) => state.tradeRequestName,
+    characterCrafting: (state) => state.characterCrafting,
+    craftTimer: (state) => state.craftTimer,
+    craftData: (state) => state.craftData
 };

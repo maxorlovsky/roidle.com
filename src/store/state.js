@@ -165,5 +165,8 @@ export default {
     puzzleChallenge: null,
     puzzleChallengeNr: 0,
     tradeRequestId: 0,
-    tradeRequestName: ''
+    tradeRequestName: '',
+    characterCrafting: false,
+    craftTimer: null,
+    craftData: null
 };

@@ -1,6 +1,6 @@
 <template>
     <div class="kafra-actions game__action">
-        <div @click="showKafraModal = true">
+        <div @click="openModal()">
             <img class="game__action__image"
                 src="/dist/assets/images/illust/kafra1.png"
             >
@@ -113,7 +113,8 @@ export default {
             'characterLocation',
             'characterZeny',
             'characterSkills',
-            'characterBaseLevel'
+            'characterBaseLevel',
+            'characterCrafting'
         ]),
 
         barberPrice() {
@@ -153,6 +154,13 @@ export default {
         mo.socket.off('characterResetSkillsComplete');
     },
     methods: {
+        openModal() {
+            if (this.characterCrafting) {
+                return false;
+            }
+
+            this.showKafraModal = true;
+        },
         saveLocation() {
             mo.socket.emit('saveLocation');
 

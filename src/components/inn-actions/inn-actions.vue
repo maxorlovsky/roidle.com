@@ -1,6 +1,6 @@
 <template>
     <div class="kafra-actions game__action">
-        <div @click="showModal = true">
+        <div @click="openModal()">
             <img class="game__action__image"
                 src="/dist/assets/images/inn.png"
             >
@@ -58,7 +58,10 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['characterSkills']),
+        ...mapGetters([
+            'characterSkills',
+            'characterCrafting'
+        ]),
 
         cheapInnPrice() {
             return discount(1, this.characterSkills[25]);
@@ -80,6 +83,13 @@ export default {
         mo.socket.off('requestRest');
     },
     methods: {
+        openModal() {
+            if (this.characterCrafting) {
+                return false;
+            }
+
+            this.showModal = true;
+        },
         startRest() {
             mo.socket.emit('requestRest', this.typeChosen);
 
