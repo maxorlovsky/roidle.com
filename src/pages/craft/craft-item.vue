@@ -17,7 +17,7 @@
                 >
                 <div class="craft-item__item__info">
                     <b>{{ craftableItem.name }} (Lv: {{ craftableItem.level }})</b><br>
-                    Craft Time: {{ craftableItem.time / 60 }}m<br>
+                    Craft Time: {{ Math.floor(craftableItem.time / 60) }}m<br>
                     MP Cost: <span :class="{'craft-item__item__info__mp-cost': characterMp < craftableItem.mpCost}">{{ craftableItem.mpCost }}</span><br>
                     Success Chance: {{ craftableItem.chance }}%<br>
                     Reward: {{ craftableItem.reward[0] }} B.Exp, {{ craftableItem.reward[1] }} J.Exp<br>
@@ -34,7 +34,7 @@
                     <img :src="`/dist/assets/images/items/${material.id}.gif`">
                     <div :class="{'craft-item__materials__material__amount--found': inventory.find((item) => item.itemId === material.id && item.amount >= material.amount)}"
                         class="craft-item__materials__material__amount"
-                    >{{ material.amount }}</div>
+                    >{{ userMaterialAmount(material.id) }}/{{ material.amount }}</div>
                 </div>
             </div>
 
@@ -55,6 +55,12 @@
                 <div class="craft-item__price__item">
                     <div class="craft-item__price__item__title">{{ characterLocation }}'s tax ({{ price.tax }}%)</div>
                     <div class="craft-item__price__item__value">{{ price.taxForSmithy }} Z</div>
+                </div>
+                <div v-if="price.discount !== 0"
+                    class="craft-item__price__item craft-item__price__item--discount"
+                >
+                    <div class="craft-item__price__item__title">Discount</div>
+                    <div class="craft-item__price__item__value">-{{ price.discount }} Z</div>
                 </div>
                 <div class="craft-item__price__item craft-item__price__item--total">
                     <div class="craft-item__price__item__title">TOTAL</div>
@@ -152,6 +158,15 @@ const craftItemPage = {
         mo.socket.off('craftItemComplete');
     },
     methods: {
+        userMaterialAmount(itemId) {
+            const findItem = this.inventory.find((item) => item.itemId === itemId);
+
+            if (!findItem) {
+                return 0;
+            }
+
+            return findItem.amount;
+        },
         showItemInfo(itemId) {
             mo.socket.emit('getItemInfo', {
                 itemId: itemId
@@ -167,7 +182,7 @@ const craftItemPage = {
 
 // Routing
 mo.routes.push({
-    path: '/craft/:itemId',
+    path: '/craft-item/:itemId',
     component: craftItemPage
 });
 

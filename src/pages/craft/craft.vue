@@ -1,13 +1,6 @@
 <template>
-    <div :class="{'craft--smithy': characterCrafting && craftData.type === 'weapon'}"
-        class="craft"
-    >
-        <div v-if="loading"
-            class="craft__wrapper"
-        >
-            <loading />
-        </div>
-        <div v-else-if="characterCrafting"
+    <div class="craft">
+        <div v-if="characterCrafting"
             class="craft__wrapper"
         >
             <div class="craft__in-progress">
@@ -29,20 +22,16 @@
                 :key="index"
                 class="craft__item"
             >
-                <div class="craft__item__image-amount"
-                    @click="showItemInfo(item)"
-                >
+                <div class="craft__item__image-amount">
                     <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
                 </div>
                 <div class="craft__item__info">
-                    <div class="craft__item__info__name">{{ item.name }} (Lv: {{ item.level }})</div>
-                    <div class="craft__item__info__materials">Chance: {{ item.chance }}% | Time: {{ item.time / 60 }}m</div>
-                    <div class="craft__item__info__chance">Reward: {{ item.reward[0] }} B.Exp, {{ item.reward[1] }} J.Exp</div>
+                    <div class="craft__item__info__name">{{ item.name }}</div>
                 </div>
-                <router-link :to="`/craft/${item.itemId}`"
+                <router-link :to="`/craft/${item.type}`"
                     class="craft__item__move"
                 >
-                    <i class="icon icon-anvil" />
+                    &gt;
                 </router-link>
             </div>
         </div>
@@ -53,17 +42,26 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
-// Components
-import loading from '@components/loading/loading.vue';
-
 const craftPage = {
-    components: {
-        loading,
-    },
     data() {
         return {
-            loading: true,
-            craftableItems: []
+            craftableItems: [
+                {
+                    itemId: 1101,
+                    type: 'sword',
+                    name: 'Swords'
+                },
+                {
+                    itemId: 1116,
+                    type: '2hsword',
+                    name: '2-handed swords'
+                },
+                {
+                    itemId: 1201,
+                    type: 'knife',
+                    name: 'Daggers'
+                }
+            ]
         };
     },
     computed: {
@@ -73,33 +71,8 @@ const craftPage = {
         ])
     },
     mounted() {
-        mo.socket.on('getCraftItemsComplete', (response) => {
-            if (response.status) {
-                this.loading = false;
-                this.craftableItems = response.craftableItems;
-            } else {
-                // In case response is not true, then user is not even suppose to be here
-                this.$router.push('/game');
-            }
-        });
-
-        mo.socket.emit('getCraftItems');
-
         // Hide chat
         this.$store.commit('showChat', false);
-    },
-    beforeDestroy() {
-        mo.socket.off('getCraftItemsComplete');
-    },
-    methods: {
-        cancelCraft() {
-            mo.socket.emit('cancelCraft');
-        },
-        showItemInfo(item) {
-            mo.socket.emit('getItemInfo', {
-                itemId: item.itemId
-            });
-        }
     }
 };
 

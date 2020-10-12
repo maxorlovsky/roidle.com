@@ -27,6 +27,7 @@ import './pages/trading/trading.vue';
 import './pages/trading-list/trading-list.vue';
 import './pages/repair/repair.vue';
 import './pages/craft/craft.vue';
+import './pages/craft/craft-type.vue';
 import './pages/craft/craft-item.vue';
 
 // Router
