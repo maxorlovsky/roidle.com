@@ -54,12 +54,52 @@ const craftPage = {
                 {
                     itemId: 1116,
                     type: '2hsword',
-                    name: '2-handed swords'
+                    name: '2-handed Swords'
                 },
                 {
                     itemId: 1201,
                     type: 'knife',
                     name: 'Daggers'
+                },
+                {
+                    itemId: 1301,
+                    type: 'axe',
+                    name: 'Axes'
+                },
+                {
+                    itemId: 1351,
+                    type: '2haxe',
+                    name: '2-handed Axes'
+                },
+                {
+                    itemId: 1504,
+                    type: 'mace',
+                    name: 'Maces'
+                },
+                {
+                    itemId: 2101,
+                    type: 'shield',
+                    name: 'Shields'
+                },
+                {
+                    itemId: 2220,
+                    type: 'head',
+                    name: 'Headgears'
+                },
+                {
+                    itemId: 2305,
+                    type: 'body',
+                    name: 'Body Armors'
+                },
+                {
+                    itemId: 2403,
+                    type: 'footgear',
+                    name: 'Footwear'
+                },
+                {
+                    itemId: 2501,
+                    type: 'garment',
+                    name: 'Garments'
                 }
             ]
         };
