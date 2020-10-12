@@ -270,12 +270,6 @@ export default {
         });
 
         mo.socket.on('characterMp', (mp) => {
-            this.$store.commit('setHpMp', {
-                mp: mp
-            });
-        });
-
-        mo.socket.on('characterMp', (mp) => {
             // Set mp to max
             this.$store.commit('setHpMp', {
                 mp: mp

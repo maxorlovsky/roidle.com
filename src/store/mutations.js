@@ -114,11 +114,11 @@ export default {
         state.enableChat = value;
     },
     setHpMp: (state, values) => {
-        if (values.hp) {
+        if (values.hp >= 0) {
             state.characterHp = values.hp;
         }
 
-        if (values.mp) {
+        if (values.mp >= 0) {
             state.characterMp = values.mp;
         }
     },
