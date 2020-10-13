@@ -199,8 +199,6 @@ export default {
             handler() {
                 if (this.craftTimer) {
                     this.showNewTimer('crafting', this.craftTimer);
-                } else {
-                    this.resetTimer();
                 }
             }
         }
