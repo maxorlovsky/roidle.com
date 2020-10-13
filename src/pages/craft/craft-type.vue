@@ -79,7 +79,7 @@ const craftType = {
 
 // Routing
 mo.routes.push({
-    path: '/craft/:type',
+    path: '/craft-type/:type',
     component: craftType
 });
 

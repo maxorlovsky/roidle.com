@@ -28,7 +28,7 @@
                 <div class="craft__item__info">
                     <div class="craft__item__info__name">{{ item.name }}</div>
                 </div>
-                <router-link :to="`/craft/${item.type}`"
+                <router-link :to="`/craft-type/${item.type}`"
                     class="craft__item__move"
                 >
                     &gt;
@@ -81,7 +81,7 @@ const craftPage = {
                     type: 'shield',
                     name: 'Shields'
                 },
-                {
+                /* 1 {
                     itemId: 2220,
                     type: 'head',
                     name: 'Headgears'
@@ -100,7 +100,7 @@ const craftPage = {
                     itemId: 2501,
                     type: 'garment',
                     name: 'Garments'
-                }
+                }*/
             ]
         };
     },
