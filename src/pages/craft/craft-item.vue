@@ -145,9 +145,6 @@ const craftItemPage = {
         mo.socket.on('craftItemComplete', () => {
             mo.socket.emit('getCraft');
 
-            // Show chat
-            this.$store.commit('showChat', true);
-
             this.$router.push('/game');
         });
 

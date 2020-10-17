@@ -109,10 +109,6 @@ const craftPage = {
             'characterCrafting',
             'craftData'
         ])
-    },
-    mounted() {
-        // Hide chat
-        this.$store.commit('showChat', false);
     }
 };
 

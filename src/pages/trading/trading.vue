@@ -290,9 +290,6 @@ const tradingPage = {
         });
 
         mo.socket.emit('getTrading');
-
-        // Hiding chat
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('tradeDone');
@@ -309,9 +306,6 @@ const tradingPage = {
         if (!this.ignoreCancel) {
             this.cancelTrade();
         }
-
-        // Showing chat
-        this.$store.commit('showChat', true);
     },
     methods: {
         confirmTrade() {

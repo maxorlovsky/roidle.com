@@ -15,9 +15,14 @@ $docked-menu: 60px;
     &--toggled {
         bottom: calc(#{$docked-menu} + #{$chat-tabs-height} - #{$chat-height});
 
-        .chat__tabs__tab:not(.chat__tabs__tab__toggle) {
+        .chat__tabs__tab:not(.chat__tabs__tab__toggle):not(.chat__tabs__tab__expand) {
             z-index: -1;
         }
+    }
+    
+    &--expanded {
+        height: calc(80% - 60px);
+        z-index: 9;
     }
 
     .chat-wrapper {
@@ -60,6 +65,34 @@ $docked-menu: 60px;
                 &--toggled {
                     .icon {
                         transform: rotate(180deg);
+                    }
+                }
+
+                .icon {
+                    display: block;
+                    font-size: 0.9rem;
+                }
+            }
+
+            &__expand {
+                position: absolute;
+                right: 40px;
+                min-height: 35px;
+                display: flex;
+                align-items: center;
+
+                .icon {
+                    transform: rotate(180deg);
+
+                    &--second {
+                        position: absolute;
+                        top: 14px;
+                    }
+                }
+
+                &--expanded {
+                    .icon {
+                        transform: rotate(0);
                     }
                 }
 

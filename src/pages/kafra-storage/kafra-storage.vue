@@ -156,9 +156,6 @@ const kafraStoragePage = {
         // Trigger open kafra storage immediately on arrival on the page
         mo.socket.emit('openKafraStorage');
 
-        // Hiding chat
-        this.$store.commit('showChat', false);
-
         mo.socket.on('openKafraStorageComplete', (response) => {
             this.loading = false;
             this.buttonLoading = false;
@@ -193,9 +190,6 @@ const kafraStoragePage = {
     beforeDestroy() {
         mo.socket.off('openKafraStorageComplete');
         mo.socket.off('storageUpdateComplete');
-
-        // Showing chat
-        this.$store.commit('showChat', true);
     },
     methods: {
         // To check that item that is in inventory is not in storage, to be able to move it even in case storage is technically full

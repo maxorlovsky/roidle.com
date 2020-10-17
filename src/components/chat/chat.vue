@@ -1,5 +1,5 @@
 <template>
-    <section :class="{ 'chat--toggled': !showChat }"
+    <section :class="{ 'chat--toggled': !showChat, 'chat--expanded': fullChat }"
         class="chat"
     >
         <div class="chat-wrapper">
@@ -11,6 +11,13 @@
                     @click="selectedTab = index; tabNotification[index] = false; scrollChat()"
                 >{{ chat }} chat</div>
 
+                <div :class="{ 'chat__tabs__tab__expand--expanded': fullChat }"
+                    class="chat__tabs__tab chat__tabs__tab__expand"
+                    @click="expandChat()"
+                >
+                    <i class="icon icon-arrow-down" />
+                    <i class="icon icon--second icon-arrow-down" />
+                </div>
                 <div :class="{ 'chat__tabs__tab__toggle--toggled': !showChat }"
                     class="chat__tabs__tab chat__tabs__tab__toggle"
                     @click="toggleChat()"
@@ -131,7 +138,8 @@ export default {
             selectedTab: 0,
             tabNotification: [false, false, false],
             showChatModal: false,
-            modalCharacterName: ''
+            modalCharacterName: '',
+            fullChat: false,
         };
     },
     computed: {
@@ -234,6 +242,12 @@ export default {
             }
 
             this.scrollChat();
+        },
+        showChat() {
+            // In case chat need to be hidden completely, we need to remove full chat variable
+            if (!this.showChat) {
+                this.fullChat = false;
+            }
         }
     },
     beforeDestroy() {
@@ -325,6 +339,10 @@ export default {
                 .replace(/(?:^|\W)\/e33(?:$|\W)/g, ' <img src="/dist/assets/images/emote/whisp.gif"> ');
 
             return message;
+        },
+        expandChat() {
+            this.fullChat = !this.fullChat;
+            this.$store.commit('showChat', true);
         },
         toggleChat() {
             this.$store.commit('showChat', !this.showChat);

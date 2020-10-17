@@ -109,16 +109,10 @@ const characterSkillsPage = {
         });
 
         mo.socket.emit('getSkillsData');
-
-        // Hiding chat
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('saveSkillsComplete');
         mo.socket.off('getSkillsDataComplete');
-
-        // Showing chat
-        this.$store.commit('showChat', true);
     },
     methods: {
         skillRequirementMet(skill) {
