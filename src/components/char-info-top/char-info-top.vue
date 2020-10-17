@@ -209,7 +209,9 @@ export default {
         });
 
         mo.socket.on('getCraftComplete', (response) => {
-            this.$store.commit('craftInProgress', response);
+            if (response.status) {
+                this.$store.commit('craftInProgress', response);
+            }
         });
 
         mo.socket.on('initiateTradingComplete', (response) => {
