@@ -81,12 +81,12 @@ const craftPage = {
                     type: 'shield',
                     name: 'Shields'
                 },
-                /* 1 {
+                {
                     itemId: 2220,
                     type: 'head',
                     name: 'Headgears'
                 },
-                {
+                /* 1 {
                     itemId: 2305,
                     type: 'body',
                     name: 'Body Armors'
