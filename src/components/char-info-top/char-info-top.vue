@@ -299,18 +299,20 @@ export default {
     beforeDestroy() {
         this.resetTimer();
 
-        mo.socket.off('craftingComplete');
-        mo.socket.off('getCraftComplete');
-        mo.socket.off('initiateTradingComplete');
-        mo.socket.off('tradeRequestReceived');
-        mo.socket.off('dungeonChallengeInitiate');
-        mo.socket.off('getCurrentMapLocationDataComplete');
-        mo.socket.off('checkTravelingTimeComplete');
-        mo.socket.off('travelToMapComplete');
-        mo.socket.off('checkRestingTimeComplete');
-        mo.socket.off('characterHp');
-        mo.socket.off('characterMp');
-        mo.socket.off('stopHuntComplete');
+        if (mo.socket) {
+            mo.socket.off('craftingComplete');
+            mo.socket.off('getCraftComplete');
+            mo.socket.off('initiateTradingComplete');
+            mo.socket.off('tradeRequestReceived');
+            mo.socket.off('dungeonChallengeInitiate');
+            mo.socket.off('getCurrentMapLocationDataComplete');
+            mo.socket.off('checkTravelingTimeComplete');
+            mo.socket.off('travelToMapComplete');
+            mo.socket.off('checkRestingTimeComplete');
+            mo.socket.off('characterHp');
+            mo.socket.off('characterMp');
+            mo.socket.off('stopHuntComplete');
+        }
     },
     methods: {
         resetTimer() {
