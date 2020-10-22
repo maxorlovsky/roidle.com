@@ -86,7 +86,7 @@ const craftPage = {
                     type: 'head',
                     name: 'Headgears'
                 },
-                /* 1 {
+                {
                     itemId: 2305,
                     type: 'body',
                     name: 'Body Armors'
@@ -100,7 +100,7 @@ const craftPage = {
                     itemId: 2501,
                     type: 'garment',
                     name: 'Garments'
-                }*/
+                }
             ]
         };
     },
