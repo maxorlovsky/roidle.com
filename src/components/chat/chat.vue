@@ -122,6 +122,9 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Globals functions
+import { functions } from '@src/functions.js';
+
 export default {
     name: 'chat',
     data() {
@@ -253,6 +256,11 @@ export default {
     beforeDestroy() {
         mo.socket.off('chat');
     },
+    mounted() {
+        if (functions.storage('get', 'hideChat')) {
+            this.$store.commit('showChat', false);
+        }
+    },
     methods: {
         ban(name) {
             if (!this.admin) {
@@ -343,9 +351,17 @@ export default {
         expandChat() {
             this.fullChat = !this.fullChat;
             this.$store.commit('showChat', true);
+            functions.storage('remove', 'hideChat');
         },
         toggleChat() {
             this.$store.commit('showChat', !this.showChat);
+
+            // Save state of the chat in local storage
+            if (this.showChat) {
+                functions.storage('remove', 'hideChat');
+            } else {
+                functions.storage('set', 'hideChat', true);
+            }
         },
         openProfile(name) {
             this.showChatModal = false;
