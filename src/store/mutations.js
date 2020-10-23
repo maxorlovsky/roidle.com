@@ -808,6 +808,15 @@ export default {
         state.partyInvites = 0;
         state.partyLoot = null;
         state.partyHunt = null;
+        state.pushNotification = null;
+        state.currentLocation = null;
+        state.puzzleChallenge = null;
+        state.puzzleChallengeNr = 0;
+        state.tradeRequestId = 0;
+        state.tradeRequestName = null;
+        state.craftTimer = null;
+        state.craftData = null;
+        state.characterCrafting = false;
 
         state.admin = 0;
     }

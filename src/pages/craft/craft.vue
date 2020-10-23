@@ -81,7 +81,7 @@ const craftPage = {
                     type: 'shield',
                     name: 'Shields'
                 },
-                /* 1 {
+                {
                     itemId: 2220,
                     type: 'head',
                     name: 'Headgears'
@@ -100,7 +100,7 @@ const craftPage = {
                     itemId: 2501,
                     type: 'garment',
                     name: 'Garments'
-                }*/
+                }
             ]
         };
     },
@@ -109,10 +109,6 @@ const craftPage = {
             'characterCrafting',
             'craftData'
         ])
-    },
-    mounted() {
-        // Hide chat
-        this.$store.commit('showChat', false);
     }
 };
 

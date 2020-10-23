@@ -199,9 +199,6 @@ const shopPage = {
             mo.socket.emit('getUserItemsForSell', this.$route.query.type);
         }
 
-        // Hiding chat
-        this.$store.commit('showChat', false);
-
         mo.socket.on('getShopItemsForBuyComplete', (response) => {
             this.itemsLeft = response;
             this.loading = false;
@@ -237,9 +234,6 @@ const shopPage = {
         mo.socket.off('getUserItemsForSellComplete');
         mo.socket.off('buyItemsComplete');
         mo.socket.off('sellItemsComplete');
-
-        // Showing chat
-        this.$store.commit('showChat', true);
     },
     methods: {
         showItemInfo(item) {

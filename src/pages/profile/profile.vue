@@ -194,15 +194,9 @@ const profilePage = {
         }
 
         mo.socket.emit('getCharacterInfo', this.$route.params.name);
-
-        // Hiding chat
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('getCharacterInfoComplete');
-
-        // Showing chat
-        this.$store.commit('showChat', true);
     },
     methods: {
         getItemInfo(item) {

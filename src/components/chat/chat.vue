@@ -1,5 +1,5 @@
 <template>
-    <section :class="{ 'chat--toggled': !showChat }"
+    <section :class="{ 'chat--toggled': !showChat, 'chat--expanded': fullChat }"
         class="chat"
     >
         <div class="chat-wrapper">
@@ -11,6 +11,13 @@
                     @click="selectedTab = index; tabNotification[index] = false; scrollChat()"
                 >{{ chat }} chat</div>
 
+                <div :class="{ 'chat__tabs__tab__expand--expanded': fullChat }"
+                    class="chat__tabs__tab chat__tabs__tab__expand"
+                    @click="expandChat()"
+                >
+                    <i class="icon icon-arrow-down" />
+                    <i class="icon icon--second icon-arrow-down" />
+                </div>
                 <div :class="{ 'chat__tabs__tab__toggle--toggled': !showChat }"
                     class="chat__tabs__tab chat__tabs__tab__toggle"
                     @click="toggleChat()"
@@ -115,6 +122,9 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Globals functions
+import { functions } from '@src/functions.js';
+
 export default {
     name: 'chat',
     data() {
@@ -131,7 +141,8 @@ export default {
             selectedTab: 0,
             tabNotification: [false, false, false],
             showChatModal: false,
-            modalCharacterName: ''
+            modalCharacterName: '',
+            fullChat: false,
         };
     },
     computed: {
@@ -234,10 +245,21 @@ export default {
             }
 
             this.scrollChat();
+        },
+        showChat() {
+            // In case chat need to be hidden completely, we need to remove full chat variable
+            if (!this.showChat) {
+                this.fullChat = false;
+            }
         }
     },
     beforeDestroy() {
         mo.socket.off('chat');
+    },
+    mounted() {
+        if (functions.storage('get', 'hideChat')) {
+            this.$store.commit('showChat', false);
+        }
     },
     methods: {
         ban(name) {
@@ -326,8 +348,20 @@ export default {
 
             return message;
         },
+        expandChat() {
+            this.fullChat = !this.fullChat;
+            this.$store.commit('showChat', true);
+            functions.storage('remove', 'hideChat');
+        },
         toggleChat() {
             this.$store.commit('showChat', !this.showChat);
+
+            // Save state of the chat in local storage
+            if (this.showChat) {
+                functions.storage('remove', 'hideChat');
+            } else {
+                functions.storage('set', 'hideChat', true);
+            }
         },
         openProfile(name) {
             this.showChatModal = false;

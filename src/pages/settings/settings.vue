@@ -134,9 +134,6 @@ const settingsPage = {
         }
     },
     mounted() {
-        // Hiding chat
-        this.$store.commit('showChat', false);
-
         if (this.admin) {
             mo.socket.on('getAdminConfigComplete', (response) => {
                 this.allowLogins = response.gameConfig.allowLogins;
@@ -146,9 +143,6 @@ const settingsPage = {
         }
     },
     beforeDestroy() {
-        // Showing chat
-        this.$store.commit('showChat', true);
-
         if (this.admin) {
             mo.socket.off('getAdminConfigComplete');
         }

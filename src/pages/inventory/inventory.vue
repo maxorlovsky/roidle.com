@@ -35,14 +35,6 @@ const inventoryPage = {
             return Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) >= 90;
         }
     },
-    mounted() {
-        // Hiding chat
-        this.$store.commit('showChat', false);
-    },
-    beforeDestroy() {
-        // Showing chat
-        this.$store.commit('showChat', true);
-    },
     methods: {
         showItemInfo(item) {
             // Marking that item is open in inventory of a user

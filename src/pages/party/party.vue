@@ -381,8 +381,6 @@ const partyPage = {
         });
 
         mo.socket.emit('getPartyInvites');
-
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('partyInviteDeclineComplete');
@@ -393,8 +391,6 @@ const partyPage = {
         mo.socket.off('updatePartyComplete');
         mo.socket.off('organizePartyComplete');
         mo.socket.off('partyInviteComplete');
-
-        this.$store.commit('showChat', true);
     },
     methods: {
         declineInvite(partyId) {

@@ -208,15 +208,9 @@ const characterPage = {
                 ]);
             }
         });
-
-        // Hiding chat
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('getEquipableItemsComplete');
-
-        // Showing chat
-        this.$store.commit('showChat', true);
     },
     methods: {
         showItemInfo(item) {

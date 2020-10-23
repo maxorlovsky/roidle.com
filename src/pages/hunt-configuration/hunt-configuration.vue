@@ -301,16 +301,10 @@ const huntConfigurationPage = {
 
         // Trigger to fetch already existing user config
         mo.socket.emit('getHuntConfiguration');
-
-        // Hiding chat
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('getHealingItemsComplete');
         mo.socket.off('getSkillsDataComplete');
-
-        // Showing chat
-        this.$store.commit('showChat', true);
     },
     methods: {
         saveHuntConfig() {

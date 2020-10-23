@@ -58,9 +58,6 @@ const craftType = {
         });
 
         mo.socket.emit('getCraftItems', this.$route.params.type);
-
-        // Hide chat
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('getCraftItemsComplete');

@@ -148,15 +148,11 @@ const questsPage = {
 
         // Sending request to fetch available quests for the character
         mo.socket.emit('fetchQuests');
-
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('finishQuestComplete');
         mo.socket.off('fetchQuestsComplete');
         mo.socket.off('reviewQuestComplete');
-
-        this.$store.commit('showChat', true);
     },
     methods: {
         showQuest(quest) {

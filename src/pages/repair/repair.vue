@@ -102,15 +102,9 @@ const repairPage = {
         });
 
         mo.socket.emit('getBrokenItems');
-
-        // Hide chat
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('getBrokenItemsComplete');
-
-        // Hide chat
-        this.$store.commit('showChat', true);
     },
     methods: {
         repairItems() {

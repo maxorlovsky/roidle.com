@@ -85,15 +85,9 @@ const tradingListPage = {
         });
 
         mo.socket.emit('getListForTrading');
-
-        // Hiding chat
-        this.$store.commit('showChat', false);
     },
     beforeDestroy() {
         mo.socket.off('getListForTradingComplete');
-
-        // Showing chat
-        this.$store.commit('showChat', true);
     },
     methods: {
         viewCharacter(name) {
