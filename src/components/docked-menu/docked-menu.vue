@@ -18,7 +18,7 @@
                 />
             </router-link>
 
-            <div :class="{'docked-menu__button--disabled': currentLocation.dungeon}"
+            <div :class="{'docked-menu__button--disabled': !currentLocation || (currentLocation && currentLocation.dungeon)}"
                 class="docked-menu__button docked-menu__button--map"
                 @click="travelToMap()"
             ><img src="/dist/assets/images/compass.png"></div>

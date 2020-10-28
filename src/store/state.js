@@ -161,7 +161,7 @@ export default {
     partyHunt: null,
     isGuest: false,
     pushNotification: '',
-    currentLocation: '',
+    currentLocation: null,
     puzzleChallenge: null,
     puzzleChallengeNr: 0,
     tradeRequestId: 0,
