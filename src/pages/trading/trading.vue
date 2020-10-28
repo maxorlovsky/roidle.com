@@ -9,7 +9,8 @@
                     :class="{
                         'trading__inventory-wrapper__item--disabled': leftTradeApproved,
                         'trading__inventory-wrapper__item--broken': item.broken,
-                        'trading__inventory-wrapper__item--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                        'trading__inventory-wrapper__item--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
+                        'trading__inventory-wrapper__item--high-quality': item.durability && item.durability > item.defaultDurability
                     }"
                     class="trading__inventory-wrapper__item"
                     @click="addItemToTrade(item)"
@@ -45,7 +46,8 @@
                         >
                             <div :class="{
                                 'trading__item__image-amount--broken': item.broken,
-                                'trading__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                                'trading__item__image-amount--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
+                                'trading__item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
                             }"
                                 class="trading__item__image-amount"
                                 @click="showItemInfo(item)"
@@ -87,7 +89,8 @@
                         >
                             <div :class="{
                                 'trading__item__image-amount--broken': item.broken,
-                                'trading__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                                'trading__item__image-amount--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
+                                'trading__item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
                             }"
                                 class="trading__item__image-amount"
                                 @click="showItemInfo(item)"

@@ -96,6 +96,10 @@
             justify-content: center;
             cursor: pointer;
 
+            &--high-quality {
+                border: 2px solid #090;
+            }
+
             &--not-pristine {
                 border: 3px solid #ff8c2a;
             }
@@ -168,6 +172,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
+            &--high-quality {
+                border: 2px solid #090;
+            }
 
             &--not-pristine {
                 border: 3px solid #ff8c2a;

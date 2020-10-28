@@ -37,13 +37,15 @@
                 >
                     <div :class="{
                         'kafra-storage__item__image-amount--broken': item.broken,
-                        'kafra-storage__item__image-amount--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                        'kafra-storage__item__image-amount--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
+                        'kafra-storage__item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
                     }"
                         class="kafra-storage__item__image-amount"
                         @click="showItemInfo(item)"
                     >
                         <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
-                        <span v-if="item.type !== 'weapon' && item.type !== 'armor'">{{ item.amount }}</span>
+                        <span v-if="item.maxDurability">{{ item.durability }}/{{ item.maxDurability }}</span>
+                        <span v-else>{{ item.amount }}</span>
                     </div>
                     <div class="kafra-storage__item__name-price">
                         <div class="kafra-storage__item__name-price__name">{{ item.itemName }}</div>
