@@ -11,32 +11,39 @@
             <div class="repair__items-list">
                 <div class="repair__title">Items to repair</div>
 
-                <div v-for="(item, index) in brokenItems"
-                    :key="index"
-                    class="repair__item"
-                >
-                    <div :class="{
-                            'repair__item__image-amount--broken': item.broken,
-                            'repair__item__image-amount--not-pristine': item.durability < item.maxDurability
-                        }"
-                        class="repair__item__image-amount"
-                        @click="showItemInfo(item)"
+                <template v-if="brokenItems && brokenItems.length">
+                    <div v-for="(item, index) in brokenItems"
+                        :key="index"
+                        class="repair__item"
                     >
-                        <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                        <div :class="{
+                                'repair__item__image-amount--broken': item.broken,
+                                'repair__item__image-amount--not-pristine': item.durability < item.maxDurability
+                            }"
+                            class="repair__item__image-amount"
+                            @click="showItemInfo(item)"
+                        >
+                            <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                        </div>
+                        <div class="repair__item__info">
+                            <div class="repair__item__info__name">{{ item.name }}</div>
+                            <div class="repair__item__info__durability">{{ item.durability }} / {{ item.maxDurability }}</div>
+                            <div class="repair__item__info__cost">Cost: {{ item.price }} Z</div>
+                        </div>
+                        <div v-if="item.added"
+                            class="repair__item__add"
+                            @click="removeItem(item)"
+                        >-</div>
+                        <div v-else
+                            class="repair__item__add"
+                            @click="addItem(item)"
+                        >+</div>
                     </div>
-                    <div class="repair__item__info">
-                        <div class="repair__item__info__name">{{ item.name }}</div>
-                        <div class="repair__item__info__durability">{{ item.durability }} / {{ item.maxDurability }}</div>
-                        <div class="repair__item__info__cost">Cost: {{ item.price }} Z</div>
-                    </div>
-                    <div v-if="item.added"
-                        class="repair__item__add"
-                        @click="removeItem(item)"
-                    >-</div>
-                    <div v-else
-                        class="repair__item__add"
-                        @click="addItem(item)"
-                    >+</div>
+                </template>
+                <div v-else
+                    class="repair__items-list__empty"
+                >
+                    No items to repair
                 </div>
             </div>
 
