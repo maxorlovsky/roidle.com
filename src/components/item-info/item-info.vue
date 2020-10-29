@@ -39,7 +39,7 @@
                     @click="discardItem()"
                 >Discard</button>
 
-                <button v-if="type === 'healing' || type === 'consumable'"
+                <button v-if="type === 'healing' || (type === 'consumable' && id === 602)"
                     class="btn game-button"
                     @click="useItem(id)"
                 >Use</button>
