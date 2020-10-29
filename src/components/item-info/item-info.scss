@@ -86,6 +86,10 @@
         }
     }
 
+    &--high-quality {
+        border: 2px solid #090;
+    }
+
     &--not-pristine {
         border: 2px solid #ff8c2a;
     }

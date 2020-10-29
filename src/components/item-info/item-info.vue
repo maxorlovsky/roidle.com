@@ -2,7 +2,8 @@
     <div v-if="show"
         :class="{
             'item-info--broken': broken,
-            'item-info--not-pristine': durability >= 0 && durability !== null && durability < defaultDurability
+            'item-info--not-pristine': durability >= 0 && durability !== null && durability < defaultDurability,
+            'item-info--high-quality': durability && durability > defaultDurability
         }"
         class="item-info"
         @click="!selfBagItemInfo ? show = false : null"
@@ -17,7 +18,7 @@
                 <div v-if="params">Params: <b>{{ params }}</b></div>
                 <div v-if="requiredLevel">Required Level: {{ requiredLevel }}</div>
 
-                <div v-if="durability >= 0 && durability !== null && defaultDurability">Durability: <span :class="{'item-info__high-durability': durability > defaultDurability, 'item-info__low-durability': durability < defaultDurability}">{{ durability }}</span> / {{ defaultDurability }}</div>
+                <div v-if="durability >= 0 && durability !== null && defaultDurability">Durability: <span :class="{'item-info__high-durability': durability > defaultDurability, 'item-info__low-durability': durability < defaultDurability}">{{ durability }}</span> / {{ maxDurability }}</div>
                 <div v-else-if="defaultDurability">Durability: {{ defaultDurability }} / {{ defaultDurability }}</div>
 
                 <div v-if="broken"
@@ -38,7 +39,7 @@
                     @click="discardItem()"
                 >Discard</button>
 
-                <button v-if="type === 'healing'"
+                <button v-if="type === 'healing' || (type === 'consumable' && id === 602)"
                     class="btn game-button"
                     @click="useItem(id)"
                 >Use</button>
@@ -92,6 +93,7 @@ export default {
             twoHanded: false,
             requiredLevel: 0,
             durability: null,
+            maxDurability: null,
             defaultDurability: 0,
             weight: 0,
             applicableJob: '',
@@ -149,6 +151,7 @@ export default {
             this.description = item.description ? item.description : '';
             this.params = '';
             this.durability = null;
+            this.maxDurability = null;
             this.defaultDurability = 0;
             this.requiredLevel = 0;
             this.weight = item.weight;
@@ -166,6 +169,10 @@ export default {
 
             if (item.durability >= 0) {
                 this.durability = item.durability;
+            }
+
+            if (item.maxDurability >= 0) {
+                this.maxDurability = item.maxDurability;
             }
 
             if (item.defaultDurability) {

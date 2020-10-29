@@ -8,50 +8,78 @@
         <div v-else
             class="repair__wrapper"
         >
-            <div v-for="(item, index) in brokenItems"
-                :key="index"
-                class="repair__item"
-            >
-                <div :class="{
-                        'repair__item__image-amount--broken': item.broken,
-                        'repair__item__image-amount--not-pristine': item.durability < item.maxDurability
-                    }"
-                    class="repair__item__image-amount"
-                    @click="showItemInfo(item)"
-                >
-                    <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
-                </div>
-                <div class="repair__item__info">
-                    <div class="repair__item__info__name">{{ item.name }}</div>
-                    <div class="repair__item__info__durability">{{ item.durability }} / {{ item.maxDurability }}</div>
-                    <div class="repair__item__info__cost">Cost: {{ item.price }} Z</div>
-                </div>
-                <div v-if="item.added"
-                    class="repair__item__add"
-                    @click="removeItem(item)"
-                >-</div>
+            <div class="repair__items-list">
+                <div class="repair__title">Items to repair</div>
+
+                <template v-if="brokenItems && brokenItems.length">
+                    <div v-for="(item, index) in brokenItems"
+                        :key="index"
+                        class="repair__item"
+                    >
+                        <div :class="{
+                                'repair__item__image-amount--broken': item.broken,
+                                'repair__item__image-amount--not-pristine': item.durability < item.maxDurability
+                            }"
+                            class="repair__item__image-amount"
+                            @click="showItemInfo(item)"
+                        >
+                            <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                        </div>
+                        <div class="repair__item__info">
+                            <div class="repair__item__info__name">{{ item.name }}</div>
+                            <div class="repair__item__info__durability">{{ item.durability }} / {{ item.maxDurability }}</div>
+                            <div class="repair__item__info__cost">Cost: {{ item.price }} Z</div>
+                        </div>
+                        <div v-if="item.added"
+                            class="repair__item__add"
+                            @click="removeItem(item)"
+                        >-</div>
+                        <div v-else
+                            class="repair__item__add"
+                            @click="addItem(item)"
+                        >+</div>
+                    </div>
+                </template>
                 <div v-else
-                    class="repair__item__add"
-                    @click="addItem(item)"
-                >+</div>
+                    class="repair__items-list__empty"
+                >
+                    No items to repair
+                </div>
             </div>
 
-            <div class="repair__information">Your items have a <b>chance to completely destroy item during repair</b>, in this case you will pay only half the price of the attempt to fix your item. Select items that you want to repair on the right and click button at the bottom. Or click repair all if you have enough zeny.</div>
-
-            <div class="repair__repair">
-                <div class="repair__repair__cost">{{ repairCost }} Z | {{ itemsToFix.length }} items</div>
-                <button :disabled="!itemsToFix.length || characterZeny < repairCost || buttonLoading"
-                    class="btn game-button"
-                    @click="repairItems()"
-                >Repair</button>
+            <div class="repair__price">
+                <div class="repair__price__title">Price</div>
+                <div class="repair__price__item">
+                    <div class="repair__price__item__title">Repair cost</div>
+                    <div class="repair__price__item__value">{{ repairCost }} Z</div>
+                </div>
+                <div class="repair__price__item">
+                    <div class="repair__price__item__title">Items amount</div>
+                    <div class="repair__price__item__value">{{ itemsToFix.length }}</div>
+                </div>
+                <div class="repair__price__item">
+                    <div class="repair__price__item__title">{{ characterLocation }}'s tax ({{ price.tax }}%)</div>
+                    <div class="repair__price__item__value">{{ taxPrice }} Z</div>
+                </div>
+                <div v-if="price.discount !== 0"
+                    class="repair__price__item repair__price__item--discount"
+                >
+                    <div class="repair__price__item__title">Discount</div>
+                    <div class="repair__price__item__value">
+                        <template v-if="discountPrice > 0">-</template>
+                        {{ discountPrice }} Z
+                    </div>
+                </div>
+                <div class="repair__price__item repair__price__item--total">
+                    <div class="repair__price__item__title">TOTAL</div>
+                    <div class="repair__price__item__value">{{ totalCost }} Z</div>
+                </div>
             </div>
 
-            <div class="repair__repair-all">
-                <button :disabled="characterZeny < repairCost || buttonLoading"
-                    class="btn btn-lg game-button"
-                    @click="repairAllItems()"
-                >Repair All ({{ fullRepairCost }} Z)</button>
-            </div>
+            <button :disabled="!itemsToFix.length || characterZeny < repairCost || buttonLoading"
+                class="btn btn-lg game-button repair__button"
+                @click="repairItems()"
+            >Repair</button>
         </div>
     </div>
 </template>
@@ -72,18 +100,31 @@ const repairPage = {
             loading: true,
             buttonLoading: false,
             brokenItems: [],
-            itemsToFix: []
+            itemsToFix: [],
+            price: {
+                tax: 0,
+                discount: 0
+            }
         };
     },
     computed: {
-        ...mapGetters(['characterZeny']),
+        ...mapGetters([
+            'characterZeny',
+            'characterLocation'
+        ]),
 
         repairCost() {
             return this.itemsToFix.reduce((acc, value) => acc + value.price, 0);
         },
-        fullRepairCost() {
-            return this.brokenItems.reduce((acc, value) => acc + value.price, 0);
+        taxPrice() {
+            return Math.floor(this.repairCost * (this.price.tax / 100)) || 0;
         },
+        discountPrice() {
+            return Math.floor((this.repairCost + this.taxPrice) * this.price.discount / 100) || 0;
+        },
+        totalCost() {
+            return this.repairCost + this.taxPrice - this.discountPrice;
+        }
     },
     mounted() {
         mo.socket.on('repairItemsComplete', (response) => {
@@ -99,6 +140,8 @@ const repairPage = {
             this.loading = false;
             this.buttonLoading = false;
             this.brokenItems = response.brokenItems;
+            this.price.tax = response.tax;
+            this.price.discount = response.discount;
         });
 
         mo.socket.emit('getBrokenItems');
@@ -112,14 +155,6 @@ const repairPage = {
 
             this.buttonLoading = true;
             this.itemsToFix.map((item) => ids.push(item.id));
-
-            mo.socket.emit('repairItems', ids);
-        },
-        repairAllItems() {
-            const ids = [];
-
-            this.buttonLoading = true;
-            this.brokenItems.map((item) => ids.push(item.id));
 
             mo.socket.emit('repairItems', ids);
         },

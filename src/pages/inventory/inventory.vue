@@ -6,13 +6,19 @@
                 :key="index"
                 :class="{
                     'inventory__item--broken': item.broken,
-                    'inventory__item--not-pristine': item.maxDurability && item.durability < item.maxDurability
+                    'inventory__item--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
+                    'inventory__item--high-quality': item.durability && item.durability > item.defaultDurability
                 }"
                 class="inventory__item"
                 @click="showItemInfo(item)"
             >
                 <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
-                <span class="inventory__item__amount">{{ item.amount }}</span>
+                <span v-if="item.maxDurability"
+                    class="inventory__item__amount"
+                >{{ item.durability }}/{{ item.maxDurability }}</span>
+                <span v-else
+                    class="inventory__item__amount"
+                >{{ item.amount }}</span>
             </div>
         </div>
     </section>

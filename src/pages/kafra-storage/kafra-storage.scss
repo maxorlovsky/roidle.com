@@ -110,6 +110,10 @@
             justify-content: center;
             cursor: pointer;
 
+            &--high-quality {
+                border: 2px solid #090;
+            }
+
             &--not-pristine {
                 border: 3px solid #ff8c2a;
             }
@@ -126,7 +130,7 @@
                 position: absolute;
                 bottom: -5px;
                 right: 0;
-                font-size: 0.8rem;
+                font-size: 0.7rem;
                 color: #fff;
             }
         }
