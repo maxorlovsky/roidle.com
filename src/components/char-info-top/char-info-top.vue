@@ -244,6 +244,14 @@ export default {
             });
         });
 
+        mo.socket.on('updateLocation', (response) => {
+            // Stop traveling, save new location
+            this.$store.commit('saveLocation', {
+                location: response.location,
+                locationId: response.locationId
+            });
+        });
+
         mo.socket.on('travelToMapComplete', (response) => {
             this.$store.commit('saveTraveling', {
                 time: response.traveling.arrivalTime,
