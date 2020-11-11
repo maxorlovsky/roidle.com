@@ -29,6 +29,10 @@ import './pages/repair/repair.vue';
 import './pages/craft/craft.vue';
 import './pages/craft/craft-type.vue';
 import './pages/craft/craft-item.vue';
+import './pages/players-shops/players-shops.vue';
+import './pages/players-shops/players-shops-open.vue';
+import './pages/players-shops/players-shops-view.vue';
+import './pages/players-shops/players-shops-manage.vue';
 
 // Router
 import router from './router.js';
