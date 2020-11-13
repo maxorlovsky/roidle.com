@@ -34,29 +34,43 @@
                 <div class="game__party__name">Party: {{ partyName || '--' }}</div>
             </div>
 
-            <router-link to="/settings"
-                class="game__settings game-icon"
-            >
-                <i class="icon icon-settings" />
-            </router-link>
+            <div class="game__additions">
+                <router-link to="/settings"
+                    class="game__settings game-icon"
+                >
+                    <i class="icon icon-settings" />
+                </router-link>
 
-            <router-link to="/hunt-configuration"
-                class="game__hunt-config game-icon"
-            >
-                <i class="icon icon-sword" />
-            </router-link>
+                <router-link to="/hunt-configuration"
+                    class="game__hunt-config game-icon"
+                >
+                    <i class="icon icon-sword" />
+                </router-link>
 
-            <div v-if="characterCrafting"
-                class="game__trade game-icon game__trade--disabled"
-            >
-                <i class="icon icon-trade" />
+                <div v-if="characterCrafting"
+                    class="game__trade game-icon game__additions--disabled"
+                >
+                    <i class="icon icon-trade" />
+                </div>
+                <router-link v-else-if="characterSkills[1] >= 4"
+                    to="/trading-list"
+                    class="game__trade game-icon"
+                >
+                    <i class="icon icon-trade" />
+                </router-link>
+
+                <div v-if="characterCrafting"
+                    class="game__transmutation game-icon game__additions--disabled"
+                >
+                    <i class="icon icon-transmutation" />
+                </div>
+                <router-link v-else-if="characterSkills[28] >= 1"
+                    to="/transmute-items"
+                    class="game__transmutation game-icon"
+                >
+                    <i class="icon icon-transmutation" />
+                </router-link>
             </div>
-            <router-link v-else-if="characterSkills[1] >= 4"
-                to="/trading-list"
-                class="game__trade game-icon"
-            >
-                <i class="icon icon-trade" />
-            </router-link>
 
             <div v-if="showActions"
                 class="game__actions"
