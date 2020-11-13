@@ -33,6 +33,8 @@ import './pages/players-shops/players-shops.vue';
 import './pages/players-shops/players-shops-open.vue';
 import './pages/players-shops/players-shops-view.vue';
 import './pages/players-shops/players-shops-manage.vue';
+import './pages/transmute-items/transmute-items.vue';
+import './pages/transmute-items/transmute-items-item.vue';
 
 // Router
 import router from './router.js';
