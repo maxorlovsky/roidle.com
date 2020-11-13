@@ -53,6 +53,7 @@
         align-items: center;
         flex-wrap: wrap;
         margin: 0.5rem;
+        width: 75%;
 
         &__slot {
             border: 1px solid #fff;
@@ -133,6 +134,26 @@
         }
     }
 
+    &__additions {
+        position: absolute;
+        top: 0.5rem;
+        right: 1rem;
+
+        a,
+        div {
+            color: #fff;
+            margin-bottom: 0.5rem;
+
+            &:hover {
+                color: #666;
+            }
+        }
+
+        &--disabled {
+            opacity: 0.7;
+        }
+    }
+
     &__actions {
         display: flex;
         align-items: center;
@@ -202,30 +223,6 @@
         .btn {
             display: block;
             margin: 0.2rem auto;
-        }
-    }
-
-    &__settings,
-    &__hunt-config,
-    &__trade {
-        position: absolute;
-        right: 1rem;
-        color: #fff;
-    }
-
-    &__settings {
-        top: 0.5rem;
-    }
-
-    &__hunt-config {
-        top: calc(1rem + 60px);
-    }
-
-    &__trade {
-        top: calc(1.5rem + 120px);
-
-        &--disabled {
-            opacity: 0.7;
         }
     }
 }

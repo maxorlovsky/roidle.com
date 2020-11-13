@@ -1,0 +1,147 @@
+.transmute-items {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("#{$assets}/images/backgrounds/transmutation.jpg");
+    position: relative;
+
+    p {
+        margin-bottom: 0;
+        font-size: 0.8rem;
+    }
+
+    &__wrapper {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 1rem 0 35px 0;
+        width: 100%;
+    }
+
+    &__title {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 1.5rem;
+        word-break: break-all;
+    }
+
+    &__item-title {
+        display: block;
+        width: 100%;
+        padding: 0.3rem 0;
+        text-align: center;
+        font-size: 1.2rem;
+        word-break: break-all;
+    }
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        width: 90%;
+        margin: 1rem auto;
+        border: 2px solid $mainColor;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 1rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+
+        &__empty {
+            width: 100%;
+            font-size: 0.8rem;
+            font-style: italic;
+            text-align: center;
+            padding: 0.5rem 0;
+        }
+    }
+
+    &__materials-list {
+        display: flex;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        &__image-amount {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            border: 3px solid #808080;
+            border-radius: 8px;
+            margin: 1rem 0.3rem 1rem 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            &--high-quality {
+                border: 2px solid #090;
+            }
+
+            &--not-pristine {
+                border: 3px solid #ff8c2a;
+            }
+
+            &--broken {
+                border: 3px solid #c00;
+            }
+    
+            img {
+                width: 60%;
+            }
+        }
+
+        &__amount {
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            color: #fff;
+            font-size: 0.8rem;
+
+            &--not-enough {
+                color: #c00;
+            }
+        }
+
+        &__info {
+            font-size: 0.8rem;
+
+            &--not-enough {
+                color: #c00;
+            }
+
+            > div {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &__set-price {
+            width: 95px;
+
+            input[type="number"] {
+                width: 80px;
+            }
+        }
+
+        &__move {
+            width: 45px;
+            height: 45px;
+            border: 3px solid #808080;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+
+            &--disabled {
+                opacity: 0.5;
+            }
+        }
+    }
+}

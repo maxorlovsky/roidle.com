@@ -53,7 +53,10 @@
                                 @click="showItemInfo(item)"
                             >
                                 <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
-                                <span>{{ item.amount }}</span>
+                                <span v-if="item.maxDurability">
+                                    {{ item.durability }}/{{ item.maxDurability }}
+                                </span>
+                                <span v-else>{{ item.amount }}</span>
                             </div>
                             <div class="trading__item__name-price">
                                 <div class="trading__item__name-price__name">{{ item.name }}</div>
@@ -96,7 +99,10 @@
                                 @click="showItemInfo(item)"
                             >
                                 <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
-                                <span>{{ item.amount }}</span>
+                                <span v-if="item.maxDurability">
+                                    {{ item.durability }}/{{ item.maxDurability }}
+                                </span>
+                                <span v-else>{{ item.amount }}</span>
                             </div>
                             <div class="trading__item__name-price">
                                 <div class="trading__item__name-price__name">{{ item.name }}</div>
