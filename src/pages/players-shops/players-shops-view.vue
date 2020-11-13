@@ -119,7 +119,7 @@ const viewPlayersShopPage = {
     mounted() {
         if (!this.$route.params.id) {
             // In this case we redirect user to the list of shop
-            this.$router.push('/players-shops');
+            this.$router.go(-1);
         }
 
         mo.socket.on('shopBuyItemComplete', (response) => {
@@ -139,7 +139,7 @@ const viewPlayersShopPage = {
             // If response is false, meaning that shop does not exist in this case system message must be sent to the user
             if (!response) {
                 // In this case we redirect user to the list of shop
-                this.$router.push('/players-shops');
+                this.$router.go(-1);
             }
 
             this.shopId = response.id;
