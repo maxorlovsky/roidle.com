@@ -59,7 +59,7 @@
                     <i class="icon icon-trade" />
                 </router-link>
 
-                <div v-if="characterCrafting"
+                <div v-if="characterSkills[28] >= 1 && huntStatus"
                     class="game__transmutation game-icon game__additions--disabled"
                 >
                     <i class="icon icon-transmutation" />
