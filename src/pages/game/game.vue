@@ -89,7 +89,7 @@
                 </div>-->
 
                 <kafra-actions v-if="kafraAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
+                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
                 />
                 <inn-actions v-if="innAvailable"
                     :disabled="characterCrafting"
