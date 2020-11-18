@@ -4,7 +4,7 @@
             class="craft__wrapper"
         >
             <div class="craft__in-progress">
-                You are crafting <b>{{ craftData.name }} (Lv: {{ craftData.level }})</b> at the moment. Your chance for success is {{ craftData.successChance }}%.<br>
+                You are crafting <b>{{ craftData.name }} (Lv: {{ craftData.level }})</b> <span v-if="craftData.amount > 1">(x{{ craftData.amount }})</span> at the moment. Your chance for success is {{ craftData.successChance }}%.<br>
                 <img :src="`/dist/assets/images/items/large/${craftData.itemId}.gif`">
 
                 <div class="craft__in-progress__button">
@@ -100,6 +100,11 @@ const craftPage = {
                     itemId: 2501,
                     type: 'garment',
                     name: 'Garments'
+                },
+                {
+                    itemId: 501,
+                    type: 'potions',
+                    name: 'Healing Potions'
                 }
             ]
         };

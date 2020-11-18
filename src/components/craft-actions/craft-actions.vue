@@ -17,15 +17,10 @@
                     @click="$router.push('/repair')"
                 >Blacksmith - Repair Items</button>
 
-                <button :disabled="disableSmithy"
+                <button :disabled="disableCraft"
                     class="btn game-button"
                     @click="$router.push('/craft')"
-                >Blacksmith - Craft item</button>
-
-                <button :disabled="disableChemistry || characterCrafting"
-                    class="btn game-button"
-                    @click="$router.push('/craft')"
-                >Alchemy - Craft item</button>
+                >Craft items</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
@@ -45,8 +40,7 @@ export default {
     data() {
         return {
             showModal: false,
-            disableSmithy: true,
-            disableChemistry: true
+            disableCraft: true
         };
     },
     computed: {
@@ -59,10 +53,10 @@ export default {
         characterSkills: {
             immediate: true,
             handler() {
-                if (this.characterSkills[29] >= 1 || this.characterSkills[30] >= 1) {
-                    this.disableSmithy = false;
+                if (this.characterSkills[29] >= 1 || this.characterSkills[30] >= 1 || this.characterSkills[36] >= 1) {
+                    this.disableCraft = false;
                 } else {
-                    this.disableSmithy = true;
+                    this.disableCraft = true;
                 }
             }
         }
