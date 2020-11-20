@@ -18,7 +18,7 @@
                 @click="selectMap(location.id)"
             >
                 <template v-if="location.id < 999">
-                    <img :src="`/dist/assets/images/map/${location.mapFile}.png`">
+                    <img :src="`${serverUrl}/dist/assets/images/map/${location.mapFile}.png`">
                     <div class="map__piece__name">{{ location.name }}</div>
                     <div v-if="location.level"
                         :class="{'map__piece__levels--too-high': location.level[0] > characterBaseLevel, 'map__piece__levels--too-low': location.level[1] < characterBaseLevel - 5 }"
@@ -109,7 +109,8 @@ const mapPage = {
             'characterAttributes',
             'partyMembers',
             'currentLocation',
-            'characterCrafting'
+            'characterCrafting',
+            'serverUrl'
         ])
     },
     watch: {

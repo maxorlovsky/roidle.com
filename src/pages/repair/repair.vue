@@ -23,7 +23,7 @@
                             class="repair__item__image-amount"
                             @click="showItemInfo(item)"
                         >
-                            <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                            <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                         </div>
                         <div class="repair__item__info">
                             <div class="repair__item__info__name">{{ item.name }}</div>
@@ -110,7 +110,8 @@ const repairPage = {
     computed: {
         ...mapGetters([
             'characterZeny',
-            'characterLocation'
+            'characterLocation',
+            'serverUrl'
         ]),
 
         repairCost() {

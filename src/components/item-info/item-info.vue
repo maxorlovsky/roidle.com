@@ -9,7 +9,7 @@
         @click="!selfBagItemInfo ? show = false : null"
     >
         <div class="item-info-wrapper">
-            <img :src="`/dist/assets/images/items/large/${itemId}.gif`"
+            <img :src="`${serverUrl}/dist/assets/images/items/large/${itemId}.gif`"
                 class="item-info__illustration"
             >
             <div class="item-info__description">
@@ -84,7 +84,7 @@
                         :key="material.itemId"
                         class="item-info__repair__materials__material"
                     >
-                        <img :src="`/dist/assets/images/items/${material.itemId}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${material.itemId}.gif`">
                         <div :class="{'item-info__repair__materials__material__amount--found': haveEnoughMaterials(material)}"
                             class="item-info__repair__materials__material__amount"
                         >{{ material.amount }}/{{ userMaterialAmount(material.itemId) }}</div>
@@ -142,6 +142,7 @@ export default {
             'selfBagItemInfo',
             'inventory',
             'characterSkills',
+            'serverUrl'
         ])
     },
     watch: {

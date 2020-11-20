@@ -1,5 +1,6 @@
 export default {
     get: (state) => (name) => state[name],
+    serverUrl: (state) => state.serverUrl,
     dockedMenu: (state) => state.dockedMenu,
     characterId: (state) => state.characterId,
     characterName: (state) => state.characterName,

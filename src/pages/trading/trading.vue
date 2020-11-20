@@ -15,7 +15,7 @@
                     class="trading__inventory-wrapper__item"
                     @click="addItemToTrade(item)"
                 >
-                    <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                    <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                     <span class="inventory__item__amount">{{ item.amount }}</span>
                 </div>
             </template>
@@ -52,7 +52,7 @@
                                 class="trading__item__image-amount"
                                 @click="showItemInfo(item)"
                             >
-                                <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                                <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                                 <span v-if="item.maxDurability">
                                     {{ item.durability }}/{{ item.maxDurability }}
                                 </span>
@@ -98,7 +98,7 @@
                                 class="trading__item__image-amount"
                                 @click="showItemInfo(item)"
                             >
-                                <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                                <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                                 <span v-if="item.maxDurability">
                                     {{ item.durability }}/{{ item.maxDurability }}
                                 </span>
@@ -193,6 +193,7 @@ const tradingPage = {
             'characterId',
             'characterZeny',
             'inventory',
+            'serverUrl'
         ])
     },
     watch: {

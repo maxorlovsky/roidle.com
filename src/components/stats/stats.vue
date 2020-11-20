@@ -7,7 +7,7 @@
             <div class="stats__icon game-icon"
                 @click="showStatInfo(stat)"
             >
-                <img :src="`/dist/assets/images/${stat}.png`">
+                <img :src="`${serverUrl}/dist/assets/images/${stat}.png`">
             </div>
             <span class="stats__label"
                 @click="showStatInfo(stat)"
@@ -140,7 +140,8 @@ export default {
             'characterJobLevel',
             'characterJobId',
             'characterJob',
-            'partyName'
+            'partyName',
+            'serverUrl'
         ])
     },
     watch: {

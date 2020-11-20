@@ -12,7 +12,7 @@
                 class="inventory__item"
                 @click="showItemInfo(item)"
             >
-                <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                 <span v-if="item.maxDurability"
                     class="inventory__item__amount"
                 >{{ item.durability }}/{{ item.maxDurability }}</span>
@@ -33,7 +33,11 @@ const inventoryPage = {
         return {};
     },
     computed: {
-        ...mapGetters(['inventory', 'inventoryWeight']),
+        ...mapGetters([
+            'inventory',
+            'inventoryWeight',
+            'serverUrl'
+        ]),
         characterAttributes() {
             return this.$store.getters.get('characterAttributes') || {};
         },

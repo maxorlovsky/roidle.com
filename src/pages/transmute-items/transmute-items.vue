@@ -22,7 +22,7 @@
                     <div class="transmute-items__item__image-amount"
                         @click="showItemInfo(item)"
                     >
-                        <img :src="`/dist/assets/images/items/${item.id}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.id}.gif`">
                         <span>{{ item.amount }}</span>
                     </div>
                     <div class="transmute-items__item__name-price">
@@ -57,7 +57,10 @@ const transmuteItemsPage = {
         };
     },
     computed: {
-        ...mapGetters(['characterSkills'])
+        ...mapGetters([
+            'characterSkills',
+            'serverUrl'
+        ])
     },
     mounted() {
         // In case user don't have skill to transmute items we kick him back to previous page

@@ -2,7 +2,7 @@
     <div class="hunt-actions game__action">
         <div @click="openHunt()">
             <img class="game__action__image"
-                src="/dist/assets/images/sword.png"
+                :src="`${serverUrl}/dist/assets/images/sword.png`"
             >
             <span class="game__action__name">Hunt</span>
         </div>
@@ -87,7 +87,8 @@ export default {
         ...mapGetters([
             'huntStatus',
             'characterId',
-            'characterSkills'
+            'characterSkills',
+            'serverUrl'
         ])
     },
     watch: {

@@ -14,7 +14,7 @@
                             class="equipment__item"
                             @click="getItemInfo(equipment[eq.slot])"
                         >
-                            <img :src="`/dist/assets/images/items/${equipment[eq.slot].itemId}.gif`">
+                            <img :src="`${serverUrl}/dist/assets/images/items/${equipment[eq.slot].itemId}.gif`">
                             <span class="equipment__item__name">{{ equipment[eq.slot].name }}</span>
                         </div>
                         <span class="equipment__placeholder">{{ eq.name }}</span>
@@ -44,7 +44,7 @@
                             class="equipment__item"
                             @click="getItemInfo(equipment[eq.slot])"
                         >
-                            <img :src="`/dist/assets/images/items/${equipment[eq.slot].itemId}.gif`">
+                            <img :src="`${serverUrl}/dist/assets/images/items/${equipment[eq.slot].itemId}.gif`">
                             <span class="equipment__item__name">{{ equipment[eq.slot].name }}</span>
                         </div>
                         <span class="equipment__placeholder">{{ eq.name }}</span>
@@ -75,6 +75,9 @@
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
 // Components
 import avatar from '@components/avatar/avatar.vue';
 import attributes from '@components/attributes/attributes.vue';
@@ -166,6 +169,9 @@ const profilePage = {
             baseLevel: 0,
             jobLevel: 0
         };
+    },
+    computed: {
+        ...mapGetters(['serverUrl'])
     },
     mounted() {
         mo.socket.on('getCharacterInfoComplete', (response) => {

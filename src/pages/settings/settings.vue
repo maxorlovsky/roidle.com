@@ -53,7 +53,7 @@
                     class="game-icon"
                     target="_blank"
                 >
-                    <img src="/dist/assets/images/discord.png">
+                    <img :src="`${serverUrl}/dist/assets/images/discord.png`">
                 </a>
             </div>
 
@@ -118,7 +118,8 @@ const settingsPage = {
         ...mapGetters([
             'music',
             'sound',
-            'admin'
+            'admin',
+            'serverUrl'
         ]),
     },
     watch: {

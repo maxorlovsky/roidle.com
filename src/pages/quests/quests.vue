@@ -12,7 +12,7 @@
                 <div class="quests-details__info">
                     <div class="quests-details__info__icon">
                         <img v-if="selectedMission.image"
-                            :src="`/dist/assets/${selectedMission.image}`"
+                            :src="`${serverUrl}/dist/assets/${selectedMission.image}`"
                         >
                     </div>
                     <div class="quests-details__info__name">{{ selectedMission.name }}</div>
@@ -54,7 +54,7 @@
                 >
                     <div class="quests-list__quest__icon">
                         <img v-if="quest.image"
-                            :src="`/dist/assets/${quest.image}`"
+                            :src="`${serverUrl}/dist/assets/${quest.image}`"
                         >
                     </div>
                     <div class="quests-list__quest__info">
@@ -80,7 +80,7 @@
             <div v-if="displayNPC"
                 class="quests-npc"
             >
-                <img :src="`/dist/assets/${displayNPC}`">
+                <img :src="`${serverUrl}/dist/assets/${displayNPC}`">
             </div>
         </div>
     </section>
@@ -116,7 +116,8 @@ const questsPage = {
             'characterLocationId',
             'characterBaseLevel',
             'characterJob',
-            'characterName'
+            'characterName',
+            'serverUrl'
         ]),
 
         currentProgressPercentage() {

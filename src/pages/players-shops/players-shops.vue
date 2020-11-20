@@ -30,7 +30,7 @@
                             <div v-else
                                 class="players-shops__list__item__image__no-image"
                             >
-                                <img src="/dist/assets/images/items/672.gif">
+                                <img :src="`${serverUrl}/dist/assets/images/items/672.gif`">
                             </div>
                         </div>
 
@@ -73,7 +73,10 @@ const playersShopsPage = {
         };
     },
     computed: {
-        ...mapGetters(['characterSkills']),
+        ...mapGetters([
+            'characterSkills',
+            'serverUrl'
+        ]),
 
         canTrade() {
             // Check if Basic skill level is higher or equals 4

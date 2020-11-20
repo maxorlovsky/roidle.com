@@ -15,7 +15,7 @@
                 <div class="craft__item__image-amount"
                     @click="showItemInfo(item)"
                 >
-                    <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                    <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                 </div>
                 <div class="craft__item__info">
                     <div class="craft__item__info__name">{{ item.name }} (Lv: {{ item.level }})</div>
@@ -33,6 +33,9 @@
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
 // Components
 import loading from '@components/loading/loading.vue';
 
@@ -45,6 +48,9 @@ const craftType = {
             loading: true,
             craftableItems: []
         };
+    },
+    computed: {
+        ...mapGetters(['serverUrl'])
     },
     mounted() {
         mo.socket.on('getCraftItemsComplete', (response) => {

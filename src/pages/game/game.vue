@@ -84,7 +84,7 @@
                     class="game__action"
                     @click="trackMonster()"
                 >
-                    <img src="/dist/assets/images/eye.png">
+                    <img :src="`${serverUrl}/dist/assets/images/eye.png`">
                     <span class="game__action__name">Track down</span>
                 </div>-->
 
@@ -203,7 +203,8 @@ const gamePage = {
             'currentLocation',
             'characterSkills',
             'tradeRequestId',
-            'characterCrafting'
+            'characterCrafting',
+            'serverUrl'
         ])
     },
     watch: {

@@ -3,25 +3,28 @@
         class="avatar"
     >
         <div class="avatar__body">
-            <img :src="`/dist/assets/images/bodies/${jobLowerCase}_${gender}_0.png`">
+            <img :src="`${serverUrl}/dist/assets/images/bodies/${jobLowerCase}_${gender}_0.png`">
         </div>
         <div :class="[`avatar__head__${headStyle}`, gender]"
             class="avatar__head"
         >
-            <img :src="`/dist/assets/images/heads/${gender}/${headStyle}-${headColor}.gif`">
+            <img :src="`${serverUrl}/dist/assets/images/heads/${gender}/${headStyle}-${headColor}.gif`">
         </div>
         <div v-for="(gear, index) in headGears"
             :key="index"
             class="avatar__headgear"
         >
             <template v-if="gear">
-                <img :src="`/dist/assets/images/headgear/${gear}.gif`">
+                <img :src="`${serverUrl}/dist/assets/images/headgear/${gear}.gif`">
             </template>
         </div>
     </div>
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'avatar',
     props: {
@@ -56,6 +59,8 @@ export default {
         }
     },
     computed: {
+        ...mapGetters(['serverUrl']),
+
         jobLowerCase() {
             return this.job.toLowerCase();
         }

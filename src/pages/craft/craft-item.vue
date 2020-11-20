@@ -12,7 +12,7 @@
                 @click="showItemInfo(craftableItem.itemId)"
             >
                 <div class="craft-item__item__title">Item</div>
-                <img :src="`/dist/assets/images/items/large/${craftableItem.itemId}.gif`"
+                <img :src="`${serverUrl}/dist/assets/images/items/large/${craftableItem.itemId}.gif`"
                     class="craft-item__item__image"
                 >
                 <div class="craft-item__item__info">
@@ -44,7 +44,7 @@
                     class="craft-item__materials__material"
                     @click="showItemInfo(material.id)"
                 >
-                    <img :src="`/dist/assets/images/items/${material.id}.gif`">
+                    <img :src="`${serverUrl}/dist/assets/images/items/${material.id}.gif`">
                     <div :class="{'craft-item__materials__material__amount--found': inventory.find((item) => item.itemId === material.id && item.amount >= (material.amount * amount))}"
                         class="craft-item__materials__material__amount"
                     >{{ userMaterialAmount(material.id) }}/{{ material.amount * amount }}</div>
@@ -117,7 +117,8 @@ const craftItemPage = {
             'characterMp',
             'characterLocation',
             'characterAttributes',
-            'inventory'
+            'inventory',
+            'serverUrl'
         ]),
 
         canCraft() {
