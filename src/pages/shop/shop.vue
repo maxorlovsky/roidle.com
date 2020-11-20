@@ -53,7 +53,7 @@
                         class="shop__item__image-amount"
                         @click="showItemInfo(item)"
                     >
-                        <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                         <span v-if="item.maxDurability">{{ item.durability }}/{{ item.maxDurability }}</span>
                         <span v-else-if="$route.query.action === 'sell'">{{ item.amount }}</span>
                     </div>
@@ -88,7 +88,7 @@
                         }"
                         class="shop__item__image-amount"
                     >
-                        <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                         <span v-if="item.maxDurability">{{ item.durability }}/{{ item.maxDurability }}</span>
                         <span v-else>{{ item.amount }}</span>
                     </div>
@@ -177,7 +177,10 @@ const shopPage = {
         };
     },
     computed: {
-        ...mapGetters(['characterZeny'])
+        ...mapGetters([
+            'characterZeny',
+            'serverUrl'
+        ])
     },
     watch: {
         amountToggle() {

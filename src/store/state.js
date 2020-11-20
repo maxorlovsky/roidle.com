@@ -2,6 +2,7 @@
 import { functions } from '@src/functions.js';
 
 export default {
+    serverUrl: '',
     characterId: 0,
     characterName: '',
     characterGender: 'm',

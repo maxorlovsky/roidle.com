@@ -2,7 +2,7 @@
     <div class="kafra-actions game__action">
         <div @click="openModal()">
             <img class="game__action__image"
-                src="/dist/assets/images/inn.png"
+                :src="`${serverUrl}/dist/assets/images/inn.png`"
             >
             <span class="game__action__name">Rest at Inn</span>
         </div>
@@ -60,7 +60,8 @@ export default {
     computed: {
         ...mapGetters([
             'characterSkills',
-            'characterCrafting'
+            'characterCrafting',
+            'serverUrl'
         ]),
 
         cheapInnPrice() {

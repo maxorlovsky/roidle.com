@@ -2,7 +2,7 @@
     <div class="kafra-actions game__action">
         <div @click="openModal()">
             <img class="game__action__image"
-                src="/dist/assets/images/illust/kafra1.png"
+                :src="`${serverUrl}/dist/assets/images/illust/kafra1.png`"
             >
             <span class="game__action__name">Kafra Services</span>
         </div>
@@ -113,7 +113,8 @@ export default {
             'characterLocation',
             'characterZeny',
             'characterSkills',
-            'characterBaseLevel'
+            'characterBaseLevel',
+            'serverUrl'
         ]),
 
         barberPrice() {

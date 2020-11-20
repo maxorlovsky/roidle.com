@@ -2,7 +2,7 @@
     <div class="kafra-actions game__action">
         <div @click="showModal = true">
             <img class="game__action__image"
-                src="/dist/assets/images/craft.png"
+                :src="`${serverUrl}/dist/assets/images/craft.png`"
             >
             <span class="game__action__name">Craft Services</span>
         </div>
@@ -46,7 +46,8 @@ export default {
     computed: {
         ...mapGetters([
             'characterSkills',
-            'characterCrafting'
+            'characterCrafting',
+            'serverUrl'
         ])
     },
     watch: {

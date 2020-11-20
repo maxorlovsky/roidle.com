@@ -12,7 +12,7 @@
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__item"
                     >
-                        <img :src="`/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
                         <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
                     </div>
                     <span class="equipment__placeholder">{{ eq.name }}</span>
@@ -47,7 +47,7 @@
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__item"
                     >
-                        <img :src="`/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
                         <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
                     </div>
                     <span class="equipment__placeholder">{{ eq.name }}</span>
@@ -66,7 +66,7 @@
                 class="equipment-modal__item"
                 @click="uneqipItem(slot)"
             >
-                <img :src="`/dist/assets/images/cancel.png`">
+                <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
                 <span class="equipment-modal__item__amount">Unequip item</span>
             </div>
 
@@ -76,7 +76,7 @@
                     class="equipment-modal__item"
                     @click="equipItem(item)"
                 >
-                    <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                    <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                     <div class="equipment-modal__item__amount">
                         {{ item.name }}
                         <div>{{ itemClassNameCorrection(item.class, item.twoHanded) }}{{ itemDisplayParams(item.params) }}</div>
@@ -189,7 +189,8 @@ const characterPage = {
             'characterGender',
             'characterEquipment',
             'characterJob',
-            'inventory'
+            'inventory',
+            'serverUrl'
         ])
     },
     mounted() {

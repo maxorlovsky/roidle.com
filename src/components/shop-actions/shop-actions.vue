@@ -2,7 +2,7 @@
     <div class="kafra-actions game__action">
         <div @click="openModal()">
             <img class="game__action__image"
-                src="/dist/assets/images/shopping.png"
+                :src="`${serverUrl}/dist/assets/images/shopping.png`"
             >
             <span class="game__action__name">Shop Dealers</span>
         </div>
@@ -53,7 +53,10 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['characterCrafting'])
+        ...mapGetters([
+            'characterCrafting',
+            'serverUrl'
+        ])
     },
     methods: {
         openModal() {

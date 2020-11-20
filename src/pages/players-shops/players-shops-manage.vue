@@ -87,7 +87,7 @@
                         class="players-shops__inventory-wrapper__item"
                         @click="addItemToShop(item)"
                     >
-                        <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                         <span v-if="item.maxDurability"
                             class="inventory__item__amount"
                         >
@@ -121,7 +121,7 @@
                             class="players-shops__sold-item__image-amount"
                             @click="showItemInfo(item)"
                         >
-                            <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                            <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                             <span v-if="item.maxDurability">{{ item.durability }}/{{ item.maxDurability }}</span>
                             <span v-else>{{ item.amount }}</span>
                         </div>
@@ -261,7 +261,8 @@ const managePlayersShopPage = {
     computed: {
         ...mapGetters([
             'characterLocation',
-            'inventory'
+            'inventory',
+            'serverUrl'
         ])
     },
     watch: {

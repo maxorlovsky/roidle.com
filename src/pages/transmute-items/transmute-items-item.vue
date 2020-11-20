@@ -22,7 +22,7 @@
                             class="transmute-items__item__image-amount"
                             @click="showItemInfo(subitem)"
                         >
-                            <img :src="`/dist/assets/images/items/${subitem.itemId}.gif`">
+                            <img :src="`${serverUrl}/dist/assets/images/items/${subitem.itemId}.gif`">
                             <span :class="{'transmute-items__item__amount--not-enough': doesNotMeetRequirements(item)}"
                                 class="transmute-items__item__amount"
                             >
@@ -117,7 +117,8 @@ const transmuteItemsItemPage = {
             'characterSkills',
             'inventory',
             'characterBaseLevel',
-            'characterMp'
+            'characterMp',
+            'serverUrl'
         ])
     },
     watch: {

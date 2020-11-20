@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    serverUrl: (state, value) => {
+        state.serverUrl = value;
+    },
     craftingComplete: (state) => {
         state.craftTimer = null;
         state.craftData = null;

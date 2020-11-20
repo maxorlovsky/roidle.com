@@ -135,7 +135,9 @@
         <template v-else>
             <volume-control-home />
 
-            <div class="home__logo"><img src="/dist/assets/images/logo.png"></div>
+            <div class="home__logo">
+                <img :src="`${serverUrl}/dist/assets/images/logo.png`">
+            </div>
 
             <loading v-if="loading" />
 
@@ -203,7 +205,7 @@
                         class="home__discord__discord-link game-icon"
                         target="_blank"
                     >
-                        <img src="/dist/assets/images/discord.png">
+                        <img :src="`${serverUrl}/dist/assets/images/discord.png`">
                     </a>
                 </div>
             </div>
@@ -273,7 +275,10 @@ const homePage = {
         };
     },
     computed: {
-        ...mapGetters(['isGuest'])
+        ...mapGetters([
+            'isGuest',
+            'serverUrl'
+        ])
     },
     mounted() {
         // Check if user session is available and live

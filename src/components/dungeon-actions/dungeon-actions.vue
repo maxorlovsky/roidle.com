@@ -2,7 +2,7 @@
     <div class="dungeon-actions game__action">
         <div @click="showModal = true">
             <img class="game__action__image"
-                src="/dist/assets/images/dungeon-entrance.png"
+                :src="`${serverUrl}/dist/assets/images/dungeon-entrance.png`"
             >
             <span class="game__action__name">Dungeon</span>
         </div>
@@ -76,6 +76,7 @@ export default {
             'currentLocation',
             'characterAttributes',
             'inventoryWeight',
+            'serverUrl'
         ])
     },
     watch: {

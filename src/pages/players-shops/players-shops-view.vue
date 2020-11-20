@@ -25,7 +25,7 @@
                             class="players-shops__sold-item__image-amount"
                             @click="showItemInfo(item)"
                         >
-                            <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                            <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                             <span v-if="item.maxDurability">{{ item.durability }}/{{ item.maxDurability }}</span>
                             <span v-else>{{ item.amount }}</span>
                         </div>
@@ -101,7 +101,10 @@ const viewPlayersShopPage = {
         };
     },
     computed: {
-        ...mapGetters(['characterZeny'])
+        ...mapGetters([
+            'characterZeny',
+            'serverUrl'
+        ])
     },
     watch: {
         itemAmountValue() {

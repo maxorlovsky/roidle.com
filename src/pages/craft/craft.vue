@@ -5,7 +5,7 @@
         >
             <div class="craft__in-progress">
                 You are crafting <b>{{ craftData.name }} (Lv: {{ craftData.level }})</b> <span v-if="craftData.amount > 1">(x{{ craftData.amount }})</span> at the moment. Your chance for success is {{ craftData.successChance }}%.<br>
-                <img :src="`/dist/assets/images/items/large/${craftData.itemId}.gif`">
+                <img :src="`${serverUrl}/dist/assets/images/items/large/${craftData.itemId}.gif`">
 
                 <div class="craft__in-progress__button">
                     <button class="btn btn-danger"
@@ -23,7 +23,7 @@
                 class="craft__item"
             >
                 <div class="craft__item__image-amount">
-                    <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                    <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                 </div>
                 <div class="craft__item__info">
                     <div class="craft__item__info__name">{{ item.name }}</div>
@@ -112,7 +112,8 @@ const craftPage = {
     computed: {
         ...mapGetters([
             'characterCrafting',
-            'craftData'
+            'craftData',
+            'serverUrl'
         ])
     }
 };

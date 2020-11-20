@@ -66,7 +66,7 @@
                     @click="chooseHuntHealingItem(index)"
                 >
                     <template v-if="item">
-                        <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                         <!--<span class="healing-items__item__amount">{{ item.amount }}</span>-->
                     </template>
                 </div>
@@ -92,7 +92,7 @@
                     @click="chooseHuntActiveSkills(index)"
                 >
                     <template v-if="item">
-                        <img :src="`/dist/assets/images/skills/${item.id}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/skills/${item.id}.gif`">
                         <span v-if="item.hpControl"
                             class="active-skills__item__hp-control"
                         >{{ item.hpControl }}%</span>
@@ -117,7 +117,7 @@
                 @click="removeHealingItem(healingSelectedSlot)"
             >
                 <div class="healing-modal__item__image">
-                    <img src="/dist/assets/images/cancel.png">
+                    <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
                 </div>
                 <div>
                     <div class="healing-modal__item__name">Remove item</div>
@@ -131,7 +131,7 @@
                     @click="addHealingItem(item)"
                 >
                     <div class="healing-modal__item__image">
-                        <img :src="`/dist/assets/images/items/${item.itemId}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                     </div>
                     <div>
                         <div class="healing-modal__item__name">{{ item.name }} ({{ item.amount }})</div>
@@ -160,7 +160,7 @@
                 @click="removeActiveSkill(skillSelectedSlot)"
             >
                 <div class="active-skill-modal__item__name active-skill-modal__item__name--remove">
-                    <img src="/dist/assets/images/cancel.png">
+                    <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
                     <div>Remove skill</div>
                 </div>
             </div>
@@ -173,7 +173,7 @@
                     <div class="active-skill-modal__item__name active-skill-modal__item__name--add"
                         @click="addActiveSkill(item)"
                     >
-                        <img :src="`/dist/assets/images/skills/${item.id}.gif`">
+                        <img :src="`${serverUrl}/dist/assets/images/skills/${item.id}.gif`">
                         <div>{{ item.name }} (Lv. {{ item.currentLevel }})</div>
                         <div class="active-skill-modal__add-notice">Add skill</div>
                     </div>
@@ -249,7 +249,8 @@ const huntConfigurationPage = {
             'characterHeadStyle',
             'characterHeadColor',
             'characterGender',
-            'characterSkills'
+            'characterSkills',
+            'serverUrl'
         ])
     },
     mounted() {

@@ -21,15 +21,15 @@
             <div :class="{'docked-menu__button--disabled': !currentLocation || (currentLocation && currentLocation.dungeon)}"
                 class="docked-menu__button docked-menu__button--map"
                 @click="travelToMap()"
-            ><img src="/dist/assets/images/compass.png"></div>
+            ><img :src="`${serverUrl}/dist/assets/images/compass.png`"></div>
 
             <router-link to="/quests"
                 class="docked-menu__button docked-menu__button--quests"
-            ><img src="/dist/assets/images/board.png"></router-link>
+            ><img :src="`${serverUrl}/dist/assets/images/board.png`"></router-link>
 
             <router-link to="/inventory"
                 class="docked-menu__button docked-menu__button--inventory"
-            ><img src="/dist/assets/images/bag.png"></router-link>
+            ><img :src="`${serverUrl}/dist/assets/images/bag.png`"></router-link>
 
             <!-- <router-link to="/"
                 class="btn btn-secondary"
@@ -60,7 +60,8 @@ export default {
             'characterHeadStyle',
             'characterHeadColor',
             'characterGender',
-            'currentLocation'
+            'currentLocation',
+            'serverUrl'
         ])
     },
     watch: {
