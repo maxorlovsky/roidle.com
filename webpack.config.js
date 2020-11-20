@@ -182,8 +182,19 @@ module.exports = (env = {}) => {
     ];
 
     if (env.production) {
+        replaceInFileRules.push(
+            {
+                search: /(<!-- dev -->)([\s\S]*?)(<!-- !dev -->)/g,
+                replace: ''
+            },
+            {
+                search: /%serverUrl%/g,
+                replace: 'https://roidle.com'
+            }
+        );
+    } else {
         replaceInFileRules.push({
-            search: /(<!-- dev -->)([\s\S]*?)(<!-- !dev -->)/g,
+            search: /%serverUrl%/g,
             replace: ''
         });
     }

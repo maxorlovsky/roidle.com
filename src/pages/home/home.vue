@@ -302,7 +302,7 @@ const homePage = {
             this.form.message = '';
 
             try {
-                const response = await axios.post('/api/login', {
+                const response = await axios.post(`${mo.serverUrl}/api/login`, {
                     email: this.form.email,
                     password: this.form.password
                 });
@@ -349,7 +349,7 @@ const homePage = {
         },
         async getOnline() {
             try {
-                const response = await axios.get(`/api/online?cache=${new Date().getTime()}`);
+                const response = await axios.get(`${mo.serverUrl}/api/online?cache=${new Date().getTime()}`);
 
                 this.online = response.data.online;
                 this.idle = response.data.idle;
@@ -376,7 +376,7 @@ const homePage = {
         },
         async authenticate() {
             try {
-                const response = await axios.post('/api/authenticate', {
+                const response = await axios.post(`${mo.serverUrl}/api/authenticate`, {
                     sessionToken: functions.storage('get', 'session')
                 });
 
@@ -403,7 +403,7 @@ const homePage = {
         },
         async registerGuest() {
             try {
-                const response = await axios.post('/api/register');
+                const response = await axios.post(`${mo.serverUrl}/api/register`);
 
                 functions.storage('set', 'session', response.data.sessionToken);
 
@@ -421,7 +421,7 @@ const homePage = {
             this.buttonLoading = true;
 
             try {
-                const response = await axios.post('/api/delete-character', {
+                const response = await axios.post(`${mo.serverUrl}/api/delete-character`, {
                     sessionToken: functions.storage('get', 'session'),
                     characterId: this.deleteCharacterId
                 });
@@ -458,7 +458,7 @@ const homePage = {
 
             // If authentication succeeded and character is selected we connect to socket
             // Storring it in global variable
-            mo.socket = await io(ioConfig);
+            mo.socket = await io(mo.serverUrl, ioConfig);
 
             this.$store.commit('socketConnection', true);
 
@@ -545,7 +545,7 @@ const homePage = {
             }
 
             try {
-                const response = await axios.post('/api/create-character', {
+                const response = await axios.post(`${mo.serverUrl}/api/create-character`, {
                     name: this.name,
                     gender: this.gender,
                     headStyle: this.headStyle,
