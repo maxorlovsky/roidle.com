@@ -1,7 +1,7 @@
 <template>
     <div class="bgm">
         <audio ref="music"
-            :src="`/dist/assets/bgm/${musicFile}.mp3`"
+            :src="`${serverUrl}/dist/assets/bgm/${musicFile}.mp3`"
             loop
         />
     </div>
@@ -24,7 +24,8 @@ export default {
         ...mapGetters([
             'characterLocationId',
             'music',
-            'musicVolume'
+            'musicVolume',
+            'serverUrl'
         ])
     },
     watch: {

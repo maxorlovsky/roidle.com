@@ -1,12 +1,12 @@
 <template>
     <div class="level-up">
         <img v-if="showLevelUpAnimation"
-            src="/dist/assets/level-up-anim.webp"
+            :src="`${serverUrl}/dist/assets/level-up-anim.webp`"
             class="level-up__animation"
         >
 
         <audio ref="levelUpAudio"
-            src="/dist/assets/levelup.wav"
+            :src="`${serverUrl}/dist/assets/levelup.wav`"
         />
     </div>
 </template>
@@ -34,7 +34,8 @@ export default {
             'characterSkillPoints',
             'socketConnection',
             'sound',
-            'soundVolume'
+            'soundVolume',
+            'serverUrl'
         ])
     },
     watch: {
