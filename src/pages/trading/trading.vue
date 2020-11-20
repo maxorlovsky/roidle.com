@@ -152,7 +152,7 @@
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
-                    @click="displayAmountModal = false"
+                    @click="closeAmountModal()"
                 >Cancel</button>
                 <button :disabled="amountModal > amountModalMax || amountModal < 1"
                     class="btn game-button"
@@ -379,6 +379,10 @@ const tradingPage = {
             this.$nextTick(() => {
                 this.$refs.amountModal.focus();
             });
+        },
+        closeAmountModal() {
+            this.displayAmountModal = false;
+            this.buttonLoading = false;
         },
         confirmChosenAmount() {
             // In case user put it more than he should

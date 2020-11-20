@@ -59,7 +59,7 @@
                     <div class="form-heading">Amount:</div>
                     <input ref="amountValue"
                         v-model="amountValue"
-                        min="1"
+                        min="0"
                         :max="maxAmount"
                         type="number"
                         size="9"
@@ -77,7 +77,7 @@
                 <button class="btn btn-secondary"
                     @click="closeAmountModal()"
                 >Cancel</button>
-                <button :disabled="buttonLoading"
+                <button :disabled="buttonLoading || amountValue < 1 || amountValue > maxAmount"
                     class="btn game-button"
                     @click="confirmTransmutation()"
                 >Confirm</button>
@@ -124,8 +124,8 @@ const transmuteItemsItemPage = {
         amountValue() {
             let amount = Number(this.amountValue);
 
-            if (amount < 1) {
-                amount = 1;
+            if (amount < 0) {
+                amount = 0;
             } else if (amount > Number(this.maxAmount)) {
                 amount = Number(this.maxAmount);
             }

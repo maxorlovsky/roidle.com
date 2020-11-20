@@ -24,6 +24,19 @@
                 </div>
             </div>
 
+            <div class="craft-item__amount">
+                <div class="craft-item__amount__title">Amount</div>
+
+                <div class="craft-item__amount__number">
+                    <input v-model="amount"
+                        type="number"
+                        :min="0"
+                        :max="maxAmount"
+                        placeholder="Amount"
+                    >
+                </div>
+            </div>
+
             <div class="craft-item__materials">
                 <div class="craft-item__materials__title">Materials required</div>
                 <div v-for="material in craftableItem.craftMaterials"
@@ -32,43 +45,43 @@
                     @click="showItemInfo(material.id)"
                 >
                     <img :src="`/dist/assets/images/items/${material.id}.gif`">
-                    <div :class="{'craft-item__materials__material__amount--found': inventory.find((item) => item.itemId === material.id && item.amount >= material.amount)}"
+                    <div :class="{'craft-item__materials__material__amount--found': inventory.find((item) => item.itemId === material.id && item.amount >= (material.amount * amount))}"
                         class="craft-item__materials__material__amount"
-                    >{{ userMaterialAmount(material.id) }}/{{ material.amount }}</div>
+                    >{{ userMaterialAmount(material.id) }}/{{ material.amount * amount }}</div>
                 </div>
             </div>
 
             <div class="craft-item__price">
                 <div class="craft-item__price__title">Price</div>
                 <div class="craft-item__price__item">
-                    <div class="craft-item__price__item__title">Price for using smithy (per minute)</div>
-                    <div class="craft-item__price__item__value">{{ price.smithyPricePerMinute }} Z</div>
+                    <div class="craft-item__price__item__title">Price for using {{ tool }} (per minute)</div>
+                    <div class="craft-item__price__item__value">{{ price.rentPricePerMinute * amount }} Z</div>
                 </div>
                 <div class="craft-item__price__item">
                     <div class="craft-item__price__item__title">Time required</div>
-                    <div class="craft-item__price__item__value">{{ price.timeRequired }}m</div>
+                    <div class="craft-item__price__item__value">{{ price.timeRequired * amount }}m</div>
                 </div>
                 <div class="craft-item__price__item">
-                    <div class="craft-item__price__item__title">Price for using smithy</div>
-                    <div class="craft-item__price__item__value">{{ price.priceForSmithy }} Z</div>
+                    <div class="craft-item__price__item__title">Price for using {{ tool }}</div>
+                    <div class="craft-item__price__item__value">{{ price.priceForRent * amount }} Z</div>
                 </div>
                 <div class="craft-item__price__item">
                     <div class="craft-item__price__item__title">{{ characterLocation }}'s tax ({{ price.tax }}%)</div>
-                    <div class="craft-item__price__item__value">{{ price.taxForSmithy }} Z</div>
+                    <div class="craft-item__price__item__value">{{ price.taxForRent * amount }} Z</div>
                 </div>
                 <div v-if="price.discount !== 0"
                     class="craft-item__price__item craft-item__price__item--discount"
                 >
                     <div class="craft-item__price__item__title">Discount</div>
-                    <div class="craft-item__price__item__value">-{{ price.discount }} Z</div>
+                    <div class="craft-item__price__item__value">-{{ price.discount * amount }} Z</div>
                 </div>
                 <div class="craft-item__price__item craft-item__price__item--total">
                     <div class="craft-item__price__item__title">TOTAL</div>
-                    <div class="craft-item__price__item__value">{{ price.total }} Z</div>
+                    <div class="craft-item__price__item__value">{{ price.total * amount }} Z</div>
                 </div>
             </div>
 
-            <button :disabled="!canCraft || buttonLoading"
+            <button :disabled="!canCraft || buttonLoading || amount < 1 || amount > maxAmount"
                 class="btn btn-lg game-button craft-item__button"
                 @click="craftItem(craftableItem.itemId)"
             >Start</button>
@@ -92,7 +105,10 @@ const craftItemPage = {
             loading: true,
             buttonLoading: false,
             craftableItem: null,
-            price: null
+            price: null,
+            tool: 'smithy',
+            amount: 1,
+            maxAmount: 20000000,
         };
     },
     computed: {
@@ -114,6 +130,14 @@ const craftItemPage = {
                 if (!find) {
                     haveItems = false;
                 }
+
+                // Getting maxAmount
+                const maxAmount = Math.floor(this.userMaterialAmount(material.id) / material.amount);
+
+                // Check if there are more items and if the new maxAmount is lower than the previous one, in this case we take the lowest number
+                if (maxAmount < this.maxAmount) {
+                    this.maxAmount = maxAmount;
+                }
             }
 
             // Check if user have enough MP to craft
@@ -124,28 +148,58 @@ const craftItemPage = {
             return haveItems;
         }
     },
+    watch: {
+        amount() {
+            let amount = Number(this.amount);
+
+            if (amount < 0) {
+                amount = 0;
+            } else if (amount > this.maxAmount) {
+                amount = this.maxAmount;
+            }
+
+
+            this.amount = amount;
+        }
+    },
     mounted() {
         // In case itemId parameter not found redirecting user to main game page, normally should not happen at all
         if (!this.$route.params.itemId) {
-            this.$router.push('/game');
+            this.$router.go(-1);
         }
 
         mo.socket.on('getCraftItemComplete', (response) => {
+            // In case it's a success an item is found, we populate the data
             if (response.status) {
+                // Put all item related data
                 this.craftableItem = response.craftableItem;
+                // And price related data
                 this.price = response.priceData;
+
+                // In case it's an alchemy we need to rename the tool the crafter is going to use
+                if (this.craftableItem.category === 'alchemy') {
+                    this.tool = 'alchemy table';
+                } else {
+                    this.tool = 'smithy';
+                }
 
                 this.loading = false;
             } else {
                 // In case response is not true, then user is not even suppose to be here
-                this.$router.push('/game');
+                // Player will receive an important system message in this case
+                this.$router.go(-1);
             }
         });
 
-        mo.socket.on('craftItemComplete', () => {
-            mo.socket.emit('getCraft');
+        mo.socket.on('craftItemComplete', (response) => {
+            // In case craft is successfully started, we trigger the fetch of the craft to show it in UI and redirect user to game window
+            if (response) {
+                mo.socket.emit('getCraft');
 
-            this.$router.push('/game');
+                this.$router.go(-2);
+            } else {
+                this.buttonLoading = false;
+            }
         });
 
         mo.socket.emit('getCraftItem', this.$route.params.itemId);
@@ -172,7 +226,10 @@ const craftItemPage = {
         craftItem(itemId) {
             this.buttonLoading = true;
 
-            mo.socket.emit('craftItem', itemId);
+            mo.socket.emit('craftItem', {
+                itemId: itemId,
+                amount: this.amount
+            });
         }
     }
 };

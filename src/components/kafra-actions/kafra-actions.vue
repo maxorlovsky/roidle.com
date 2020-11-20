@@ -113,8 +113,7 @@ export default {
             'characterLocation',
             'characterZeny',
             'characterSkills',
-            'characterBaseLevel',
-            'characterCrafting'
+            'characterBaseLevel'
         ]),
 
         barberPrice() {
@@ -155,10 +154,6 @@ export default {
     },
     methods: {
         openModal() {
-            if (this.characterCrafting) {
-                return false;
-            }
-
             this.showKafraModal = true;
         },
         saveLocation() {

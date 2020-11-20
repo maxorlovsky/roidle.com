@@ -9,7 +9,7 @@
         @click="!selfBagItemInfo ? show = false : null"
     >
         <div class="item-info-wrapper">
-            <img :src="`/dist/assets/images/items/large/${id}.gif`"
+            <img :src="`/dist/assets/images/items/large/${itemId}.gif`"
                 class="item-info__illustration"
             >
             <div class="item-info__description">
@@ -36,15 +36,17 @@
                     @click="closeItemInfoModal()"
                 >Close</button>
                 <button class="btn btn-danger"
+                    :disabled="buttonLoading"
                     @click="discardItem()"
                 >Discard</button>
 
-                <button v-if="type === 'healing' || (type === 'consumable' && id === 602)"
+                <button v-if="type === 'healing' || (type === 'consumable' && itemId === 602)"
+                    :disabled="buttonLoading"
                     class="btn game-button"
-                    @click="useItem(id)"
+                    @click="useItem(itemId)"
                 >Use</button>
-                <button v-else-if="broken"
-                    :disabled="!characterSkills[33] || characterSkills[33] <= 0"
+                <button v-else-if="broken || durability < maxDurability"
+                    :disabled="buttonLoading"
                     class="btn game-button"
                     @click="repairItem(id)"
                 >Repair</button>
@@ -67,9 +69,34 @@
                 <button class="btn btn-secondary"
                     @click="closeDiscardModal()"
                 >No</button>
-                <button :disabled="showDiscardAmountMax > 1 && (showDiscardAmountMax < showDiscardAmount || showDiscardAmount < 1)"
+                <button :disabled="showDiscardAmountMax > 1 && (showDiscardAmountMax < showDiscardAmount || showDiscardAmount < 1) || buttonLoading"
                     class="btn btn-danger"
                     @click="discardConfirm()"
+                >Yes</button>
+            </div>
+
+            <div v-if="showRepair"
+                class="item-info__repair"
+            >
+                <div class="item-info__repair__caution-text">Do you wish to use those materials in order to repair the item?</div>
+                <div class="item-info__repair__materials">
+                    <div v-for="material in repairMaterials"
+                        :key="material.itemId"
+                        class="item-info__repair__materials__material"
+                    >
+                        <img :src="`/dist/assets/images/items/${material.itemId}.gif`">
+                        <div :class="{'item-info__repair__materials__material__amount--found': haveEnoughMaterials(material)}"
+                            class="item-info__repair__materials__material__amount"
+                        >{{ material.amount }}/{{ userMaterialAmount(material.itemId) }}</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary"
+                    @click="closeRepairModal()"
+                >No</button>
+                <button :disabled="buttonLoading || doesNotMeetRepairRequirements()"
+                    class="btn game-button"
+                    @click="repairConfirm()"
                 >Yes</button>
             </div>
         </div>
@@ -84,8 +111,10 @@ export default {
     name: 'item-info',
     data() {
         return {
+            buttonLoading: false,
             show: false,
             id: 0,
+            itemId: 0,
             name: '',
             type: '',
             description: '',
@@ -101,7 +130,9 @@ export default {
             showDiscard: false,
             showDiscardAmount: null,
             showDiscardAmountMax: null,
-            showDiscardItem: null
+            showDiscardItem: null,
+            showRepair: false,
+            repairMaterials: []
         };
     },
     computed: {
@@ -120,23 +151,113 @@ export default {
             }
         },
         closeItemInfo() {
-            this.show = false;
+            this.closeItemInfoModal();
         }
     },
     beforeDestroy() {
+        mo.socket.off('merchantRepairItemComplete');
         mo.socket.off('getItemInfoComplete');
+        mo.socket.off('useItemComplete');
+        mo.socket.off('discardItemComplete');
+        mo.socket.off('getItemRepairMaterialsComplete');
     },
     methods: {
-        repairItem() {
-            // Check if character have the skill to repair the item
-            if (!this.characterSkills[33] || this.characterSkills[33] <= 0) {
-                //
-            }
-        },
         setUpSocketEvents() {
+            mo.socket.on('merchantRepairItemComplete', (response) => {
+                this.buttonLoading = false;
+
+                if (response) {
+                    this.$store.commit('sendChat', [
+                        {
+                            type: 'system',
+                            character: 'System',
+                            message: 'You successfully repaired an item'
+                        }
+                    ]);
+
+                    this.closeItemInfoModal();
+                }
+            });
+
             mo.socket.on('getItemInfoComplete', (item) => {
                 this.showInfo(item);
             });
+
+            mo.socket.on('useItemComplete', () => {
+                this.buttonLoading = false;
+            });
+
+            mo.socket.on('discardItemComplete', () => {
+                this.buttonLoading = false;
+            });
+
+            mo.socket.on('getItemRepairMaterialsComplete', (response) => {
+                this.buttonLoading = false;
+
+                if (response) {
+                    this.repairMaterials = response;
+                    this.showRepair = true;
+                }
+            });
+        },
+        doesNotMeetRepairRequirements() {
+            for (const material of this.repairMaterials) {
+                if (!this.haveEnoughMaterials(material)) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
+        haveEnoughMaterials(material) {
+            const findItem = this.inventory.find((item) => item.itemId === material.itemId && item.amount >= material.amount);
+
+            if (findItem) {
+                return true;
+            }
+
+            return false;
+        },
+        userMaterialAmount(itemId) {
+            const findItem = this.inventory.find((item) => item.itemId === itemId);
+
+            if (!findItem) {
+                return 0;
+            }
+
+            return findItem.amount;
+        },
+        closeRepairModal() {
+            this.buttonLoading = false;
+            this.repairMaterials = [];
+            this.showRepair = false;
+        },
+        repairItem() {
+            this.buttonLoading = true;
+            this.repairMaterials = [];
+
+            // Check if character have the skill to repair the item
+            if ((!this.characterSkills[32] || this.characterSkills[32] <= 0) && (!this.characterSkills[33] || this.characterSkills[33] <= 0)) {
+                this.$store.commit('sendChat', [
+                    {
+                        type: 'system',
+                        character: 'System',
+                        message: 'You don\'t have the knowledge how to repair or maintain your items (Require Maintain Item or Repair Item skill)',
+                        important: true
+                    }
+                ]);
+
+                this.buttonLoading = false;
+
+                return false;
+            }
+
+            mo.socket.emit('getItemRepairMaterials', this.itemId);
+        },
+        repairConfirm() {
+            this.buttonLoading = true;
+
+            mo.socket.emit('merchantRepairItem', this.id);
         },
         showInfo(item) {
             if (this.selfBagItemInfo) {
@@ -144,7 +265,8 @@ export default {
             }
 
             this.show = true;
-            this.id = item.id;
+            this.id = item.inventoryId;
+            this.itemId = item.id;
             this.name = item.name;
             this.type = item.class ? item.class : item.type;
             this.twoHanded = item.twoHanded || false;
@@ -194,7 +316,7 @@ export default {
         discardItem() {
             this.showDiscard = true;
 
-            const foundItem = this.inventory.find((item) => item.itemId === this.id &&
+            const foundItem = this.inventory.find((item) => item.itemId === this.itemId &&
                 item.durability === this.durability &&
                 item.broken === this.broken);
 
@@ -214,6 +336,8 @@ export default {
             }
         },
         discardConfirm() {
+            this.buttonLoading = true;
+
             mo.socket.emit('discardItem', {
                 item: this.showDiscardItem,
                 amount: this.showDiscardAmount
@@ -222,6 +346,8 @@ export default {
             this.closeItemInfoModal();
         },
         useItem(itemId) {
+            this.buttonLoading = true;
+
             mo.socket.emit('useItem', itemId);
 
             this.closeItemInfoModal();
@@ -229,6 +355,7 @@ export default {
         closeItemInfoModal() {
             this.show = false;
             this.closeDiscardModal();
+            this.closeRepairModal();
         },
         closeDiscardModal() {
             this.showDiscard = false;

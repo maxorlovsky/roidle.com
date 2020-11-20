@@ -12,8 +12,17 @@
                 <div class="players-shops__title">Manage Shop</div>
                 <div class="players-shops__shop-title">{{ shopName }}</div>
 
+                <div class="players-shops__form-element">
+                    <div class="form-heading">Shop Name:</div>
+                    <input v-model="shopName"
+                        type="text"
+                        placeholder="Shop Name"
+                        maxlength="50"
+                    >
+                </div>
+
                 <div class="players-shops__form-element players-shops__form-border">
-                    <div class="form-heading">Shop Description:</div>
+                    <div class="form-heading">Shop Description: (can be empty)</div>
                     <input v-model="shopDescription"
                         type="text"
                         placeholder="Shop Description"
@@ -58,7 +67,7 @@
                     v-html="errorMessage"
                 />
 
-                <button :disabled="buttonLoading"
+                <button :disabled="buttonLoading || !shopName"
                     class="btn game-button players-shops__shop__open"
                     @click="updateShop()"
                 >Update</button>
@@ -461,6 +470,7 @@ const managePlayersShopPage = {
             this.buttonLoading = true;
 
             mo.socket.emit('updateShop', {
+                name: this.shopName,
                 description: this.shopDescription,
                 days: this.days
             });
