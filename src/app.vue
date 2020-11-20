@@ -167,7 +167,7 @@ export default {
     async mounted() {
         // We ping the server, to know that it's alive, in case it isn't we're redirecting user to server-down page
         try {
-            await axios.get('/api/ping');
+            await axios.get(`${mo.serverUrl}/api/ping`);
         } catch (error) {
             this.$router.replace('/server-down');
         } finally {
@@ -400,7 +400,7 @@ export default {
             }
         },
         async reconnect() {
-            mo.socket = await io(ioConfig);
+            mo.socket = await io(mo.serverUrl, ioConfig);
 
             this.$store.commit('socketConnection', true);
 

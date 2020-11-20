@@ -74,14 +74,14 @@ export default {
 
             try {
                 if (this.guest) {
-                    response = await axios.post('/api/connect-and-register-account', {
+                    response = await axios.post(`${mo.serverUrl}/api/connect-and-register-account`, {
                         email: this.email,
                         password: this.password,
                         confirmPassword: this.confirmPassword,
                         sessionToken: functions.storage('get', 'session')
                     });
                 } else {
-                    response = await axios.post('/api/register-account', {
+                    response = await axios.post(`${mo.serverUrl}/api/register-account`, {
                         email: this.email,
                         password: this.password,
                         confirmPassword: this.confirmPassword
