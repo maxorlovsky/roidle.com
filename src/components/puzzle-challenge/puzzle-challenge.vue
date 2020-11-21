@@ -85,13 +85,11 @@ export default {
     mounted() {
         this.randomTextNr = Math.floor(Math.random() * this.randomChallengeText.length);
 
-        mo.socket.on('challengeReplyComplete', (response) => {
+        mo.socket.on('challengeReplyComplete', () => {
             this.buttonLoading = false;
 
-            // In case of successful response, we ened to emit the event to recheck traveling, so other part of the code would handle the rest
-            if (response) {
-                mo.socket.emit('checkTravelingTime');
-            }
+            // "Stopping" the travel and reset the timer
+            this.$store.commit('travelingComplete');
 
             // Remove challenge
             this.$store.commit('puzzleChallenge', {
@@ -104,7 +102,7 @@ export default {
         submitChallenge() {
             this.buttonLoading = true;
 
-            mo.socket.emit('challengeReply', {
+            mo.socket.emit('travelChallengeReply', {
                 challengeNr: this.puzzleChallengeNr,
                 answer: this.challengeAnswer
             });

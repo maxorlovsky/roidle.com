@@ -47,7 +47,7 @@
                     <i class="icon icon-sword" />
                 </router-link>
 
-                <div v-if="characterCrafting"
+                <div v-if="characterCrafting || characterTraveling"
                     class="game__trade game-icon game__additions--disabled"
                 >
                     <i class="icon icon-trade" />
@@ -76,11 +76,11 @@
                 class="game__actions"
             >
                 <hunt-actions v-if="huntAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress || characterCrafting}"
                 />
 
                 <!--<div v-if="outsideActions"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress}"
                     class="game__action"
                     @click="trackMonster()"
                 >
@@ -89,31 +89,31 @@
                 </div>-->
 
                 <kafra-actions v-if="kafraAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress}"
                 />
                 <inn-actions v-if="innAvailable"
                     :disabled="characterCrafting"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress || characterCrafting}"
                 />
                 <shop-actions v-if="shopsAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress || characterCrafting}"
                 />
                 <craft-actions v-if="craftAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress}"
                 />
                 <dungeon-actions v-if="dungeonAvailable"
-                    :class="{'game__action--disabled': huntStatus || travelingToLocation || restInProgress || characterCrafting}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress || characterCrafting}"
                 />
 
-                <div v-if="huntStatus || travelingToLocation || restInProgress"
+                <div v-if="huntStatus || characterTraveling || restInProgress"
                     class="game__action-in-progress"
                 >
-                    <div v-if="travelingToLocation">
+                    <div v-if="characterTraveling">
                         <div>Traveling in Progress</div>
                         <button v-if="!cancelingTravel"
                             class="btn btn-secondary"
                             @click="cancelTravel()"
-                        >Cancel traveling</button>
+                        >Cancel travel</button>
                     </div>
                     <div v-if="restInProgress">
                         <div>Rest in Progress</div>
@@ -194,7 +194,6 @@ const gamePage = {
             'characterLocation',
             'huntStatus',
             'huntEndTimer',
-            'travelingToLocation',
             'restInProgress',
             'socketConnection',
             'partyName',
@@ -204,6 +203,7 @@ const gamePage = {
             'characterSkills',
             'tradeRequestId',
             'characterCrafting',
+            'characterTraveling',
             'serverUrl'
         ])
     },
@@ -357,12 +357,7 @@ const gamePage = {
         },
         setUpSocketEvents() {
             mo.socket.on('interruptTravelComplete', () => {
-                // Stop traveling
-                this.$store.commit('saveTraveling', {
-                    time: 0,
-                    locationId: 0,
-                    locationName: ''
-                });
+                this.$store.commit('travelingComplete');
             });
 
             mo.socket.on('retreatFromHuntComplete', () => {

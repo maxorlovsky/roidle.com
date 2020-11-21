@@ -26,7 +26,6 @@ export default {
     characterSaveLocationId: (state) => state.characterSaveLocationId,
     characterSaveLocation: (state) => state.characterSaveLocation,
     characterZeny: (state) => state.characterZeny,
-    travelingToLocation: (state) => state.travelingToLocation,
     characterHp: (state) => state.characterHp,
     characterMp: (state) => state.characterMp,
     huntStatus: (state) => state.huntStatus,
@@ -66,5 +65,8 @@ export default {
     tradeRequestName: (state) => state.tradeRequestName,
     characterCrafting: (state) => state.characterCrafting,
     craftTimer: (state) => state.craftTimer,
-    craftData: (state) => state.craftData
+    craftData: (state) => state.craftData,
+    characterTraveling: (state) => state.characterTraveling,
+    travelTimer: (state) => state.travelTimer,
+    travelData: (state) => state.travelData,
 };

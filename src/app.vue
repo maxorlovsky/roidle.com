@@ -272,8 +272,6 @@ export default {
 
                 // We're sending a delayed event to stop hunt completely, since mutation happening at the same time won't reach all of the elements
                 setTimeout(() => {
-                    document.title = 'Idle RO - Alpha';
-
                     this.$store.commit('huntStatus', {
                         status: false,
                         timeFinish: null
