@@ -12,6 +12,10 @@
         <audio ref="chatPing"
             :src="`${serverUrl}/dist/assets/sounds/chat-ping.mp3`"
         />
+
+        <audio ref="tradePing"
+            :src="`${serverUrl}/dist/assets/sounds/trade-ping.mp3`"
+        />
     </div>
 </template>
 
@@ -66,8 +70,13 @@ export default {
         setUpVolume() {
             this.$refs.levelUpAudio.volume = this.soundVolume;
             this.$refs.chatPing.volume = this.soundVolume;
+            this.$refs.tradePing.volume = this.soundVolume;
         },
         setUpSocketEvents() {
+            mo.socket.on('tradePing', () => {
+                this.$refs.tradePing.play();
+            });
+
             mo.socket.on('chatPing', () => {
                 this.$refs.chatPing.play();
             });
