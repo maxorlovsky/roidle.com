@@ -14,10 +14,6 @@ $docked-menu: 60px;
 
     &--toggled {
         bottom: calc(#{$docked-menu} + #{$chat-tabs-height} - #{$chat-height});
-
-        .chat__tabs__tab:not(.chat__tabs__tab__toggle):not(.chat__tabs__tab__expand) {
-            z-index: -1;
-        }
     }
     
     &--expanded {
