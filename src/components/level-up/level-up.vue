@@ -6,7 +6,11 @@
         >
 
         <audio ref="levelUpAudio"
-            :src="`${serverUrl}/dist/assets/levelup.wav`"
+            :src="`${serverUrl}/dist/assets/sounds/levelup.wav`"
+        />
+
+        <audio ref="chatPing"
+            :src="`${serverUrl}/dist/assets/sounds/chat-ping.mp3`"
         />
     </div>
 </template>
@@ -45,12 +49,12 @@ export default {
             }
         },
         soundVolume() {
-            this.setLevelUpVolume();
+            this.setUpVolume();
         }
     },
     mounted() {
         this.$nextTick(() => {
-            this.setLevelUpVolume();
+            this.setUpVolume();
         });
     },
     beforeDestroy() {
@@ -59,10 +63,15 @@ export default {
         mo.socket.off('levelUpJob');
     },
     methods: {
-        setLevelUpVolume() {
+        setUpVolume() {
             this.$refs.levelUpAudio.volume = this.soundVolume;
+            this.$refs.chatPing.volume = this.soundVolume;
         },
         setUpSocketEvents() {
+            mo.socket.on('chatPing', () => {
+                this.$refs.chatPing.play();
+            });
+
             mo.socket.on('experienceUpdate', (response) => {
                 this.$store.commit('saveExp', {
                     baseExp: response.baseExp,
