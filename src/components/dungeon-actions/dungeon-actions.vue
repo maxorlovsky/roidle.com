@@ -23,7 +23,7 @@
 
                 <div class="dungeon-actions__buttons">
                     <div v-if="currentLocation.dungeonUp"
-                        :class="{'dungeon-actions__selected-button': destinationSelected === 'up'}"
+                        :class="{'dungeon-actions__selected-button': directionSelected === 'up'}"
                         class="game-icon"
                         @click="switchDestination('up')"
                     >
@@ -31,7 +31,7 @@
                     </div>
 
                     <div v-if="currentLocation.dungeonDown"
-                        :class="{'dungeon-actions__selected-button': destinationSelected === 'down'}"
+                        :class="{'dungeon-actions__selected-button': directionSelected === 'down'}"
                         class="game-icon"
                         @click="switchDestination('down')"
                     >
@@ -64,7 +64,7 @@ export default {
             buttonLoading: false,
             showModal: false,
             travelDestinationId: 0,
-            destinationSelected: '',
+            directionSelected: '',
             locationName: '',
             locationLevels: [1, 1],
             locationCity: false,
@@ -96,12 +96,10 @@ export default {
         mo.socket.on('travelToDungeonComplete', (response) => {
             this.buttonLoading = false;
 
+            // In case response is positive, we request to get travel of the user
+            // In case there are some error it should appear in system chat
             if (response) {
-                this.$store.commit('saveTraveling', {
-                    time: response.traveling.arrivalTime,
-                    locationId: response.traveling.travelingId,
-                    locationName: response.traveling.travelingName
-                });
+                mo.socket.emit('getTravel');
 
                 this.closeModal();
             }
@@ -119,7 +117,7 @@ export default {
 
             mo.socket.emit('travelToDungeon', {
                 locationId: this.travelDestinationId,
-                destination: this.destinationSelected
+                direction: this.directionSelected
             });
         },
         switchDestination(destination) {
@@ -127,10 +125,10 @@ export default {
 
             if (destination === 'down') {
                 destinationObject = 'dungeonDownInfo';
-                this.destinationSelected = 'down';
+                this.directionSelected = 'down';
             } else if (destination === 'up') {
                 destinationObject = 'dungeonUpInfo';
-                this.destinationSelected = 'up';
+                this.directionSelected = 'up';
             }
 
             this.locationName = this.currentLocation[destinationObject].name;

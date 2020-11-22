@@ -8,7 +8,7 @@
                     :key="chat"
                     :class="{'chat__tabs__tab--selected': selectedTab === index, 'chat__tabs__tab--notification': tabNotification[index]}"
                     class="chat__tabs__tab"
-                    @click="selectedTab = index; tabNotification[index] = false; scrollChat()"
+                    @click="selectChatTab(index)"
                 >{{ chat }} chat</div>
 
                 <div :class="{ 'chat__tabs__tab__expand--expanded': fullChat }"
@@ -125,25 +125,28 @@ import { mapGetters } from 'vuex';
 // Globals functions
 import { functions } from '@src/functions.js';
 
+// Keeping in separate variable since we need to do reset afterwards
+const defaultData = {
+    whisperName: '#global',
+    message: '',
+    chats: ['Regular', 'System', 'Battle'],
+    chatLog: {
+        regular: [],
+        system: [],
+        battle: []
+    },
+    disabledChat: true,
+    selectedTab: 0,
+    tabNotification: [false, false, false],
+    showChatModal: false,
+    modalCharacterName: '',
+    fullChat: false,
+};
+
 export default {
     name: 'chat',
     data() {
-        return {
-            whisperName: '#global',
-            message: '',
-            chats: ['Regular', 'System', 'Battle'],
-            chatLog: {
-                regular: [],
-                system: [],
-                battle: []
-            },
-            disabledChat: true,
-            selectedTab: 0,
-            tabNotification: [false, false, false],
-            showChatModal: false,
-            modalCharacterName: '',
-            fullChat: false,
-        };
+        return defaultData;
     },
     computed: {
         ...mapGetters([
@@ -163,9 +166,11 @@ export default {
             }
         },
         resetChat() {
-            this.chatLog.regular = [];
-            this.chatLog.system = [];
-            this.chatLog.battle = [];
+            for (const data of Object.keys(defaultData)) {
+                this[data] = defaultData[data];
+            }
+
+            this.initChat();
         },
         characterSkills: {
             immediate: true,
@@ -257,11 +262,14 @@ export default {
         mo.socket.off('chat');
     },
     mounted() {
-        if (functions.storage('get', 'hideChat')) {
-            this.$store.commit('showChat', false);
-        }
+        this.initChat();
     },
     methods: {
+        initChat() {
+            if (functions.storage('get', 'hideChat')) {
+                this.$store.commit('showChat', false);
+            }
+        },
         ban(name) {
             if (!this.admin) {
                 return false;
@@ -347,6 +355,17 @@ export default {
                 .replace(/(?:^|\W)\/e33(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/whisp.gif"> `);
 
             return message;
+        },
+        selectChatTab(index) {
+            if (!this.showChat) {
+                this.fullChat = true;
+
+                this.expandChat();
+            }
+
+            this.selectedTab = index;
+            this.tabNotification[index] = false;
+            this.scrollChat();
         },
         expandChat() {
             this.fullChat = !this.fullChat;

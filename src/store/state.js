@@ -109,10 +109,6 @@ export default {
             refined: 0
         }
     },
-    travelingToLocation: 0,
-    travelingToLocationName: '',
-    travelingArrivalTime: 0,
-    travelingDungeon: false,
     restInProgress: 0,
     dockedMenu: false,
     huntStatus: false,
@@ -167,7 +163,16 @@ export default {
     puzzleChallengeNr: 0,
     tradeRequestId: 0,
     tradeRequestName: '',
+    // Crafting
     characterCrafting: false,
     craftTimer: null,
-    craftData: null
+    craftData: null,
+    // Traveling
+    characterTraveling: false,
+    travelTimer: null,
+    travelData: {
+        locationId: 0,
+        name: ''
+    },
+    travelingDungeon: false,
 };

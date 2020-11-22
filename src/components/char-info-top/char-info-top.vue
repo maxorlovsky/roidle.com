@@ -39,18 +39,15 @@
             </div>
 
             <div class="char-info__location">
-                <span v-if="travelingDisplay"
-                    class="char-info__location__place"
-                >Traveling ({{ travelingDisplay }})</span>
-                <span v-else-if="restingDisplay"
+                <span v-if="restingDisplay"
                     class="char-info__location__place"
                 >Resting ({{ restingDisplay }})</span>
                 <span v-else-if="huntingDisplay"
                     class="char-info__location__place"
                 >Hunting ({{ huntingDisplay }})</span>
-                <span v-else-if="craftingDisplay"
+                <span v-else-if="timerDisplay"
                     class="char-info__location__place"
-                >Crafting ({{ craftingDisplay }})</span>
+                >{{ timerAction }} ({{ timerDisplay }})</span>
                 <span v-else
                     class="char-info__location__place"
                 >Location: {{ characterLocation }}</span>
@@ -75,10 +72,10 @@ export default {
     data() {
         return {
             location: '',
-            travelingDisplay: '',
+            timerAction: '',
+            timerDisplay: '',
             restingDisplay: '',
             huntingDisplay: '',
-            craftingDisplay: '',
             interval: null,
             baseExpPercentage: '0.00',
             jobExpPercentage: '0.00',
@@ -103,7 +100,6 @@ export default {
             'characterMp',
             'characterLocation',
             'characterZeny',
-            'travelingToLocation',
             'restInProgress',
             'inventoryWeight',
             'characterAttributes',
@@ -112,7 +108,9 @@ export default {
             'characterEquipment',
             'puzzleChallenge',
             'characterCrafting',
-            'craftTimer'
+            'craftTimer',
+            'characterTraveling',
+            'travelTimer',
         ]),
 
         currentHpPercentage() {
@@ -154,16 +152,6 @@ export default {
                 this.calculateWeightPercentage();
             }
         },
-        travelingToLocation: {
-            immediate: true,
-            handler() {
-                if (this.travelingToLocation) {
-                    this.showTimer('travel');
-                } else {
-                    this.resetTimer();
-                }
-            }
-        },
         restInProgress: {
             immediate: true,
             handler() {
@@ -177,8 +165,6 @@ export default {
                 if (this.huntStatus === 'hunting') {
                     this.showTimer('hunt');
                 } else if (this.huntStatus === 'retreating') {
-                    document.title = 'Idle RO - Alpha';
-
                     this.resetTimer();
                 }
             }
@@ -203,9 +189,61 @@ export default {
                     this.resetTimer();
                 }
             }
+        },
+        characterTraveling: {
+            immediate: true,
+            handler() {
+                if (this.characterTraveling) {
+                    mo.socket.emit('getTravel');
+                } else if (!this.travelTimer && !this.characterTraveling) {
+                    this.resetTimer();
+                }
+            }
+        },
+        travelTimer: {
+            immediate: true,
+            handler() {
+                if (this.travelTimer) {
+                    this.showNewTimer('traveling', this.travelTimer);
+                } else if (!this.travelTimer && !this.characterTraveling) {
+                    this.resetTimer();
+                }
+            }
         }
     },
     mounted() {
+        mo.socket.on('getMapTravelChallengeComplete', (response) => {
+            // Only react in case there is challenge provided
+            if (response) {
+                // Stop traveling, save new location
+                this.$store.commit('puzzleChallenge', response);
+            }
+        });
+
+        mo.socket.on('travelingComplete', (response) => {
+            this.$store.commit('travelingComplete');
+
+            // Stop traveling, save new location
+            this.$store.commit('saveLocation', {
+                location: response.locationName,
+                locationId: response.locationId
+            });
+        });
+
+        mo.socket.on('getTravelComplete', (response) => {
+            // In case response is positive and challeenge is now enabled, we need to stop the timer
+            if (response.status && response.challenge) {
+                // Triggering map challenge
+                mo.socket.emit('getMapTravelChallenge');
+
+                // Reseting the timer
+                this.resetTimer();
+            } else if (response.status) {
+                // In case it's just positive, timer need to be initiated
+                this.$store.commit('travelInProgress', response);
+            }
+        });
+
         mo.socket.on('craftingComplete', () => {
             this.$store.commit('craftingComplete');
         });
@@ -228,37 +266,11 @@ export default {
             this.$store.commit('tradeRequest', response);
         });
 
-        mo.socket.on('dungeonChallengeInitiate', (response) => {
-            // In case puzzle challenge is active, we ignore the second one that might come delayed
-            if (this.puzzleChallenge) {
-                return false;
-            }
-
-            // Stop traveling, save new location
-            this.$store.commit('puzzleChallenge', response);
-        });
-
-        mo.socket.on('checkTravelingTimeComplete', (response) => {
-            // Stop traveling, save new location
-            this.$store.commit('saveLocation', {
-                location: response.locationName,
-                locationId: response.locationId
-            });
-        });
-
         mo.socket.on('updateLocation', (response) => {
             // Stop traveling, save new location
             this.$store.commit('saveLocation', {
                 location: response.location,
                 locationId: response.locationId
-            });
-        });
-
-        mo.socket.on('travelToMapComplete', (response) => {
-            this.$store.commit('saveTraveling', {
-                time: response.traveling.arrivalTime,
-                locationId: response.traveling.travelingId,
-                locationName: response.traveling.travelingName
             });
         });
 
@@ -310,14 +322,13 @@ export default {
         this.resetTimer();
 
         if (mo.socket) {
+            mo.socket.off('getMapTravelChallengeComplete');
+            mo.socket.off('travelingComplete');
             mo.socket.off('craftingComplete');
             mo.socket.off('getCraftComplete');
             mo.socket.off('initiateTradingComplete');
             mo.socket.off('tradeRequestReceived');
-            mo.socket.off('dungeonChallengeInitiate');
             mo.socket.off('getCurrentMapLocationDataComplete');
-            mo.socket.off('checkTravelingTimeComplete');
-            mo.socket.off('travelToMapComplete');
             mo.socket.off('checkRestingTimeComplete');
             mo.socket.off('characterHp');
             mo.socket.off('characterMp');
@@ -328,15 +339,20 @@ export default {
         resetTimer() {
             clearInterval(this.interval);
             this.restingDisplay = '';
-            this.travelingDisplay = '';
             this.huntingDisplay = '';
-            this.craftingDisplay = '';
+            this.timerDisplay = '';
         },
         calculateWeightPercentage() {
             this.weightPercentage = Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight);
         },
         showNewTimer(action, seconds) {
-            const displayVariable = 'craftingDisplay';
+            this.timerAction = 'Crafting';
+            let socketEmitAction = 'getCraft';
+
+            if (action === 'traveling') {
+                this.timerAction = 'Traveling';
+                socketEmitAction = 'getTravel';
+            }
 
             this.timerSeconds = seconds;
 
@@ -346,7 +362,7 @@ export default {
                     // Reset variable responsible for rest
                     this.resetTimer();
 
-                    mo.socket.emit('getCraft');
+                    mo.socket.emit(socketEmitAction);
 
                     return true;
                 }
@@ -359,25 +375,21 @@ export default {
                     seconds = `0${seconds}`;
                 }
 
-                this[displayVariable] = `${minutes}:${seconds}`;
+                this.timerDisplay = `${minutes}:${seconds}`;
 
                 this.timerSeconds--;
             }, 1000);
         },
         showTimer(action) {
             // By default we show timer for travel
-            let getter = 'travelingArrivalTime';
-            let emitAction = 'checkTravelingTime';
-            let displayVariable = 'travelingDisplay';
+            let getter = 'huntEndTimer';
+            let emitAction = '';
+            let displayVariable = 'huntingDisplay';
 
             if (action === 'rest') {
                 getter = 'restInProgress';
                 emitAction = 'checkRestingTime';
                 displayVariable = 'restingDisplay';
-            } else if (action === 'hunt') {
-                getter = 'huntEndTimer';
-                emitAction = '';
-                displayVariable = 'huntingDisplay';
             }
 
             const dateTimeFinish = this.$store.getters.get(getter);
@@ -388,26 +400,12 @@ export default {
 
                 // If timer reached 0, switch user locations and unlock the map
                 if (remainingTime < 0) {
-                    // Reseting traveling, just in case action will fail
-                    if (emitAction === 'checkTravelingTime') {
-                        this.$store.commit('saveTraveling', {
-                            time: 0,
-                            locationId: -1,
-                            locationName: ''
-                        });
-                    }
-
                     // We add artificial delay to emit action later, as communication with server have a delay
                     setTimeout(() => {
-                        // In case puzzle challenge already displayed we don't retrigger checktravelingtime again
-                        if (emitAction === 'checkTravelingTime' && this.puzzleChallenge) {
-                            return false;
+                        if (emitAction) {
+                            mo.socket.emit(emitAction);
                         }
-
-                        mo.socket.emit(emitAction);
                     }, 1000);
-
-                    document.title = 'Idle RO - Alpha';
 
                     // Reset variable responsible for rest
                     this.resetTimer();
@@ -422,10 +420,6 @@ export default {
                 if (seconds <= 9) {
                     seconds = `0${seconds}`;
                 }
-
-                /* Temporary disabled ,there seems to be a vue-router bug on go(-1) action
-                document.title = `${minutes}:${seconds} - Idle RO - Alpha`;
-                */
 
                 this[displayVariable] = `${minutes}:${seconds}`;
             }, 1000);

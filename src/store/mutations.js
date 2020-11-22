@@ -6,6 +6,22 @@ export default {
     serverUrl: (state, value) => {
         state.serverUrl = value;
     },
+    travelingComplete: (state) => {
+        state.travelTimer = null;
+        state.travelData = {
+            locationId: 0,
+            name: 0
+        };
+        state.characterTraveling = false;
+    },
+    travelInProgress: (state, value) => {
+        state.travelTimer = value.finishTime;
+        state.travelData = {
+            locationId: value.travelData.locationId,
+            name: value.travelData.name
+        };
+        state.characterTraveling = true;
+    },
     craftingComplete: (state) => {
         state.craftTimer = null;
         state.craftData = null;
@@ -175,16 +191,7 @@ export default {
         state.characterLocation = values.location;
 
         // Reset traveling state
-        state.travelingToLocation = 0;
-        state.travelingToLocationName = '';
-        state.travelingArrivalTime = 0;
         state.travelingDungeon = false;
-    },
-    saveTraveling: (state, values) => {
-        state.travelingToLocation = values.locationId;
-        state.travelingToLocationName = values.locationName;
-        state.travelingArrivalTime = values.time;
-        state.travelingDungeon = values.dungeon;
     },
     saveSkills: (state, values) => {
         state.characterSkills = values.skills;
@@ -613,11 +620,8 @@ export default {
         }
 
         // Traveling
-        if (values.traveling.traveling) {
-            state.travelingToLocation = values.traveling.travelingId;
-            state.travelingToLocationName = values.traveling.travelingName;
-            state.travelingArrivalTime = values.traveling.arrivalTime;
-            state.travelingDungeon = values.traveling.dungeon;
+        if (values.character.traveling) {
+            state.characterTraveling = true;
         }
 
         // Resting
@@ -765,9 +769,6 @@ export default {
             }
         };
 
-        state.travelingToLocation = 0;
-        state.travelingToLocationName = '';
-        state.travelingArrivalTime = 0;
         state.travelingDungeon = false;
         state.restInProgress = 0;
         state.dockedMenu = false;
@@ -820,6 +821,12 @@ export default {
         state.craftTimer = null;
         state.craftData = null;
         state.characterCrafting = false;
+        state.characterTraveling = false;
+        state.travelTimer = null;
+        state.travelData = {
+            locationId: 0,
+            name: ''
+        };
 
         state.admin = 0;
     }
