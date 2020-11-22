@@ -74,11 +74,15 @@ export default {
         },
         setUpSocketEvents() {
             mo.socket.on('tradePing', () => {
-                this.$refs.tradePing.play();
+                if (this.sound) {
+                    this.$refs.tradePing.play();
+                }
             });
 
             mo.socket.on('chatPing', () => {
-                this.$refs.chatPing.play();
+                if (this.sound) {
+                    this.$refs.chatPing.play();
+                }
             });
 
             mo.socket.on('experienceUpdate', (response) => {
