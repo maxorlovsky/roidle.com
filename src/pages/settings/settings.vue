@@ -48,6 +48,25 @@
                 </div>
             </div>
 
+            <div v-if="admin"
+                class="settings__setting"
+            >
+                <div class="settings__setting__slider game-icon">
+                    <div class="settings__setting__title">Copy link to your public profile</div>
+                </div>
+
+                <div class="settings__setting__icon game-icon"
+                    @click="copyToClipboard()"
+                >
+                    <input id="publicUrl"
+                        :value="`https://game-fe-web.maxorlovsky.net/public/character/${characterName}`"
+                        class="settings__setting__copy-link"
+                        type="text"
+                    >
+                    <i class="icon icon-copy" />
+                </div>
+            </div>
+
             <div class="settings__setting settings__setting--discord">
                 <a href="https://discord.gg/PjApFha"
                     class="game-icon"
@@ -119,7 +138,8 @@ const settingsPage = {
             'music',
             'sound',
             'admin',
-            'serverUrl'
+            'serverUrl',
+            'characterName'
         ]),
     },
     watch: {
@@ -159,6 +179,24 @@ const settingsPage = {
             'resetState'
         ]),
 
+        copyToClipboard() {
+            const copyText = document.getElementById('publicUrl');
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            /* Copy the text inside the text field */
+            document.execCommand('copy');
+
+            this.$store.commit('sendChat', [
+                {
+                    type: 'system',
+                    character: 'System',
+                    message: 'Link to public profile copied to clipboard'
+                }
+            ]);
+        },
         kickUsers() {
             mo.socket.emit('adminKickUsers');
         },

@@ -52,6 +52,12 @@
             }
         }
 
+        &__copy-link {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+        }
+
         &:last-child {
             margin-bottom: 0;
         }

@@ -3,6 +3,9 @@
         <template v-if="loading">
             <loading />
         </template>
+        <template v-else-if="characterNotFound">
+            <div class="profile__error">Character not found</div>
+        </template>
         <template v-else>
             <div class="equipment">
                 <div class="equipment__left">
@@ -77,13 +80,14 @@
 <script>
 // 3rd party libs
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 
 // Components
 import avatar from '@components/avatar/avatar.vue';
 import attributes from '@components/attributes/attributes.vue';
 import loading from '@components/loading/loading.vue';
 
-const profilePage = {
+const profilePublicPage = {
     components: {
         avatar,
         attributes,
@@ -92,6 +96,7 @@ const profilePage = {
     data() {
         return {
             loading: true,
+            characterNotFound: false,
             name: '',
             headStyle: 0,
             gender: '',
@@ -173,44 +178,40 @@ const profilePage = {
     computed: {
         ...mapGetters(['serverUrl'])
     },
-    mounted() {
-        mo.socket.on('getCharacterInfoComplete', (response) => {
-            if (response) {
-                this.name = response.name;
-                this.partyName = response.partyName;
-                this.headStyle = response.headStyle;
-                this.headColor = response.headColor;
-                this.gender = response.gender;
-                this.job = response.job;
-                this.equipment = response.equipment;
-                this.attributes = response.attributes;
-                this.baseLevel = response.baseLevel;
-                this.jobLevel = response.jobLevel;
+    async mounted() {
+        // We ping the server, to know that it's alive, in case it isn't we're redirecting user to server-down page
+        try {
+            const response = await axios.get(`${mo.serverUrl}/api/character/${this.$route.params.name}`);
 
-                this.loading = false;
-            } else {
-                // In case user not found, we send player back to game page
-                this.$router.push('/game');
-            }
-        });
+            this.name = response.data.name;
+            this.partyName = response.data.partyName;
+            this.headStyle = response.data.headStyle;
+            this.headColor = response.data.headColor;
+            this.gender = response.data.gender;
+            this.job = response.data.job;
+            this.equipment = response.data.equipment;
+            this.attributes = response.data.attributes;
+            this.baseLevel = response.data.baseLevel;
+            this.jobLevel = response.data.jobLevel;
+        } catch (error) {
+            this.characterNotFound = true;
 
-        // In case Name param doesn't exist redirect to first page
-        if (!this.$route.params.name) {
-            this.$router.push('/game');
+            return false;
+        } finally {
+            this.loading = false;
         }
-
-        mo.socket.emit('getCharacterInfo', this.$route.params.name);
-    },
-    beforeDestroy() {
-        mo.socket.off('getCharacterInfoComplete');
     },
     methods: {
-        getItemInfo(item) {
+        async getItemInfo(item) {
             if (item && item.itemId) {
-                mo.socket.emit('getItemInfo', {
-                    itemId: item.itemId,
-                    equipmentId: item.id
-                });
+                try {
+                    const response = await axios.get(`${mo.serverUrl}/api/item?itemId=${item.itemId}&id=${item.id}`);
+
+                    this.$store.commit('publicItemInfo', response.data);
+                } catch (error) {
+                    console.error('ERROR');
+                    console.error(error);
+                }
             }
         }
     }
@@ -218,9 +219,9 @@ const profilePage = {
 
 // Routing
 mo.routes.push({
-    path: '/profile/:name',
-    component: profilePage
+    path: '/public/character/:name',
+    component: profilePublicPage
 });
 
-export default profilePage;
+export default profilePublicPage;
 </script>

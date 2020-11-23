@@ -142,10 +142,14 @@ export default {
             'selfBagItemInfo',
             'inventory',
             'characterSkills',
-            'serverUrl'
+            'serverUrl',
+            'publicItemInfo'
         ])
     },
     watch: {
+        publicItemInfo() {
+            this.showInfo(this.publicItemInfo);
+        },
         socketConnection() {
             if (this.socketConnection) {
                 this.setUpSocketEvents();

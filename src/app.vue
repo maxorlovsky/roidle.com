@@ -173,25 +173,28 @@ export default {
             await axios.get(`${mo.serverUrl}/api/ping`);
         } catch (error) {
             this.$router.replace('/server-down');
-        } finally {
-            this.removeLoader();
+
+            return false;
         }
 
-        // In case it's not a home page that we're trying to get into we will try
-        if (!['/', '/server-down'].includes(this.$route.path) && functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')) {
-            if (this.$route.path !== '/game') {
-                this.$router.push('/game');
+        // In case it's public we don't do additional checks and reconnects further down the line
+        if (this.$route.path.substr(1, 6) !== 'public') {
+            // In case it's not a home page that we're trying to get into we will try
+            if (!['/', '/server-down', '/public/character'].includes(this.$route.path) && functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')) {
+                if (this.$route.path !== '/game') {
+                    this.$router.push('/game');
+                }
+
+                await this.reconnect();
             }
 
-            await this.reconnect();
+            // If up to this point user still don't have socket connection, we must redirect him to home page
+            if (!mo.socket && !['/', '/server-down', '/public/character'].includes(this.$route.path)) {
+                this.$router.replace('/');
+            }
         }
 
         this.removeLoader();
-
-        // If up to this point user still don't have socket connection, we must redirect him to home page
-        if (!mo.socket && !['/', '/server-down'].includes(this.$route.path)) {
-            this.$router.replace('/');
-        }
     },
     methods: {
         ...mapActions([

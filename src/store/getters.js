@@ -69,4 +69,5 @@ export default {
     characterTraveling: (state) => state.characterTraveling,
     travelTimer: (state) => state.travelTimer,
     travelData: (state) => state.travelData,
+    publicItemInfo: (state) => state.publicItemInfo,
 };

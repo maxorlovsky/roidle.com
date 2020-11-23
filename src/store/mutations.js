@@ -6,6 +6,9 @@ export default {
     serverUrl: (state, value) => {
         state.serverUrl = value;
     },
+    publicItemInfo: (state, value) => {
+        state.publicItemInfo = value;
+    },
     travelingComplete: (state) => {
         state.travelTimer = null;
         state.travelData = {

@@ -175,4 +175,5 @@ export default {
         name: ''
     },
     travelingDungeon: false,
+    publicItemInfo: null
 };
