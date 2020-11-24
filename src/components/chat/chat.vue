@@ -125,35 +125,31 @@ import { mapGetters } from 'vuex';
 // Globals functions
 import { functions } from '@src/functions.js';
 
-// Keeping in separate variable since we need to do reset afterwards
-const defaultData = {
-    whisperName: '#global',
-    message: '',
-    chats: ['Regular', 'System', 'Battle'],
-    chatLog: {
-        regular: [],
-        system: [],
-        battle: []
-    },
-    disabledChat: true,
-    selectedTab: 0,
-    tabNotification: [false, false, false],
-    showChatModal: false,
-    modalCharacterName: '',
-    fullChat: false,
-};
-
 export default {
     name: 'chat',
     data() {
-        return defaultData;
+        return {
+            whisperName: '#global',
+            message: '',
+            chats: ['Regular', 'System', 'Battle'],
+            chatLog: {
+                regular: [],
+                system: [],
+                battle: []
+            },
+            disabledChat: true,
+            selectedTab: 0,
+            tabNotification: [false, false, false],
+            showChatModal: false,
+            modalCharacterName: '',
+            fullChat: false,
+        };
     },
     computed: {
         ...mapGetters([
             'characterSkills',
             'chatContent',
             'socketConnection',
-            'resetChat',
             'characterName',
             'showChat',
             'admin'
@@ -164,13 +160,6 @@ export default {
             if (this.socketConnection) {
                 this.setUpSocketEvents();
             }
-        },
-        resetChat() {
-            for (const data of Object.keys(defaultData)) {
-                this[data] = defaultData[data];
-            }
-
-            this.initChat();
         },
         characterSkills: {
             immediate: true,
@@ -259,17 +248,16 @@ export default {
         }
     },
     beforeDestroy() {
-        mo.socket.off('chat');
+        if (mo.socket) {
+            mo.socket.off('chat');
+        }
     },
     mounted() {
-        this.initChat();
+        if (functions.storage('get', 'hideChat')) {
+            this.$store.commit('showChat', false);
+        }
     },
     methods: {
-        initChat() {
-            if (functions.storage('get', 'hideChat')) {
-                this.$store.commit('showChat', false);
-            }
-        },
         ban(name) {
             if (!this.admin) {
                 return false;

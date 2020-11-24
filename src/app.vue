@@ -10,11 +10,13 @@
                 class="body-content"
             />
 
-            <chat v-show="enableChat" />
+            <chat v-if="resetComponent"
+                v-show="enableChat"
+            />
 
             <level-up />
 
-            <bgm v-if="showBgm" />
+            <bgm v-if="resetComponent" />
 
             <item-info />
 
@@ -83,7 +85,7 @@ export default {
             serverInitialCheck: true,
             serverWentDown: false,
             loggedInFromAnotherSource: false,
-            showBgm: true,
+            resetComponent: true,
             showTutorial: false,
             loginClosed: false
         };
@@ -147,9 +149,9 @@ export default {
         },
         resetChat() {
             // If reset chat was sent, it means that user logged out to char select, we need to reset bgm component
-            this.showBgm = false;
+            this.resetComponent = false;
             this.$nextTick(() => {
-                this.showBgm = true;
+                this.resetComponent = true;
             });
         },
         characterBaseLevel: {
@@ -177,6 +179,8 @@ export default {
             return false;
         }
 
+        this.removeLoader();
+
         // In case it's public we don't do additional checks and reconnects further down the line
         if (this.$route.path.substr(1, 6) !== 'public') {
             // In case it's not a home page that we're trying to get into we will try
@@ -193,8 +197,6 @@ export default {
                 this.$router.replace('/');
             }
         }
-
-        this.removeLoader();
     },
     methods: {
         ...mapActions([
