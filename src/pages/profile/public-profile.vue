@@ -74,6 +74,12 @@
                 :job-level="jobLevel"
             />
         </template>
+
+        <div class="profile__public-button">
+            <a class="btn game-button"
+                href="/"
+            >Back to game</a>
+        </div>
     </section>
 </template>
 
