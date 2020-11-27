@@ -99,7 +99,7 @@ export default {
             // In case response is positive, we request to get travel of the user
             // In case there are some error it should appear in system chat
             if (response) {
-                mo.socket.emit('getTravel');
+                this.$store.commit('travelStart');
 
                 this.closeModal();
             }

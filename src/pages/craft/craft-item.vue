@@ -195,7 +195,7 @@ const craftItemPage = {
         mo.socket.on('craftItemComplete', (response) => {
             // In case craft is successfully started, we trigger the fetch of the craft to show it in UI and redirect user to game window
             if (response) {
-                mo.socket.emit('getCraft');
+                this.$store.commit('craftStart');
 
                 this.$router.go(-2);
             } else {

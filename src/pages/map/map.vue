@@ -12,7 +12,7 @@
                 :class="{
                     'map__piece--selected': location.id === characterLocationId,
                     'map__piece--traveling': location.id === travelData.locationId,
-                    'map__piece--disabled': (characterTraveling || characterCrafting || restInProgress || huntStatus || userOverweight || currentLocation.dungeon) && location.id !== travelData.locationId
+                    'map__piece--disabled': (characterTraveling || characterCrafting || characterResting || huntStatus || userOverweight || currentLocation.dungeon) && location.id !== travelData.locationId
                 }"
                 class="map__piece"
                 @click="selectMap(location.id)"
@@ -101,7 +101,6 @@ const mapPage = {
             'characterLocationId',
             'characterBaseLevel',
             'characterStats',
-            'restInProgress',
             'huntStatus',
             'allMaps',
             'inventoryWeight',
@@ -110,6 +109,7 @@ const mapPage = {
             'currentLocation',
             'characterCrafting',
             'characterTraveling',
+            'characterResting',
             'travelData',
             'serverUrl'
         ])
@@ -127,7 +127,7 @@ const mapPage = {
             // In case response is positive, we request to get travel of the user
             // In case there are some error it should appear in system chat
             if (response) {
-                mo.socket.emit('getTravel');
+                this.$store.commit('travelStart');
             }
         });
 
@@ -188,7 +188,7 @@ const mapPage = {
         },
         selectMap(locationId) {
             // If it's a black square or user is on the same location, we don't do anything
-            if (locationId >= 999 || locationId === this.characterLocationId || this.characterTraveling || this.characterCrafting || this.restInProgress || this.huntStatus || this.userOverweight || this.currentLocation.dungeon) {
+            if (locationId >= 999 || locationId === this.characterLocationId || this.characterTraveling || this.characterCrafting || this.characterResting || this.huntStatus || this.userOverweight || this.currentLocation.dungeon) {
                 return false;
             }
 

@@ -31,7 +31,6 @@ export default {
     huntStatus: (state) => state.huntStatus,
     huntEndTimer: (state) => state.huntEndTimer,
     chatContent: (state) => state.chatContent,
-    restInProgress: (state) => state.restInProgress,
     inventory: (state) => state.inventory,
     inventoryWeight: (state) => state.inventoryWeight,
     characterEquipment: (state) => state.characterEquipment,
@@ -69,5 +68,7 @@ export default {
     characterTraveling: (state) => state.characterTraveling,
     travelTimer: (state) => state.travelTimer,
     travelData: (state) => state.travelData,
+    characterResting: (state) => state.characterResting,
+    restTimer: (state) => state.restTimer,
     publicItemInfo: (state) => state.publicItemInfo,
 };
