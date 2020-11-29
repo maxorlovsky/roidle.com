@@ -419,6 +419,8 @@ const partyPage = {
         },
         inviteToParty() {
             this.showInviteToPartyModal = true;
+            this.inviteToPartyName = '';
+            this.inviteError = '';
 
             // Focus on field when it appears
             this.$nextTick(() => {
