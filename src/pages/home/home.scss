@@ -4,17 +4,69 @@
     background-repeat: no-repeat;
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
-    height: 100vh;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+    box-shadow: 1rem 0 1.5rem #000;
+    margin: 0 auto;
+    max-width: 1400px;
+
+    &__top-bar {
+        width: 100%;
+        max-height: 85px;
+        padding: 0 0.5rem;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &__links {
+            display: flex;
+            align-items: center;
+
+            a {
+                color: #fff;
+                display: block;
+                padding: 2rem 1rem;
+                font-weight: bold;
+                text-transform: uppercase;
+    
+                &:hover {
+                    color: #999;
+                }
+            }
+        }
+
+        &__right {
+            display: flex;
+            align-items: center;
+
+            .game-icon:hover {
+                background-color: rgba(255, 255, 255, 0.8);
+            }
+
+            &__activity {
+                color: #fff;
+                padding-right: 1rem;
+
+                @media (max-width: $mobileSize) {
+                    display: none;
+                }
+            }
+        }
+
+        &__discord-link {
+            font-size: 1rem;
+            margin-right: 1rem;
+        }
+    }
 
     .select-character-wrapper {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
         width: 100%;
+
+        @media (min-width: $mobileSize) {
+            justify-content: space-around;
+        }
     }
 
     &--select-character {
@@ -25,6 +77,25 @@
         width: 100%;
         text-align: center;
         margin-top: 2rem;
+    }
+
+    &__early-access {
+        display: flex;
+        align-items: center;
+        background-color: #ffb837;
+        width: 50%;
+        border-radius: 4px;
+        color: #000;
+        padding: 1rem;
+        margin: 2rem auto 0 auto;
+
+        @media (max-width: $mobileSize) {
+            width: 90%;
+        }
+
+        .icon {
+            margin-right: 1rem;
+        }
     }
 
     &__tap {
@@ -39,51 +110,94 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        margin-bottom: 1rem;
+        margin: 1rem auto;
+        width: 20%;
+
+        @media (max-width: $mobileSize) {
+            width: 50%;
+        }
     }
 
-    &__footer {
-        width: 100%;
+    &__online {
+        display: flex;
+        justify-content: space-around;
+        color: #fff;
+        width: 80%;
+        height: auto;
+        padding: 1rem;
+        margin: 0 auto 1rem auto;
+
+        @media (min-width: $mobileSize) {
+            display: none;
+        }
+    }
+
+    &__wrapper {
         display: flex;
         justify-content: space-around;
         align-items: center;
+        flex-wrap: wrap;
+        width: 90%;
+        margin: 1rem auto;
 
-        &__online {
-            display: flex;
-            justify-content: space-around;
+        &__features {
             color: #fff;
-            width: 80%;
             height: auto;
             padding: 1rem;
             margin-bottom: 1rem;
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 8px;
+            width: 48%;
+            overflow: hidden;
+
+            @media (max-width: $mobileSize) {
+                width: 100%;
+            }
+
+            &__title {
+                font-size: 1.25rem;
+                text-transform: uppercase;
+                padding-bottom: 0.5rem;
+            }
+
+            &__content {
+                font-size: 0.9rem;
+
+                &__screens {
+                    margin-top: 1rem;
+                    display: flex;
+                    justify-content: space-around;
+
+                    @media (max-width: $mobileSize) {
+                        padding: 0 0.5rem;
+                    }
+
+                    a {
+                        border: 2px solid #fff;
+                        border-radius: 4px;
+                        transition: 0.3s;
+
+                        @media (max-width: $mobileSize) {
+                            margin-right: 0.5rem;
+
+                            &:last-child {
+                                margin-right: 0;
+                            }
+                        }
+
+                        &:hover {
+                            opacity: 0.7;
+                        }
+                    }
+                }
+            }
         }
     }
 
-    &__discord {
+    &__version {
         width: 100%;
-        margin-bottom: 1rem;
-
-        &__wrapper {
-            width: 80%;
-            padding: 0.5rem 1rem;
-            height: auto;
-            color: #fff;
-            margin: 0 auto;
-            flex-wrap: wrap;
-        }
-
-        &__disclaimer {
-            width: 100%;
-            padding-bottom: 0.5rem;
-        }
-
-        &__discord-link {
-            transition: 0.3s;
-
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.8);
-            }
-        }
+        text-align: center;
+        padding-bottom: 2rem;
     }
 
     &__guest-account {
@@ -111,6 +225,10 @@
         display: flex;
         align-items: center;
         flex-wrap: wrap;
+
+        @media (min-width: $mobileSize) {
+            width: 48%;
+        }
 
         &--create-new {
             justify-content: center;
@@ -233,7 +351,6 @@
         }
 
         &__helpers {
-            padding: 1rem 0;
             text-align: center;
 
             > span {
@@ -257,6 +374,10 @@
             margin: 1rem auto 0 auto;
             visibility: hidden;
             height: 32px;
+
+            @media (min-width: $mobileSize) {
+                width: 100%;
+            }
 
             &--visible {
                 visibility: visible;
