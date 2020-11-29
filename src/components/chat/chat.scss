@@ -214,4 +214,26 @@ $docked-menu: 60px;
             }
         }
     }
+
+    &__system-message {
+        width: 300px;
+        max-width: 300px;
+        position: fixed;
+        z-index: 11;
+        bottom: 0;
+        left: calc(50% - 150px);
+        border: 1px solid #fff;
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        font-size: 1rem;
+        padding: 0.5rem;
+        transition: 0.5s;
+        opacity: 0;
+
+        &--shown {
+            bottom: 140px;
+            opacity: 1;
+        }
+    }
 }

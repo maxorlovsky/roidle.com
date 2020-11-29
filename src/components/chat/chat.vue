@@ -115,6 +115,13 @@
                 </div>
             </div>
         </div>
+
+        <div :class="{'chat__system-message--shown': showSystemMessage}"
+            class="chat__system-message"
+            @click="stopSystemPopup()"
+        >
+            {{ systemMessage }}
+        </div>
     </section>
 </template>
 
@@ -143,6 +150,9 @@ export default {
             showChatModal: false,
             modalCharacterName: '',
             fullChat: false,
+            showSystemMessage: false,
+            systemMessage: '',
+            systemMessageTimeout: null
         };
     },
     computed: {
@@ -196,6 +206,11 @@ export default {
                         message: chat.message
                     });
                 } else if (chat.type === 'system') {
+                    // In case system message pop up is still showin, we're hiding it
+                    if (this.systemMessageTimeout) {
+                        this.stopSystemPopup();
+                    }
+
                     // In case we receive an important flag, we need to show chat window and switch to system tab
                     if (chat.important) {
                         this.selectedTab = 1;
@@ -203,6 +218,17 @@ export default {
                         this.tabNotification[1] = false;
                     } else if (this.selectedTab !== 1) {
                         this.tabNotification[1] = true;
+                    }
+
+                    // If system message is not marked as important, but chat is closed we show it as a popup
+                    if (!chat.important && !this.showChat) {
+                        this.showSystemMessage = true;
+                        this.systemMessage = chat.message;
+
+                        this.systemMessageTimeout = setTimeout(() => {
+                            this.showSystemMessage = false;
+                            this.systemMessage = '';
+                        }, 3000);
                     }
 
                     // Check if chat is becoming too large and cleaning up first properties to not consume so much memory
@@ -258,6 +284,11 @@ export default {
         }
     },
     methods: {
+        stopSystemPopup() {
+            clearTimeout(this.systemMessageTimeout);
+            this.showSystemMessage = false;
+            this.systemMessage = '';
+        },
         ban(name) {
             if (!this.admin) {
                 return false;
