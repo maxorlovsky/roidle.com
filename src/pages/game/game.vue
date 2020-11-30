@@ -76,11 +76,11 @@
                 class="game__actions"
             >
                 <hunt-actions v-if="huntAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress || characterCrafting}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
                 />
 
                 <!--<div v-if="outsideActions"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting}"
                     class="game__action"
                     @click="trackMonster()"
                 >
@@ -89,23 +89,23 @@
                 </div>-->
 
                 <kafra-actions v-if="kafraAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting}"
                 />
                 <inn-actions v-if="innAvailable"
                     :disabled="characterCrafting"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress || characterCrafting}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
                 />
                 <shop-actions v-if="shopsAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress || characterCrafting}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
                 />
                 <craft-actions v-if="craftAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting}"
                 />
                 <dungeon-actions v-if="dungeonAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || restInProgress || characterCrafting}"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
                 />
 
-                <div v-if="huntStatus || characterTraveling || restInProgress"
+                <div v-if="huntStatus || characterTraveling || characterResting"
                     class="game__action-in-progress"
                 >
                     <div v-if="characterTraveling">
@@ -115,7 +115,7 @@
                             @click="cancelTravel()"
                         >Cancel travel</button>
                     </div>
-                    <div v-if="restInProgress">
+                    <div v-if="characterResting">
                         <div>Rest in Progress</div>
                         <button v-if="!cancelingRest"
                             class="btn btn-secondary"
@@ -194,7 +194,6 @@ const gamePage = {
             'characterLocation',
             'huntStatus',
             'huntEndTimer',
-            'restInProgress',
             'socketConnection',
             'partyName',
             'partyMembers',
@@ -204,6 +203,7 @@ const gamePage = {
             'tradeRequestId',
             'characterCrafting',
             'characterTraveling',
+            'characterResting',
             'serverUrl'
         ])
     },

@@ -7,7 +7,7 @@
     .settings-wrapper {
         background-color: rgba(255, 255, 255, 0.8);
         font-size: 1rem;
-        padding: 1.25rem 1.25rem 35px 1.25rem;
+        padding: 1.25rem 1.25rem $chat-tabs-height-padding 1.25rem;
     }
 
     &__setting {
@@ -50,6 +50,12 @@
             &--disabled {
                 color: #900;
             }
+        }
+
+        &__copy-link {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
         }
 
         &:last-child {

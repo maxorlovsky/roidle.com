@@ -1,5 +1,5 @@
 <template>
-    <section class="character">
+    <section class="profile">
         <template v-if="loading">
             <loading />
         </template>

@@ -76,12 +76,15 @@ export default {
     },
     mounted() {
         mo.socket.on('requestRestComplete', (response) => {
-            this.$store.commit('saveResting', response.dateTimeFinish);
-            this.$store.commit('saveZeny', response.zeny);
+            // In case response is positive, we request to get rest of the user
+            // In case there are some error it should appear in system chat
+            if (response) {
+                this.$store.commit('restStart');
+            }
         });
     },
     beforeDestroy() {
-        mo.socket.off('requestRest');
+        mo.socket.off('requestRestComplete');
     },
     methods: {
         openModal() {

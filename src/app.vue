@@ -1,20 +1,25 @@
 <template>
     <section id="app"
+        :class="{'app--game': characterId}"
         class="app"
     >
         <loading v-if="loading" />
-        <template v-else>
+        <div v-else
+            class="game-block"
+        >
             <char-info-top v-if="dockedMenu" />
 
-            <router-view :class="{'docked-menu-open': dockedMenu}"
+            <router-view :class="{'docked-menu-open': dockedMenu, 'body-content--game': characterId}"
                 class="body-content"
             />
 
-            <chat v-show="enableChat" />
+            <chat v-if="resetComponent"
+                v-show="enableChat"
+            />
 
             <level-up />
 
-            <bgm v-if="showBgm" />
+            <bgm v-if="resetComponent && enableBgm" />
 
             <item-info />
 
@@ -35,7 +40,7 @@
                 href="/"
                 class="server-down-modal"
             />
-        </template>
+        </div>
     </section>
 </template>
 
@@ -83,9 +88,10 @@ export default {
             serverInitialCheck: true,
             serverWentDown: false,
             loggedInFromAnotherSource: false,
-            showBgm: true,
+            resetComponent: true,
             showTutorial: false,
-            loginClosed: false
+            loginClosed: false,
+            enableBgm: true
         };
     },
     computed: {
@@ -147,9 +153,9 @@ export default {
         },
         resetChat() {
             // If reset chat was sent, it means that user logged out to char select, we need to reset bgm component
-            this.showBgm = false;
+            this.resetComponent = false;
             this.$nextTick(() => {
-                this.showBgm = true;
+                this.resetComponent = true;
             });
         },
         characterBaseLevel: {
@@ -173,24 +179,30 @@ export default {
             await axios.get(`${mo.serverUrl}/api/ping`);
         } catch (error) {
             this.$router.replace('/server-down');
-        } finally {
-            this.removeLoader();
-        }
 
-        // In case it's not a home page that we're trying to get into we will try
-        if (!['/', '/server-down'].includes(this.$route.path) && functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')) {
-            if (this.$route.path !== '/game') {
-                this.$router.push('/game');
-            }
-
-            await this.reconnect();
+            return false;
         }
 
         this.removeLoader();
 
-        // If up to this point user still don't have socket connection, we must redirect him to home page
-        if (!mo.socket && !['/', '/server-down'].includes(this.$route.path)) {
-            this.$router.replace('/');
+        // In case it's public we don't do additional checks and reconnects further down the line
+        if (this.$route.path.substr(1, 6) === 'public') {
+            // For all public paths we disable music
+            this.enableBgm = false;
+        } else {
+            // In case it's not a home page that we're trying to get into we will try
+            if (!['/', '/server-down', '/public/character'].includes(this.$route.path) && functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')) {
+                if (this.$route.path !== '/game') {
+                    this.$router.push('/game');
+                }
+
+                await this.reconnect();
+            }
+
+            // If up to this point user still don't have socket connection, we must redirect him to home page
+            if (!mo.socket && !['/', '/server-down', '/public/character'].includes(this.$route.path)) {
+                this.$router.replace('/');
+            }
         }
     },
     methods: {

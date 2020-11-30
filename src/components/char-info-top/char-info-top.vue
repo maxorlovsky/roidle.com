@@ -1,6 +1,6 @@
 <template>
     <div class="char-info">
-        <div class="char-info-wrapper">
+        <div class="char-info-wrapper char-info-wrapper--mobile">
             <avatar :head-style="characterHeadStyle"
                 :head-color="characterHeadColor"
                 :gender="characterGender"
@@ -39,10 +39,7 @@
             </div>
 
             <div class="char-info__location">
-                <span v-if="restingDisplay"
-                    class="char-info__location__place"
-                >Resting ({{ restingDisplay }})</span>
-                <span v-else-if="huntingDisplay"
+                <span v-if="huntingDisplay"
                     class="char-info__location__place"
                 >Hunting ({{ huntingDisplay }})</span>
                 <span v-else-if="timerDisplay"
@@ -52,6 +49,60 @@
                     class="char-info__location__place"
                 >Location: {{ characterLocation }}</span>
                 <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span></span>
+            </div>
+        </div>
+
+        <div class="char-info-wrapper char-info-wrapper--desktop">
+            <avatar :head-style="characterHeadStyle"
+                :head-color="characterHeadColor"
+                :gender="characterGender"
+                :job="characterJob"
+                :framed="true"
+                :head-gears="[
+                    characterEquipment.head.itemId,
+                    characterEquipment.face.itemId,
+                    characterEquipment.mouth.itemId
+                ]"
+            />
+
+            <div class="char-info__description">
+                <div>
+                    <span class="char-info__description__name">{{ characterName }}</span>
+                    <span class="char-info__description__job">{{ characterJob }}</span>
+                </div>
+                <div>
+                    <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ characterBaseExpPercentage }}%)</span>
+                    <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ characterJobExpPercentage }}%)</span>
+                </div>
+                <div>
+                    <div class="char-info__location">
+                        <span v-if="huntingDisplay"
+                            class="char-info__location__place"
+                        >Hunting ({{ huntingDisplay }})</span>
+                        <span v-else-if="timerDisplay"
+                            class="char-info__location__place"
+                        >{{ timerAction }} ({{ timerDisplay }})</span>
+                        <span v-else
+                            class="char-info__location__place"
+                        >Location: {{ characterLocation }}</span>
+                        <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="char-info__health">
+                <span class="char-info__health__hp"><span>HP:</span> {{ characterHp }} / {{ characterAttributes.maxHp }}</span>
+                <div class="char-info__health__bar">
+                    <div :style="{ 'width': currentHpPercentage + '%' }"
+                        class="char-info__health__bar__hp"
+                    />
+                </div>
+                <span class="char-info__health__mp"><span>MP:</span> {{ characterMp }} / {{ characterAttributes.maxMp }}</span>
+                <div class="char-info__health__bar">
+                    <div :style="{ 'width': currentMpPercentage + '%' }"
+                        class="char-info__health__bar__mp"
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -74,7 +125,6 @@ export default {
             location: '',
             timerAction: '',
             timerDisplay: '',
-            restingDisplay: '',
             huntingDisplay: '',
             interval: null,
             baseExpPercentage: '0.00',
@@ -100,7 +150,6 @@ export default {
             'characterMp',
             'characterLocation',
             'characterZeny',
-            'restInProgress',
             'inventoryWeight',
             'characterAttributes',
             'huntStatus',
@@ -111,6 +160,8 @@ export default {
             'craftTimer',
             'characterTraveling',
             'travelTimer',
+            'characterResting',
+            'restTimer',
         ]),
 
         currentHpPercentage() {
@@ -152,18 +203,10 @@ export default {
                 this.calculateWeightPercentage();
             }
         },
-        restInProgress: {
-            immediate: true,
-            handler() {
-                if (this.restInProgress) {
-                    this.showTimer('rest');
-                }
-            }
-        },
         huntStatus: {
             handler() {
                 if (this.huntStatus === 'hunting') {
-                    this.showTimer('hunt');
+                    this.showTimer();
                 } else if (this.huntStatus === 'retreating') {
                     this.resetTimer();
                 }
@@ -209,9 +252,39 @@ export default {
                     this.resetTimer();
                 }
             }
+        },
+        characterResting: {
+            immediate: true,
+            handler() {
+                if (this.characterResting) {
+                    mo.socket.emit('getRest');
+                } else if (!this.restTimer && !this.characterResting) {
+                    this.resetTimer();
+                }
+            }
+        },
+        restTimer: {
+            immediate: true,
+            handler() {
+                if (this.restTimer) {
+                    this.showNewTimer('resting', this.restTimer);
+                } else if (!this.restTimer && !this.characterResting) {
+                    this.resetTimer();
+                }
+            }
         }
     },
     mounted() {
+        mo.socket.on('restingComplete', () => {
+            this.$store.commit('restingComplete');
+        });
+
+        mo.socket.on('getRestComplete', (response) => {
+            if (response.status) {
+                this.$store.commit('restInProgress', response);
+            }
+        });
+
         mo.socket.on('getMapTravelChallengeComplete', (response) => {
             // Only react in case there is challenge provided
             if (response) {
@@ -274,17 +347,6 @@ export default {
             });
         });
 
-        mo.socket.on('checkRestingTimeComplete', () => {
-            // Set hp/mp to max
-            this.$store.commit('setHpMp', {
-                hp: this.characterAttributes.maxHp,
-                mp: this.characterAttributes.maxMp
-            });
-
-            // Removing rest
-            this.$store.commit('saveResting', false);
-        });
-
         mo.socket.on('characterHp', (hp) => {
             this.$store.commit('setHpMp', {
                 hp: hp
@@ -307,10 +369,10 @@ export default {
             });
         });
 
-        mo.socket.on('interruptRestComplete', () => {
-            this.$store.commit('saveResting', 0);
-
-            this.resetTimer();
+        mo.socket.on('interruptRestComplete', (response) => {
+            if (response) {
+                this.$store.commit('restingComplete');
+            }
         });
 
         mo.socket.on('getCurrentMapLocationDataComplete', (location) => {
@@ -322,6 +384,7 @@ export default {
         this.resetTimer();
 
         if (mo.socket) {
+            mo.socket.off('getRestComplete');
             mo.socket.off('getMapTravelChallengeComplete');
             mo.socket.off('travelingComplete');
             mo.socket.off('craftingComplete');
@@ -338,7 +401,6 @@ export default {
     methods: {
         resetTimer() {
             clearInterval(this.interval);
-            this.restingDisplay = '';
             this.huntingDisplay = '';
             this.timerDisplay = '';
         },
@@ -352,6 +414,9 @@ export default {
             if (action === 'traveling') {
                 this.timerAction = 'Traveling';
                 socketEmitAction = 'getTravel';
+            } else if (action === 'resting') {
+                this.timerAction = 'Resting';
+                socketEmitAction = 'getRest';
             }
 
             this.timerSeconds = seconds;
@@ -380,17 +445,10 @@ export default {
                 this.timerSeconds--;
             }, 1000);
         },
-        showTimer(action) {
+        showTimer() {
             // By default we show timer for travel
-            let getter = 'huntEndTimer';
-            let emitAction = '';
-            let displayVariable = 'huntingDisplay';
-
-            if (action === 'rest') {
-                getter = 'restInProgress';
-                emitAction = 'checkRestingTime';
-                displayVariable = 'restingDisplay';
-            }
+            const getter = 'huntEndTimer';
+            const displayVariable = 'huntingDisplay';
 
             const dateTimeFinish = this.$store.getters.get(getter);
 
@@ -400,13 +458,6 @@ export default {
 
                 // If timer reached 0, switch user locations and unlock the map
                 if (remainingTime < 0) {
-                    // We add artificial delay to emit action later, as communication with server have a delay
-                    setTimeout(() => {
-                        if (emitAction) {
-                            mo.socket.emit(emitAction);
-                        }
-                    }, 1000);
-
                     // Reset variable responsible for rest
                     this.resetTimer();
 

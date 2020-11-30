@@ -22,6 +22,7 @@ import './pages/kafra-storage/kafra-storage.vue';
 import './pages/settings/settings.vue';
 import './pages/party/party.vue';
 import './pages/profile/profile.vue';
+import './pages/profile/public-profile.vue';
 import './pages/hunt-configuration/hunt-configuration.vue';
 import './pages/trading/trading.vue';
 import './pages/trading-list/trading-list.vue';

@@ -3,8 +3,22 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    restingComplete: (state) => {
+        state.restTimer = null;
+        state.characterResting = false;
+    },
+    restInProgress: (state, value) => {
+        state.restTimer = value.finishTime;
+        state.characterResting = true;
+    },
+    restStart: (state) => {
+        state.characterResting = true;
+    },
     serverUrl: (state, value) => {
         state.serverUrl = value;
+    },
+    publicItemInfo: (state, value) => {
+        state.publicItemInfo = value;
     },
     travelingComplete: (state) => {
         state.travelTimer = null;
@@ -22,6 +36,9 @@ export default {
         };
         state.characterTraveling = true;
     },
+    travelStart: (state) => {
+        state.characterTraveling = true;
+    },
     craftingComplete: (state) => {
         state.craftTimer = null;
         state.craftData = null;
@@ -30,6 +47,9 @@ export default {
     craftInProgress: (state, value) => {
         state.craftTimer = value.finishTime;
         state.craftData = value.craftData;
+        state.characterCrafting = true;
+    },
+    craftStart: (state) => {
         state.characterCrafting = true;
     },
     tradeRequest: (state, value) => {
@@ -140,9 +160,6 @@ export default {
         if (values.mp >= 0) {
             state.characterMp = values.mp;
         }
-    },
-    saveResting: (state, value) => {
-        state.restInProgress = value;
     },
     saveSkillPoints: (state, value) => {
         state.characterSkillPoints = value;
@@ -625,8 +642,8 @@ export default {
         }
 
         // Resting
-        if (values.restingTime) {
-            state.restInProgress = values.restingTime;
+        if (values.character.resting) {
+            state.characterResting = true;
         }
 
         // Crafting
@@ -770,7 +787,6 @@ export default {
         };
 
         state.travelingDungeon = false;
-        state.restInProgress = 0;
         state.dockedMenu = false;
         state.huntStatus = false;
         state.huntEndTimer = null;
@@ -827,6 +843,8 @@ export default {
             locationId: 0,
             name: ''
         };
+        state.restTimer = null;
+        state.characterResting = false;
 
         state.admin = 0;
     }

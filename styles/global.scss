@@ -5,6 +5,8 @@ $secondaryColor: rgb(233, 218, 88);
 $bgColor: #000 !default;
 $font: "Roboto", sans-serif !default;
 $mobileSize: 768px;
+$chat-tabs-height: 35px;
+$chat-tabs-height-padding: $chat-tabs-height + 10px;
 
 /* Boostrap variables */
 $link-hover-decoration: none;

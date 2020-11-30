@@ -1,3 +1,19 @@
 .profile {
     @extend .character;
+
+    &__error {
+        color: #c00;
+        background-color: rgba(0, 0, 0, 0.8);
+        border: 2px solid #999;
+        width: 80%;
+        margin: 2rem auto 0 auto;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        padding: 0.5rem;
+    }
+
+    &__public-button {
+        text-align: center;
+        padding: 2rem 0;
+    }
 }

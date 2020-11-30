@@ -10,6 +10,10 @@
     background-image: url("#{$assets}/images/character.jpg");
     background-position: 50% 30%;
 
+    @media (min-width: $mobileSize) {
+        background-size: cover;
+    }
+
     &__button {
         background-color: rgba(0, 0, 0, 0.75);
         border: 1px solid $mainColor;

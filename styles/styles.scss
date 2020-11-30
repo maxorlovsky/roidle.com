@@ -9,10 +9,27 @@ body {
 
 .app {
     max-width: 425px;
-    height: 100vh;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-image: url("#{$assets}/images/backgrounds/bg1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &--game {
+        overflow: hidden;
+    }
+
+    @media (min-width: $mobileSize) {
+        max-width: 100%;
+    }
+}
+
+.game-block {
+    max-width: 1400px;
     margin: 0 auto;
     position: relative;
-    overflow: hidden;
+    min-height: 100vh;
 }
 
 .btn {
@@ -61,11 +78,16 @@ a {
 }
 
 .body-content {
-    height: 100vh;
-    overflow: auto;
-
     &.docked-menu-open {
         height: calc(100vh - 60px - 126px);
+
+        @media (min-width: $mobileSize) {
+            height: calc(100vh - 60px - 77px);
+        }
+    }
+
+    &--game {
+        overflow: auto;
     }
 }
 

@@ -115,6 +115,13 @@
                 </div>
             </div>
         </div>
+
+        <div :class="{'chat__system-message--shown': showSystemMessage}"
+            class="chat__system-message"
+            @click="stopSystemPopup()"
+        >
+            {{ systemMessage }}
+        </div>
     </section>
 </template>
 
@@ -125,35 +132,34 @@ import { mapGetters } from 'vuex';
 // Globals functions
 import { functions } from '@src/functions.js';
 
-// Keeping in separate variable since we need to do reset afterwards
-const defaultData = {
-    whisperName: '#global',
-    message: '',
-    chats: ['Regular', 'System', 'Battle'],
-    chatLog: {
-        regular: [],
-        system: [],
-        battle: []
-    },
-    disabledChat: true,
-    selectedTab: 0,
-    tabNotification: [false, false, false],
-    showChatModal: false,
-    modalCharacterName: '',
-    fullChat: false,
-};
-
 export default {
     name: 'chat',
     data() {
-        return defaultData;
+        return {
+            whisperName: '#global',
+            message: '',
+            chats: ['Regular', 'System', 'Battle'],
+            chatLog: {
+                regular: [],
+                system: [],
+                battle: []
+            },
+            disabledChat: true,
+            selectedTab: 0,
+            tabNotification: [false, false, false],
+            showChatModal: false,
+            modalCharacterName: '',
+            fullChat: false,
+            showSystemMessage: false,
+            systemMessage: '',
+            systemMessageTimeout: null
+        };
     },
     computed: {
         ...mapGetters([
             'characterSkills',
             'chatContent',
             'socketConnection',
-            'resetChat',
             'characterName',
             'showChat',
             'admin'
@@ -164,13 +170,6 @@ export default {
             if (this.socketConnection) {
                 this.setUpSocketEvents();
             }
-        },
-        resetChat() {
-            for (const data of Object.keys(defaultData)) {
-                this[data] = defaultData[data];
-            }
-
-            this.initChat();
         },
         characterSkills: {
             immediate: true,
@@ -207,6 +206,11 @@ export default {
                         message: chat.message
                     });
                 } else if (chat.type === 'system') {
+                    // In case system message pop up is still showin, we're hiding it
+                    if (this.systemMessageTimeout) {
+                        this.stopSystemPopup();
+                    }
+
                     // In case we receive an important flag, we need to show chat window and switch to system tab
                     if (chat.important) {
                         this.selectedTab = 1;
@@ -214,6 +218,17 @@ export default {
                         this.tabNotification[1] = false;
                     } else if (this.selectedTab !== 1) {
                         this.tabNotification[1] = true;
+                    }
+
+                    // If system message is not marked as important, but chat is closed we show it as a popup
+                    if (!chat.important && !this.showChat) {
+                        this.showSystemMessage = true;
+                        this.systemMessage = chat.message;
+
+                        this.systemMessageTimeout = setTimeout(() => {
+                            this.showSystemMessage = false;
+                            this.systemMessage = '';
+                        }, 3000);
                     }
 
                     // Check if chat is becoming too large and cleaning up first properties to not consume so much memory
@@ -259,16 +274,20 @@ export default {
         }
     },
     beforeDestroy() {
-        mo.socket.off('chat');
+        if (mo.socket) {
+            mo.socket.off('chat');
+        }
     },
     mounted() {
-        this.initChat();
+        if (functions.storage('get', 'hideChat')) {
+            this.$store.commit('showChat', false);
+        }
     },
     methods: {
-        initChat() {
-            if (functions.storage('get', 'hideChat')) {
-                this.$store.commit('showChat', false);
-            }
+        stopSystemPopup() {
+            clearTimeout(this.systemMessageTimeout);
+            this.showSystemMessage = false;
+            this.systemMessage = '';
         },
         ban(name) {
             if (!this.admin) {

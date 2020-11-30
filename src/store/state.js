@@ -109,7 +109,6 @@ export default {
             refined: 0
         }
     },
-    restInProgress: 0,
     dockedMenu: false,
     huntStatus: false,
     huntEndTimer: null,
@@ -175,4 +174,8 @@ export default {
         name: ''
     },
     travelingDungeon: false,
+    // Resting
+    characterResting: false,
+    restTimer: null,
+    publicItemInfo: null
 };
