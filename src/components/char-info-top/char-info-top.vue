@@ -1,6 +1,6 @@
 <template>
     <div class="char-info">
-        <div class="char-info-wrapper">
+        <div class="char-info-wrapper char-info-wrapper--mobile">
             <avatar :head-style="characterHeadStyle"
                 :head-color="characterHeadColor"
                 :gender="characterGender"
@@ -49,6 +49,60 @@
                     class="char-info__location__place"
                 >Location: {{ characterLocation }}</span>
                 <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span></span>
+            </div>
+        </div>
+
+        <div class="char-info-wrapper char-info-wrapper--desktop">
+            <avatar :head-style="characterHeadStyle"
+                :head-color="characterHeadColor"
+                :gender="characterGender"
+                :job="characterJob"
+                :framed="true"
+                :head-gears="[
+                    characterEquipment.head.itemId,
+                    characterEquipment.face.itemId,
+                    characterEquipment.mouth.itemId
+                ]"
+            />
+
+            <div class="char-info__description">
+                <div>
+                    <span class="char-info__description__name">{{ characterName }}</span>
+                    <span class="char-info__description__job">{{ characterJob }}</span>
+                </div>
+                <div>
+                    <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ characterBaseExpPercentage }}%)</span>
+                    <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ characterJobExpPercentage }}%)</span>
+                </div>
+                <div>
+                    <div class="char-info__location">
+                        <span v-if="huntingDisplay"
+                            class="char-info__location__place"
+                        >Hunting ({{ huntingDisplay }})</span>
+                        <span v-else-if="timerDisplay"
+                            class="char-info__location__place"
+                        >{{ timerAction }} ({{ timerDisplay }})</span>
+                        <span v-else
+                            class="char-info__location__place"
+                        >Location: {{ characterLocation }}</span>
+                        <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="char-info__health">
+                <span class="char-info__health__hp"><span>HP:</span> {{ characterHp }} / {{ characterAttributes.maxHp }}</span>
+                <div class="char-info__health__bar">
+                    <div :style="{ 'width': currentHpPercentage + '%' }"
+                        class="char-info__health__bar__hp"
+                    />
+                </div>
+                <span class="char-info__health__mp"><span>MP:</span> {{ characterMp }} / {{ characterAttributes.maxMp }}</span>
+                <div class="char-info__health__bar">
+                    <div :style="{ 'width': currentMpPercentage + '%' }"
+                        class="char-info__health__bar__mp"
+                    />
+                </div>
             </div>
         </div>
     </div>

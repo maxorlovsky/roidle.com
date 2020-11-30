@@ -117,15 +117,19 @@
                     >
                 </div>
 
-                <button :disabled="buttonLoading"
-                    class="character-view__proceed btn game-button btn-lg"
-                    @click="registerCharacter()"
-                >Create New Character</button>
+                <div class="character-view__proceed character-view__wrapper">
+                    <button :disabled="buttonLoading"
+                        class="btn game-button btn-lg"
+                        @click="registerCharacter()"
+                    >Create New Character</button>
+                </div>
 
-                <button :disabled="buttonLoading"
-                    class="character-view__proceed btn btn-secondary"
-                    @click="switchToCharacterSelect()"
-                >Back to character select</button>
+                <div class="character-view__proceed character-view__wrapper">
+                    <button :disabled="buttonLoading"
+                        class="btn btn-secondary"
+                        @click="switchToCharacterSelect()"
+                    >Back to character select</button>
+                </div>
 
                 <div :class="{'character-view__message--visible': message}"
                     class="character-view__message"
@@ -276,7 +280,7 @@
                 <div class="home__wrapper__features">
                     <div class="home__wrapper__features__title">Don't go on adventure alone, it's dangerous</div>
                     <div class="home__wrapper__features__content">
-                        <span>Either you want to create party with random, your best friends or play alone as a fully party team. All is possible. Play this game how you want. Min/Maxing is not the point. Party play is what important. You won't survive alone or only with one character.  You can create up to 10 characters on one account that share the same storage.</span>
+                        <span>Either you want to create party with random people, your best friends or play alone as a full party team. All is possible. Play this game how you want. Min/Maxing is not the point. Party play is what important, this is what MMO is about. You won't survive alone or only with one character. You can create up to 10 characters on one account that share the same storage.</span>
                         <div class="home__wrapper__features__content__screens">
                             <a :href="`${serverUrl}/dist/assets/images/screenshots/party1.png`"
                                 target="_blank"

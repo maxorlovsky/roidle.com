@@ -24,6 +24,10 @@
             .avatar {
                 left: calc(50% - 60px);
 
+                @media (min-width: $mobileSize) {
+                    margin: 0;
+                }
+
                 &__head {
                     top: 17px;
                 }
@@ -129,7 +133,7 @@
     .skills-button {
         display: flex;
         justify-content: center;
-        margin: 1rem auto 35px auto;
+        margin: 1rem auto $chat-tabs-height-padding auto;
         width: 90%;
     }
 

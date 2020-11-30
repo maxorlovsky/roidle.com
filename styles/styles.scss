@@ -11,15 +11,25 @@ body {
     max-width: 425px;
     min-height: 100vh;
     margin: 0 auto;
-    position: relative;
     background-image: url("#{$assets}/images/backgrounds/bg1.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 
+    &--game {
+        overflow: hidden;
+    }
+
     @media (min-width: $mobileSize) {
         max-width: 100%;
     }
+}
+
+.game-block {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 100vh;
 }
 
 .btn {
@@ -70,6 +80,14 @@ a {
 .body-content {
     &.docked-menu-open {
         height: calc(100vh - 60px - 126px);
+
+        @media (min-width: $mobileSize) {
+            height: calc(100vh - 60px - 77px);
+        }
+    }
+
+    &--game {
+        overflow: auto;
     }
 }
 

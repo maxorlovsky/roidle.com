@@ -1,12 +1,15 @@
 <template>
     <section id="app"
+        :class="{'app--game': characterId}"
         class="app"
     >
         <loading v-if="loading" />
-        <template v-else>
+        <div v-else
+            class="game-block"
+        >
             <char-info-top v-if="dockedMenu" />
 
-            <router-view :class="{'docked-menu-open': dockedMenu}"
+            <router-view :class="{'docked-menu-open': dockedMenu, 'body-content--game': characterId}"
                 class="body-content"
             />
 
@@ -16,7 +19,7 @@
 
             <level-up />
 
-            <bgm v-if="resetComponent" />
+            <bgm v-if="resetComponent && enableBgm" />
 
             <item-info />
 
@@ -37,7 +40,7 @@
                 href="/"
                 class="server-down-modal"
             />
-        </template>
+        </div>
     </section>
 </template>
 
@@ -87,7 +90,8 @@ export default {
             loggedInFromAnotherSource: false,
             resetComponent: true,
             showTutorial: false,
-            loginClosed: false
+            loginClosed: false,
+            enableBgm: true
         };
     },
     computed: {
@@ -182,7 +186,10 @@ export default {
         this.removeLoader();
 
         // In case it's public we don't do additional checks and reconnects further down the line
-        if (this.$route.path.substr(1, 6) !== 'public') {
+        if (this.$route.path.substr(1, 6) === 'public') {
+            // For all public paths we disable music
+            this.enableBgm = false;
+        } else {
             // In case it's not a home page that we're trying to get into we will try
             if (!['/', '/server-down', '/public/character'].includes(this.$route.path) && functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')) {
                 if (this.$route.path !== '/game') {

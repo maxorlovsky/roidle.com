@@ -174,8 +174,11 @@ const mapPage = {
 
                 // There is some issue with scroll, that we need to wait for initial render to finish
                 setTimeout(() => {
-                    this.$refs.map.scrollLeft = document.querySelector('.map__piece--selected').offsetLeft - 102;
-                    this.$refs.map.scrollTop = document.querySelector('.map__piece--selected').offsetTop - 102;
+                    const widthOffset = document.querySelector('.body-content').offsetWidth / 2 - 102;
+                    const heightOffset = document.querySelector('.body-content').offsetHeight / 2 - 102;
+
+                    this.$refs.map.scrollLeft = document.querySelector('.map__piece--selected').offsetLeft - widthOffset;
+                    this.$refs.map.scrollTop = document.querySelector('.map__piece--selected').offsetTop - heightOffset;
                 }, 1);
             } else {
                 // Otherwise, request maps from server

@@ -19,6 +19,11 @@
         top: 125px;
         z-index: 3;
 
+        @media (min-width: $mobileSize) {
+            top: 77px;
+            max-width: 100%;
+        }
+
         &__tab {
             width: 50%;
             padding: 0.5rem 0;
@@ -50,6 +55,11 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        @media (min-width: $mobileSize) {
+            top: calc(77px + 42px);
+            max-width: 100%;
+        }
     }
 
     &__limit {
@@ -74,7 +84,7 @@
         background-color: rgba(255, 255, 255, 0.8);
         margin-top: calc(41px + 40px);
         width: 100%;
-        padding-bottom: 35px;
+        padding-bottom: $chat-tabs-height-padding;
     }
 
     &__left {

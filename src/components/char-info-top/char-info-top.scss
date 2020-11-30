@@ -9,10 +9,34 @@
         background-color: rgba(255, 255, 255, 0.8);
         padding: 0.5rem;
         font-size: 1rem;
+
+        &--mobile {
+            @media (min-width: $mobileSize) {
+                display: none;
+            }
+        }
+    
+        &--desktop {
+            display: none;
+    
+            @media (min-width: $mobileSize) {
+                display: flex;
+            }
+        }
     }
 
     &__description {
         width: 40%;
+
+        @media (min-width: $mobileSize) {
+            width: calc(100% - 250px - 80px);
+            display: flex;
+            align-items: center;
+
+            > div {
+                margin-right: 3rem;
+            }
+        }
 
         &__name {
             font-weight: bold;
@@ -28,6 +52,10 @@
         display: flex;
         flex-wrap: wrap;
         width: 38%;
+
+        @media (min-width: $mobileSize) {
+            width: 250px;
+        }
 
         &__hp,
         &__mp {
@@ -69,6 +97,10 @@
 
     &__location {
         width: 60%;
+
+        @media (min-width: $mobileSize) {
+            width: auto;
+        }
 
         &__place {
             display: block;

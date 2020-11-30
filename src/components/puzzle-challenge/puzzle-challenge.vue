@@ -85,7 +85,7 @@ export default {
     mounted() {
         this.randomTextNr = Math.floor(Math.random() * this.randomChallengeText.length);
 
-        mo.socket.on('challengeReplyComplete', () => {
+        mo.socket.on('challengeReplyComplete', (response) => {
             this.buttonLoading = false;
 
             // "Stopping" the travel and reset the timer
@@ -96,6 +96,11 @@ export default {
                 puzzleText: '',
                 puzzleNr: 0
             });
+
+            // If challenge failed we need to request getTravel again
+            if (!response) {
+                mo.socket.emit('getTravel');
+            }
         });
     },
     methods: {
