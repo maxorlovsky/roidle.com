@@ -59,7 +59,7 @@
                     @click="copyToClipboard()"
                 >
                     <input id="publicUrl"
-                        :value="`https://game-fe-web.maxorlovsky.net/public/character/${characterName}`"
+                        :value="`https://roidle.com/public/character/${characterName}`"
                         class="settings__setting__copy-link"
                         type="text"
                     >
