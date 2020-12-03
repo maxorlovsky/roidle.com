@@ -221,4 +221,32 @@
             padding-top: 1rem;
         }
     }
+
+    &__leave {
+        position: fixed;
+        top: 3rem;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 2px solid #000;
+        border-radius: 4px;
+        background-color: rgba(255, 255, 255, 0.95);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        text-align: center;
+        padding: 1rem;
+        z-index: 5;
+        font-size: 1rem;
+
+        &__caution-text {
+            margin-bottom: 0.5rem;
+        }
+
+        &__actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+    }
 }
