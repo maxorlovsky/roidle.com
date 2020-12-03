@@ -45,7 +45,13 @@
                 @click="reconnect()"
             >
                 Disconnected from server
-                <div class="app__disconnect-button"><button class="btn game-button">Reconnect</button></div>
+                <div class="app__disconnect-button">
+                    <button :disabled="buttonLoading"
+                        class="btn game-button"
+                    >
+                        Reconnect
+                    </button>
+                </div>
             </div>
 
             <a v-if="loginClosed || loggedInFromAnotherSource"
@@ -101,6 +107,7 @@ export default {
     data() {
         return {
             loading: true,
+            buttonLoading: false,
             serverInitialCheck: true,
             serverWentDown: false,
             loggedInFromAnotherSource: false,
@@ -422,6 +429,7 @@ export default {
                 }
 
                 this.serverWentDown = false;
+                this.buttonLoading = false;
             });
         },
         removeSocketEvents() {
@@ -433,6 +441,12 @@ export default {
             }
         },
         async reconnect() {
+            if (this.buttonLoading) {
+                return false;
+            }
+
+            this.buttonLoading = true;
+
             mo.socket = await io(mo.serverUrl, ioConfig);
 
             this.$store.commit('socketConnection', true);
