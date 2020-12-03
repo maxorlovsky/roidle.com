@@ -197,8 +197,8 @@ export default {
                         .replace(/(\n)/g, '<br>');
 
                     // Check if chat is becoming too large and cleaning up first properties to not consume so much memory
-                    // For battle chat we try to log a lot of stuff, so holding up to 1000 lines
-                    if (this.chatLog.battle.length > 1000) {
+                    // For battle chat we try to log a lot of stuff, so holding up to 500 lines
+                    if (this.chatLog.battle.length > 500) {
                         this.chatLog.battle.shift();
                     }
 
