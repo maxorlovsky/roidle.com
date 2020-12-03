@@ -195,6 +195,7 @@ export default {
             await axios.get(`${mo.serverUrl}/api/ping`);
         } catch (error) {
             this.$router.replace('/server-down');
+            this.removeLoader();
 
             return false;
         }
