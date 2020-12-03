@@ -23,6 +23,10 @@ body {
     @media (min-width: $mobileSize) {
         max-width: 100%;
     }
+
+    &__disconnect-button {
+        text-align: center;
+    }
 }
 
 .game-block {
