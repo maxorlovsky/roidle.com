@@ -1,8 +1,31 @@
 <template>
-    <div class="server-down">
-        <volume-control-home />
+    <div class="home">
+        <div class="home__top-bar">
+            <nav class="home__top-bar__links">
+                <a href="https://roidle.fandom.com/wiki/ROIdle_Wiki"
+                    target="_blank"
+                    rel="noopener nofollow"
+                >
+                    Wiki
+                </a>
+            </nav>
+            <div class="home__top-bar__right">
+                <a href="https://discord.gg/PjApFha"
+                    class="home__top-bar__discord-link game-icon"
+                    target="_blank"
+                >
+                    <img :src="`${serverUrl}/dist/assets/images/discord.png`">
+                </a>
 
-        <div class="server-down-wrapper">
+                <volume-control-home />
+            </div>
+        </div>
+
+        <div class="home__logo">
+            <img :src="`${serverUrl}/dist/assets/images/logo.png`">
+        </div>
+
+        <div class="server-down">
             <span class="server-down__text">Our servers are currently down<br>Retrying in {{ seconds }}s</span>
         </div>
     </div>
@@ -11,6 +34,7 @@
 <script>
 // 3rd party libs
 import axios from 'axios';
+import { mapGetters } from 'vuex';
 
 // Components
 import volumeControlHome from '@components/volume-control-home/volume-control-home.vue';
@@ -23,6 +47,9 @@ const serverDownPage = {
         return {
             seconds: 10
         };
+    },
+    computed: {
+        ...mapGetters(['serverUrl'])
     },
     mounted() {
         this.checkServerStatus();

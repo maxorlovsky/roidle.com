@@ -106,6 +106,14 @@
         &__move {
             font-size: 2rem;
         }
+
+        &__info {
+            &__name {
+                &--low-level {
+                    color: #b00;
+                }
+            }
+        }
     }
 }
 

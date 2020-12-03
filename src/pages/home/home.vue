@@ -7,7 +7,7 @@
                 <div v-if="isGuest"
                     class="home__guest-account game-icon"
                 >
-                    You are on guest account, your data can be easily lost if you like the game consider registering account by clicking here
+                    <div>You are on guest account, your data can be easily lost if you like the game consider registering account by clicking here</div>
                     <button :disabled="buttonLoading"
                         class="btn game-button home__guest-account__connect-account"
                         @click="connectGuestAccount()"

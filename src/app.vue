@@ -28,17 +28,39 @@
 
             <docked-menu v-if="dockedMenu" />
 
-            <a v-if="serverWentDown || loginClosed || loggedInFromAnotherSource"
+            <a v-if="loginClosed"
                 href="/"
                 class="modal"
             >
-                <span v-if="loginClosed">Login servers went down or closed, probably because of server restart, wait 5 minutes</span>
-                <span v-else-if="loggedInFromAnotherSource">Someone logged in on to this character from another source. Session lost.</span>
-                <span v-else>Disconnected from server</span>
+                Login servers went down or closed, probably because of server restart, wait 5 minutes
             </a>
-            <a v-if="serverWentDown || loginClosed || loggedInFromAnotherSource"
+            <a v-if="loggedInFromAnotherSource"
+                href="/"
+                class="modal"
+            >
+                Someone logged in on to this character from another source. Session lost.
+            </a>
+            <div v-if="serverWentDown"
+                class="modal"
+                @click="reconnect()"
+            >
+                Disconnected from server
+                <div class="app__disconnect-button">
+                    <button :disabled="buttonLoading"
+                        class="btn game-button"
+                    >
+                        Reconnect
+                    </button>
+                </div>
+            </div>
+
+            <a v-if="loginClosed || loggedInFromAnotherSource"
                 href="/"
                 class="server-down-modal"
+            />
+            <div v-if="serverWentDown"
+                class="server-down-modal"
+                @click="reconnect()"
             />
         </div>
     </section>
@@ -85,6 +107,7 @@ export default {
     data() {
         return {
             loading: true,
+            buttonLoading: false,
             serverInitialCheck: true,
             serverWentDown: false,
             loggedInFromAnotherSource: false,
@@ -179,6 +202,7 @@ export default {
             await axios.get(`${mo.serverUrl}/api/ping`);
         } catch (error) {
             this.$router.replace('/server-down');
+            this.removeLoader();
 
             return false;
         }
@@ -364,6 +388,7 @@ export default {
                 // Trigger only on server disconnect
                 if (message === 'transport close') {
                     this.serverWentDown = true;
+                    this.$store.commit('resetState');
                     this.$store.commit('displayDockedMenu', false);
                     this.$store.commit('enableChat', false);
                     this.$store.commit('socketConnection', false);
@@ -402,6 +427,9 @@ export default {
                 if (this.$route.path !== '/game') {
                     this.$router.push('/game');
                 }
+
+                this.serverWentDown = false;
+                this.buttonLoading = false;
             });
         },
         removeSocketEvents() {
@@ -413,6 +441,12 @@ export default {
             }
         },
         async reconnect() {
+            if (this.buttonLoading) {
+                return false;
+            }
+
+            this.buttonLoading = true;
+
             mo.socket = await io(mo.serverUrl, ioConfig);
 
             this.$store.commit('socketConnection', true);

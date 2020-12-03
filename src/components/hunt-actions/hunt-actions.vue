@@ -31,17 +31,43 @@
 
                     <template v-if="enableLongerHunt">
                         <button :class="{'selected': huntTime === 1800}"
-                        class="btn btn-light"
+                            class="btn btn-light"
                             @click="huntTime = 1800"
                         >30 min</button>
                         <button :class="{'selected': huntTime === 2700}"
-                        class="btn btn-light"
+                            class="btn btn-light"
                             @click="huntTime = 2700"
                         >45 min</button>
                         <button :class="{'selected': huntTime === 3600}"
-                        class="btn btn-light"
+                            class="btn btn-light"
                             @click="huntTime = 3600"
                         >1 hour</button>
+
+                        <button :class="{'selected': huntTime === 7200}"
+                            class="btn btn-light"
+                            @click="huntTime = 7200"
+                        >2 hours</button>
+                        <button :class="{'selected': huntTime === 14400}"
+                            class="btn btn-light"
+                            @click="huntTime = 14400"
+                        >4 hours</button>
+                        <button :class="{'selected': huntTime === 21600}"
+                            class="btn btn-light"
+                            @click="huntTime = 21600"
+                        >6 hours</button>
+
+                        <button :class="{'selected': huntTime === 28800}"
+                            class="btn btn-light"
+                            @click="huntTime = 28800"
+                        >8 hours</button>
+                        <button :class="{'selected': huntTime === 36000}"
+                            class="btn btn-light"
+                            @click="huntTime = 36000"
+                        >10 hours</button>
+                        <button :class="{'selected': huntTime === 43200}"
+                            class="btn btn-light"
+                            @click="huntTime = 43200"
+                        >12 hours</button>
                     </template>
                 </div>
 

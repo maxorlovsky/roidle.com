@@ -21,7 +21,7 @@
 
         @media (min-width: $mobileSize) {
             top: 77px;
-            max-width: 100%;
+            max-width: 1400px;
         }
 
         &__tab {
@@ -58,7 +58,7 @@
 
         @media (min-width: $mobileSize) {
             top: calc(77px + 42px);
-            max-width: 100%;
+            max-width: 1400px;
         }
     }
 

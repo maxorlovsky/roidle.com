@@ -18,7 +18,11 @@
                     <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                 </div>
                 <div class="craft__item__info">
-                    <div class="craft__item__info__name">{{ item.name }} (Lv: {{ item.level }})</div>
+                    <div :class="{'craft__item__info__name--low-level': item.level > characterBaseLevel}"
+                        class="craft__item__info__name"
+                    >
+                        {{ item.name }} (Required Lv: {{ item.level }})
+                    </div>
                     <div class="craft__item__info__materials">Chance: {{ item.chance }}% | Time: {{ Math.floor(item.time / 60) }}m</div>
                     <div class="craft__item__info__chance">Reward: {{ item.reward[0] }} B.Exp, {{ item.reward[1] }} J.Exp</div>
                 </div>
@@ -50,7 +54,10 @@ const craftType = {
         };
     },
     computed: {
-        ...mapGetters(['serverUrl'])
+        ...mapGetters([
+            'characterBaseLevel',
+            'serverUrl'
+        ])
     },
     mounted() {
         mo.socket.on('getCraftItemsComplete', (response) => {

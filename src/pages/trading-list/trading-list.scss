@@ -63,8 +63,16 @@
             .btn {
                 margin-bottom: 0.5rem;
 
+                @media (min-width: $mobileSize) {
+                    margin-bottom: 0;
+                }
+
                 &:last-child {
                     margin-bottom: 0;
+
+                    @media (min-width: $mobileSize) {
+                        margin-left: 1rem;
+                    }
                 }
             }
         }

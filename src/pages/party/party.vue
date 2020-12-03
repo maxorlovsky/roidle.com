@@ -41,12 +41,12 @@
                             <button v-if="partyLeader && item.id !== partyLeaderId"
                                 :disabled="buttonLoading"
                                 class="btn btn-sm btn-danger"
-                                @click="kickCharacter(item.id)"
+                                @click="kickConfirm(item.id)"
                             >Kick</button>
                             <button v-if="item.id === characterId"
                                 :disabled="buttonLoading || (partyLeader && partyMembers.length > 1)"
                                 class="btn btn-sm btn-danger"
-                                @click="leaveTeam()"
+                                @click="showLeave = true"
                             >Leave Party</button>
                             <button v-if="item.id !== characterId"
                                 :disabled="buttonLoading"
@@ -211,6 +211,36 @@
                 class="party__invite__error"
             >{{ inviteError }}</div>
         </div>
+
+        <div v-if="showLeave"
+            class="party__leave"
+        >
+            <div class="party__leave__caution-text">Are you sure you want to leave the party?</div>
+            <div class="party__leave__actions">
+                <button class="btn btn-secondary"
+                    @click="leaveClose()"
+                >No</button>
+                <button :disabled="buttonLoading"
+                    class="btn btn-danger"
+                    @click="leaveTeam()"
+                >Yes</button>
+            </div>
+        </div>
+
+        <div v-if="kickShow"
+            class="party__leave"
+        >
+            <div class="party__leave__caution-text">Are you sure you want to kick this member out of the party?</div>
+            <div class="party__leave__actions">
+                <button class="btn btn-secondary"
+                    @click="kickClose()"
+                >No</button>
+                <button :disabled="buttonLoading"
+                    class="btn btn-danger"
+                    @click="kickCharacter()"
+                >Yes</button>
+            </div>
+        </div>
     </section>
 </template>
 
@@ -241,7 +271,10 @@ const partyPage = {
             inviteError: '',
             invites: [],
             disableJoin: true,
-            disableOrganize: true
+            disableOrganize: true,
+            showLeave: false,
+            kickMemberId: 0,
+            kickShow: false
         };
     },
     computed: {
@@ -298,6 +331,8 @@ const partyPage = {
     mounted() {
         mo.socket.on('kickFromPartyComplete', () => {
             this.buttonLoading = false;
+
+            this.kickClose();
         });
 
         mo.socket.on('partyInviteDeclineComplete', () => {
@@ -334,6 +369,8 @@ const partyPage = {
             this.createParty.name = '';
             this.createParty.loot = 'party';
             this.createParty.hunt = 'together';
+
+            this.leaveClose();
         });
 
         mo.socket.on('updatePartyComplete', (response) => {
@@ -393,6 +430,17 @@ const partyPage = {
         mo.socket.off('partyInviteComplete');
     },
     methods: {
+        leaveClose() {
+            this.showLeave = false;
+        },
+        kickClose() {
+            this.kickMemberId = 0;
+            this.kickShow = false;
+        },
+        kickConfirm(id) {
+            this.kickMemberId = id;
+            this.kickShow = true;
+        },
         declineInvite(partyId) {
             this.buttonLoading = true;
 
@@ -434,10 +482,10 @@ const partyPage = {
 
             this.selectedTab = tab;
         },
-        kickCharacter(id) {
+        kickCharacter() {
             this.buttonLoading = true;
 
-            mo.socket.emit('kickFromParty', id);
+            mo.socket.emit('kickFromParty', this.kickMemberId);
         },
         viewCharacter(name) {
             this.buttonLoading = true;
