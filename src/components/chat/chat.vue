@@ -75,6 +75,8 @@
                     class="chat__input__message"
                     maxlength="150"
                     @keyup.enter="sendChat()"
+                    @keyup.up="cicleMessageUp()"
+                    @keyup.down="cicleMessageDown()"
                 >
                 <button class="btn game-button btn-sm chat__input__button"
                     @click="sendChat()"
@@ -152,7 +154,9 @@ export default {
             fullChat: false,
             showSystemMessage: false,
             systemMessage: '',
-            systemMessageTimeout: null
+            systemMessageTimeout: null,
+            chatMemory: [],
+            memoryNumber: 0
         };
     },
     computed: {
@@ -426,6 +430,22 @@ export default {
                 }
             }
         },
+        cicleMessageUp() {
+            if (this.memoryNumber <= 0) {
+                return false;
+            }
+
+            this.memoryNumber--;
+            this.message = this.chatMemory[this.memoryNumber];
+        },
+        cicleMessageDown() {
+            if (this.memoryNumber >= this.chatMemory.length) {
+                return false;
+            }
+
+            this.memoryNumber++;
+            this.message = this.chatMemory[this.memoryNumber];
+        },
         sendChat() {
             if (!this.message.trim()) {
                 return false;
@@ -435,6 +455,9 @@ export default {
                 to: this.whisperName,
                 message: this.message
             });
+
+            this.memoryNumber++;
+            this.chatMemory.push(this.message);
 
             this.message = '';
         }
