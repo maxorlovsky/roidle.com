@@ -432,15 +432,7 @@ export default {
                     return true;
                 }
 
-                // Making display of resting time user friendly
-                const minutes = Math.floor(this.timerSeconds / 60);
-                let seconds = this.timerSeconds - minutes * 60;
-
-                if (seconds <= 9) {
-                    seconds = `0${seconds}`;
-                }
-
-                this.timerDisplay = `${minutes}:${seconds}`;
+                this.timerDisplay = this.timeConversion(this.timerSeconds);
 
                 this.timerSeconds--;
             }, 1000);
@@ -464,16 +456,27 @@ export default {
                     return true;
                 }
 
-                // Making display of resting time user friendly
-                const minutes = Math.floor(remainingTime / 60);
-                let seconds = remainingTime - minutes * 60;
-
-                if (seconds <= 9) {
-                    seconds = `0${seconds}`;
-                }
-
-                this[displayVariable] = `${minutes}:${seconds}`;
+                this[displayVariable] = this.timeConversion(remainingTime);
             }, 1000);
+        },
+        timeConversion(miliseconds) {
+            let seconds = Math.floor((miliseconds) % 60);
+            let minutes = Math.floor((miliseconds / 60) % 60);
+            let hours = Math.floor((miliseconds / (60 * 60)) % 24);
+
+            if (hours < 10) {
+                hours = `0${hours}`;
+            }
+
+            if (minutes < 10) {
+                minutes = `0${minutes}`;
+            }
+
+            if (seconds < 10) {
+                seconds = `0${seconds}`;
+            }
+
+            return `${hours}:${minutes}:${seconds}`;
         }
     }
 };
