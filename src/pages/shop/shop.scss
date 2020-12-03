@@ -29,6 +29,11 @@
         top: 125px;
         z-index: 2;
 
+        @media (min-width: $mobileSize) {
+            top: 77px;
+            max-width: 1400px;
+        }
+
         &__left,
         &__right {
             width: 50%;
