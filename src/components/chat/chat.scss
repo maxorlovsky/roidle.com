@@ -16,7 +16,11 @@ $docked-menu: 60px;
     }
 
     &--toggled {
-        bottom: calc(#{$docked-menu} + #{$chat-tabs-height} - #{$chat-height});
+        bottom: calc(#{$docked-menu} - #{$chat-height});
+
+        .chat__tabs__tab {
+            margin-top: -#{$chat-tabs-height};
+        }
     }
     
     &--expanded {
