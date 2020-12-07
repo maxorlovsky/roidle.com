@@ -122,6 +122,27 @@
                     </div>
                 </div>
 
+                <div class="party__window__hunt-preference">
+                    <div class="form-heading">Hunt preferences:</div>
+                    <div class="form-check">
+                        <input id="hunt-preference-caution"
+                            v-model="createParty.huntPreference"
+                            type="radio"
+                            value="0"
+                        >
+                        <label for="hunt-preference-caution">With caution (hunt as less mobs as possible to be in advantage)</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input id="hunt-preference-yolo"
+                            v-model="createParty.huntPreference"
+                            type="radio"
+                            value="1"
+                        >
+                        <label for="hunt-preference-yolo">YOLO leveling (gather every mob around the area, usually the amount of your party size)</label>
+                    </div>
+                </div>
+
                 <div v-if="!party"
                     class="party__window__button"
                 >
@@ -262,7 +283,8 @@ const partyPage = {
             createParty: {
                 name: '',
                 loot: 'party',
-                hunt: 'together'
+                hunt: 'together',
+                huntPreference: 0
             },
             createPartyError: '',
             buttonLoading: false,
@@ -286,6 +308,7 @@ const partyPage = {
             'partyLeaderId',
             'partyLoot',
             'partyHunt',
+            'partyHuntPreference',
             'characterId',
             'characterSkills'
         ])
@@ -325,6 +348,12 @@ const partyPage = {
                 if (this.partyHunt) {
                     this.createParty.hunt = this.partyHunt;
                 }
+            }
+        },
+        partyHuntPreference: {
+            immediate: true,
+            handler() {
+                this.createParty.huntPreference = this.partyHuntPreference || 0;
             }
         }
     },
@@ -369,6 +398,7 @@ const partyPage = {
             this.createParty.name = '';
             this.createParty.loot = 'party';
             this.createParty.hunt = 'together';
+            this.createParty.huntPreference = 0;
 
             this.leaveClose();
         });
@@ -385,7 +415,8 @@ const partyPage = {
 
             this.$store.commit('updateParty', {
                 loot: this.createParty.loot,
-                hunt: this.createParty.hunt
+                hunt: this.createParty.hunt,
+                huntPreference: this.createParty.huntPreference
             });
         });
 

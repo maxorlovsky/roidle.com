@@ -155,6 +155,7 @@ export default {
     partyInvites: 0,
     partyLoot: null,
     partyHunt: null,
+    partyHuntPreference: null,
     isGuest: false,
     pushNotification: '',
     currentLocation: null,
