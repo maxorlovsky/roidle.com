@@ -17,9 +17,10 @@
                 >
                 <div class="craft-item__item__info">
                     <b>{{ craftableItem.name }} (Lv: {{ craftableItem.level }})</b><br>
-                    Craft Time: {{ Math.floor(craftableItem.time / 60) }}m<br>
+                    Craft Time: {{ staticTimer(craftableItem.time) }}<br>
                     MP Cost: <span :class="{'craft-item__item__info__mp-cost': characterMp < craftableItem.mpCost}">{{ craftableItem.mpCost }}</span><br>
                     Success Chance: {{ craftableItem.chance }}%<br>
+                    Output per success: x{{ craftableItem.outputAmount }}<br>
                     Reward: {{ craftableItem.reward[0] }} B.Exp, {{ craftableItem.reward[1] }} J.Exp<br>
                 </div>
             </div>
@@ -59,7 +60,7 @@
                 </div>
                 <div class="craft-item__price__item">
                     <div class="craft-item__price__item__title">Time required</div>
-                    <div class="craft-item__price__item__value">{{ price.timeRequired * amount }}m</div>
+                    <div class="craft-item__price__item__value">{{ staticTimer(price.timeRequired * amount) }}</div>
                 </div>
                 <div class="craft-item__price__item">
                     <div class="craft-item__price__item__title">Price for using {{ tool }}</div>
@@ -96,10 +97,14 @@ import { mapGetters } from 'vuex';
 // Components
 import loading from '@components/loading/loading.vue';
 
+// Mixins
+import timerMixin from '@mixins/timers.js';
+
 const craftItemPage = {
     components: {
         loading,
     },
+    mixins: [timerMixin],
     data() {
         return {
             loading: true,

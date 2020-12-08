@@ -6,6 +6,7 @@
             <div class="hunt-configuration__explanation__text">
                 This is a place where you pre-configure the fights for your character, you might do it even during the fight, but it will not take effect until your turn in the hunt<br>
                 <b>Starting position</b> is a position your character starts at the beginning of the round (currently ineffective)<br>
+                <b>Escape critical situations</b> allow you to set up scenario when to run away by using Butterfly Wing away from the battle. It will use Butterfly Wing per each escape. If you will run out of them it will not work.<br>
                 <b>Healing items</b> is what kind of healing items your character will use to restore HP or MP. If there will no such items in the bag, character will not heal himself.<br>
                 <b>Active skills</b> are a rotation of skills per every 5 rounds. Skill placed in the first slot will trigger on 1st round, 6th, 11th, 16th etc.
             </div>
@@ -54,6 +55,41 @@
                     :just-head="true"
                     job="Novice"
                 />
+            </div>
+        </div>
+
+        <div class="hunt-configuration__escape">
+            <p>Escape critical situations</p>
+
+            <div class="hunt-configuration__escape__wrapper">
+                <div class="hunt-configuration__escape__item"
+                    @click="showItemInfo(602)"
+                >
+                    <img :src="`${serverUrl}/dist/assets/images/items/602.gif`">
+                    <span :class="{'hunt-configuration__escape__item__amount--not-enough': !butterflyWingsAmount}"
+                        class="hunt-configuration__escape__item__amount"
+                    >
+                        {{ butterflyWingsAmount }}
+                    </span>
+                </div>
+
+                <select v-model="escapeWhenHp"
+                    class="hunt-configuration__escape__macro"
+                >
+                    <option v-for="index in 9"
+                        :key="index"
+                        :value="10 * index"
+                    >&lt; {{ 10 * index }}% HP</option>
+                </select>
+
+                <div class="hunt-configuration__escape__switcher">
+                    <VueToggles :value="escapeOn"
+                        checked-text="On"
+                        unchecked-text="Off"
+                        checked-bg="#16b3fc"
+                        @click="escapeOn = !escapeOn"
+                    />
+                </div>
             </div>
         </div>
 
@@ -221,6 +257,7 @@
 <script>
 // 3rd party libs
 import { mapGetters } from 'vuex';
+import VueToggles from 'vue-toggles';
 
 // Components
 import avatar from '@components/avatar/avatar.vue';
@@ -228,6 +265,7 @@ import avatar from '@components/avatar/avatar.vue';
 const huntConfigurationPage = {
     components: {
         avatar,
+        VueToggles
     },
     data() {
         return {
@@ -241,7 +279,9 @@ const huntConfigurationPage = {
             showActiveSkillsModal: false,
             activeSkills: [null, null, null, null, null],
             activeSkillsList: [],
-            skillSelectedSlot: null
+            skillSelectedSlot: null,
+            escapeWhenHp: '10',
+            escapeOn: false
         };
     },
     computed: {
@@ -250,8 +290,15 @@ const huntConfigurationPage = {
             'characterHeadColor',
             'characterGender',
             'characterSkills',
+            'inventory',
             'serverUrl'
-        ])
+        ]),
+
+        butterflyWingsAmount() {
+            const item = this.inventory.find((item) => item.itemId === 602);
+
+            return item ? item.amount : 0;
+        }
     },
     mounted() {
         mo.socket.on('getHuntConfigurationComplete', (response) => {
@@ -269,6 +316,14 @@ const huntConfigurationPage = {
 
             if (response.healingHp) {
                 this.healingWhen = response.healingHp;
+            }
+
+            if (response.escapeOn) {
+                this.escapeOn = response.escapeOn;
+            }
+
+            if (response.escapeHp) {
+                this.escapeWhenHp = response.escapeHp;
             }
 
             this.loading = false;
@@ -308,6 +363,11 @@ const huntConfigurationPage = {
         mo.socket.off('getSkillsDataComplete');
     },
     methods: {
+        showItemInfo(itemId) {
+            mo.socket.emit('getItemInfo', {
+                itemId: itemId
+            });
+        },
         saveHuntConfig() {
             const itemToUseInHunt = [];
 
@@ -340,7 +400,9 @@ const huntConfigurationPage = {
                 position: this.position,
                 itemToUseInHunt: itemToUseInHunt,
                 skillsToUseInHunt: skillsToUseInHunt,
-                healingHp: parseInt(this.healingWhen)
+                healingHp: parseInt(this.healingWhen),
+                escapeOn: this.escapeOn,
+                escapeHp: parseInt(this.escapeWhenHp)
             });
         },
         chooseHuntHealingItem(index) {

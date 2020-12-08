@@ -181,6 +181,8 @@
             class="modal"
         >
             <div class="modal__content players-shops__amount">
+                <b>{{ transferItem.name }} <template v-if="transferItem.defaultDurability">({{ transferItem.durability }} / {{ transferItem.maxDurability }})</template></b>
+
                 <div v-if="displayItemAmountProperty">
                     <div class="form-heading">Amount:</div>
                     <input ref="itemAmountValue"

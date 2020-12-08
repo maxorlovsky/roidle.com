@@ -101,12 +101,14 @@ export default {
         state.partyMembers = [];
         state.partyLoot = null;
         state.partyHunt = null;
+        state.partyHuntPreference = null;
         state.partyLeader = false;
         state.partyLeaderId = 0;
     },
     updateParty: (state, value) => {
         state.partyLoot = value.loot;
         state.partyHunt = value.hunt;
+        state.partyHuntPreference = value.huntPreference;
     },
     setPartyMembersIds: (state, value) => {
         state.partyMembersIds = value;
@@ -122,6 +124,7 @@ export default {
         state.partyName = value.name;
         state.partyLoot = value.loot;
         state.partyHunt = value.hunt;
+        state.partyHuntPreference = value.huntPreference;
         state.partyLeader = value.leader === state.characterId;
         state.partyLeaderId = value.leader;
     },
@@ -823,11 +826,10 @@ export default {
         state.partyMembers = [];
         state.partyLoot = null;
         state.partyHunt = null;
+        state.partyHuntPreference = null;
         state.partyLeader = false;
         state.partyLeaderId = 0;
         state.partyInvites = 0;
-        state.partyLoot = null;
-        state.partyHunt = null;
         state.pushNotification = null;
         state.currentLocation = null;
         state.puzzleChallenge = null;

@@ -77,6 +77,7 @@ const config = {
             '@components': path.resolve('./src/components'),
             '@config': path.resolve('./src/config'),
             '@utils': path.resolve('./src/utils'),
+            '@mixins': path.resolve('./src/mixins'),
         }
     },
     plugins: [

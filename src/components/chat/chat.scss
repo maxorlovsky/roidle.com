@@ -16,7 +16,11 @@ $docked-menu: 60px;
     }
 
     &--toggled {
-        bottom: calc(#{$docked-menu} + #{$chat-tabs-height} - #{$chat-height});
+        bottom: calc(#{$docked-menu} - #{$chat-height});
+
+        .chat__tabs__tab {
+            margin-top: -#{$chat-tabs-height};
+        }
     }
     
     &--expanded {
@@ -195,6 +199,21 @@ $docked-menu: 60px;
             }
         }
 
+        &__emoticons {
+            width: 15%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .icon {
+                font-size: 1.25rem;
+            }
+
+            @media (min-width: $mobileSize) {
+                width: 80px;
+            }
+        }
+
         &__button {
             width: 15%;
 
@@ -219,6 +238,7 @@ $docked-menu: 60px;
 
     &__modal {
         position: absolute;
+        top: 20%;
 
         .btn {
             width: 100%;
@@ -252,6 +272,13 @@ $docked-menu: 60px;
             bottom: 140px;
             left: calc(50% - 150px);
             opacity: 1;
+        }
+    }
+
+    &__emoticons {
+        img {
+            padding: 0.25rem;
+            cursor: pointer;
         }
     }
 }

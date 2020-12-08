@@ -53,7 +53,8 @@
             class="modal"
         >
             <div class="modal__content players-shops__amount">
-                <input ref="itemAmountValue"
+                <input v-if="buyingItem.amount > 1"
+                    ref="itemAmountValue"
                     v-model="itemAmountValue"
                     min="1"
                     :max="itemAmountMax"
@@ -61,6 +62,7 @@
                     size="9"
                     placeholder="Amount"
                 >
+                <b>{{ buyingItem.itemName }} <template v-if="buyingItem.defaultDurability">({{ buyingItem.durability }} / {{ buyingItem.maxDurability }})</template></b>
                 <p>Full price: <b :class="{ 'players-shops__amount__zeny--not-enough': characterZeny < buyingItem.price * itemAmountValue }">{{ buyingItem.price * itemAmountValue }}Z</b></p>
             </div>
             <div class="modal__buttons">
@@ -195,13 +197,6 @@ const viewPlayersShopPage = {
             this.itemAmountMax = item.amount;
 
             this.buyingItem = item;
-
-            // In case we don't need to display zeny, means that item is already in the list of selling items
-            // We also check if the amount of item that we're trying to add is just one, in this case we don't really need to display modal and can proceed with submit
-            if (item.amount <= 1) {
-                this.displayItemAmountModal = false;
-                this.confirmBuy();
-            }
         }
     }
 };

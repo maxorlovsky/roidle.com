@@ -78,6 +78,11 @@
                     @keyup.up="cicleMessageUp()"
                     @keyup.down="cicleMessageDown()"
                 >
+                <button class="btn game-button btn-sm chat__input__emoticons"
+                    @click="toggleEmoticons()"
+                >
+                    <i class="icon icon-emoticon" />
+                </button>
                 <button class="btn game-button btn-sm chat__input__button"
                     @click="sendChat()"
                 >&#62;</button>
@@ -124,6 +129,16 @@
         >
             {{ systemMessage }}
         </div>
+
+        <div v-if="showEmoticons"
+            class="modal chat__modal chat__emoticons"
+        >
+            <img v-for="emoticon in emoticons"
+                :key="emoticon"
+                :src="`${serverUrl}/dist/assets/images/emote/${emoticon}.gif`"
+                @click="addEmoticon(emoticon)"
+            >
+        </div>
     </section>
 </template>
 
@@ -156,7 +171,10 @@ export default {
             systemMessage: '',
             systemMessageTimeout: null,
             chatMemory: [],
-            memoryNumber: 0
+            memoryNumber: 0,
+            showEmoticons: false,
+            emoticons: ['bawi', 'bo', 'gawi', 'exc', 'que', 'ho', 'lv', 'swt', 'ic', 'an', 'ag', 'mon', 'dots', 'thx', 'heh', 'hmm', 'no1', 'ok', 'go', 'gg', 'kis', 'kis2', 'pif', 'que2', 'bzz', 'rice', 'awsm', 'meh', 'shy', 'slur', 'yawn', 'dice', 'hum', 'oops', 'spit', 'panic', 'whisp'],
+            emoticonsAdditions: []
         };
     },
     computed: {
@@ -166,6 +184,7 @@ export default {
             'socketConnection',
             'characterName',
             'showChat',
+            'serverUrl',
             'admin'
         ])
     },
@@ -288,6 +307,17 @@ export default {
         }
     },
     methods: {
+        closeEmoticons() {
+            this.showEmoticons = false;
+        },
+        addEmoticon(emoticon) {
+            this.message += ` /${emoticon}`;
+
+            this.closeEmoticons();
+        },
+        toggleEmoticons() {
+            this.showEmoticons = !this.showEmoticons;
+        },
         stopSystemPopup() {
             clearTimeout(this.systemMessageTimeout);
             this.showSystemMessage = false;
@@ -329,7 +359,9 @@ export default {
                 .replace(/(?:^|\W)\/bo(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/bo.png"> `)
                 .replace(/(?:^|\W)\/gawi(?:$|\W)/g, `<img src="${mo.serverUrl}/dist/assets/images/emote/gawi.png"> `)
                 .replace(/(?:^|\W)\/!(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/exc.gif"> `)
+                .replace(/(?:^|\W)\/exc(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/exc.gif"> `)
                 .replace(/(?:^|\W)\/\?(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/que.gif"> `)
+                .replace(/(?:^|\W)\/que(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/que.gif"> `)
                 .replace(/(?:^|\W)\/ho(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/ho.gif"> `)
                 .replace(/(?:^|\W)\/lv(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/lv.gif"> `)
                 .replace(/(?:^|\W)\/lv2(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/lv2.gif"> `)
@@ -338,7 +370,9 @@ export default {
                 .replace(/(?:^|\W)\/an(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/an.gif"> `)
                 .replace(/(?:^|\W)\/ag(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/an2.gif"> `)
                 .replace(/(?:^|\W)\/\$(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/mon.gif"> `)
+                .replace(/(?:^|\W)\/mon(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/mon.gif"> `)
                 .replace(/(?:^|\W)\/\.\.\.(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/dots.gif"> `)
+                .replace(/(?:^|\W)\/dots(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/dots.gif"> `)
                 .replace(/(?:^|\W)\/thx(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/thx.gif"> `)
                 .replace(/(?:^|\W)\/heh(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/heh.gif"> `)
                 .replace(/(?:^|\W)\/hmm(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/hmm.gif"> `)
@@ -350,6 +384,7 @@ export default {
                 .replace(/(?:^|\W)\/kis2(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/kis2.gif"> `)
                 .replace(/(?:^|\W)\/pif(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/pif.gif"> `)
                 .replace(/(?:^|\W)\/\?\?(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/que2.gif"> `)
+                .replace(/(?:^|\W)\/que2(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/que2.gif"> `)
                 .replace(/(?:^|\W)\/bzz(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/bzz.gif"> `)
                 .replace(/(?:^|\W)\/e1(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/bzz.gif"> `)
                 .replace(/(?:^|\W)\/rice(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/rice.gif"> `)
@@ -450,6 +485,8 @@ export default {
             if (!this.message.trim()) {
                 return false;
             }
+
+            this.closeEmoticons();
 
             mo.socket.emit('sendChatMessage', {
                 to: this.whisperName,
