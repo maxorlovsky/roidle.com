@@ -201,6 +201,9 @@ $docked-menu: 60px;
 
         &__emoticons {
             width: 15%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             .icon {
                 font-size: 1.25rem;
@@ -235,6 +238,7 @@ $docked-menu: 60px;
 
     &__modal {
         position: absolute;
+        top: 20%;
 
         .btn {
             width: 100%;
