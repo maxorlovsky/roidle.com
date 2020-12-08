@@ -62,7 +62,7 @@
                     size="9"
                     placeholder="Amount"
                 >
-                <p>{{ buyingItem.itemName }} <template v-if="buyingItem.defaultDurability">({{ buyingItem.durability }} / {{ buyingItem.maxDurability }})</template></p>
+                <b>{{ buyingItem.itemName }} <template v-if="buyingItem.defaultDurability">({{ buyingItem.durability }} / {{ buyingItem.maxDurability }})</template></b>
                 <p>Full price: <b :class="{ 'players-shops__amount__zeny--not-enough': characterZeny < buyingItem.price * itemAmountValue }">{{ buyingItem.price * itemAmountValue }}Z</b></p>
             </div>
             <div class="modal__buttons">
