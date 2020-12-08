@@ -1,6 +1,6 @@
 <template>
     <div class="craft">
-        <div v-if="characterCrafting"
+        <div v-if="characterCrafting && craftData"
             class="craft__wrapper"
         >
             <div class="craft__in-progress">

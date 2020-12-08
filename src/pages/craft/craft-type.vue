@@ -21,9 +21,9 @@
                     <div :class="{'craft__item__info__name--low-level': item.level > characterBaseLevel}"
                         class="craft__item__info__name"
                     >
-                        {{ item.name }} (Required Lv: {{ item.level }})
+                        {{ item.name }} <template v-if="item.outputAmount > 1">(x{{ item.outputAmount }}) </template>(Required Lv: {{ item.level }})
                     </div>
-                    <div class="craft__item__info__materials">Chance: {{ item.chance }}% | Time: {{ Math.floor(item.time / 60) }}m</div>
+                    <div class="craft__item__info__materials">Chance: {{ item.chance }}% | Time: {{ staticTimer(item.time) }} | MP Cost: {{ item.mpCost }}</div>
                     <div class="craft__item__info__chance">Reward: {{ item.reward[0] }} B.Exp, {{ item.reward[1] }} J.Exp</div>
                 </div>
                 <router-link :to="`/craft-item/${item.itemId}`"
@@ -43,10 +43,14 @@ import { mapGetters } from 'vuex';
 // Components
 import loading from '@components/loading/loading.vue';
 
+// Mixins
+import timerMixin from '@mixins/timers.js';
+
 const craftType = {
     components: {
         loading,
     },
+    mixins: [timerMixin],
     data() {
         return {
             loading: true,
