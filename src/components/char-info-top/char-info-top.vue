@@ -34,21 +34,24 @@
             </div>
 
             <div class="char-info__levels">
-                <span class="char-info__levels__base">B.Lv: {{ characterBaseLevel }} ({{ characterBaseExpPercentage }}%)</span>
-                <span class="char-info__levels__job">J.Lv: {{ characterJobLevel }} ({{ characterJobExpPercentage }}%)</span>
+                <span class="char-info__levels__base">{{ $t('charInfoTop.baseLevel') }}: {{ characterBaseLevel }} ({{ characterBaseExpPercentage }}%)</span>
+                <span class="char-info__levels__job">{{ $t('charInfoTop.jobLevel') }}: {{ characterJobLevel }} ({{ characterJobExpPercentage }}%)</span>
             </div>
 
             <div class="char-info__location">
                 <span v-if="huntingDisplay"
                     class="char-info__location__place"
-                >Hunting ({{ huntingDisplay }})</span>
+                >{{ $t('charInfoTop.hunting') }} ({{ huntingDisplay }})</span>
                 <span v-else-if="timerDisplay"
                     class="char-info__location__place"
                 >{{ timerAction }} ({{ timerDisplay }})</span>
                 <span v-else
                     class="char-info__location__place"
-                >Location: {{ characterLocation }}</span>
-                <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span></span>
+                >{{ $t('global.location') }}: {{ characterLocation }}</span>
+                <span class="char-info__location__zeny">
+                    {{ $t('global.money') }}: {{ characterZeny }} | {{ $t('global.weight') }}:
+                    <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span>
+                </span>
             </div>
         </div>
 
@@ -78,14 +81,17 @@
                     <div class="char-info__location">
                         <span v-if="huntingDisplay"
                             class="char-info__location__place"
-                        >Hunting ({{ huntingDisplay }})</span>
+                        >{{ $t('charInfoTop.hunting') }} ({{ huntingDisplay }})</span>
                         <span v-else-if="timerDisplay"
                             class="char-info__location__place"
                         >{{ timerAction }} ({{ timerDisplay }})</span>
                         <span v-else
                             class="char-info__location__place"
-                        >Location: {{ characterLocation }}</span>
-                        <span class="char-info__location__zeny">Zeny: {{ characterZeny }} | Weight: <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span></span>
+                        >{{ $t('global.location') }}: {{ characterLocation }}</span>
+                        <span class="char-info__location__zeny">
+                            {{ $t('global.money') }}: {{ characterZeny }} | {{ $t('global.weight') }}:
+                            <span :class="{ 'char-info__overweight': weightPercentage >= 90 }">{{ weightPercentage }}%</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -408,14 +414,14 @@ export default {
             this.weightPercentage = Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight);
         },
         showNewTimer(action, seconds) {
-            this.timerAction = 'Crafting';
+            this.timerAction = this.$t('charInfoTop.crafting');
             let socketEmitAction = 'getCraft';
 
             if (action === 'traveling') {
-                this.timerAction = 'Traveling';
+                this.timerAction = this.$t('charInfoTop.traveling');
                 socketEmitAction = 'getTravel';
             } else if (action === 'resting') {
-                this.timerAction = 'Resting';
+                this.timerAction = this.$t('charInfoTop.resting');
                 socketEmitAction = 'getRest';
             }
 

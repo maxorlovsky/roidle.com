@@ -90,10 +90,7 @@ module.exports = {
         "for-direction": "error",
         "func-call-spacing": "error",
         "func-name-matching": "error",
-        "func-style": [
-            "error",
-            "declaration"
-        ],
+        "func-style": "off",
         "function-paren-newline": "error",
         "generator-star-spacing": "error",
         "getter-return": "error",

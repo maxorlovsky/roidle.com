@@ -9,7 +9,7 @@
                     :class="{'chat__tabs__tab--selected': selectedTab === index, 'chat__tabs__tab--notification': tabNotification[index]}"
                     class="chat__tabs__tab"
                     @click="selectChatTab(index)"
-                >{{ chat }} chat</div>
+                >{{ chat }} {{ $t('chat.chat') }}</div>
 
                 <div :class="{ 'chat__tabs__tab__expand--expanded': fullChat }"
                     class="chat__tabs__tab chat__tabs__tab__expand"
@@ -35,7 +35,7 @@
                     <span v-if="chat.type === 'private'"
                         class="chat__body__chat--type--message"
                         @click="sendPrivateMessage(`${chat.character}`)"
-                    >[ #private ] <span v-if="chat.to">To</span><span v-else>From</span> </span>
+                    >[ #private ] <span v-if="chat.to">To</span><span v-else>{{ $t('chat.from') }}</span> </span>
                     <span v-else
                         class="chat__body__chat--type--message"
                         @click="sendPrivateMessage(`#${chat.type}`)"
@@ -89,7 +89,9 @@
 
                 <div v-if="disabledChat"
                     class="chat__input__limit"
-                >Need Basic Level 3 to use chat</div>
+                >{{ $t('chat.needBasicLevel', {
+                    level: 3
+                }) }}</div>
             </div>
 
             <div v-if="showChatModal"
@@ -99,26 +101,26 @@
                 <div class="modal__content chat__modal__buttons">
                     <button class="btn game-button"
                         @click="openProfile(modalCharacterName)"
-                    >View profile</button>
+                    >{{ $t('global.viewProfile') }}</button>
                     <button class="btn game-button"
                         @click="sendPrivateMessage(modalCharacterName)"
-                    >Message</button>
+                    >{{ $t('chat.message') }}</button>
                     <button class="btn game-button"
                         @click="trade(modalCharacterName)"
-                    >Trade</button>
+                    >{{ $t('global.trade') }}</button>
                     <button v-if="admin"
                         class="btn btn-warning"
                         @click="mute(modalCharacterName)"
-                    >Mute</button>
+                    >{{ $t('global.mute') }}</button>
                     <button v-if="admin"
                         class="btn btn-danger"
                         @click="ban(modalCharacterName)"
-                    >Ban</button>
+                    >{{ $t('global.ban') }}</button>
                 </div>
                 <div class="modal__buttons">
                     <button class="btn btn-secondary"
                         @click="showChatModal = false"
-                    >Cancel</button>
+                    >{{ $t('global.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -146,8 +148,8 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
-// Globals functions
-import { functions } from '@src/functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
 
 export default {
     name: 'chat',

@@ -4,30 +4,30 @@
             <img class="game__action__image"
                 :src="`${serverUrl}/dist/assets/images/illust/kafra1.png`"
             >
-            <span class="game__action__name">Kafra Services</span>
+            <span class="game__action__name">{{ $t('kafra.actionTitle') }}</span>
         </div>
 
         <div v-if="showKafraModal"
             class="modal"
         >
-            <div class="modal__header">Kafra Services</div>
+            <div class="modal__header">{{ $t('kafra.actionTitle') }}</div>
             <div class="modal__content kafra-actions__buttons">
                 <button class="btn game-button"
                     @click="saveLocation()"
-                >Save Location</button>
+                >{{ $t('kafra.saveLocation') }}</button>
                 <button :class="{'btn-disabled': characterSkills[1] < 6}"
                     class="btn game-button"
                     @click="openStorage()"
-                >Use Storage ({{ storagePrice }} Z)</button>
+                >{{ $t('kafra.useStorage') }} ({{ storagePrice }} Z)</button>
                 <button class="btn game-button"
                     @click="openBarberShop()"
-                >Barber Shop Service ({{ barberPrice }} Z)</button>
+                >{{ $t('kafra.barberService') }} ({{ barberPrice }} Z)</button>
                 <button class="btn game-button"
                     @click="statResetStart()"
-                >Stats Reset Service ({{ resetPrice }} Z)</button>
+                >{{ $t('kafra.statsResetService') }} ({{ resetPrice }} Z)</button>
                 <button class="btn game-button"
                     @click="skillsResetStart()"
-                >Skills Reset Service ({{ resetPrice }} Z)</button>
+                >{{ $t('kafra.skillsResetService') }} ({{ resetPrice }} Z)</button>
                 <!--<button class="btn game-button"
                     @click="openGuildStorage()"
                 >Use Guild storage (600 Z)</button>
@@ -38,55 +38,55 @@
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showKafraModal = false"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
             </div>
         </div>
 
         <div v-if="showResetStatsConfirmation"
             class="modal"
         >
-            <div class="modal__header">Reset stats</div>
+            <div class="modal__header">{{ $t('kafra.resetStats') }}</div>
             <div class="modal__content kafra-actions__buttons">
                 <template v-if="characterBaseLevel <= 80">
-                    You wish to rebuild your body? It is possible, but it is very expensive alchemical potion and overall magical procedure. It will cost you a good amount of zeny. Your body normally can witstand it multiple time, but the more you grow the more expensive it will become. So you should rely on it too much.<br>
-                    Current price: <b>{{ resetPrice }}</b><br>
-                    Zeny available: {{ characterZeny }}
+                    {{ $t('kafra.youWishToResetStats') }}<br>
+                    {{ $t('kafra.resetCurrentPrice') }}: <b>{{ resetPrice }}</b><br>
+                    {{ $t('kafra.resetZenyAvailable') }}: {{ characterZeny }}
                 </template>
-                <template v-else>You have grown beyond our magic and alchemy to rebuild you the way you want. Sorry.</template>
+                <template v-else>{{ $t('kafra.resetBeyond') }}</template>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showResetStatsConfirmation = false; showKafraModal = true"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
 
                 <button :disabled="characterZeny < resetPrice || characterBaseLevel > 80"
                     class="btn game-button"
                     @click="resetStats()"
-                >I'm ready, reset!</button>
+                >{{ $t('kafra.resetReady') }}</button>
             </div>
         </div>
 
         <div v-if="showResetSkillsConfirmation"
             class="modal"
         >
-            <div class="modal__header">Reset skills</div>
+            <div class="modal__header">{{ $t('kafra.resetSkills') }}</div>
             <div class="modal__content kafra-actions__buttons">
                 <template v-if="characterBaseLevel <= 80">
-                    You wish to rebuild your mental state? It is painful, ever heard about lobotomy? Well it's not that, but never the less, changing your mental state even by using magic is really hard. The more experience you gain, the more problems it will cause. Until the point of no return is reached.<br>
-                    Current price: <b>{{ resetPrice }}</b><br>
-                    Zeny available: {{ characterZeny }}
+                    {{ $t('kafra.youWishToResetSkills') }}<br>
+                    {{ $t('kafra.resetCurrentPrice') }}: <b>{{ resetPrice }}</b><br>
+                    {{ $t('kafra.resetZenyAvailable') }}: {{ characterZeny }}
                 </template>
-                <template v-else>You have grown beyond our magic and alchemy to rebuild you the way you want. Sorry.</template>
+                <template v-else>{{ $t('kafra.resetBeyond') }}</template>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showResetSkillsConfirmation = false; showKafraModal = true"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
 
                 <button :disabled="characterZeny < resetPrice || characterBaseLevel > 80"
                     class="btn game-button"
                     @click="resetSkills()"
-                >I'm ready, reset!</button>
+                >{{ $t('kafra.resetReady') }}</button>
             </div>
         </div>
     </div>
@@ -169,7 +169,7 @@ export default {
                     {
                         type: 'system',
                         character: 'System',
-                        message: 'Insufficient Zeny to use Barber Shop Service'
+                        message: this.$t('kafra.insufficientZenyForBarber')
                     }
                 ]);
 
@@ -187,7 +187,7 @@ export default {
                     {
                         type: 'system',
                         character: 'System',
-                        message: 'Insufficient Zeny to use Kafra Storage Service'
+                        message: this.$t('kafra.insufficientZenyForStorage')
                     }
                 ]);
 
@@ -200,7 +200,9 @@ export default {
                     {
                         type: 'system',
                         character: 'System',
-                        message: 'You need basic level 6 to start using Kafra Storage Services'
+                        message: this.$t('kafra.needBasicLevel', {
+                            level: 6
+                        })
                     }
                 ]);
 

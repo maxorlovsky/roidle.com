@@ -30,10 +30,10 @@
 
                 <div class="craft-item__amount__number">
                     <input v-model="amount"
+                        :placeholder="$t('global.amount')"
                         type="number"
                         :min="0"
                         :max="maxAmount"
-                        placeholder="Amount"
                     >
                 </div>
             </div>

@@ -156,8 +156,8 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
-// Globals functions
-import { functions } from '@src/functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
 
 const shopPage = {
     data() {

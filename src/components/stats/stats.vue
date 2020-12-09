@@ -33,7 +33,7 @@
 
         <div class="stats__bottom">
             <div class="stats__points">
-                <span class="stats__points__label">Status points:</span>
+                <span class="stats__points__label">{{ $t('stats.statusPoints') }}:</span>
                 <span :class="{'stats__points__points--empty': tempStatusPoints === 0 }"
                     class="stats__points__points"
                 >{{ tempStatusPoints }}</span>
@@ -42,7 +42,7 @@
             <button :disabled="tempStatusPoints === characterStatusPoints"
                 class="btn game-button stats__apply"
                 @click="saveStats()"
-            >Save</button>
+            >{{ $t('global.save') }}</button>
         </div>
 
         <attributes :patk="attributes.patk"
@@ -179,7 +179,7 @@ export default {
                     {
                         type: 'system',
                         character: 'System',
-                        message: 'Something went wrong while trying to update your stats'
+                        message: this.$t('stats.errorTryingToUpdateStats')
                     }
                 ]);
             }
@@ -194,17 +194,17 @@ export default {
             this.statExplanation.show = true;
 
             if (stat === 'str') {
-                this.statExplanation.statInfo = '<b>Strength (STR)</b>: This stat affects the physical power (P.Atk) of the character, be that of melee or range, melee benefit more from Strength than range.<br>Primary stat for jobs: <b>Fighter, Thief</b><br>Secondary stat for jobs: <b>Merchant</b>';
+                this.statExplanation.statInfo = `<b>${this.$t('stats.str')}</b>: ${this.$t('stats.strExplanation')}`;
             } else if (stat === 'dex') {
-                this.statExplanation.statInfo = '<b>Dexterity (DEX)</b>: This stat affect character HIT(Accuracy) and EVA(Evade) parameters. This stat affects the speed of how fast character can finish missions and travel. Speed affects whole party. This stat affect physical power of the character by a little. Range weapons benefit more from this stat.<br>Primary stat for jobs: <b>Archer, Thief</b>';
+                this.statExplanation.statInfo = `<b>${this.$t('stats.dex')}</b>: ${this.$t('stats.dexExplanation')}`;
             } else if (stat === 'int') {
-                this.statExplanation.statInfo = '<b>Intellect (INT)</b>: This stat affects the mental power (M.Atk) of the character, allowing to deal massive magic damage<br>Primary stat for jobs: <b>Mage</b>';
+                this.statExplanation.statInfo = `<b>${this.$t('stats.int')}</b>: ${this.$t('stats.intExplanation')}`;
             } else if (stat === 'vit') {
-                this.statExplanation.statInfo = '<b>Vitality (VIT)</b>: This stat affects the physical defense (P.Def) and HP and is a mandatory stat for protectors<br>Secondary stat for jobs: <b>Fighter</b>';
+                this.statExplanation.statInfo = `<b>${this.$t('stats.vit')}</b>: ${this.$t('stats.vitExplanation')}`;
             } else if (stat === 'wis') {
-                this.statExplanation.statInfo = '<b>Wisdom (WIS)</b>: This stat affects the healing capabilities of acolyte, magical defense (M.Def) and MP<br>Primary stat for jobs: <b>Acolyte</b><br>Secondary stat for jobs: <b>Mage</b>';
+                this.statExplanation.statInfo = `<b>${this.$t('stats.wis')}</b>: ${this.$t('stats.wisExplanation')}`;
             } else if (stat === 'luk') {
-                this.statExplanation.statInfo = '<b>Luck (LUK)</b>: This stat affects the luck of a character and every other stat and attribute in many ways, primarily it is used for crafts, crit chance defense and crit chance attack<br>Primary stat for jobs: <b>Merchant</b><br>Secondary stat for jobs: <b>Thief, Archer</b>';
+                this.statExplanation.statInfo = `<b>${this.$t('stats.luk')}</b>: ${this.$t('stats.lukExplanation')}`;
             }
         },
         renewStats() {

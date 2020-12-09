@@ -118,8 +118,8 @@
 import { mapGetters, mapActions } from 'vuex';
 import RangeSlider from 'vue-range-slider';
 
-// Globals functions
-import { functions } from '@src/functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
 
 const settingsPage = {
     components: {

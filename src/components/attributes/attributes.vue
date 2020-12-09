@@ -3,71 +3,71 @@
         <div v-if="publicProfile"
             class="attributes__params attributes__params--full"
         >
-            <span class="attributes__params__label">Name</span>
+            <span class="attributes__params__label">{{ $t('global.name') }}</span>
             <span class="attributes__params__value">{{ name }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">Base Lvl</span>
+            <span class="attributes__params__label">{{ $t('attributes.baseLevel') }}</span>
             <span class="attributes__params__value">{{ baseLevel }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">Job Lvl</span>
+            <span class="attributes__params__label">{{ $t('attributes.jobLevel') }}</span>
             <span class="attributes__params__value">{{ jobLevel }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">Job</span>
+            <span class="attributes__params__label">{{ $t('attributes.job') }}</span>
             <span class="attributes__params__value">{{ job }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">M.HP</span>
+            <span class="attributes__params__label">{{ $t('attributes.mhp') }}</span>
             <span class="attributes__params__value">{{ maxHp }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">M.MP</span>
+            <span class="attributes__params__label">{{ $t('attributes.mmp') }}</span>
             <span class="attributes__params__value">{{ maxMp }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">P.Atk</span>
+            <span class="attributes__params__label">{{ $t('attributes.patk') }}</span>
             <span class="attributes__params__value">{{ patk }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">M.Atk</span>
+            <span class="attributes__params__label">{{ $t('attributes.matk') }}</span>
             <span class="attributes__params__value">{{ matk }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">P.Def</span>
+            <span class="attributes__params__label">{{ $t('attributes.pdef') }}</span>
             <span class="attributes__params__value">{{ pdef }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">M.Def</span>
+            <span class="attributes__params__label">{{ $t('attributes.mdef') }}</span>
             <span class="attributes__params__value">{{ mdef }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">Hit</span>
+            <span class="attributes__params__label">{{ $t('attributes.hit') }}</span>
             <span class="attributes__params__value">{{ hit }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">Eva</span>
+            <span class="attributes__params__label">{{ $t('attributes.eva') }}</span>
             <span class="attributes__params__value">{{ eva }}</span>
         </div>
         <div class="attributes__params">
-            <span class="attributes__params__label">Speed</span>
+            <span class="attributes__params__label">{{ $t('attributes.speed') }}</span>
             <span class="attributes__params__value">+{{ speed }}%</span>
         </div>
         <div class="attributes__params attributes__params--half">
-            <span class="attributes__params__label">Crit Atk</span>
+            <span class="attributes__params__label">{{ $t('attributes.catk') }}</span>
             <span class="attributes__params__value">{{ crit }}%</span>
         </div>
         <div class="attributes__params attributes__params--half">
-            <span class="attributes__params__label">Crit Def</span>
+            <span class="attributes__params__label">{{ $t('attributes.cdef') }}</span>
             <span class="attributes__params__value">{{ critDef }}%</span>
         </div>
         <div class="attributes__params attributes__params--half">
-            <span class="attributes__params__label">Party</span>
+            <span class="attributes__params__label">{{ $t('global.party') }}</span>
             <span class="attributes__params__value">{{ partyName || '--' }}</span>
         </div>
         <div class="attributes__params attributes__params--half">
-            <span class="attributes__params__label">Guild</span>
+            <span class="attributes__params__label">{{ $t('global.guild') }}</span>
             <span class="attributes__params__value">{{ guildName || '--' }}</span>
         </div>
     </div>

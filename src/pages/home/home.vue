@@ -7,11 +7,11 @@
                 <div v-if="isGuest"
                     class="home__guest-account game-icon"
                 >
-                    <div>You are on guest account, your data can be easily lost if you like the game consider registering account by clicking here</div>
+                    <div>{{ $t('home.youAreGuestAccount') }}</div>
                     <button :disabled="buttonLoading"
                         class="btn game-button home__guest-account__connect-account"
                         @click="connectGuestAccount()"
-                    >Create and Connect account</button>
+                    >{{ $t('home.createAndConnectAccount') }}</button>
                 </div>
 
                 <div v-for="item in characters"
@@ -28,18 +28,18 @@
                     <div class="home__select-character__info">
                         {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>
                         {{ item.job }}<br>
-                        Location: {{ item.location }}
+                        {{ $t('global.location') }}: {{ item.location }}
                     </div>
 
                     <div class="home__select-character__buttons">
                         <button :disabled="buttonLoading"
                             class="btn btn-sm btn-danger"
                             @click="deleteCharacter(item.id)"
-                        >Delete</button>
+                        >{{ $t('global.delete') }}</button>
                         <button :disabled="buttonLoading"
                             class="btn game-button"
                             @click="chooseCharacter(item.id)"
-                        >Select character</button>
+                        >{{ $t('home.selectCharacter') }}</button>
                     </div>
                 </div>
 
@@ -47,24 +47,24 @@
                     class="home__select-character home__select-character--create-new"
                     @click="switchToCreateCharacter()"
                 >
-                    Create new character
+                    {{ $t('home.createNewCharacter') }}
                 </div>
 
                 <button :disabled="buttonLoading"
                     class="character-view__proceed btn game-button"
                     @click="backToMain()"
-                >Back to main screen</button>
+                >{{ $t('home.backToMainScreen') }}</button>
 
                 <div v-if="showDelete"
                     class="home__select-character__delete"
                 >
-                    <div class="home__select-character__delete__caution-text">Are you sure you want to delete this character?</div>
+                    <div class="home__select-character__delete__caution-text">{{ $t('home.deleteCharacterConfirmation') }}</div>
                     <button class="btn btn-secondary"
                         @click="closeDeleteModal()"
-                    >No</button>
+                    >{{ $t('global.no') }}</button>
                     <button class="btn btn-danger"
                         @click="deleteConfirm()"
-                    >Yes</button>
+                    >{{ $t('global.yes') }}</button>
                 </div>
 
                 <register v-if="showRegisterModal && isLoggedIn && isGuest"
@@ -86,10 +86,10 @@
                     <div class="character-pickers__buttons">
                         <Button class="btn btn-secondary"
                             @click="setGender(0)"
-                        >Male</Button>
+                        >{{ $t('home.male') }}</Button>
                         <Button class="btn btn-secondary"
                             @click="setGender(1)"
-                        >Female</Button>
+                        >{{ $t('home.female') }}</Button>
                     </div>
                     <div class="character-pickers__buttons">
                         <Button class="btn btn-secondary"
@@ -121,14 +121,14 @@
                     <button :disabled="buttonLoading"
                         class="btn game-button btn-lg"
                         @click="registerCharacter()"
-                    >Create New Character</button>
+                    >{{ $t('home.createNewCharacter') }}</button>
                 </div>
 
                 <div class="character-view__proceed character-view__wrapper">
                     <button :disabled="buttonLoading"
                         class="btn btn-secondary"
                         @click="switchToCharacterSelect()"
-                    >Back to character select</button>
+                    >{{ $t('home.backToCharacterSelect') }}</button>
                 </div>
 
                 <div :class="{'character-view__message--visible': message}"
@@ -140,20 +140,20 @@
             <div class="home__top-bar">
                 <nav class="home__top-bar__links">
                     <router-link to="/">
-                        Home
+                        {{ $t('home.home') }}
                     </router-link>
                     <a href="https://roidle.fandom.com/wiki/ROIdle_Wiki"
                         target="_blank"
                         rel="noopener nofollow"
                     >
-                        Wiki
+                        {{ $t('home.wiki') }}
                     </a>
                 </nav>
                 <div class="home__top-bar__right">
                     <div class="home__top-bar__right__activity">
-                        <div>Online: {{ online }}</div>
-                        <div>Hunts: {{ hunts }}</div>
-                        <div>Players registered: {{ players }}</div>
+                        <div>{{ $t('home.online') }}: {{ online }}</div>
+                        <div>{{ $t('home.hunts') }}: {{ hunts }}</div>
+                        <div>{{ $t('home.playersRegistered') }}: {{ players }}</div>
                     </div>
 
                     <a href="https://discord.gg/PjApFha"
@@ -173,7 +173,7 @@
 
             <div class="home__early-access">
                 <i class="icon icon-exclamation-mark" />
-                <div>This is a fan / hobby made game, done by one person and is currently in Open Alpha access.</div>
+                <div>{{ $t('home.earlyAccessExplanation') }}</div>
             </div>
 
             <loading v-if="loading" />
@@ -197,7 +197,7 @@
                     >
                     <button :disabled="buttonLoading || !form.email || !form.password"
                         class="btn btn-lg game-button home__auth-form__button"
-                    >Login</button>
+                    >{{ $t('global.login') }}</button>
 
                     <div :class="{'home__auth-form__message--visible': form.message}"
                         class="home__auth-form__message"
@@ -205,39 +205,39 @@
                     />
                 </form>
                 <div class="home__auth-form__helpers">
-                    <span @click="openReg()">Register account</span>
+                    <span @click="openReg()">{{ $t('home.registerAccount') }}</span>
                 </div>
             </div>
 
             <div v-if="!loading && !isLoggedIn"
                 class="home__tap"
                 @click="registerGuest()"
-            >Play now, register later</div>
+            >{{ $t('home.playNowRegisterLater') }}</div>
 
             <div v-if="!loading && isLoggedIn"
                 class="home__tap"
                 @click="loadGame()"
-            >Start the game</div>
+            >{{ $t('home.startGame') }}</div>
 
             <div v-if="isLoggedIn"
                 class="home__logout"
             >
                 <button class="btn btn-danger home__logout__button"
                     @click="logout()"
-                >Logout</button>
+                >{{ $t('global.logout') }}</button>
             </div>
 
             <div class="home__online game-icon">
-                <div>Online: {{ online }}</div>
-                <div>Hunts: {{ hunts }}</div>
-                <div>Players: {{ players }}</div>
+                <div>{{ $t('home.online') }}: {{ online }}</div>
+                <div>{{ $t('home.hunts') }}: {{ hunts }}</div>
+                <div>{{ $t('global.players') }}: {{ players }}</div>
             </div>
 
             <div class="home__wrapper">
                 <div class="home__wrapper__features">
-                    <div class="home__wrapper__features__title">Idle & inremental text MMORPG - hunt and do quests</div>
+                    <div class="home__wrapper__features__title">{{ $t('home.feature1Title') }}</div>
                     <div class="home__wrapper__features__content">
-                        <span>Start with nothing and grow your character or many characters at the same time. Be whatever you want. Participating in what matter and let your character level up for you by hunting offline while still getting XP. Create party with your friends or control full party yourself. Do quests, be that of daily or story driver.</span>
+                        <span>{{ $t('home.feature1Description') }}</span>
                         <div class="home__wrapper__features__content__screens">
                             <a :href="`${serverUrl}/dist/assets/images/screenshots/hunt1.png`"
                                 target="_blank"
@@ -259,9 +259,9 @@
                 </div>
 
                 <div class="home__wrapper__features">
-                    <div class="home__wrapper__features__title">Level up your character and make unique build</div>
+                    <div class="home__wrapper__features__title">{{ $t('home.feature2Title') }}</div>
                     <div class="home__wrapper__features__content">
-                        <span>There are no limits to stats and skills. You can create whatever you want. You want to go with meta? Go ahead and speak with other players what work best. But don't want to be as everyone else and want to do intelectual Knight with ton of mana? Go ahead. Want to do very bulky Mage or Healer? Sure, go crazy.</span>
+                        <span>{{ $t('home.feature2Description') }}</span>
                         <div class="home__wrapper__features__content__screens">
                             <a :href="`${serverUrl}/dist/assets/images/screenshots/levelup1.png`"
                                 target="_blank"
@@ -278,9 +278,9 @@
                 </div>
 
                 <div class="home__wrapper__features">
-                    <div class="home__wrapper__features__title">Don't go on adventure alone, it's dangerous</div>
+                    <div class="home__wrapper__features__title">{{ $t('home.feature3Title') }}</div>
                     <div class="home__wrapper__features__content">
-                        <span>Either you want to create party with random people, your best friends or play alone as a full party team. All is possible. Play this game how you want. Min/Maxing is not the point. Party play is what important, this is what MMO is about. You won't survive alone or only with one character. You can create up to 10 characters on one account that share the same storage.</span>
+                        <span>{{ $t('home.feature3Description') }}</span>
                         <div class="home__wrapper__features__content__screens">
                             <a :href="`${serverUrl}/dist/assets/images/screenshots/party1.png`"
                                 target="_blank"
@@ -297,9 +297,9 @@
                 </div>
 
                 <div class="home__wrapper__features">
-                    <div class="home__wrapper__features__title">Don't like to hunt? Become a crafter.</div>
+                    <div class="home__wrapper__features__title">{{ $t('home.feature4Title') }}</div>
                     <div class="home__wrapper__features__content">
-                        <span>Items wear out and break. Someone need to fix them. Items are not magically appearing in NPC stored. Someone need to create them and this someone can be you. Become the best crafter the world might know. Buy materials from adventurers and hunters. Create weapon, create armor, create potion, No loot item is useless as you can transmute them into what you might need.</span>
+                        <span>{{ $t('home.feature4Description') }}</span>
                         <div class="home__wrapper__features__content__screens">
                             <a :href="`${serverUrl}/dist/assets/images/screenshots/craft1.png`"
                                 target="_blank"
@@ -321,9 +321,9 @@
                 </div>
 
                 <div class="home__wrapper__features">
-                    <div class="home__wrapper__features__title">Travel the map and face challenges in the dungeon.</div>
+                    <div class="home__wrapper__features__title">{{ $t('home.feature5Title') }}</div>
                     <div class="home__wrapper__features__content">
-                        <span>Travel and explore the world, hunt stronger monster, get materials from them and sell them to Merchants. They will craft better gear for you instead. When dwelling the dungeons - don't get lost.</span>
+                        <span>{{ $t('home.feature5Description') }}</span>
                         <div class="home__wrapper__features__content__screens">
                             <a :href="`${serverUrl}/dist/assets/images/screenshots/travel1.png`"
                                 target="_blank"
@@ -340,9 +340,9 @@
                 </div>
 
                 <div class="home__wrapper__features">
-                    <div class="home__wrapper__features__title">Become economical magnate.</div>
+                    <div class="home__wrapper__features__title">{{ $t('home.feature6Title') }}</div>
                     <div class="home__wrapper__features__content">
-                        <span>Buy and sell stuff and lead the economy of the world by opening you shops in each city. You're in control of the prices. You're in control of the goods. If money making is your call, this is the road for you! Also, trade with players in real time.</span>
+                        <span>{{ $t('home.feature6Description') }}</span>
                         <div class="home__wrapper__features__content__screens">
                             <a :href="`${serverUrl}/dist/assets/images/screenshots/shop1.png`"
                                 target="_blank"
@@ -381,8 +381,8 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import { mapGetters } from 'vuex';
 
-// Globals functions
-import { functions } from '@src/functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
 
 // Config
 import ioConfig from '@config/io.json';
@@ -704,7 +704,7 @@ const homePage = {
             }
 
             if (!functions.storage('get', 'session')) {
-                this.message = 'Your session expired, please reload the app';
+                this.message = this.$t('home.sessionExpired');
                 this.buttonLoading = false;
 
                 return false;

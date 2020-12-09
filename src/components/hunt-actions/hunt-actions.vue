@@ -4,89 +4,89 @@
             <img class="game__action__image"
                 :src="`${serverUrl}/dist/assets/images/sword.png`"
             >
-            <span class="game__action__name">Hunt</span>
+            <span class="game__action__name">{{ $t('hunt.actionTitle') }}</span>
         </div>
 
         <div v-if="showHuntModal"
             class="modal"
         >
-            <div class="modal__header">Confirm hunt</div>
+            <div class="modal__header">{{ $t('hunt.confirmHunt') }}</div>
             <div class="modal__content">
-                <p>Time</p>
+                <p>{{ $t('hunt.time') }}</p>
                 <div class="hunt-time-buttons">
                     <button :class="{'selected': huntTime === 60}"
                         class="btn btn-light"
                         @click="huntTime = 60"
-                    >1 min</button>
+                    >1 {{ $t('hunt.min') }}</button>
 
                     <button :class="{'selected': huntTime === 300}"
                         class="btn btn-light"
                         @click="huntTime = 300"
-                    >5 min</button>
+                    >5 {{ $t('hunt.min') }}</button>
 
                     <button :class="{'selected': huntTime === 600}"
                         class="btn btn-light"
                         @click="huntTime = 600"
-                    >10 min</button>
+                    >10 {{ $t('hunt.min') }}</button>
 
                     <template v-if="enableLongerHunt">
                         <button :class="{'selected': huntTime === 1800}"
                             class="btn btn-light"
                             @click="huntTime = 1800"
-                        >30 min</button>
+                        >30 {{ $t('hunt.min') }}</button>
                         <button :class="{'selected': huntTime === 2700}"
                             class="btn btn-light"
                             @click="huntTime = 2700"
-                        >45 min</button>
+                        >45 {{ $t('hunt.min') }}</button>
                         <button :class="{'selected': huntTime === 3600}"
                             class="btn btn-light"
                             @click="huntTime = 3600"
-                        >1 hour</button>
+                        >1 {{ $t('hunt.hour') }}</button>
 
                         <button :class="{'selected': huntTime === 7200}"
                             class="btn btn-light"
                             @click="huntTime = 7200"
-                        >2 hours</button>
+                        >2 {{ $t('hunt.hours') }}</button>
                         <button :class="{'selected': huntTime === 14400}"
                             class="btn btn-light"
                             @click="huntTime = 14400"
-                        >4 hours</button>
+                        >4 {{ $t('hunt.hours') }}</button>
                         <button :class="{'selected': huntTime === 21600}"
                             class="btn btn-light"
                             @click="huntTime = 21600"
-                        >6 hours</button>
+                        >6 {{ $t('hunt.hours') }}</button>
 
                         <button :class="{'selected': huntTime === 28800}"
                             class="btn btn-light"
                             @click="huntTime = 28800"
-                        >8 hours</button>
+                        >8 {{ $t('hunt.hours') }}</button>
                         <button :class="{'selected': huntTime === 36000}"
                             class="btn btn-light"
                             @click="huntTime = 36000"
-                        >10 hours</button>
+                        >10 {{ $t('hunt.hours') }}</button>
                         <button :class="{'selected': huntTime === 43200}"
                             class="btn btn-light"
                             @click="huntTime = 43200"
-                        >12 hours</button>
+                        >12 {{ $t('hunt.hours') }}</button>
                     </template>
                 </div>
 
                 <router-link to="/hunt-configuration"
                     class="hunt-actions__configuration"
                 >
-                    <button class="btn game-button">Hunt configuration<br>(active skills/healing)</button>
+                    <button class="btn game-button">{{ $t('hunt.huntConfiguration') }}</button>
                 </router-link>
             </div>
             <div class="modal__buttons">
                 <button :disabled="buttonLoading"
                     class="btn btn-secondary"
                     @click="cancelHunt()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="!huntTime || buttonLoading"
                     :class="{'disabled': !huntTime}"
                     class="btn game-button"
                     @click="startHunt()"
-                >Start</button>
+                >{{ $t('hunt.start') }}</button>
             </div>
         </div>
     </div>
@@ -96,8 +96,8 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
-// Globals functions
-import { functions } from '@src/functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
 
 export default {
     name: 'hunt-actions',

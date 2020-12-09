@@ -1,20 +1,20 @@
 <template>
     <div class="trade-window-request">
         <div class="modal">
-            <div class="modal__header">Trade request</div>
+            <div class="modal__header">{{ $t('trade.tradeRequest') }}</div>
             <div class="modal__content">
-                <b>{{ tradeRequestName }}</b> would like to trade with you
+                <b>{{ tradeRequestName }}</b> {{ $t('trade.wouldLikeToTrade') }}
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="rejectTrade()"
-                >Reject</button>
+                >{{ $t('trade.reject') }}</button>
                 <button class="btn game-button"
                     @click="viewCharacter(tradeRequestName)"
-                >View Profile</button>
+                >{{ $t('global.viewProfile') }}</button>
                 <button class="btn btn-success"
                     @click="acceptTrade()"
-                >Accept</button>
+                >{{ $t('trade.accept') }}</button>
             </div>
         </div>
     </div>

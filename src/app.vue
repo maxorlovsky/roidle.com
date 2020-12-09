@@ -32,24 +32,24 @@
                 href="/"
                 class="modal"
             >
-                Login servers went down or closed, probably because of server restart, wait 5 minutes
+                {{ $t('app.loginClosed') }}
             </a>
             <a v-if="loggedInFromAnotherSource"
                 href="/"
                 class="modal"
             >
-                Someone logged in on to this character from another source. Session lost.
+                {{ $t('app.loggedInFromAnotherSource') }}
             </a>
             <div v-if="serverWentDown"
                 class="modal"
                 @click="reconnect()"
             >
-                Disconnected from server
+                {{ $t('app.serverWentDown') }}
                 <div class="app__disconnect-button">
                     <button :disabled="buttonLoading"
                         class="btn game-button"
                     >
-                        Reconnect
+                        {{ $t('app.reconnect') }}
                     </button>
                 </div>
             </div>
@@ -70,11 +70,11 @@
 // 3rd party libs
 import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
-
-// Globals functions
-import { functions } from '@src/functions.js';
-import { store } from './store/index.js';
 import io from 'socket.io-client';
+
+// Utilities
+import { functions } from '@utils/functions.js';
+import { store } from './store/index.js';
 
 // Config
 import ioConfig from '@config/io.json';
