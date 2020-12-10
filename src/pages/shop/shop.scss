@@ -171,6 +171,11 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        @media (min-width: $mobileSize) {
+            max-width: 100%;
+            top: calc(77px + 25px);
+        }
     }
 
     &__toggle {
@@ -180,5 +185,10 @@
         label {
             margin-bottom: 0;
         }
+    }
+
+    .search-input {
+        margin: 0.5rem auto;
+        width: 90%;
     }
 }

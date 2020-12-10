@@ -206,3 +206,33 @@ a {
 .vue-toggles {
     outline: none;
 }
+
+.search-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border: 1px solid #333;
+    margin: 0 0.5rem;
+    background-color: #fff;
+
+    input[type="text"] {
+        width: calc(100% - 25px);
+        padding: 0.2rem 0.4rem;
+        font-size: 0.9rem;
+        border: 0;
+        background: none;
+        outline: none;
+    }
+
+    &__close {
+        border-radius: 50%;
+        background-color: #888;
+        color: #fff;
+        font-size: 0.8rem;
+        width: 20px;
+        text-align: center;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+}

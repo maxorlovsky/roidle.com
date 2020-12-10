@@ -24,7 +24,8 @@
         "mpCost": "MP Cost",
         "bexp": "B.Exp",
         "jexp": "J.Exp",
-        "empty": "Empty"
+        "empty": "Empty",
+        "search": "Search"
     },
     "app": {
         "loginClosed": "Login servers went down or closed, probably because of server restart, wait 5 minutes",
@@ -105,7 +106,7 @@
     },
     "craft": {
         "actionTitle": "Craft Services",
-        "repairItem": "Blacksmith - Repair Items",
+        "repairItems": "Blacksmith - Repair Items",
         "craftItems": "Craft items",
         "item": "Item",
         "craftTime": "Craft time",

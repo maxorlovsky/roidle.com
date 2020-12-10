@@ -7,7 +7,7 @@
                 :key="tab"
                 :class="{'kafra-storage-tabs__tab--active': tab === selectedMainTab}"
                 class="kafra-storage-tabs__tab"
-                @click="selectedMainTab = tab"
+                @click="selectedMainTab = tab; search = ''"
             >{{ $t(`kafra.${tab}`) }}</div>
         </div>
 
@@ -30,8 +30,20 @@
         </div>
 
         <div class="kafra-storage__wrapper">
+            <div class="search-input">
+                <input v-model="search"
+                    :placeholder="$t('global.search')"
+                    maxlength="50"
+                    type="text"
+                >
+                <div v-show="search"
+                    class="search-input__close"
+                    @click="search = ''"
+                >X</div>
+            </div>
+
             <template v-if="itemsTransfer.length">
-                <div v-for="(item, index) in itemsTransfer"
+                <div v-for="(item, index) in filteredItems"
                     :key="index"
                     class="kafra-storage__item"
                 >
@@ -120,14 +132,25 @@ const kafraStoragePage = {
             itemsStorage: [],
             storageSpace: 0,
             storageSpaceMax: 0,
-            movingItem: null
+            movingItem: null,
+            search: ''
         };
     },
     computed: {
         ...mapGetters([
             'characterZeny',
             'serverUrl'
-        ])
+        ]),
+
+        filteredItems() {
+            let inv = this.itemsTransfer;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
+        }
     },
     watch: {
         amountToggle() {

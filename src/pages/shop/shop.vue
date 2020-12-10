@@ -40,8 +40,20 @@
         <div :class="{'shop__wrapper--margin': $route.query.action === 'sell' && $route.query.type === 'tools'}"
             class="shop__wrapper shop__left"
         >
+            <div class="search-input">
+                <input v-model="search"
+                    :placeholder="$t('global.search')"
+                    maxlength="50"
+                    type="text"
+                >
+                <div v-show="search"
+                    class="search-input__close"
+                    @click="search = ''"
+                >X</div>
+            </div>
+
             <template v-if="itemsLeft.length">
-                <div v-for="(item, index) in itemsLeft"
+                <div v-for="(item, index) in filteredItems"
                     :key="index"
                     class="shop__item"
                 >
@@ -173,14 +185,25 @@ const shopPage = {
             amountModalMax: 0,
             moveItemFoundIndex: null,
             moveFrom: null,
-            moveTo: null
+            moveTo: null,
+            search: ''
         };
     },
     computed: {
         ...mapGetters([
             'characterZeny',
             'serverUrl'
-        ])
+        ]),
+
+        filteredItems() {
+            let inv = this.itemsLeft;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
+        }
     },
     watch: {
         amountToggle() {

@@ -12,8 +12,20 @@
                 <div class="players-shops__title">{{ $t('shop.insideTheShop') }}</div>
                 <div class="players-shops__shop-title">"{{ shopName }}"</div>
 
+                <div class="search-input">
+                    <input v-model="search"
+                        :placeholder="$t('global.search')"
+                        maxlength="50"
+                        type="text"
+                    >
+                    <div v-show="search"
+                        class="search-input__close"
+                        @click="search = ''"
+                    >X</div>
+                </div>
+
                 <template v-if="shopItems.length">
-                    <div v-for="(item, index) in shopItems"
+                    <div v-for="(item, index) in filteredItems"
                         :key="index"
                         class="players-shops__sold-item players-shops__view-shop"
                     >
@@ -100,13 +112,24 @@ const viewPlayersShopPage = {
             itemAmountValue: 1,
             itemAmountMax: 1,
             buyingItem: null,
+            search: '',
         };
     },
     computed: {
         ...mapGetters([
             'characterZeny',
             'serverUrl'
-        ])
+        ]),
+
+        filteredItems() {
+            let inv = this.shopItems;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
+        }
     },
     watch: {
         itemAmountValue() {

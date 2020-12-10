@@ -3,8 +3,20 @@
         <p class="trading__title">{{ $t('trade.tradeWith') }} {{ traderRight }}</p>
 
         <div class="trading__inventory-wrapper">
+            <div class="search-input">
+                <input v-model="search"
+                    :placeholder="$t('global.search')"
+                    maxlength="50"
+                    type="text"
+                >
+                <div v-show="search"
+                    class="search-input__close"
+                    @click="search = ''"
+                >X</div>
+            </div>
+
             <template v-if="temporaryInventory.length">
-                <div v-for="(item, index) in temporaryInventory"
+                <div v-for="(item, index) in filteredInventory"
                     :key="index"
                     :class="{
                         'trading__inventory-wrapper__item--disabled': leftTradeApproved || buttonLoading,
@@ -191,6 +203,7 @@ const tradingPage = {
             moveItem: null,
             confirmTradeMessage: this.$t('trade.confirmTrade'),
             ignoreCancel: false,
+            search: '',
         };
     },
     computed: {
@@ -199,7 +212,17 @@ const tradingPage = {
             'characterZeny',
             'inventory',
             'serverUrl'
-        ])
+        ]),
+
+        filteredInventory() {
+            let inv = this.temporaryInventory;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
+        }
     },
     watch: {
         amountModal() {

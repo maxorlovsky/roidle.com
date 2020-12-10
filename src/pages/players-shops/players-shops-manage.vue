@@ -76,8 +76,20 @@
             <div class="players-shops__inventory-wrapper">
                 <div class="players-shops__title">{{ $t('shop.inventory') }}</div>
 
+                <div class="search-input">
+                    <input v-model="search"
+                        :placeholder="$t('global.search')"
+                        maxlength="50"
+                        type="text"
+                    >
+                    <div v-show="search"
+                        class="search-input__close"
+                        @click="search = ''"
+                    >X</div>
+                </div>
+
                 <template v-if="temporaryInventory.length">
-                    <div v-for="(item, index) in temporaryInventory"
+                    <div v-for="(item, index) in filteredInventory"
                         :key="index"
                         :class="{
                             'players-shops__inventory-wrapper__item--broken': item.broken,
@@ -110,8 +122,20 @@
                     location: characterLocation
                 }) }} <b>{{ locationTax }}%</b></p>
 
+                <div class="search-input">
+                    <input v-model="searchItems"
+                        :placeholder="$t('global.search')"
+                        maxlength="50"
+                        type="text"
+                    >
+                    <div v-show="searchItems"
+                        class="search-input__close"
+                        @click="searchItems = ''"
+                    >X</div>
+                </div>
+
                 <template v-if="shopItems.length">
-                    <div v-for="(item, index) in shopItems"
+                    <div v-for="(item, index) in filteredItems"
                         :key="index"
                         class="players-shops__sold-item"
                     >
@@ -261,7 +285,9 @@ const managePlayersShopPage = {
             itemAmountPrice: 0,
             transferItem: null,
             locationTax: 0,
-            shopItems: []
+            shopItems: [],
+            search: '',
+            searchItems: ''
         };
     },
     computed: {
@@ -269,7 +295,26 @@ const managePlayersShopPage = {
             'characterLocation',
             'inventory',
             'serverUrl'
-        ])
+        ]),
+
+        filteredInventory() {
+            let inv = this.temporaryInventory;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
+        },
+        filteredItems() {
+            let inv = this.shopItems;
+
+            if (this.searchItems) {
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.searchItems) > -1);
+            }
+
+            return inv || [];
+        }
     },
     watch: {
         itemAmountPrice() {
