@@ -27,57 +27,57 @@ export default {
         return {
             steps: [
                 {
-                    text: this.$t('tutorialText1')
+                    text: this.$t('tutorial.tutorialText1')
                 },
                 {
-                    text: this.$t('tutorialText2')
+                    text: this.$t('tutorial.tutorialText2')
                 },
                 {
-                    text: this.$t('tutorialText3'),
+                    text: this.$t('tutorial.tutorialText3'),
                     element: '.char-info',
                     position: true
                 },
                 {
-                    text: this.$t('tutorialText4'),
+                    text: this.$t('tutorial.tutorialText4'),
                     element: '.game__party',
                     position: true
                 },
                 {
-                    text: this.$t('tutorialText5'),
+                    text: this.$t('tutorial.tutorialText5'),
                     element: '.game__settings'
                 },
                 {
-                    text: this.$t('tutorialText6'),
+                    text: this.$t('tutorial.tutorialText6'),
                     element: '.game__hunt-config'
                 },
                 {
-                    text: this.$t('tutorialText7'),
+                    text: this.$t('tutorial.tutorialText7'),
                     element: '.game__actions',
                     modal: 'modal--down'
                 },
                 {
-                    text: this.$t('tutorialText8'),
+                    text: this.$t('tutorial.tutorialText8'),
                     element: '.chat',
                     modal: 'modal--up'
                 },
                 {
-                    text: this.$t('tutorialText9'),
+                    text: this.$t('tutorial.tutorialText9'),
                     element: '.docked-menu__button--character'
                 },
                 {
-                    text: this.$t('tutorialText10'),
+                    text: this.$t('tutorial.tutorialText10'),
                     element: '.docked-menu__button--map'
                 },
                 {
-                    text: this.$t('tutorialText11'),
+                    text: this.$t('tutorial.tutorialText11'),
                     element: '.docked-menu__button--quests'
                 },
                 {
-                    text: this.$t('tutorialText12'),
+                    text: this.$t('tutorial.tutorialText12'),
                     element: '.docked-menu__button--inventory'
                 },
                 {
-                    text: this.$t('tutorialText13'),
+                    text: this.$t('tutorial.tutorialText13'),
                     element: '.docked-menu__button--quests'
                 }
             ],
