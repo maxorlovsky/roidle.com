@@ -1,21 +1,21 @@
 <template>
     <div class="register">
-        <div class="modal__header">Register</div>
+        <div class="modal__header">{{ $t('register.register') }}</div>
         <div class="modal__content">
             <input v-model="email"
+                :placeholder="$t('register.email')"
                 class="register__input"
                 type="email"
-                placeholder="Email"
             >
             <input v-model="password"
+                :placeholder="$t('register.password')"
                 class="register__input"
                 type="password"
-                placeholder="Password"
             >
             <input v-model="confirmPassword"
+                :placeholder="$t('register.confirmPassword')"
                 class="register__input"
                 type="password"
-                placeholder="Confirm password"
             >
 
             <div :class="{'register__message--visible': message}"
@@ -26,13 +26,13 @@
         <div class="modal__buttons">
             <button class="btn btn-secondary"
                 @click="closeModal()"
-            >Close</button>
+            >{{ $t('global.close') }}</button>
 
             <button :disabled="!ifFormFilled || buttonLoading"
                 :class="{'disabled': buttonLoading}"
                 class="btn game-button"
                 @click="registerSubmit()"
-            >Register</button>
+            >{{ $t('register.register') }}</button>
         </div>
     </div>
 </template>
@@ -41,8 +41,8 @@
 // 3rd party libs
 import axios from 'axios';
 
-// Globals functions
-import { functions } from '@src/functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
 
 export default {
     name: 'register',

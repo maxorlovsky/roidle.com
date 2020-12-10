@@ -9,7 +9,7 @@
             class="repair__wrapper"
         >
             <div class="repair__items-list">
-                <div class="repair__title">Items to repair</div>
+                <div class="repair__title">{{ $t('repair.itemsToRepair') }}</div>
 
                 <template v-if="brokenItems && brokenItems.length">
                     <div v-for="(item, index) in brokenItems"
@@ -28,7 +28,7 @@
                         <div class="repair__item__info">
                             <div class="repair__item__info__name">{{ item.name }}</div>
                             <div class="repair__item__info__durability">{{ item.durability }} / {{ item.maxDurability }}</div>
-                            <div class="repair__item__info__cost">Cost: {{ item.price }} Z</div>
+                            <div class="repair__item__info__cost">{{ $t('repair.cost') }}: {{ item.price }} Z</div>
                         </div>
                         <div v-if="item.added"
                             class="repair__item__add"
@@ -43,35 +43,35 @@
                 <div v-else
                     class="repair__items-list__empty"
                 >
-                    No items to repair
+                    {{ $t('repair.noItems') }}
                 </div>
             </div>
 
             <div class="repair__price">
-                <div class="repair__price__title">Price</div>
+                <div class="repair__price__title">{{ $t('repair.price') }}</div>
                 <div class="repair__price__item">
-                    <div class="repair__price__item__title">Repair cost</div>
+                    <div class="repair__price__item__title">{{ $t('repair.repairCost') }}</div>
                     <div class="repair__price__item__value">{{ repairCost }} Z</div>
                 </div>
                 <div class="repair__price__item">
-                    <div class="repair__price__item__title">Items amount</div>
+                    <div class="repair__price__item__title">{{ $t('repair.itemsAmount') }}</div>
                     <div class="repair__price__item__value">{{ itemsToFix.length }}</div>
                 </div>
                 <div class="repair__price__item">
-                    <div class="repair__price__item__title">{{ characterLocation }}'s tax ({{ price.tax }}%)</div>
+                    <div class="repair__price__item__title">{{ characterLocation }}{{ $t('repair.locationTax') }} ({{ price.tax }}%)</div>
                     <div class="repair__price__item__value">{{ taxPrice }} Z</div>
                 </div>
                 <div v-if="price.discount !== 0"
                     class="repair__price__item repair__price__item--discount"
                 >
-                    <div class="repair__price__item__title">Discount</div>
+                    <div class="repair__price__item__title">{{ $t('repair.discount') }}</div>
                     <div class="repair__price__item__value">
                         <template v-if="discountPrice > 0">-</template>
                         {{ discountPrice }} Z
                     </div>
                 </div>
                 <div class="repair__price__item repair__price__item--total">
-                    <div class="repair__price__item__title">TOTAL</div>
+                    <div class="repair__price__item__title">{{ $t('repair.total') }}</div>
                     <div class="repair__price__item__value">{{ totalCost }} Z</div>
                 </div>
             </div>
@@ -79,7 +79,7 @@
             <button :disabled="!itemsToFix.length || characterZeny < repairCost || buttonLoading"
                 class="btn btn-lg game-button repair__button"
                 @click="repairItems()"
-            >Repair</button>
+            >{{ $t('repair.repair') }}</button>
         </div>
     </div>
 </template>

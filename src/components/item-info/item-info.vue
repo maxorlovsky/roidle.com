@@ -14,71 +14,77 @@
             >
             <div class="item-info__description">
                 <b>{{ name }}</b>
-                <div>Type: <span class="ucfirst">{{ type }}</span> <span v-if="twoHanded">(Two-Handed)</span></div>
-                <div v-if="params">Params: <b>{{ params }}</b></div>
-                <div v-if="requiredLevel">Required Level: {{ requiredLevel }}</div>
+                <div>{{ $t('itemInfo.type') }}: <span class="ucfirst">{{ type }}</span> <span v-if="twoHanded">({{ $t('itemInfo.twoHanded') }})</span></div>
+                <div v-if="params">{{ $t('itemInfo.params') }}: <b>{{ params }}</b></div>
+                <div v-if="requiredLevel">{{ $t('itemInfo.requiredLevel') }}: {{ requiredLevel }}</div>
 
-                <div v-if="durability >= 0 && durability !== null && defaultDurability">Durability: <span :class="{'item-info__high-durability': durability > defaultDurability, 'item-info__low-durability': durability < defaultDurability}">{{ durability }}</span> / {{ maxDurability }}</div>
-                <div v-else-if="defaultDurability">Durability: {{ defaultDurability }} / {{ defaultDurability }}</div>
+                <div v-if="durability >= 0 && durability !== null && defaultDurability">
+                    {{ $t('itemInfo.durability') }}:
+                    <span :class="{'item-info__high-durability': durability > defaultDurability, 'item-info__low-durability': durability < defaultDurability}">
+                        {{ durability }}
+                    </span>
+                    / {{ maxDurability }}
+                </div>
+                <div v-else-if="defaultDurability">{{ $t('itemInfo.durability') }}: {{ defaultDurability }} / {{ defaultDurability }}</div>
 
                 <div v-if="broken"
                     class="item-info__description--broken"
-                >BROKEN!</div>
+                >{{ $t('itemInfo.broken') }}</div>
 
-                <div>Weight: {{ weight }}</div>
+                <div>{{ $t('global.weight') }}: {{ weight }}</div>
                 <div v-if="description">{{ description }}</div>
-                <div v-if="applicableJobs">Applicable Job: {{ applicableJobs }}</div>
+                <div v-if="applicableJobs">{{ $t('itemInfo.applicableJob') }}: {{ applicableJobs }}</div>
             </div>
             <div v-if="selfBagItemInfo"
                 class="item-info__actions"
             >
                 <button class="btn btn-secondary"
                     @click="closeItemInfoModal()"
-                >Close</button>
+                >{{ $t('global.close') }}</button>
                 <button class="btn btn-danger"
                     :disabled="buttonLoading"
                     @click="discardItem()"
-                >Discard</button>
+                >{{ $t('itemInfo.discard') }}</button>
 
                 <button v-if="type === 'healing' || (type === 'consumable' && itemId === 602)"
                     :disabled="buttonLoading"
                     class="btn game-button"
                     @click="useItem(itemId)"
-                >Use</button>
+                >{{ $t('itemInfo.use') }}</button>
                 <button v-else-if="broken || durability < maxDurability"
                     :disabled="buttonLoading"
                     class="btn game-button"
                     @click="repairItem(id)"
-                >Repair</button>
+                >{{ $t('itemInfo.repair') }}</button>
             </div>
 
             <div v-if="showDiscard"
                 class="item-info__discard"
             >
-                <div class="item-info__discard__caution-text">Are you sure you want to discard this item?</div>
+                <div class="item-info__discard__caution-text">{{ $t('itemInfo.confirmationToDiscard') }}</div>
                 <div v-if="showDiscardAmountMax > 1"
                     class="item-info__discard__amount"
                 >
                     <input ref="discardAmount"
                         v-model="showDiscardAmount"
+                        :placeholder="$t('global.amount')"
                         type="number"
                         size="4"
-                        placeholder="Amount"
                     >
                 </div>
                 <button class="btn btn-secondary"
                     @click="closeDiscardModal()"
-                >No</button>
+                >{{ $t('global.no') }}</button>
                 <button :disabled="showDiscardAmountMax > 1 && (showDiscardAmountMax < showDiscardAmount || showDiscardAmount < 1) || buttonLoading"
                     class="btn btn-danger"
                     @click="discardConfirm()"
-                >Yes</button>
+                >{{ $t('global.yes') }}</button>
             </div>
 
             <div v-if="showRepair"
                 class="item-info__repair"
             >
-                <div class="item-info__repair__caution-text">Do you wish to use those materials in order to repair the item?</div>
+                <div class="item-info__repair__caution-text">{{ $t('itemInfo.confirmationToRepair') }}</div>
                 <div class="item-info__repair__materials">
                     <div v-for="material in repairMaterials"
                         :key="material.itemId"
@@ -93,11 +99,11 @@
 
                 <button class="btn btn-secondary"
                     @click="closeRepairModal()"
-                >No</button>
+                >{{ $t('global.no') }}</button>
                 <button :disabled="buttonLoading || doesNotMeetRepairRequirements()"
                     class="btn game-button"
                     @click="repairConfirm()"
-                >Yes</button>
+                >{{ $t('global.yes') }}</button>
             </div>
         </div>
     </div>

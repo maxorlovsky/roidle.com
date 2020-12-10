@@ -1,13 +1,25 @@
 <template>
     <section class="trading">
-        <p class="trading__title">Trade with {{ traderRight }}</p>
+        <p class="trading__title">{{ $t('trade.tradeWith') }} {{ traderRight }}</p>
 
         <div class="trading__inventory-wrapper">
+            <div class="search-input">
+                <input v-model="search"
+                    :placeholder="$t('global.search')"
+                    maxlength="50"
+                    type="text"
+                >
+                <div v-show="search"
+                    class="search-input__close"
+                    @click="search = ''"
+                >X</div>
+            </div>
+
             <template v-if="temporaryInventory.length">
-                <div v-for="(item, index) in temporaryInventory"
+                <div v-for="(item, index) in filteredInventory"
                     :key="index"
                     :class="{
-                        'trading__inventory-wrapper__item--disabled': leftTradeApproved,
+                        'trading__inventory-wrapper__item--disabled': leftTradeApproved || buttonLoading,
                         'trading__inventory-wrapper__item--broken': item.broken,
                         'trading__inventory-wrapper__item--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
                         'trading__inventory-wrapper__item--high-quality': item.durability && item.durability > item.defaultDurability
@@ -20,7 +32,7 @@
                 </div>
             </template>
             <template v-else>
-                <div class="trading__inventory-wrapper__empty">Empty</div>
+                <div class="trading__inventory-wrapper__empty">{{ $t('global.empty') }}</div>
             </template>
         </div>
 
@@ -28,11 +40,11 @@
             <div class="trading__window__wrapper">
                 <div class="trading__tabs">
                     <div class="trading__tabs__left">
-                        <div class="trading__tabs__header">Items from {{ traderLeft }}</div>
+                        <div class="trading__tabs__header">{{ $t('trade.itemsFrom') }} {{ traderLeft }}</div>
                     </div>
 
                     <div class="trading__tabs__right">
-                        <div class="trading__tabs__header">Items from  {{ traderRight }}</div>
+                        <div class="trading__tabs__header">{{ $t('trade.itemsFrom') }} {{ traderRight }}</div>
                     </div>
                 </div>
 
@@ -70,7 +82,7 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="shop__empty">Empty</div>
+                        <div class="shop__empty">{{ $t('global.empty') }}</div>
                     </template>
 
                     <div class="trading__window__zeny">
@@ -110,7 +122,7 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="shop__empty">Empty</div>
+                        <div class="shop__empty">{{ $t('global.empty') }}</div>
                     </template>
 
                     <div class="trading__window__zeny">
@@ -125,7 +137,7 @@
             <div class="trading__window__actions">
                 <button class="btn btn-secondary"
                     @click="cancelTrade()"
-                >Cancel trade</button>
+                >{{ $t('trade.cancelTrade') }}</button>
                 <button :disabled="buttonLoading || !leftTradeApproved || !rightTradeApproved || zenyLeft < 0 || zenyLeft > characterZeny"
                     class="btn btn-success"
                     @click="confirmTrade()"
@@ -133,7 +145,7 @@
                 <button :disabled="buttonLoading || leftTradeApproved || zenyLeft < 0 || zenyLeft > characterZeny"
                     class="btn game-button"
                     @click="lockTrade()"
-                >Lock trade</button>
+                >{{ $t('trade.lockTrade') }}</button>
             </div>
         </div>
 
@@ -141,23 +153,28 @@
             class="modal"
         >
             <div class="modal__content trading__amount">
-                <input ref="amountModal"
-                    v-model="amountModal"
-                    min="1"
-                    :max="amountModalMax"
-                    type="number"
-                    size="4"
-                    placeholder="Amount"
-                >
+                <b>{{ moveItem.name }} <template v-if="moveItem.defaultDurability">({{ moveItem.durability }} / {{ moveItem.maxDurability }})</template></b>
+
+                <div>
+                    <div class="form-heading">{{ $t('global.amount') }}:</div>
+                    <input ref="amountModal"
+                        v-model="amountModal"
+                        :placeholder="$t('global.amount')"
+                        min="1"
+                        :max="amountModalMax"
+                        type="number"
+                        size="4"
+                    >
+                </div>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeAmountModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="amountModal > amountModalMax || amountModal < 1"
                     class="btn game-button"
                     @click="confirmChosenAmount()"
-                >GO</button>
+                >{{ $t('trade.go') }}</button>
             </div>
         </div>
     </section>
@@ -184,8 +201,9 @@ const tradingPage = {
             amountModal: 0,
             amountModalMax: 0,
             moveItem: null,
-            confirmTradeMessage: 'Confirm Trade',
+            confirmTradeMessage: this.$t('trade.confirmTrade'),
             ignoreCancel: false,
+            search: '',
         };
     },
     computed: {
@@ -194,7 +212,17 @@ const tradingPage = {
             'characterZeny',
             'inventory',
             'serverUrl'
-        ])
+        ]),
+
+        filteredInventory() {
+            let inv = this.temporaryInventory;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
+        }
     },
     watch: {
         amountModal() {
@@ -221,7 +249,7 @@ const tradingPage = {
         });
 
         mo.socket.on('confirmTradeComplete', () => {
-            this.confirmTradeMessage = 'Wait...';
+            this.confirmTradeMessage = this.$t('trade.wait');
         });
 
         mo.socket.on('updateTradeApproval', (response) => {

@@ -9,7 +9,7 @@
             class="transmute-items__wrapper"
         >
             <div class="transmute-items__list">
-                <div class="transmute-items__title">Item Transmutation</div>
+                <div class="transmute-items__title">{{ $t('transmute.itemTransmutation') }}</div>
                 <div class="transmute-items__item-title">{{ transmutableItem.name }}</div>
 
                 <div v-for="(item, index) in transmutableItem.convertedFrom"
@@ -33,12 +33,12 @@
 
                     <div class="transmute-items__item__info">
                         <div :class="{'transmute-items__item__info--not-enough': transmutableItem.requiredLevel > characterBaseLevel}">
-                            Required level: {{ transmutableItem.requiredLevel }}
+                            {{ $t('transmute.requiredLevel') }}: {{ transmutableItem.requiredLevel }}
                         </div>
-                        <div>Output per item: {{ item.output }}</div>
-                        <div>XP per item: {{ item.exp }}</div>
+                        <div>{{ $t('transmute.outputPerItem') }}: {{ item.output }}</div>
+                        <div>{{ $t('transmute.expPerItem') }}: {{ item.exp }}</div>
                         <div :class="{'transmute-items__item__info--not-enough': item.mpCost > characterMp}">
-                            MP Cost per item: {{ item.mpCost }}
+                            {{ $t('transmute.mpCostPerItem') }}: {{ item.mpCost }}
                         </div>
                     </div>
                     <div :class="{ 'transmute-items__item__move--disabled': buttonLoading || transmutableItem.requiredLevel > characterBaseLevel || item.mpCost > characterMp || doesNotMeetRequirements(item)}"
@@ -56,31 +56,31 @@
         >
             <div class="modal__content players-shops__amount">
                 <div>
-                    <div class="form-heading">Amount:</div>
+                    <div class="form-heading">{{ $t('global.amount') }}:</div>
                     <input ref="amountValue"
                         v-model="amountValue"
+                        :placeholder="$t('global.amount')"
                         min="0"
                         :max="maxAmount"
                         type="number"
                         size="9"
-                        placeholder="Amount"
                     >
                 </div>
 
                 <div>
-                    <div class="">Item output: {{ itemOutput }}</div>
-                    <div class="">EXP gain: {{ expGained }}</div>
-                    <div class="">MP Cost: {{ mpCost }}</div>
+                    <div>{{ $t('transmute.itemOutput') }}: {{ itemOutput }}</div>
+                    <div>{{ $t('transmute.expGain') }}: {{ expGained }}</div>
+                    <div>{{ $t('global.mpCost') }}: {{ mpCost }}</div>
                 </div>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeAmountModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="buttonLoading || amountValue < 1 || amountValue > maxAmount"
                     class="btn game-button"
                     @click="confirmTransmutation()"
-                >Confirm</button>
+                >{{ $t('transmute.confirm') }}</button>
             </div>
         </div>
     </section>

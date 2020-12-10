@@ -4,39 +4,39 @@
             <img class="game__action__image"
                 :src="`${serverUrl}/dist/assets/images/inn.png`"
             >
-            <span class="game__action__name">Rest at Inn</span>
+            <span class="game__action__name">{{ $t('rest.actionTitle') }}</span>
         </div>
 
         <div v-if="showModal"
             class="modal"
         >
-            <div class="modal__header">Inn rooms</div>
+            <div class="modal__header">{{ $t('rest.innRooms') }}</div>
             <div class="modal__content kafra-actions__buttons">
                 <button :class="{'game-button--selected': typeChosen === 'cheap'}"
                     class="btn game-button"
                     @click="typeChosen = 'cheap'"
-                >Cheap room - 10 min ({{ cheapInnPrice }} Z)</button>
+                >{{ $t('rest.cheapRoom') }} - 10 {{ $t('rest.min') }} ({{ cheapInnPrice }} Z)</button>
 
                 <button :class="{'game-button--selected': typeChosen === 'regular'}"
                     class="btn game-button"
                     @click="typeChosen = 'regular'"
-                >Regular room - 5 min ({{ regularInnPrice }} Z)</button>
+                >{{ $t('rest.regularRoom') }} - 5 {{ $t('rest.min') }} ({{ regularInnPrice }} Z)</button>
 
                 <button :class="{'game-button--selected': typeChosen === 'deluxe'}"
                     class="btn game-button"
                     @click="typeChosen = 'deluxe'"
-                >Deluxe room - 1 min ({{ deluxeInnPrice }} Z)</button>
+                >{{ $t('rest.cheapRoom') }} - 1 {{ $t('rest.min') }} ({{ deluxeInnPrice }} Z)</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
 
                 <button :disabled="!typeChosen"
                     :class="{'disabled': !typeChosen}"
                     class="btn game-button"
                     @click="startRest()"
-                >Approve</button>
+                >{{ $t('rest.approve') }}</button>
             </div>
         </div>
     </div>

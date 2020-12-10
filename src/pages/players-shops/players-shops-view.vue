@@ -9,11 +9,23 @@
             class="players-shops__wrapper"
         >
             <div class="players-shops__sold-items-wrapper">
-                <div class="players-shops__title">Inside the Shop</div>
+                <div class="players-shops__title">{{ $t('shop.insideTheShop') }}</div>
                 <div class="players-shops__shop-title">"{{ shopName }}"</div>
 
+                <div class="search-input">
+                    <input v-model="search"
+                        :placeholder="$t('global.search')"
+                        maxlength="50"
+                        type="text"
+                    >
+                    <div v-show="search"
+                        class="search-input__close"
+                        @click="search = ''"
+                    >X</div>
+                </div>
+
                 <template v-if="shopItems.length">
-                    <div v-for="(item, index) in shopItems"
+                    <div v-for="(item, index) in filteredItems"
                         :key="index"
                         class="players-shops__sold-item players-shops__view-shop"
                     >
@@ -31,7 +43,7 @@
                         </div>
                         <div class="players-shops__sold-item__name-price">
                             <div class="players-shops__sold-item__name-price__name">{{ item.itemName }}</div>
-                            <div class="players-shops__sold-item__name-price__price">Price:
+                            <div class="players-shops__sold-item__name-price__price">{{ $t('shop.price') }}:
                                 <span :class="{ 'players-shops__sold-item__name-price__price--not-enough': characterZeny < item.price }">{{ item.price }} Z</span>
                             </div>
                         </div>
@@ -44,7 +56,7 @@
                     </div>
                 </template>
                 <template v-else>
-                    <div class="players-shops__sold-items-wrapper__empty">Empty</div>
+                    <div class="players-shops__sold-items-wrapper__empty">{{ $t('global.empty') }}</div>
                 </template>
             </div>
         </div>
@@ -56,23 +68,23 @@
                 <input v-if="buyingItem.amount > 1"
                     ref="itemAmountValue"
                     v-model="itemAmountValue"
+                    :placeholder="$t('global.amount')"
                     min="1"
                     :max="itemAmountMax"
                     type="number"
                     size="9"
-                    placeholder="Amount"
                 >
                 <b>{{ buyingItem.itemName }} <template v-if="buyingItem.defaultDurability">({{ buyingItem.durability }} / {{ buyingItem.maxDurability }})</template></b>
-                <p>Full price: <b :class="{ 'players-shops__amount__zeny--not-enough': characterZeny < buyingItem.price * itemAmountValue }">{{ buyingItem.price * itemAmountValue }}Z</b></p>
+                <p>{{ $t('shop.fullPrice') }}: <b :class="{ 'players-shops__amount__zeny--not-enough': characterZeny < buyingItem.price * itemAmountValue }">{{ buyingItem.price * itemAmountValue }}Z</b></p>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeItemAmountModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="itemAmountValue < 1 || itemAmountValue > itemAmountMax || buttonLoading || characterZeny < buyingItem.price * itemAmountValue"
                     class="btn game-button"
                     @click="confirmBuy()"
-                >Confirm</button>
+                >{{ $t('shop.confirm') }}</button>
             </div>
         </div>
     </section>
@@ -100,13 +112,24 @@ const viewPlayersShopPage = {
             itemAmountValue: 1,
             itemAmountMax: 1,
             buyingItem: null,
+            search: '',
         };
     },
     computed: {
         ...mapGetters([
             'characterZeny',
             'serverUrl'
-        ])
+        ]),
+
+        filteredItems() {
+            let inv = this.shopItems;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
+        }
     },
     watch: {
         itemAmountValue() {

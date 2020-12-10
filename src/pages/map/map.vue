@@ -48,27 +48,27 @@
         <div v-if="showModal"
             class="modal"
         >
-            <div class="modal__header">Confirm travel</div>
+            <div class="modal__header">{{ $t('map.confirmTravel') }}</div>
             <div class="modal__content">
-                <p>Traveling to <b>{{ travelDestinationName }}</b></p>
-                <span>Travel will take you {{ humanReadableDate }}~</span>
+                <p>{{ $t('map.travelingTo') }} <b>{{ travelDestinationName }}</b></p>
+                <span>{{ $t('map.travelTakeYou') }} {{ humanReadableDate }}~</span>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showModal = false"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button class="btn game-button"
                     @click="confirmTravel()"
-                >GO</button>
+                >{{ $t('map.go') }}</button>
             </div>
         </div>
 
         <div v-if="userOverweight"
             class="modal"
         >
-            <div class="modal__header">Overweight</div>
+            <div class="modal__header">{{ $t('map.overweightTitle') }}</div>
             <div class="modal__content">
-                <p>Character is overweight, you can not travel to another location. Your character need to be below 90% of weight. Discard some items, use them or give it to someone else.</p>
+                <p>{{ $t('map.overweight') }}</p>
             </div>
         </div>
     </div>

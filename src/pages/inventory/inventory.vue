@@ -1,8 +1,21 @@
 <template>
     <section class="inventory">
         <div class="inventory-wrapper">
-            <div class="inventory__weight">Weight: <span :class="{'inventory__weight--critical': criticalWeight}">{{ inventoryWeight }}</span> / {{ characterAttributes.weight }}</div>
-            <div v-for="(item, index) in inventory"
+            <div class="inventory__weight">{{ $t('global.weight') }}: <span :class="{'inventory__weight--critical': criticalWeight}">{{ inventoryWeight }}</span> / {{ characterAttributes.weight }}</div>
+
+            <div class="search-input">
+                <input v-model="search"
+                    :placeholder="$t('global.search')"
+                    maxlength="50"
+                    type="text"
+                >
+                <div v-show="search"
+                    class="search-input__close"
+                    @click="search = ''"
+                >X</div>
+            </div>
+
+            <div v-for="(item, index) in filteredInventory"
                 :key="index"
                 :class="{
                     'inventory__item--broken': item.broken,
@@ -30,7 +43,9 @@ import { mapGetters } from 'vuex';
 
 const inventoryPage = {
     data() {
-        return {};
+        return {
+            search: ''
+        };
     },
     computed: {
         ...mapGetters([
@@ -43,6 +58,15 @@ const inventoryPage = {
         },
         criticalWeight() {
             return Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) >= 90;
+        },
+        filteredInventory() {
+            let inv = this.inventory;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
         }
     },
     methods: {

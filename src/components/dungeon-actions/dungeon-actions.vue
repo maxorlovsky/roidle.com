@@ -4,22 +4,22 @@
             <img class="game__action__image"
                 :src="`${serverUrl}/dist/assets/images/dungeon-entrance.png`"
             >
-            <span class="game__action__name">Dungeon</span>
+            <span class="game__action__name">{{ $t('map.dungeonActionTitle') }}</span>
         </div>
 
         <div v-if="showModal"
             class="modal"
         >
-            <div class="modal__header">Dungeon</div>
+            <div class="modal__header">{{ $t('map.dungeonActionTitle') }}</div>
             <div class="modal__content">
                 <div v-if="userOverweight"
                     class="dungeon-actions__overweight"
                 >
-                    <p>Character is overweight, you can not travel to another location. Your character need to be below 90% of weight. Discard some items, use them or give it to someone else.</p>
+                    <p>{{ $t('map.overweight') }}</p>
                 </div>
 
-                Travel to <b>{{ locationName }}</b>?
-                <template v-if="!locationCity">Lv: {{ locationLevels[0] }} - {{ locationLevels[1] }}</template>
+                {{ $t('map.travelTo') }} <b>{{ locationName }}</b>?
+                <template v-if="!locationCity">{{ $t('global.shortLevel') }}: {{ locationLevels[0] }} - {{ locationLevels[1] }}</template>
 
                 <div class="dungeon-actions__buttons">
                     <div v-if="currentLocation.dungeonUp"
@@ -42,12 +42,12 @@
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
 
                 <button :disabled="userOverweight || buttonLoading"
                     class="btn game-button"
                     @click="travel()"
-                >Travel</button>
+                >{{ $t('map.travel') }}</button>
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@
                     target="_blank"
                     rel="noopener nofollow"
                 >
-                    Wiki
+                    {{ $t('home.wiki') }}
                 </a>
             </nav>
             <div class="home__top-bar__right">
@@ -26,7 +26,7 @@
         </div>
 
         <div class="server-down">
-            <span class="server-down__text">Our servers are currently down<br>Retrying in {{ seconds }}s</span>
+            <span class="server-down__text">{{ $t('home.serverDown') }} {{ seconds }}</span>
         </div>
     </div>
 </template>

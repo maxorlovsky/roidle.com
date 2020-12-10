@@ -4,14 +4,14 @@
             class="craft__wrapper"
         >
             <div class="craft__in-progress">
-                You are crafting <b>{{ craftData.name }} (Lv: {{ craftData.level }})</b> <span v-if="craftData.amount > 1">(x{{ craftData.amount }})</span> at the moment. Your chance for success is {{ craftData.successChance }}%.<br>
+                {{ $t('craft.youAreCrafting') }} <b>{{ craftData.name }} ({{ $t('global.shortLevel') }}: {{ craftData.level }})</b> <span v-if="craftData.amount > 1">(x{{ craftData.amount }})</span> {{ $t('craft.youAreCrafting2') }} {{ craftData.successChance }}%.<br>
                 <img :src="`${serverUrl}/dist/assets/images/items/large/${craftData.itemId}.gif`">
 
                 <div class="craft__in-progress__button">
                     <button class="btn btn-danger"
                         @click="cancelCraft()"
-                    >Abandon craft process</button>
-                    You can abandon your work, but you will not recover any materials and will not get any experience
+                    >{{ $t('craft.abandonCraft') }}</button>
+                    {{ $t('craft.abandonCraftExplanation') }}
                 </div>
             </div>
         </div>
@@ -49,62 +49,62 @@ const craftPage = {
                 {
                     itemId: 1101,
                     type: 'sword',
-                    name: 'Swords'
+                    name: this.$t('craft.swords')
                 },
                 {
                     itemId: 1116,
                     type: '2hsword',
-                    name: '2-handed Swords'
+                    name: this.$t('craft.2hswords')
                 },
                 {
                     itemId: 1201,
                     type: 'knife',
-                    name: 'Daggers'
+                    name: this.$t('craft.daggers')
                 },
                 {
                     itemId: 1301,
                     type: 'axe',
-                    name: 'Axes'
+                    name: this.$t('craft.axes')
                 },
                 {
                     itemId: 1351,
                     type: '2haxe',
-                    name: '2-handed Axes'
+                    name: this.$t('craft.2haxes')
                 },
                 {
                     itemId: 1504,
                     type: 'mace',
-                    name: 'Maces'
+                    name: this.$t('craft.maces')
                 },
                 {
                     itemId: 2101,
                     type: 'shield',
-                    name: 'Shields'
+                    name: this.$t('craft.shields')
                 },
                 {
                     itemId: 2220,
                     type: 'head',
-                    name: 'Headgears'
+                    name: this.$t('craft.headgears')
                 },
                 {
                     itemId: 2305,
                     type: 'body',
-                    name: 'Body Armors'
+                    name: this.$t('craft.bodyArmors')
                 },
                 {
                     itemId: 2403,
                     type: 'footgear',
-                    name: 'Footwear'
+                    name: this.$t('craft.footwear')
                 },
                 {
                     itemId: 2501,
                     type: 'garment',
-                    name: 'Garments'
+                    name: this.$t('craft.garments')
                 },
                 {
                     itemId: 501,
                     type: 'potions',
-                    name: 'Healing Potions'
+                    name: this.$t('craft.healingPotions')
                 }
             ]
         };

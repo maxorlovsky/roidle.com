@@ -8,17 +8,17 @@
         <div v-else
             class="players-shops__wrapper"
         >
-            <div class="players-shops__title">Merchant Shops ({{ shops.length }})</div>
+            <div class="players-shops__title">{{ $t('shop.merchantsShops') }} ({{ shops.length }})</div>
 
             <div class="players-shops__list">
                 <router-link v-if="haveShop"
                     :to="`/players-shops/manage/${haveShop}`"
                     class="btn btn-lg game-button players-shops__list__add"
-                >Manage shop</router-link>
+                >{{ $t('shop.manageShop') }}</router-link>
                 <router-link v-else-if="canOpenShop"
                     :to="'/players-shops/open'"
                     class="btn btn-lg game-button players-shops__list__add"
-                >Open own shop in city</router-link>
+                >{{ $t('shop.openOwnShop') }}</router-link>
 
                 <template v-if="shops.length">
                     <div v-for="(item, index) in shops"
@@ -42,12 +42,12 @@
                         <div class="players-shops__list__item__info__buttons">
                             <router-link :to="`/players-shops/view/${item.id}`"
                                 class="btn game-button"
-                            >Enter shop</router-link>
+                            >{{ $t('shop.enterShop') }}</router-link>
                         </div>
                     </div>
                 </template>
                 <template v-else>
-                    <div class="players-shops__list__empty">Market is empty</div>
+                    <div class="players-shops__list__empty">{{ $t('shop.marketIsEmpty') }}</div>
                 </template>
             </div>
         </div>

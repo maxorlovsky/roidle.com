@@ -9,55 +9,55 @@
             class="players-shops__wrapper"
         >
             <div class="players-shops__shop">
-                <div class="players-shops__title">Manage Shop</div>
+                <div class="players-shops__title">{{ $t('shop.manageShop') }}</div>
                 <div class="players-shops__shop-title">{{ shopName }}</div>
 
                 <div class="players-shops__form-element">
-                    <div class="form-heading">Shop Name:</div>
+                    <div class="form-heading">{{ $t('shop.shopName') }}:</div>
                     <input v-model="shopName"
+                        :placeholder="$t('shop.shopName')"
                         type="text"
-                        placeholder="Shop Name"
                         maxlength="50"
                     >
                 </div>
 
                 <div class="players-shops__form-element players-shops__form-border">
-                    <div class="form-heading">Shop Description: (can be empty)</div>
+                    <div class="form-heading">{{ $t('shop.shopDescription') }}</div>
                     <input v-model="shopDescription"
+                        :placeholder="$t('shop.shopDescriptionPlaceholder')"
                         type="text"
-                        placeholder="Shop Description"
                         maxlength="150"
                     >
                 </div>
 
                 <div class="players-shops__form-element players-shops__form-border">
-                    <div class="form-heading">Rent price per day: <b>{{ currentPricePerDay }}Z</b></div>
+                    <div class="form-heading">{{ $t('shop.rentPricePerDay') }}: <b>{{ currentPricePerDay }}Z</b></div>
                 </div>
 
                 <div class="players-shops__form-element players-shops__form-border">
-                    <div class="form-heading">Zeny in cashbox: <b>{{ shopCashboxAmount }}Z</b></div>
+                    <div class="form-heading">{{ $t('shop.moneyInCashbox') }}: <b>{{ shopCashboxAmount }}Z</b></div>
                     <div class="players-shops__cashbox">
                         <button class="btn game-button players-shops__cashbox__button"
                             @click="cashBox('deposit')"
                         >
-                            Add zeny to cashbox
+                            {{ $t('shop.addMoneyCashbox') }}
                         </button>
                         <button class="btn game-button players-shops__cashbox__button"
                             @click="cashBox('withdraw')"
                         >
-                            Take zeny from cashbox
+                            {{ $t('shop.takeMoneyCashbox') }}
                         </button>
                     </div>
                 </div>
 
                 <div class="players-shops__form-element players-shops__form-border">
-                    <div>You can specify in what amount of days your shop should close. Leave it at <b>0</b> if it should be indefinite or until all items are sold.</div>
-                    <div class="form-heading">In what amout of days shop will close:</div>
+                    <div>{{ $t('shop.shopClosureDaysExplanation') }}</div>
+                    <div class="form-heading">{{ $t('shop.inWhatDayShopClose') }}:</div>
                     <input v-model="days"
+                        :placeholder="$t('shop.inWhatDayShopClose')"
                         type="number"
                         min="0"
                         :max="maxDays"
-                        placeholder="In what amout of days shop will close"
                     >
                 </div>
 
@@ -70,14 +70,26 @@
                 <button :disabled="buttonLoading || !shopName"
                     class="btn game-button players-shops__shop__open"
                     @click="updateShop()"
-                >Update</button>
+                >{{ $t('shop.update') }}</button>
             </div>
 
             <div class="players-shops__inventory-wrapper">
-                <div class="players-shops__title">Inventory</div>
+                <div class="players-shops__title">{{ $t('shop.inventory') }}</div>
+
+                <div class="search-input">
+                    <input v-model="search"
+                        :placeholder="$t('global.search')"
+                        maxlength="50"
+                        type="text"
+                    >
+                    <div v-show="search"
+                        class="search-input__close"
+                        @click="search = ''"
+                    >X</div>
+                </div>
 
                 <template v-if="temporaryInventory.length">
-                    <div v-for="(item, index) in temporaryInventory"
+                    <div v-for="(item, index) in filteredInventory"
                         :key="index"
                         :class="{
                             'players-shops__inventory-wrapper__item--broken': item.broken,
@@ -99,17 +111,31 @@
                     </div>
                 </template>
                 <template v-else>
-                    <div class="players-shops__inventory-wrapper__empty">Empty</div>
+                    <div class="players-shops__inventory-wrapper__empty">{{ $t('global.empty') }}</div>
                 </template>
             </div>
 
             <div class="players-shops__sold-items-wrapper">
-                <div class="players-shops__title">Items on counter</div>
+                <div class="players-shops__title">{{ $t('shop.itemsOnCounter') }}</div>
 
-                <p>{{ characterLocation }}'s tax for item selling is <b>{{ locationTax }}%</b></p>
+                <p>{{ $t('shop.shopLocationTaxForSelling', {
+                    location: characterLocation
+                }) }} <b>{{ locationTax }}%</b></p>
+
+                <div class="search-input">
+                    <input v-model="searchItems"
+                        :placeholder="$t('global.search')"
+                        maxlength="50"
+                        type="text"
+                    >
+                    <div v-show="searchItems"
+                        class="search-input__close"
+                        @click="searchItems = ''"
+                    >X</div>
+                </div>
 
                 <template v-if="shopItems.length">
-                    <div v-for="(item, index) in shopItems"
+                    <div v-for="(item, index) in filteredItems"
                         :key="index"
                         class="players-shops__sold-item"
                     >
@@ -127,10 +153,12 @@
                         </div>
                         <div class="players-shops__sold-item__name-price">
                             <div class="players-shops__sold-item__name-price__name">{{ item.itemName }}</div>
-                            <div class="players-shops__sold-item__name-price__price">End Price: {{ Math.floor(Number(item.price) + (Number(item.price) * (locationTax / 100))) }} Z</div>
+                            <div class="players-shops__sold-item__name-price__price">
+                                {{ $t('shop.endPrice') }}: {{ Math.floor(Number(item.price) + (Number(item.price) * (locationTax / 100))) }} Z
+                            </div>
                         </div>
                         <div class="players-shops__sold-item__set-price">
-                            Your price<br>
+                            {{ $t('shop.yourPrice') }}<br>
                             <input v-model="item.price"
                                 :disabled="buttonLoading"
                                 type="number"
@@ -148,7 +176,7 @@
                     </div>
                 </template>
                 <template v-else>
-                    <div class="players-shops__sold-items-wrapper__empty">Empty</div>
+                    <div class="players-shops__sold-items-wrapper__empty">{{ $t('global.empty') }}</div>
                 </template>
             </div>
         </div>
@@ -169,11 +197,11 @@
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeCashbox()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="cashboxAmount < 1 || cashboxAmount > maxCashboxAmount || buttonLoading"
                     class="btn game-button"
                     @click="confirmCashboxUpdate()"
-                >Confirm</button>
+                >{{ $t('shop.confirm') }}</button>
             </div>
         </div>
 
@@ -184,39 +212,39 @@
                 <b>{{ transferItem.name }} <template v-if="transferItem.defaultDurability">({{ transferItem.durability }} / {{ transferItem.maxDurability }})</template></b>
 
                 <div v-if="displayItemAmountProperty">
-                    <div class="form-heading">Amount:</div>
+                    <div class="form-heading">{{ $t('global.amount') }}:</div>
                     <input ref="itemAmountValue"
                         v-model="itemAmountValue"
+                        :placeholder="$t('global.amount')"
                         min="0"
                         :max="itemAmountMax"
                         type="number"
                         size="9"
-                        placeholder="Amount"
                     >
                 </div>
 
                 <div v-if="displayItemZenyProperty">
-                    <div class="form-heading">Zeny price per item:</div>
+                    <div class="form-heading">{{ $t('shop.moneyPricePerItem') }}:</div>
                     <input ref="itemAmountPrice"
                         v-model="itemAmountPrice"
+                        :placeholder="$t('shop.price')"
                         min="0"
                         :max="maxCashboxAmount"
                         type="number"
                         size="9"
-                        placeholder="Price"
                     >
                 </div>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeItemAmountModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="(displayItemAmountProperty && (itemAmountValue < 1 || itemAmountValue > itemAmountMax)) ||
                     (displayItemZenyProperty && itemAmountPrice < 1) ||
                     buttonLoading"
                     class="btn game-button"
                     @click="confirmItemSell()"
-                >Confirm</button>
+                >{{ $t('shop.confirm') }}</button>
             </div>
         </div>
     </section>
@@ -257,7 +285,9 @@ const managePlayersShopPage = {
             itemAmountPrice: 0,
             transferItem: null,
             locationTax: 0,
-            shopItems: []
+            shopItems: [],
+            search: '',
+            searchItems: ''
         };
     },
     computed: {
@@ -265,7 +295,26 @@ const managePlayersShopPage = {
             'characterLocation',
             'inventory',
             'serverUrl'
-        ])
+        ]),
+
+        filteredInventory() {
+            let inv = this.temporaryInventory;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
+        },
+        filteredItems() {
+            let inv = this.shopItems;
+
+            if (this.searchItems) {
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.searchItems) > -1);
+            }
+
+            return inv || [];
+        }
     },
     watch: {
         itemAmountPrice() {

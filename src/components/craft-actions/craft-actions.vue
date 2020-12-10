@@ -4,28 +4,28 @@
             <img class="game__action__image"
                 :src="`${serverUrl}/dist/assets/images/craft.png`"
             >
-            <span class="game__action__name">Craft Services</span>
+            <span class="game__action__name">{{ $t('craft.actionTitle') }}</span>
         </div>
 
         <div v-if="showModal"
             class="modal"
         >
-            <div class="modal__header">Craft Services</div>
+            <div class="modal__header">{{ $t('craft.actionTitle') }}</div>
             <div class="modal__content kafra-actions__buttons">
                 <button :disabled="characterCrafting"
                     class="btn game-button"
                     @click="$router.push('/repair')"
-                >Blacksmith - Repair Items</button>
+                >{{ $t('craft.repairItems') }}</button>
 
                 <button :disabled="disableCraft"
                     class="btn game-button"
                     @click="$router.push('/craft')"
-                >Craft items</button>
+                >{{ $t('craft.craftItems') }}</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
             </div>
         </div>
     </div>

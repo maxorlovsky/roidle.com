@@ -1,10 +1,10 @@
 <template>
     <section class="character">
         <div class="character__tabs">
-            <button class="btn btn-primary">1st job</button>
+            <button class="btn btn-primary">{{ $t('character.firstJob') }}</button>
             <button class="btn btn-secondary"
                 disabled
-            >2nd job</button>
+            >{{ $t('character.secondJob') }}</button>
         </div>
 
         <div v-if="skillInfo.show"
@@ -12,9 +12,9 @@
             @click="skillInfo.show = false"
         >
             <b>{{ skillInfo.name }}</b>
-            <div v-if="skillInfo.requirements">Requirements: <b class="skill-info__requirement">{{ skillInfo.requirements }}</b></div>
-            <div>Max Level: <b>{{ skillInfo.maxLevel }}</b></div>
-            <div v-if="skillInfo.mp">Mana Cost: <b>{{ skillInfo.mp }}</b></div>
+            <div v-if="skillInfo.requirements">{{ $t('character.requirements') }}: <b class="skill-info__requirement">{{ skillInfo.requirements }}</b></div>
+            <div>{{ $t('character.maxLevel') }}: <b>{{ skillInfo.maxLevel }}</b></div>
+            <div v-if="skillInfo.mp">{{ $t('character.manaCost') }}: <b>{{ skillInfo.mp }}</b></div>
             <span v-html="skillInfo.explanation" />
         </div>
 
@@ -51,7 +51,7 @@
 
         <div class="skills-list__bottom">
             <div class="skills-list__points">
-                <span class="skills-list__points__label">Skill points:</span>
+                <span class="skills-list__points__label">{{ $t('character.skillPoints') }}:</span>
                 <span :class="{'skills-list__points__points--empty': tempSkillPoints === 0 }"
                     class="skills-list__points__points"
                 >{{ tempSkillPoints }}</span>
@@ -60,7 +60,7 @@
             <button :disabled="tempSkillPoints === characterSkillPoints"
                 class="btn game-button skills-list__apply"
                 @click="saveSkills()"
-            >Save</button>
+            >{{ $t('global.save') }}</button>
         </div>
     </section>
 </template>

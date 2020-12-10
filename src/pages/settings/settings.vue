@@ -4,11 +4,11 @@
             <div class="settings__setting settings__setting--centered">
                 <div class="btn game-button"
                     @click="selectCharacter()"
-                >Character select</div>
+                >{{ $t('settings.characterSelect') }}</div>
             </div>
             <div class="settings__setting">
                 <div class="settings__setting__slider game-icon">
-                    <div class="settings__setting__title">Music</div>
+                    <div class="settings__setting__title">{{ $t('settings.music') }}</div>
 
                     <range-slider v-model="musicSliderValue"
                         class="slider"
@@ -29,7 +29,7 @@
 
             <div class="settings__setting">
                 <div class="settings__setting__slider game-icon">
-                    <div class="settings__setting__title">Sound</div>
+                    <div class="settings__setting__title">{{ $t('settings.sound') }}</div>
 
                     <range-slider v-model="soundSliderValue"
                         class="slider"
@@ -52,7 +52,7 @@
                 class="settings__setting"
             >
                 <div class="settings__setting__slider game-icon">
-                    <div class="settings__setting__title">Copy link to your public profile</div>
+                    <div class="settings__setting__title">{{ $t('settings.copyLinkToProfile') }}</div>
                 </div>
 
                 <div class="settings__setting__icon game-icon"
@@ -84,7 +84,7 @@
                 class="settings__setting"
             >
                 <div class="settings__setting__slider game-icon">
-                    <div class="settings__setting__title">Close logins</div>
+                    <div class="settings__setting__title">{{ $t('settings.closeLogins') }}</div>
                 </div>
 
                 <div class="settings__setting__icon game-icon"
@@ -100,7 +100,7 @@
                 class="settings__setting"
             >
                 <div class="settings__setting__slider game-icon">
-                    <div class="settings__setting__title">Kick online users</div>
+                    <div class="settings__setting__title">{{ $t('settings.kickOnlineUsers') }}</div>
                 </div>
 
                 <div class="settings__setting__icon game-icon"
@@ -118,8 +118,8 @@
 import { mapGetters, mapActions } from 'vuex';
 import RangeSlider from 'vue-range-slider';
 
-// Globals functions
-import { functions } from '@src/functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
 
 const settingsPage = {
     components: {
@@ -193,7 +193,7 @@ const settingsPage = {
                 {
                     type: 'system',
                     character: 'System',
-                    message: 'Link to public profile copied to clipboard'
+                    message: this.$t('settings.linkToProfileCopied')
                 }
             ]);
         },
@@ -236,7 +236,7 @@ const settingsPage = {
                 mo.socket = null;
             });
 
-            this.$router.push('/?characters=1');
+            this.$router.push('/character-select');
         }
     }
 };

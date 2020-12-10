@@ -1,7 +1,7 @@
 <template>
     <div class="puzzle-challenge">
         <div class="modal">
-            <div class="modal__header">Challenge / Puzzle</div>
+            <div class="modal__header">{{ $t('puzzle.actionTitle') }}</div>
 
             <div v-if="loading"
                 class="modal__content"
@@ -32,7 +32,7 @@
                 <button :disabled="buttonLoading"
                     class="btn game-button"
                     @click="submitChallenge()"
-                >Submit</button>
+                >{{ $t('puzzle.submit') }}</button>
             </div>
         </div>
     </div>
@@ -55,9 +55,9 @@ export default {
             loading: true,
             buttonLoading: false,
             randomChallengeText: [
-                'You\'re feeling a bit lost, just some parts of the dungeon feels familiar, you are tried hard to navigate your way into the depths of this place. As if there is some kind of puzzle that need to be solved?',
-                'You\'ve reached the stairs to the next level, at least that is what you think, but there are more stairs leading down, which one to choose? You need to solve this puzzle somehow.',
-                'Are you on the right path? You were sure that you memorized the map of the dungeon very well before dwelling into it.',
+                this.$t('puzzle.randomChallengeText1'),
+                this.$t('puzzle.randomChallengeText2'),
+                this.$t('puzzle.randomChallengeText3')
             ],
             randomTextNr: 0,
             challengeAnswer: ''

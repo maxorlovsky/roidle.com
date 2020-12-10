@@ -1,8 +1,9 @@
 // 3rd party libs
 import Vue from 'vue';
 
-// Globals functions
-import { functions } from './functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
+import { locale } from '@utils/locale.js';
 
 import App from './app.vue';
 import './firebase.js';
@@ -11,6 +12,7 @@ import './firebase.js';
 import './pages/barber-services/barber-services.vue';
 import './pages/character/character.vue';
 import './pages/character/character-skills.vue';
+import './pages/character-select/character-select.vue';
 import './pages/game/game.vue';
 import './pages/inventory/inventory.vue';
 import './pages/home/home.vue';
@@ -42,6 +44,9 @@ import router from './router.js';
 
 // Destroying old cache
 functions.storageCacheBuster();
+
+// Set up language
+locale.setupTranslations(Vue.prototype);
 
 /* Retrieve the locale from the browser
  * Extract language (first two letters) from the locale

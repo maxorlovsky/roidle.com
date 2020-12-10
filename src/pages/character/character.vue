@@ -67,7 +67,7 @@
                 @click="uneqipItem(slot)"
             >
                 <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
-                <span class="equipment-modal__item__amount">Unequip item</span>
+                <span class="equipment-modal__item__amount">{{ $t('character.unequipItem') }}</span>
             </div>
 
             <template v-if="items && items.length">
@@ -86,13 +86,13 @@
             <div v-else
                 class="equipment-modal__item"
             >
-                No items to equip
+                {{ $t('character.noItemsToEquip') }}
             </div>
 
             <div class="modal__buttons equipment-modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showEquipmentModal = false"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
             </div>
         </div>
 
@@ -100,7 +100,7 @@
 
         <button class="btn game-button btn-lg skills-button"
             @click="goToSkills()"
-        >Skills</button>
+        >{{ $t('character.skills') }}</button>
     </section>
 </template>
 
@@ -139,45 +139,45 @@ const characterPage = {
             leftSlots: [
                 {
                     slot: 'head',
-                    name: 'head'
+                    name: this.$t('equipment.head')
                 },
                 {
                     slot: 'mouth',
-                    name: 'mouth'
+                    name: this.$t('equipment.mouth')
                 },
                 {
                     slot: 'rhand',
-                    name: 'R-hand'
+                    name: this.$t('equipment.rightHand')
                 },
                 {
                     slot: 'garment',
-                    name: 'robe'
+                    name: this.$t('equipment.garment')
                 },
                 {
                     slot: 'acc1',
-                    name: 'accessory'
+                    name: this.$t('equipment.accessory')
                 }
             ],
             rightSlots: [
                 {
                     slot: 'face',
-                    name: 'face'
+                    name: this.$t('equipment.face')
                 },
                 {
                     slot: 'body',
-                    name: 'body'
+                    name: this.$t('equipment.body')
                 },
                 {
                     slot: 'lhand',
-                    name: 'L-hand'
+                    name: this.$t('equipment.leftHand')
                 },
                 {
                     slot: 'footgear',
-                    name: 'shoes'
+                    name: this.$t('equipment.footgear')
                 },
                 {
                     slot: 'acc2',
-                    name: 'accessory'
+                    name: this.$t('equipment.accessory')
                 }
             ]
         };
@@ -204,7 +204,7 @@ const characterPage = {
                     {
                         type: '#system',
                         character: 'System',
-                        message: 'Error retrieving equipable items'
+                        message: this.$t('character.errorRetrievingEqItems')
                     }
                 ]);
             }
@@ -239,24 +239,24 @@ const characterPage = {
         attributeNameCorrection(name) {
             switch (name) {
                 case 'patk':
-                    return 'P.Atk';
+                    return this.$t('attributes.patk');
                 case 'matk':
-                    return 'M.Atk';
+                    return this.$t('attributes.matk');
                 case 'pdef':
-                    return 'P.Def';
+                    return this.$t('attributes.pdef');
                 case 'mdef':
-                    return 'M.Def';
+                    return this.$t('attributes.mdef');
                 case 'maxHp':
-                    return 'M.HP';
+                    return this.$t('attributes.mhp');
                 case 'maxMp':
-                    return 'M.MP';
+                    return this.$t('attributes.mmp');
                 default:
                     return name.charAt(0).toUpperCase() + name.slice(1);
             }
         },
         itemClassNameCorrection(name, twoHanded = false) {
             if (name === 'sword' && twoHanded) {
-                return 'Two-handed Sword';
+                return this.$t('character.twoHandedSword');
             }
 
             return name.charAt(0).toUpperCase() + name.slice(1);

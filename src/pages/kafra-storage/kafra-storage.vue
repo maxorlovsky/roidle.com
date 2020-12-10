@@ -7,14 +7,14 @@
                 :key="tab"
                 :class="{'kafra-storage-tabs__tab--active': tab === selectedMainTab}"
                 class="kafra-storage-tabs__tab"
-                @click="selectedMainTab = tab"
-            >{{ tab }}</div>
+                @click="selectedMainTab = tab; search = ''"
+            >{{ $t(`kafra.${tab}`) }}</div>
         </div>
 
         <div class="kafra-storage__top-bar">
             <div class="kafra-storage__toggle">
                 <div class="kafra-storage__toggle__value">
-                    <label for="amountToggle">Toggle Item Amount</label>
+                    <label for="amountToggle">{{ $t('kafra.toggleItemAmount') }}</label>
                     <input id="amountToggle"
                         v-model="amountToggle"
                         type="checkbox"
@@ -30,8 +30,20 @@
         </div>
 
         <div class="kafra-storage__wrapper">
+            <div class="search-input">
+                <input v-model="search"
+                    :placeholder="$t('global.search')"
+                    maxlength="50"
+                    type="text"
+                >
+                <div v-show="search"
+                    class="search-input__close"
+                    @click="search = ''"
+                >X</div>
+            </div>
+
             <template v-if="itemsTransfer.length">
-                <div v-for="(item, index) in itemsTransfer"
+                <div v-for="(item, index) in filteredItems"
                     :key="index"
                     class="kafra-storage__item"
                 >
@@ -67,7 +79,7 @@
                 </div>
             </template>
             <template v-else>
-                <div class="kafra-storage__empty">Empty</div>
+                <div class="kafra-storage__empty">{{ $t('global.empty') }}</div>
             </template>
         </div>
 
@@ -77,21 +89,21 @@
             <div class="modal__content kafra-storage__amount">
                 <input ref="amountModal"
                     v-model="amountModal"
+                    :placeholder="$t('global.amount')"
                     min="1"
                     :max="amountModalMax"
                     type="number"
                     size="4"
-                    placeholder="Amount"
                 >
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeAmountModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="amountModal < 1 || amountModal > amountModalMax"
                     class="btn game-button"
                     @click="confirmChosenAmount()"
-                >Confirm</button>
+                >{{ $t('kafra.confirm') }}</button>
             </div>
         </div>
     </div>
@@ -101,8 +113,8 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
-// Globals functions
-import { functions } from '@src/functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
 
 const kafraStoragePage = {
     data() {
@@ -120,14 +132,25 @@ const kafraStoragePage = {
             itemsStorage: [],
             storageSpace: 0,
             storageSpaceMax: 0,
-            movingItem: null
+            movingItem: null,
+            search: ''
         };
     },
     computed: {
         ...mapGetters([
             'characterZeny',
             'serverUrl'
-        ])
+        ]),
+
+        filteredItems() {
+            let inv = this.itemsTransfer;
+
+            if (this.search) {
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search) > -1);
+            }
+
+            return inv || [];
+        }
     },
     watch: {
         amountToggle() {

@@ -4,38 +4,38 @@
             <img class="game__action__image"
                 :src="`${serverUrl}/dist/assets/images/shopping.png`"
             >
-            <span class="game__action__name">Shop Dealers</span>
+            <span class="game__action__name">{{ $t('shop.shopDealers') }}</span>
         </div>
 
         <div v-if="showModal"
             class="modal"
         >
-            <div class="modal__header">Shop Dealers</div>
+            <div class="modal__header">{{ $t('shop.shopDealers') }}</div>
             <div class="modal__content kafra-actions__buttons">
                 <button class="btn game-button"
                     @click="$router.push('/players-shops')"
-                >Merchants Shops</button>
+                >{{ $t('shop.merchantsShops') }}</button>
 
                 <button class="btn game-button"
                     @click="$router.push('/shop?action=buy&type=equipment')"
-                >Equipment Dealer - Buy</button>
+                >{{ $t('shop.equipmentDealer') }} - {{ $t('shop.buy') }}</button>
 
                 <button class="btn game-button"
                     @click="$router.push('/shop?action=sell&type=equipment')"
-                >Equipment Dealer - Sell</button>
+                >{{ $t('shop.equipmentDealer') }} - {{ $t('shop.sell') }}</button>
 
                 <button class="btn game-button"
                     @click="$router.push('/shop?action=buy&type=tools')"
-                >Tool Dealer - Buy</button>
+                >{{ $t('shop.toolDealer') }} - {{ $t('shop.buy') }}</button>
 
                 <button class="btn game-button"
                     @click="$router.push('/shop?action=sell&type=tools')"
-                >Tool Dealer - Sell</button>
+                >{{ $t('shop.toolDealer') }} - {{ $t('shop.sell') }}</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
             </div>
         </div>
     </div>

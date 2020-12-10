@@ -21,10 +21,10 @@
                     <div :class="{'craft__item__info__name--low-level': item.level > characterBaseLevel}"
                         class="craft__item__info__name"
                     >
-                        {{ item.name }} <template v-if="item.outputAmount > 1">(x{{ item.outputAmount }}) </template>(Required Lv: {{ item.level }})
+                        {{ item.name }} <template v-if="item.outputAmount > 1">(x{{ item.outputAmount }}) </template>({{ $t('craft.requiredLevel') }}: {{ item.level }})
                     </div>
-                    <div class="craft__item__info__materials">Chance: {{ item.chance }}% | Time: {{ staticTimer(item.time) }} | MP Cost: {{ item.mpCost }}</div>
-                    <div class="craft__item__info__chance">Reward: {{ item.reward[0] }} B.Exp, {{ item.reward[1] }} J.Exp</div>
+                    <div class="craft__item__info__materials">{{ $t('craft.chance') }}: {{ item.chance }}% | {{ $t('craft.time') }}: {{ staticTimer(item.time) }} | {{ $t('global.mpCost') }}: {{ item.mpCost }}</div>
+                    <div class="craft__item__info__chance">{{ $t('craft.reward') }}: {{ item.reward[0] }} {{ $t('global.bexp') }}, {{ item.reward[1] }} {{ $t('global.jexp') }}</div>
                 </div>
                 <router-link :to="`/craft-item/${item.itemId}`"
                     class="craft__item__move"

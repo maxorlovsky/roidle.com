@@ -11,35 +11,35 @@
             <div class="craft-item__item"
                 @click="showItemInfo(craftableItem.itemId)"
             >
-                <div class="craft-item__item__title">Item</div>
+                <div class="craft-item__item__title">{{ $t('craft.item') }}</div>
                 <img :src="`${serverUrl}/dist/assets/images/items/large/${craftableItem.itemId}.gif`"
                     class="craft-item__item__image"
                 >
                 <div class="craft-item__item__info">
-                    <b>{{ craftableItem.name }} (Lv: {{ craftableItem.level }})</b><br>
-                    Craft Time: {{ staticTimer(craftableItem.time) }}<br>
-                    MP Cost: <span :class="{'craft-item__item__info__mp-cost': characterMp < craftableItem.mpCost}">{{ craftableItem.mpCost }}</span><br>
-                    Success Chance: {{ craftableItem.chance }}%<br>
-                    Output per success: x{{ craftableItem.outputAmount }}<br>
-                    Reward: {{ craftableItem.reward[0] }} B.Exp, {{ craftableItem.reward[1] }} J.Exp<br>
+                    <b>{{ craftableItem.name }} ({{ $t('global.shortLevel') }}: {{ craftableItem.level }})</b><br>
+                    {{ $t('craft.craftTime') }}: {{ staticTimer(craftableItem.time) }}<br>
+                    {{ $t('global.mpCost') }}: <span :class="{'craft-item__item__info__mp-cost': characterMp < craftableItem.mpCost}">{{ craftableItem.mpCost }}</span><br>
+                    {{ $t('craft.successChance') }}: {{ craftableItem.chance }}%<br>
+                    {{ $t('craft.outputPerSuccess') }}: x{{ craftableItem.outputAmount }}<br>
+                    {{ $t('craft.reward') }}: {{ craftableItem.reward[0] }} {{ $t('global.bexp') }}, {{ craftableItem.reward[1] }} {{ $t('global.jexp') }}<br>
                 </div>
             </div>
 
             <div class="craft-item__amount">
-                <div class="craft-item__amount__title">Amount</div>
+                <div class="craft-item__amount__title">{{ $t('global.amount') }}</div>
 
                 <div class="craft-item__amount__number">
                     <input v-model="amount"
+                        :placeholder="$t('global.amount')"
                         type="number"
                         :min="0"
                         :max="maxAmount"
-                        placeholder="Amount"
                     >
                 </div>
             </div>
 
             <div class="craft-item__materials">
-                <div class="craft-item__materials__title">Materials required</div>
+                <div class="craft-item__materials__title">{{ $t('craft.materialsRequired') }}</div>
                 <div v-for="material in craftableItem.craftMaterials"
                     :key="material.id"
                     class="craft-item__materials__material"
@@ -53,31 +53,37 @@
             </div>
 
             <div class="craft-item__price">
-                <div class="craft-item__price__title">Price</div>
+                <div class="craft-item__price__title">{{ $t('craft.price') }}</div>
                 <div class="craft-item__price__item">
-                    <div class="craft-item__price__item__title">Price for using {{ tool }} (per minute)</div>
+                    <div class="craft-item__price__item__title">{{ $t('craft.priceForToolPerMinute', {
+                        tool: tool
+                    }) }}</div>
                     <div class="craft-item__price__item__value">{{ price.rentPricePerMinute * amount }} Z</div>
                 </div>
                 <div class="craft-item__price__item">
-                    <div class="craft-item__price__item__title">Time required</div>
+                    <div class="craft-item__price__item__title">{{ $t('craft.timeRequired') }}</div>
                     <div class="craft-item__price__item__value">{{ staticTimer(price.timeRequired * amount) }}</div>
                 </div>
                 <div class="craft-item__price__item">
-                    <div class="craft-item__price__item__title">Price for using {{ tool }}</div>
+                    <div class="craft-item__price__item__title">{{ $t('craft.priceForTool', {
+                        tool: tool
+                    }) }}</div>
                     <div class="craft-item__price__item__value">{{ price.priceForRent * amount }} Z</div>
                 </div>
                 <div class="craft-item__price__item">
-                    <div class="craft-item__price__item__title">{{ characterLocation }}'s tax ({{ price.tax }}%)</div>
+                    <div class="craft-item__price__item__title">{{ $t('craft.locationTax', {
+                        locationTax: characterLocation
+                    }) }} ({{ price.tax }}%)</div>
                     <div class="craft-item__price__item__value">{{ price.taxForRent * amount }} Z</div>
                 </div>
                 <div v-if="price.discount !== 0"
                     class="craft-item__price__item craft-item__price__item--discount"
                 >
-                    <div class="craft-item__price__item__title">Discount</div>
+                    <div class="craft-item__price__item__title">{{ $t('craft.discount') }}</div>
                     <div class="craft-item__price__item__value">-{{ price.discount * amount }} Z</div>
                 </div>
                 <div class="craft-item__price__item craft-item__price__item--total">
-                    <div class="craft-item__price__item__title">TOTAL</div>
+                    <div class="craft-item__price__item__title">{{ $t('craft.total') }}</div>
                     <div class="craft-item__price__item__value">{{ price.total * amount }} Z</div>
                 </div>
             </div>
@@ -85,7 +91,7 @@
             <button :disabled="!canCraft || buttonLoading || amount < 1 || amount > maxAmount"
                 class="btn btn-lg game-button craft-item__button"
                 @click="craftItem(craftableItem.itemId)"
-            >Start</button>
+            >{{ $t('craft.start') }}</button>
         </div>
     </div>
 </template>

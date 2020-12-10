@@ -1,19 +1,19 @@
 <template>
     <section class="hunt-configuration">
         <div class="hunt-configuration__explanation">
-            <p>Hunt pre-configuration</p>
+            <p>{{ $t('hunt.huntConfigTitle') }}</p>
 
             <div class="hunt-configuration__explanation__text">
-                This is a place where you pre-configure the fights for your character, you might do it even during the fight, but it will not take effect until your turn in the hunt<br>
-                <b>Starting position</b> is a position your character starts at the beginning of the round (currently ineffective)<br>
-                <b>Escape critical situations</b> allow you to set up scenario when to run away by using Butterfly Wing away from the battle. It will use Butterfly Wing per each escape. If you will run out of them it will not work.<br>
-                <b>Healing items</b> is what kind of healing items your character will use to restore HP or MP. If there will no such items in the bag, character will not heal himself.<br>
-                <b>Active skills</b> are a rotation of skills per every 5 rounds. Skill placed in the first slot will trigger on 1st round, 6th, 11th, 16th etc.
+                {{ $t('hunt.huntConfigExplanation') }}<br>
+                <b>{{ $t('hunt.huntConfigStartingPosition') }}</b> {{ $t('hunt.huntConfigStartingPositionExplanation') }}<br>
+                <b>{{ $t('hunt.huntConfigEscapeSituation') }}</b> {{ $t('hunt.huntConfigEscapeSituationExplanation') }}<br>
+                <b>{{ $t('hunt.huntConfigHealingItems') }}</b> {{ $t('hunt.huntConfigHealingItemsExplanation') }}<br>
+                <b>{{ $t('hunt.huntConfigActiveSkills') }}</b> {{ $t('hunt.huntConfigActiveSkillsExplanation') }}
             </div>
         </div>
 
         <div class="hunt-configuration__position">
-            <p>Starting position</p>
+            <p>{{ $t('hunt.startingPosition') }}</p>
 
             <div :class="{'hunt-configuration__position__item--selected': position === 'frontline'}"
                 class="hunt-configuration__position__item hunt-configuration__position__item--frontline"
@@ -59,7 +59,7 @@
         </div>
 
         <div class="hunt-configuration__escape">
-            <p>Escape critical situations</p>
+            <p>{{ $t('hunt.huntConfigEscapeSituation') }}</p>
 
             <div class="hunt-configuration__escape__wrapper">
                 <div class="hunt-configuration__escape__item"
@@ -84,8 +84,8 @@
 
                 <div class="hunt-configuration__escape__switcher">
                     <VueToggles :value="escapeOn"
-                        checked-text="On"
-                        unchecked-text="Off"
+                        :checked-text="$t('global.on')"
+                        :unchecked-text="$t('global.off')"
                         checked-bg="#16b3fc"
                         @click="escapeOn = !escapeOn"
                     />
@@ -94,7 +94,7 @@
         </div>
 
         <div class="hunt-configuration__healing">
-            <p>Healing items</p>
+            <p>{{ $t('hunt.huntConfigHealingItems') }}</p>
             <div class="healing-items">
                 <div v-for="(item, index) in huntHealingItems"
                     :key="index"
@@ -108,7 +108,7 @@
                 </div>
             </div>
 
-            <p>Healing when</p>
+            <p>{{ $t('hunt.huntConfigHealingWhen') }}</p>
             <div class="healing-macro">
                 <select v-model="healingWhen">
                     <option v-for="index in 9"
@@ -120,7 +120,7 @@
         </div>
 
         <div class="hunt-configuration__skills">
-            <p>Active skills</p>
+            <p>{{ $t('hunt.huntConfigActiveSkills') }}</p>
             <div class="active-skills">
                 <div v-for="(item, index) in activeSkills"
                     :key="index"
@@ -143,7 +143,7 @@
             :class="{'disabled': loading}"
             class="btn btn-lg game-button hunt-configuration__save"
             @click="saveHuntConfig()"
-        >Save</button>
+        >{{ $t('global.save') }}</button>
 
         <div v-if="showHealingModal"
             class="healing-modal modal"
@@ -156,7 +156,7 @@
                     <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
                 </div>
                 <div>
-                    <div class="healing-modal__item__name">Remove item</div>
+                    <div class="healing-modal__item__name">{{ $t('hunt.removeItem') }}</div>
                 </div>
             </div>
 
@@ -178,13 +178,13 @@
             <div v-else
                 class="healing-modal__item"
             >
-                No healing items found
+                {{ $t('hunt.noHealingItems') }}
             </div>
 
             <div class="modal__buttons healing-modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showHealingModal = false"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
             </div>
         </div>
 
@@ -197,7 +197,7 @@
             >
                 <div class="active-skill-modal__item__name active-skill-modal__item__name--remove">
                     <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
-                    <div>Remove skill</div>
+                    <div>{{ $t('hunt.removeSkill') }}</div>
                 </div>
             </div>
 
@@ -211,11 +211,11 @@
                     >
                         <img :src="`${serverUrl}/dist/assets/images/skills/${item.id}.gif`">
                         <div>{{ item.name }} (Lv. {{ item.currentLevel }})</div>
-                        <div class="active-skill-modal__add-notice">Add skill</div>
+                        <div class="active-skill-modal__add-notice">{{ $t('hunt.addSkill') }}</div>
                     </div>
                     <div class="active-skill-modal__item__macros">
                         <div class="active-skill-modal__item__mp-control">
-                            <p>Use while MP is higher than</p>
+                            <p>{{ $t('hunt.useWhileMpHigher') }}</p>
                             <select v-model="item.mpControl">
                                 <option v-for="mpControlIndex in 10"
                                     :key="mpControlIndex"
@@ -228,7 +228,7 @@
                         <div v-if="item.id === 20"
                             class="active-skill-modal__item__hp-control"
                         >
-                            <p>Use when HP is lower than</p>
+                            <p>{{ $t('hunt.useWhenHpLower') }}</p>
                             <select v-model="item.hpControl">
                                 <option v-for="hpControlIndex in 10"
                                     :key="hpControlIndex"
@@ -242,13 +242,13 @@
             <div v-else
                 class="active-skill-modal__item"
             >
-                No active skills found
+                {{ $t('hunt.noSkillsFound') }}
             </div>
 
             <div class="modal__buttons active-skill-modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showActiveSkillsModal = false"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
             </div>
         </div>
     </section>

@@ -1,5 +1,5 @@
-// Globals functions
-import { functions } from '@src/functions.js';
+// Utilities
+import { functions } from '@utils/functions.js';
 
 export default {
     removePartyMember({ commit, state }, value) {

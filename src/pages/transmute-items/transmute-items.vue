@@ -9,11 +9,11 @@
             class="transmute-items__wrapper"
         >
             <div class="transmute-items__list">
-                <div class="transmute-items__title">Item Transmutation</div>
+                <div class="transmute-items__title">{{ $t('transmute.itemTransmutation') }}</div>
 
-                <p>Item transmutation is a skill that allow intelectual Alchemists, Wizards and Sages to transmute items of one kind to be converted into another. By decomposing it into protons and atoms and reconstructing it in the end. World is still opening new formulas, but general formulas to create the most required materials are well known and practised by a lot of Merchants and Mages.</p>
+                <p>{{ $t('transmute.itemTransmutationExplanation') }}</p>
 
-                <p>Below are the formulas that are available to you.</p>
+                <p>{{ $t('transmute.formulasBelow') }}</p>
 
                 <div v-for="(item, index) in transmutableItems"
                     :key="index"
