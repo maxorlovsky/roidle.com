@@ -123,45 +123,45 @@ const profilePublicPage = {
             leftSlots: [
                 {
                     slot: 'head',
-                    name: 'head'
+                    name: this.$t('equipment.head')
                 },
                 {
                     slot: 'mouth',
-                    name: 'mouth'
+                    name: this.$t('equipment.mouth')
                 },
                 {
                     slot: 'rhand',
-                    name: 'R-hand'
+                    name: this.$t('equipment.rightHand')
                 },
                 {
                     slot: 'garment',
-                    name: 'robe'
+                    name: this.$t('equipment.garment')
                 },
                 {
                     slot: 'acc1',
-                    name: 'accessory'
+                    name: this.$t('equipment.accessory')
                 }
             ],
             rightSlots: [
                 {
                     slot: 'face',
-                    name: 'face'
+                    name: this.$t('equipment.face')
                 },
                 {
                     slot: 'body',
-                    name: 'body'
+                    name: this.$t('equipment.body')
                 },
                 {
                     slot: 'lhand',
-                    name: 'L-hand'
+                    name: this.$t('equipment.leftHand')
                 },
                 {
                     slot: 'footgear',
-                    name: 'shoes'
+                    name: this.$t('equipment.footgear')
                 },
                 {
                     slot: 'acc2',
-                    name: 'accessory'
+                    name: this.$t('equipment.accessory')
                 }
             ],
             attributes: {

@@ -1,6 +1,6 @@
 <template>
     <section class="trading">
-        <p class="trading__title">Trade with {{ traderRight }}</p>
+        <p class="trading__title">{{ $t('trade.tradeWith') }} {{ traderRight }}</p>
 
         <div class="trading__inventory-wrapper">
             <template v-if="temporaryInventory.length">
@@ -20,7 +20,7 @@
                 </div>
             </template>
             <template v-else>
-                <div class="trading__inventory-wrapper__empty">Empty</div>
+                <div class="trading__inventory-wrapper__empty">{{ $t('global.empty') }}</div>
             </template>
         </div>
 
@@ -28,11 +28,11 @@
             <div class="trading__window__wrapper">
                 <div class="trading__tabs">
                     <div class="trading__tabs__left">
-                        <div class="trading__tabs__header">Items from {{ traderLeft }}</div>
+                        <div class="trading__tabs__header">{{ $t('trade.itemsFrom') }} {{ traderLeft }}</div>
                     </div>
 
                     <div class="trading__tabs__right">
-                        <div class="trading__tabs__header">Items from  {{ traderRight }}</div>
+                        <div class="trading__tabs__header">{{ $t('trade.itemsFrom') }} {{ traderRight }}</div>
                     </div>
                 </div>
 
@@ -70,7 +70,7 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="shop__empty">Empty</div>
+                        <div class="shop__empty">{{ $t('global.empty') }}</div>
                     </template>
 
                     <div class="trading__window__zeny">
@@ -110,7 +110,7 @@
                         </div>
                     </template>
                     <template v-else>
-                        <div class="shop__empty">Empty</div>
+                        <div class="shop__empty">{{ $t('global.empty') }}</div>
                     </template>
 
                     <div class="trading__window__zeny">
@@ -125,7 +125,7 @@
             <div class="trading__window__actions">
                 <button class="btn btn-secondary"
                     @click="cancelTrade()"
-                >Cancel trade</button>
+                >{{ $t('trade.cancelTrade') }}</button>
                 <button :disabled="buttonLoading || !leftTradeApproved || !rightTradeApproved || zenyLeft < 0 || zenyLeft > characterZeny"
                     class="btn btn-success"
                     @click="confirmTrade()"
@@ -133,7 +133,7 @@
                 <button :disabled="buttonLoading || leftTradeApproved || zenyLeft < 0 || zenyLeft > characterZeny"
                     class="btn game-button"
                     @click="lockTrade()"
-                >Lock trade</button>
+                >{{ $t('trade.lockTrade') }}</button>
             </div>
         </div>
 
@@ -143,21 +143,21 @@
             <div class="modal__content trading__amount">
                 <input ref="amountModal"
                     v-model="amountModal"
+                    :placeholder="$t('global.amount')"
                     min="1"
                     :max="amountModalMax"
                     type="number"
                     size="4"
-                    placeholder="Amount"
                 >
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeAmountModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="amountModal > amountModalMax || amountModal < 1"
                     class="btn game-button"
                     @click="confirmChosenAmount()"
-                >GO</button>
+                >{{ $t('trade.go') }}</button>
             </div>
         </div>
     </section>
@@ -184,7 +184,7 @@ const tradingPage = {
             amountModal: 0,
             amountModalMax: 0,
             moveItem: null,
-            confirmTradeMessage: 'Confirm Trade',
+            confirmTradeMessage: this.$t('trade.confirmTrade'),
             ignoreCancel: false,
         };
     },
@@ -221,7 +221,7 @@ const tradingPage = {
         });
 
         mo.socket.on('confirmTradeComplete', () => {
-            this.confirmTradeMessage = 'Wait...';
+            this.confirmTradeMessage = this.$t('trade.wait');
         });
 
         mo.socket.on('updateTradeApproval', (response) => {

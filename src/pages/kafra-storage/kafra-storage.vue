@@ -8,13 +8,13 @@
                 :class="{'kafra-storage-tabs__tab--active': tab === selectedMainTab}"
                 class="kafra-storage-tabs__tab"
                 @click="selectedMainTab = tab"
-            >{{ tab }}</div>
+            >{{ $t(`kafra.${tab}`) }}</div>
         </div>
 
         <div class="kafra-storage__top-bar">
             <div class="kafra-storage__toggle">
                 <div class="kafra-storage__toggle__value">
-                    <label for="amountToggle">Toggle Item Amount</label>
+                    <label for="amountToggle">{{ $t('kafra.toggleItemAmount') }}</label>
                     <input id="amountToggle"
                         v-model="amountToggle"
                         type="checkbox"
@@ -67,7 +67,7 @@
                 </div>
             </template>
             <template v-else>
-                <div class="kafra-storage__empty">Empty</div>
+                <div class="kafra-storage__empty">{{ $t('global.empty') }}</div>
             </template>
         </div>
 
@@ -77,21 +77,21 @@
             <div class="modal__content kafra-storage__amount">
                 <input ref="amountModal"
                     v-model="amountModal"
+                    :placeholder="$t('global.amount')"
                     min="1"
                     :max="amountModalMax"
                     type="number"
                     size="4"
-                    placeholder="Amount"
                 >
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="closeAmountModal()"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="amountModal < 1 || amountModal > amountModalMax"
                     class="btn game-button"
                     @click="confirmChosenAmount()"
-                >Confirm</button>
+                >{{ $t('kafra.confirm') }}</button>
             </div>
         </div>
     </div>

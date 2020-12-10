@@ -6,7 +6,7 @@
                 :class="{'party__tabs__tab--active': tab === selectedTab, 'party__tabs__tab--disabled': tab === 'invites' && party}"
                 class="party__tabs__tab"
                 @click="selectTab(tab)"
-            >{{ tab }} <span v-if="tab === 'invites'">({{ invites.length }})</span></div>
+            >{{ $t(`party.${tab}`) }} <span v-if="tab === 'invites'">({{ invites.length }})</span></div>
         </div>
 
         <div class="party__wrapper">
@@ -28,13 +28,13 @@
                         <div class="party__window__members__member__info">
                             {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>
                             {{ item.job }}<br>
-                            Location: {{ item.location }}
+                            {{ $t('global.location') }}: {{ item.location }}
                             <div v-if="item.online"
                                 class="party__window__members__member__info--online"
-                            >Online</div>
+                            >{{ $t('party.online') }}</div>
                             <div v-else
                                 class="party__window__members__member__info--offline"
-                            >Offline</div>
+                            >{{ $t('party.offline') }}</div>
                         </div>
 
                         <div class="party__window__members__member__buttons">
@@ -42,17 +42,17 @@
                                 :disabled="buttonLoading"
                                 class="btn btn-sm btn-danger"
                                 @click="kickConfirm(item.id)"
-                            >Kick</button>
+                            >{{ $t('party.kick') }}</button>
                             <button v-if="item.id === characterId"
                                 :disabled="buttonLoading || (partyLeader && partyMembers.length > 1)"
                                 class="btn btn-sm btn-danger"
                                 @click="showLeave = true"
-                            >Leave Party</button>
+                            >{{ $t('party.leaveParty') }}</button>
                             <button v-if="item.id !== characterId"
                                 :disabled="buttonLoading"
                                 class="btn game-button"
                                 @click="viewCharacter(item.name)"
-                            >View profile</button>
+                            >{{ $t('global.viewProfile') }}</button>
                         </div>
                     </div>
 
@@ -62,7 +62,7 @@
                         <button :disabled="buttonLoading"
                             class="btn btn-lg game-button"
                             @click="inviteToParty()"
-                        >Invite to Party</button>
+                        >{{ $t('party.inviteToParty') }}</button>
                     </div>
                 </div>
             </div>
@@ -71,16 +71,16 @@
                 class="party__window"
             >
                 <div class="party__window__party-name">
-                    <div class="form-heading">Party name:</div>
+                    <div class="form-heading">{{ $t('party.partyName') }}:</div>
                     <input v-model="createParty.name"
+                        :placeholder="$t('party.partyName')"
                         :disabled="party"
                         type="text"
-                        placeholder="Party name"
                     >
                 </div>
 
                 <div class="party__window__party-loot">
-                    <div class="form-heading">Loot distribution:</div>
+                    <div class="form-heading">{{ $t('party.lootDistribution') }}:</div>
                     <div class="form-check">
                         <input id="loot-party"
                             v-model="createParty.loot"
@@ -88,7 +88,7 @@
                             type="radio"
                             value="party"
                         >
-                        <label for="loot-party">Party members (random)</label>
+                        <label for="loot-party">{{ $t('party.randomPartyMember') }}</label>
                     </div>
 
                     <div class="form-check">
@@ -98,19 +98,19 @@
                             type="radio"
                             value="leader"
                         >
-                        <label for="loot-leader">Party leader</label>
+                        <label for="loot-leader">{{ $t('party.partyLeader') }}</label>
                     </div>
                 </div>
 
                 <div class="party__window__party-hunt">
-                    <div class="form-heading">Hunt link:</div>
+                    <div class="form-heading">{{ $t('party.huntLink') }}:</div>
                     <div class="form-check">
                         <input id="hunt-together"
                             v-model="createParty.hunt"
                             type="radio"
                             value="together"
                         >
-                        <label for="hunt-together">Hunt together (if characters on same location they automatically join the hunt)</label>
+                        <label for="hunt-together">{{ $t('party.huntTogether') }}</label>
                     </div>
                     <div class="form-check">
                         <input id="hunt-independence"
@@ -118,19 +118,19 @@
                             type="radio"
                             value="independent"
                         >
-                        <label for="hunt-independence">Hunt independence (manual join is required from each member)</label>
+                        <label for="hunt-independence">{{ $t('party.huntIndependence') }}</label>
                     </div>
                 </div>
 
                 <div class="party__window__hunt-preference">
-                    <div class="form-heading">Hunt preferences:</div>
+                    <div class="form-heading">{{ $t('party.huntPreferences') }}:</div>
                     <div class="form-check">
                         <input id="hunt-preference-caution"
                             v-model="createParty.huntPreference"
                             type="radio"
                             value="0"
                         >
-                        <label for="hunt-preference-caution">With caution (hunt as less mobs as possible to be in advantage)</label>
+                        <label for="hunt-preference-caution">{{ $t('party.huntPreferencesCaution') }}</label>
                     </div>
 
                     <div class="form-check">
@@ -139,7 +139,7 @@
                             type="radio"
                             value="1"
                         >
-                        <label for="hunt-preference-yolo">YOLO leveling (gather every mob around the area, usually the amount of your party size)</label>
+                        <label for="hunt-preference-yolo">{{ $t('party.huntPreferencesYolo') }}</label>
                     </div>
                 </div>
 
@@ -148,12 +148,14 @@
                 >
                     <div v-if="disableOrganize"
                         class="party__window__message"
-                    >You need to have Basic Skill level 7 to organize party</div>
+                    >{{ $t('party.needBasicLevelToOrganize', {
+                        level: 7
+                    }) }}</div>
 
                     <button :disabled="buttonLoading || disableOrganize"
                         class="btn btn-lg game-button"
                         @click="organizeParty()"
-                    >Organize Party</button>
+                    >{{ $t('party.organizeParty') }}</button>
                 </div>
                 <div v-else-if="partyLeader"
                     class="party__window__button"
@@ -161,7 +163,7 @@
                     <button :disabled="buttonLoading"
                         class="btn game-button"
                         @click="updateParty()"
-                    >Update Party</button>
+                    >{{ $t('party.updateParty') }}</button>
                 </div>
 
                 <div v-if="createPartyError"
@@ -175,7 +177,9 @@
             >
                 <div v-if="disableJoin"
                     class="party__window__message"
-                >You need to have Basic Skill level 5 to join party</div>
+                >{{ $t('party.needBasicLevelToJoin', {
+                    level: 5
+                }) }}</div>
 
                 <div v-if="invites.length"
                     class="party__window__members"
@@ -185,48 +189,48 @@
                         class="party__window__members__member"
                     >
                         <div class="party__window__teams">
-                            Team: {{ item.name }}<br>
-                            Members ({{ item.membersAmount }}/5)
+                            {{ $t('party.team') }}: {{ item.name }}<br>
+                            {{ $t('party.members') }} ({{ item.membersAmount }}/5)
                         </div>
 
                         <div class="party__window__members__member__buttons">
                             <button :disabled="buttonLoading"
                                 class="btn btn-sm btn-danger"
                                 @click="declineInvite(item.id)"
-                            >Decline invite</button>
+                            >{{ $t('party.declineInvite') }}</button>
                             <button :disabled="buttonLoading || disableJoin"
                                 class="btn game-button"
                                 @click="acceptInvite(item.id)"
-                            >Accept invite</button>
+                            >{{ $t('party.acceptInvite') }}</button>
                         </div>
                     </div>
                 </div>
                 <div v-else
                     class="party__window__no-invites"
-                >No invites</div>
+                >{{ $t('party.noInvites') }}</div>
             </div>
         </div>
 
         <div v-if="showInviteToPartyModal"
             class="party__invite"
         >
-            <div class="party__invite__text">Type in name you want to invite to the team</div>
+            <div class="party__invite__text">{{ $t('party.typeNameToInvite') }}</div>
 
             <div class="party__invite__name">
                 <input ref="inviteName"
                     v-model="inviteToPartyName"
+                    :placeholder="$t('party.characterName')"
                     type="text"
-                    placeholder="Character name"
                 >
             </div>
 
             <button class="btn btn-secondary"
                 @click="closeInviteModal()"
-            >Cancel</button>
+            >{{ $t('global.cancel') }}</button>
             <button :disabled="buttonLoading || !inviteToPartyName"
                 class="btn game-button"
                 @click="inviteConfirm()"
-            >Invite</button>
+            >{{ $t('party.invite') }}</button>
 
             <div v-if="inviteError"
                 class="party__invite__error"
@@ -236,30 +240,30 @@
         <div v-if="showLeave"
             class="party__leave"
         >
-            <div class="party__leave__caution-text">Are you sure you want to leave the party?</div>
+            <div class="party__leave__caution-text">{{ $t('party.confirmationToLeave') }}</div>
             <div class="party__leave__actions">
                 <button class="btn btn-secondary"
                     @click="leaveClose()"
-                >No</button>
+                >{{ $t('global.no') }}</button>
                 <button :disabled="buttonLoading"
                     class="btn btn-danger"
                     @click="leaveTeam()"
-                >Yes</button>
+                >{{ $t('global.yes') }}</button>
             </div>
         </div>
 
         <div v-if="kickShow"
             class="party__leave"
         >
-            <div class="party__leave__caution-text">Are you sure you want to kick this member out of the party?</div>
+            <div class="party__leave__caution-text">{{ $t('party.confirmationToKick') }}</div>
             <div class="party__leave__actions">
                 <button class="btn btn-secondary"
                     @click="kickClose()"
-                >No</button>
+                >{{ $t('global.no') }}</button>
                 <button :disabled="buttonLoading"
                     class="btn btn-danger"
                     @click="kickCharacter()"
-                >Yes</button>
+                >{{ $t('global.yes') }}</button>
             </div>
         </div>
     </section>

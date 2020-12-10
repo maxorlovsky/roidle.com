@@ -7,19 +7,19 @@
             <div class="shop__tabs__left">
                 <div v-if="$route.query.action === 'sell'"
                     class="shop__tabs__header"
-                >Items available to sell</div>
+                >{{ $t('shop.itemsAvailableToSell') }}</div>
                 <div v-else
                     class="shop__tabs__header"
-                >Items available to buy</div>
+                >{{ $t('shop.itemsAvailableToBuy') }}</div>
             </div>
 
             <div class="shop__tabs__right">
                 <div v-if="$route.query.action === 'sell'"
                     class="shop__tabs__header"
-                >Selling items</div>
+                >{{ $t('shop.sellingItems') }}</div>
                 <div v-else
                     class="shop__tabs__header"
-                >Buying items</div>
+                >{{ $t('shop.buyingItems') }}</div>
             </div>
         </div>
 
@@ -28,7 +28,7 @@
         >
             <div class="shop__toggle">
                 <div class="shop__toggle__value">
-                    <label for="amountToggle">Toggle Item Amount</label>
+                    <label for="amountToggle">{{ $t('shop.toggleItemAmount') }}</label>
                     <input id="amountToggle"
                         v-model="amountToggle"
                         type="checkbox"
@@ -69,7 +69,7 @@
                 </div>
             </template>
             <template v-else>
-                <div class="shop__empty">Empty</div>
+                <div class="shop__empty">{{ $t('global.empty') }}</div>
             </template>
         </div>
 
@@ -104,25 +104,25 @@
                 </div>
             </template>
             <template v-else>
-                <div class="shop__empty">Empty</div>
+                <div class="shop__empty">{{ $t('global.empty') }}</div>
             </template>
 
             <div class="shop__summary">
                 <div :class="{'shop__summary__value--not-enough': totalValue > characterZeny && $route.query.action === 'buy'}"
                     class="shop__summary__value"
                 >
-                    Total: {{ totalValue }} Z
+                    {{ $t('shop.total') }}: {{ totalValue }} Z
                 </div>
                 <button v-if="$route.query.action === 'sell'"
                     :disabled="totalValue <= 0 || buttonLoading"
                     class="btn game-button"
                     @click="initiateSell()"
-                >Sell</button>
+                >{{ $t('shop.sell') }}</button>
                 <button v-else
                     :disabled="!totalValue || totalValue > characterZeny || buttonLoading"
                     class="btn game-button"
                     @click="initiateBuy()"
-                >Buy</button>
+                >{{ $t('shop.buy') }}</button>
             </div>
         </div>
 
@@ -132,21 +132,21 @@
             <div class="modal__content shop__amount">
                 <input ref="amountModal"
                     v-model="amountModal"
+                    :placeholder="$t('global.amount')"
                     min="1"
                     :max="amountModalMax"
                     type="number"
                     size="4"
-                    placeholder="Amount"
                 >
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
                     @click="displayAmountModal = false"
-                >Cancel</button>
+                >{{ $t('global.cancel') }}</button>
                 <button :disabled="amountModal > amountModalMax || amountModal < 1"
                     class="btn game-button"
                     @click="confirmChosenAmount()"
-                >GO</button>
+                >{{ $t('shop.go') }}</button>
             </div>
         </div>
     </div>

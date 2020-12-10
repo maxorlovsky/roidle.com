@@ -35,7 +35,7 @@
                     <button :disabled="buttonLoading"
                         class="btn game-button"
                         @click="changeStyle()"
-                    >Change style ({{ barberPrice }} Z)</button>
+                    >{{ $t('kafra.barberChangeStyle') }} ({{ barberPrice }} Z)</button>
                 </div>
             </div>
         </div>

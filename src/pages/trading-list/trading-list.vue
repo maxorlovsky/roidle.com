@@ -1,14 +1,14 @@
 <template>
     <section class="trading-list">
         <div class="trading-list__empty">
-            <p>Player trading list</p>
+            <p>{{ $t('trade.playersTradingList') }}</p>
 
             <loading v-if="loading" />
 
             <div v-if="!loading && !usersList.length"
                 class="trading-list__empty__text"
             >
-                No players on the location to trade
+                {{ $t('trade.noPlayersOnLocation') }}
             </div>
             <div v-else
                 class="trading-list__characters"
@@ -34,11 +34,11 @@
                         <button :disabled="buttonLoading"
                             class="btn game-button"
                             @click="viewCharacter(item.name)"
-                        >View profile</button>
+                        >{{ $t('global.viewProfile') }}</button>
                         <button :disabled="buttonLoading"
                             class="btn game-button"
                             @click="trade(item.name)"
-                        >Trade</button>
+                        >{{ $t('global.trade') }}</button>
                     </div>
                 </div>
             </div>

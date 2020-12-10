@@ -1,7 +1,7 @@
 <template>
     <section class="inventory">
         <div class="inventory-wrapper">
-            <div class="inventory__weight">Weight: <span :class="{'inventory__weight--critical': criticalWeight}">{{ inventoryWeight }}</span> / {{ characterAttributes.weight }}</div>
+            <div class="inventory__weight">{{ $t('global.weight') }}: <span :class="{'inventory__weight--critical': criticalWeight}">{{ inventoryWeight }}</span> / {{ characterAttributes.weight }}</div>
             <div v-for="(item, index) in inventory"
                 :key="index"
                 :class="{

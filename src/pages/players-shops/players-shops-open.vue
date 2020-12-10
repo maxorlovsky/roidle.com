@@ -8,51 +8,53 @@
         <div v-else
             class="players-shops__wrapper"
         >
-            <div class="players-shops__title">Open Shop</div>
+            <div class="players-shops__title">{{ $t('shop.openShop') }}</div>
 
             <div class="players-shops__shop">
-                <p>What people see on the market list, make yourself presentable or show what are you selling. Equipment? Potions? Loot?</p>
+                <p>{{ $t('shop.openShopPresentYourself') }}</p>
 
                 <div class="players-shops__form-element">
-                    <div class="form-heading">Shop Name:</div>
+                    <div class="form-heading">{{ $t('shop.shopName') }}:</div>
                     <input v-model="shopName"
+                        :placeholder="$t('shop.shopName')"
                         type="text"
-                        placeholder="Shop Name"
                         maxlength="50"
                     >
                 </div>
 
                 <div class="players-shops__form-element">
-                    <div class="form-heading">Shop Description: (can be empty)</div>
+                    <div class="form-heading">{{ $t('shop.shopDescription') }}</div>
                     <input v-model="shopDescription"
+                        :placeholder="$t('shop.shopDescriptionPlaceholder')"
                         type="text"
-                        placeholder="Shop Description"
                         maxlength="150"
                     >
                 </div>
 
                 <div class="players-shops__form-element">
                     <div>
-                        There is a flat price per day that you need to pay for the rent to {{ characterLocation }}. It gets deducted every day. If it reaches amount that you won't be able to afford to pay the rent, shop will be closed, remaining zeny will be lost and all remaining items will be sent to Kafra.<br>
-                        Current price per day: <b>{{ currentPricePerDay }}Z</b>
+                        {{ $t('shop.rentExplanation', {
+                            location: characterLocation
+                        }) }}<br>
+                        {{ $t('shop.rentPricePerDay') }}: <b>{{ currentPricePerDay }}Z</b>
                     </div>
-                    <div class="form-heading">Initial amount in cashbox:</div>
+                    <div class="form-heading">{{ $t('shop.initialMoneyInCashbox') }}:</div>
                     <input v-model="cashboxAmount"
+                        :placeholder="$t('shop.initialMoneyInCashbox')"
                         type="number"
                         :min="currentPricePerDay"
                         :max="maxCashboxAmount"
-                        placeholder="Initial amount in cashbox"
                     >
                 </div>
 
                 <div class="players-shops__form-element">
-                    <div>You can specify in what amount of days your shop should close. Leave it at <b>0</b> if it should be indefinite or until all items are sold.</div>
-                    <div class="form-heading">In what amout of days shop will close:</div>
+                    <div>{{ $t('shop.shopClosureDaysExplanation') }}</div>
+                    <div class="form-heading">{{ $t('shop.inWhatDayShopClose') }}:</div>
                     <input v-model="days"
+                        :placeholder="$t('shop.inWhatDaysShopClose')"
                         type="number"
                         min="0"
                         :max="maxDays"
-                        placeholder="In what amout of days shop will close"
                     >
                 </div>
 
@@ -65,7 +67,7 @@
                 <button :disabled="!canOpenShop || buttonLoading"
                     class="btn btn-lg game-button players-shops__shop__open"
                     @click="openShop()"
-                >Open own shop in city</button>
+                >{{ $t('shop.openOwnShop') }}</button>
             </div>
         </div>
     </section>

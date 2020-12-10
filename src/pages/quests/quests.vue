@@ -17,7 +17,7 @@
                     </div>
                     <div class="quests-details__info__name">{{ selectedMission.name }}</div>
                 </div>
-                <div class="quests-details__rewards">Rewards: {{ selectedMission.rewards }}</div>
+                <div class="quests-details__rewards">{{ $t('quests.rewards') }}: {{ selectedMission.rewards }}</div>
                 <div class="quests-details__text"
                     v-html="currentDialogText"
                 />
@@ -37,12 +37,12 @@
                         :disabled="buttonLoading"
                         class="btn btn-success"
                         @click="completeQuest()"
-                    >End discussion</button>
+                    >{{ $t('quests.endDiscussions') }}</button>
                     <button v-else
                         :disabled="buttonLoading"
                         class="btn game-button"
                         @click="proceedWithQuest()"
-                    >Next</button>
+                    >{{ $t('quests.next') }}</button>
                 </div>
             </div>
             <div v-else
@@ -67,12 +67,12 @@
                             :disabled="buttonLoading"
                             class="btn game-button"
                             @click="reviewQuest(quest.id)"
-                        >Start</button>
+                        >{{ $t('quests.start') }}</button>
                         <button v-else
                             :disabled="buttonLoading"
                             class="btn btn-warning"
                             @click="reviewQuest(quest.id)"
-                        >View</button>
+                        >{{ $t('quests.view') }}</button>
                     </div>
                 </div>
             </div>

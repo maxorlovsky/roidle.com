@@ -31,7 +31,7 @@
                     <template v-else>+</template>
                 </div>
 
-                <div class="game__party__name">Party: {{ partyName || '--' }}</div>
+                <div class="game__party__name">{{ $t('global.party') }}: {{ partyName || '--' }}</div>
             </div>
 
             <div class="game__additions">
@@ -109,26 +109,26 @@
                     class="game__action-in-progress"
                 >
                     <div v-if="characterTraveling">
-                        <div>Traveling in Progress</div>
+                        <div>{{ $t('game.travelInProgress') }}</div>
                         <button v-if="!cancelingTravel"
                             class="btn btn-secondary"
                             @click="cancelTravel()"
-                        >Cancel travel</button>
+                        >{{ $t('game.cancelTravel') }}</button>
                     </div>
                     <div v-if="characterResting">
-                        <div>Rest in Progress</div>
+                        <div>{{ $t('game.restInProgress') }}</div>
                         <button v-if="!cancelingRest"
                             class="btn btn-secondary"
                             @click="cancelRest()"
-                        >Interrupt rest</button>
+                        >{{ $t('game.cancelRest') }}</button>
                     </div>
                     <div v-if="huntStatus">
-                        <div>Hunt in progress</div>
+                        <div>{{ $t('game.huntInProgress') }}</div>
                         <div>{{ huntStatusTimerDisplay }}</div>
                         <button v-if="!retreatFromHunt"
                             class="btn btn-secondary"
                             @click="initRetreatFromHunt()"
-                        >Retreat from hunt</button>
+                        >{{ $t('game.cancelHunt') }}</button>
                     </div>
                 </div>
             </div>
@@ -372,7 +372,7 @@ const gamePage = {
         },
         markHuntAsRetreating() {
             // Marking hunt as retreated
-            this.huntStatusTimerDisplay = 'Retreating from the Hunt...';
+            this.huntStatusTimerDisplay = this.$t('game.retreatingFromHunt');
             this.retreatFromHunt = true;
             if (this.huntInterval) {
                 clearInterval(this.huntInterval);
@@ -385,7 +385,7 @@ const gamePage = {
 
                 // If timer reached 0, switch user locations and unlock the map
                 if (remainingTime <= 0) {
-                    this.huntStatusTimerDisplay = 'Finishing the Hunt...';
+                    this.huntStatusTimerDisplay = this.$t('game.finishingHunt');
                     this.retreatFromHunt = true;
 
                     clearInterval(this.huntInterval);

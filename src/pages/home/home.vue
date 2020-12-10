@@ -111,9 +111,9 @@
 
                 <div class="character-view__name">
                     <input v-model="name"
+                        :placeholder="$t('home.tellTheName')"
                         type="text"
                         class="character-view__name__input"
-                        placeholder="What is your name?"
                     >
                 </div>
 
@@ -186,14 +186,14 @@
                     @submit.prevent="login"
                 >
                     <input v-model="form.email"
+                        :placeholder="$t('home.email')"
                         class="home__auth-form__input"
                         type="email"
-                        placeholder="Email"
                     >
                     <input v-model="form.password"
+                        :placeholder="$t('home.password')"
                         class="home__auth-form__input"
                         type="password"
-                        placeholder="Password"
                     >
                     <button :disabled="buttonLoading || !form.email || !form.password"
                         class="btn btn-lg game-button home__auth-form__button"
@@ -411,7 +411,7 @@ const homePage = {
             deleteCharacterId: 0,
             characters: [],
             name: '',
-            gender: 'm',
+            gender: this.$t('home.maleSingleLetter'),
             headStyle: 1,
             headColor: 1,
             message: '',
@@ -685,10 +685,10 @@ const homePage = {
         setGender(gender) {
             switch (gender) {
                 case 1:
-                    this.gender = 'f';
+                    this.gender = this.$t('home.femaleSingleLetter');
                     break;
                 default:
-                    this.gender = 'm';
+                    this.gender = this.$t('home.maleSingleLetter');
                     break;
             }
         },
@@ -724,7 +724,7 @@ const homePage = {
 
                 // Drop form values
                 this.name = '';
-                this.gender = 'm';
+                this.gender = this.$t('home.maleSingleLetter');
                 this.headStyle = 1;
                 this.message = '';
 
@@ -742,7 +742,7 @@ const homePage = {
         },
         checkName() {
             if (!this.name) {
-                this.message = 'Name missing';
+                this.message = this.$t('home.nameMissing');
 
                 return false;
             }
@@ -750,7 +750,7 @@ const homePage = {
             const reg = /^\w+$/g;
 
             if (!reg.test(this.name)) {
-                this.message = 'Name is incorrect, use normal letters and symbols';
+                this.message = this.$t('home.nameIncorrect');
 
                 return false;
             }
