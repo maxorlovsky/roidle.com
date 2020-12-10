@@ -415,6 +415,8 @@ export default {
             mo.socket.on('selectCharacterComplete', (response) => {
                 // Triggering another call to fetch inventory
                 mo.socket.emit('getInventory');
+                // Triggering another call to fetch message
+                mo.socket.emit('getMessages');
 
                 this.$store.commit('characterInit', response);
 
