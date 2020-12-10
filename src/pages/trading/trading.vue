@@ -7,7 +7,7 @@
                 <div v-for="(item, index) in temporaryInventory"
                     :key="index"
                     :class="{
-                        'trading__inventory-wrapper__item--disabled': leftTradeApproved,
+                        'trading__inventory-wrapper__item--disabled': leftTradeApproved || buttonLoading,
                         'trading__inventory-wrapper__item--broken': item.broken,
                         'trading__inventory-wrapper__item--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
                         'trading__inventory-wrapper__item--high-quality': item.durability && item.durability > item.defaultDurability
@@ -141,14 +141,19 @@
             class="modal"
         >
             <div class="modal__content trading__amount">
-                <input ref="amountModal"
-                    v-model="amountModal"
-                    :placeholder="$t('global.amount')"
-                    min="1"
-                    :max="amountModalMax"
-                    type="number"
-                    size="4"
-                >
+                <b>{{ moveItem.name }} <template v-if="moveItem.defaultDurability">({{ moveItem.durability }} / {{ moveItem.maxDurability }})</template></b>
+
+                <div>
+                    <div class="form-heading">{{ $t('global.amount') }}:</div>
+                    <input ref="amountModal"
+                        v-model="amountModal"
+                        :placeholder="$t('global.amount')"
+                        min="1"
+                        :max="amountModalMax"
+                        type="number"
+                        size="4"
+                    >
+                </div>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
