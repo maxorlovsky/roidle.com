@@ -48,6 +48,10 @@
         background-image: url("#{$assets}/images/locations/desert.jpg");
     }
 
+    &.ant.hell {
+        background-image: url("#{$assets}/images/locations/ant-hell.jpg");
+    }
+
     &__party {
         display: flex;
         align-items: center;
