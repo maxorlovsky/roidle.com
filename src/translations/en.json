@@ -76,7 +76,8 @@
         "femaleSingleLetter": "f",
         "nameMissing": "Name missing",
         "nameIncorrect": "Name is incorrect, use normal letters and symbols",
-        "sessionExpired": "Your session expired, please reload the app"
+        "sessionExpired": "Your session expired, please reload the app",
+        "changePassword": "Update your password"
     },
     "attributes": {
         "baseLevel": "Base Lvl",
@@ -443,5 +444,16 @@
         "confirm": "Confirm",
         "itemTransmutationExplanation": "Item transmutation is a skill that allow intelectual Alchemists, Wizards and Sages to transmute items of one kind to be converted into another. By decomposing it into protons and atoms and reconstructing it in the end. World is still opening new formulas, but general formulas to create the most required materials are well known and practised by a lot of Merchants and Mages.",
         "formulasBelow": "Below are the formulas that are available to you."
+    },
+    "changePassword": {
+        "title": "Change Password",
+        "oldPassword": "Old password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm password",
+        "change": "Change",
+        "fieldIsEmpty": "One of the password fields is empty",
+        "oldPasswordNotMatch": "Old password is incorrect",
+        "passwordIncorrectLength": "Password must be at least {length} characters long",
+        "passwordDoesNotMatch": "New password and Confirm passwords does not match"
     }
 }

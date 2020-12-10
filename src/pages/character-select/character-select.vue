@@ -110,6 +110,12 @@
                     {{ $t('characterSelect.createNewCharacter') }}
                 </div>
 
+                <div class="character-select__select-character character-select__select-character--create-new"
+                    @click="showChangePasswordModal = true"
+                >
+                    {{ $t('characterSelect.changePassword') }}
+                </div>
+
                 <button :disabled="buttonLoading"
                     class="character-view__proceed btn game-button"
                     @click="backToMain()"
@@ -133,6 +139,12 @@
                     @closeModal="showRegisterModal = false"
                     @accountConnected="accountConnected()"
                 />
+
+                <change-password v-if="showChangePasswordModal && !isGuest"
+                    class="modal"
+                    @closeModal="showChangePasswordModal = false"
+                    @passwordChanged="passwordChanged()"
+                />
             </div>
         </template>
     </section>
@@ -154,12 +166,14 @@ import ioConfig from '@config/io.json';
 import loading from '@components/loading/loading.vue';
 import avatar from '@components/avatar/avatar.vue';
 import register from '@components/register/register.vue';
+import changePassword from '@components/change-password/change-password.vue';
 
 const characterSelectPage = {
     components: {
         avatar,
         loading,
-        register
+        register,
+        changePassword
     },
     data() {
         return {
@@ -177,7 +191,8 @@ const characterSelectPage = {
             headColor: 1,
             message: '',
             maxAmountCharacter: 10,
-            showRegisterModal: false
+            showRegisterModal: false,
+            showChangePasswordModal: false
         };
     },
     computed: {
@@ -196,6 +211,10 @@ const characterSelectPage = {
         }
     },
     methods: {
+        passwordChanged() {
+            // Hiding modal
+            this.showChangePasswordModal = false;
+        },
         accountConnected() {
             // Reset is guest state
             this.$store.commit('setIsGuest', false);
