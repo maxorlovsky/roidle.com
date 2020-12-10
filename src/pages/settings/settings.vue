@@ -236,7 +236,7 @@ const settingsPage = {
                 mo.socket = null;
             });
 
-            this.$router.push('/?characters=1');
+            this.$router.push('/character-select');
         }
     }
 };

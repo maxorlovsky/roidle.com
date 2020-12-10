@@ -215,7 +215,9 @@ export default {
             this.enableBgm = false;
         } else {
             // In case it's not a home page that we're trying to get into we will try
-            if (!['/', '/server-down', '/public/character'].includes(this.$route.path) && functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')) {
+            if (!['/', '/character-select', '/server-down', '/public/character'].includes(this.$route.path) &&
+                functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')
+            ) {
                 if (this.$route.path !== '/game') {
                     this.$router.push('/game');
                 }
@@ -224,7 +226,7 @@ export default {
             }
 
             // If up to this point user still don't have socket connection, we must redirect him to home page
-            if (!mo.socket && !['/', '/server-down', '/public/character'].includes(this.$route.path)) {
+            if (!mo.socket && !['/', '/character-select', '/server-down', '/public/character'].includes(this.$route.path)) {
                 this.$router.replace('/');
             }
         }

@@ -12,6 +12,7 @@ import './firebase.js';
 import './pages/barber-services/barber-services.vue';
 import './pages/character/character.vue';
 import './pages/character/character-skills.vue';
+import './pages/character-select/character-select.vue';
 import './pages/game/game.vue';
 import './pages/inventory/inventory.vue';
 import './pages/home/home.vue';
