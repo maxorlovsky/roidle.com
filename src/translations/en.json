@@ -25,7 +25,9 @@
         "bexp": "B.Exp",
         "jexp": "J.Exp",
         "empty": "Empty",
-        "search": "Search"
+        "search": "Search",
+        "off": "Off",
+        "on": "On"
     },
     "app": {
         "loginClosed": "Login servers went down or closed, probably because of server restart, wait 5 minutes",
@@ -43,15 +45,6 @@
         "registerAccount": "Register account",
         "playNowRegisterLater": "Play now, register later",
         "startGame": "Start the game",
-        "youAreGuestAccount": "You are on guest account, your data can be easily lost if you like the game consider registering account by clicking here",
-        "createAndConnectAccount": "Create and Connect account",
-        "selectCharacter": "Select character",
-        "createNewCharacter": "Create new character",
-        "backToMainScreen": "Back to main screen",
-        "deleteCharacterConfirmation": "Are you sure you want to delete this character?",
-        "male": "Male",
-        "female": "Female",
-        "backToCharacterSelect": "Back to character select",
         "feature1Title": "Idle & inremental text MMORPG - hunt and do quests",
         "feature1Description": "Start with nothing and grow your character or many characters at the same time. Be whatever you want. Participating in what matter and let your character level up for you by hunting offline while still getting XP. Create party with your friends or control full party yourself. Do quests, be that of daily or story driver.",
         "feature2Title": "Level up your character and make unique build",
@@ -64,15 +57,26 @@
         "feature5Description": "Travel and explore the world, hunt stronger monster, get materials from them and sell them to Merchants. They will craft better gear for you instead. When dwelling the dungeons - don't get lost.",
         "feature6Title": "Become economical magnate.",
         "feature6Description": "Buy and sell stuff and lead the economy of the world by opening you shops in each city. You're in control of the prices. You're in control of the goods. If money making is your call, this is the road for you! Also, trade with players in real time.",
-        "sessionExpired": "Your session expired, please reload the app",
         "serverDown": "Our servers are currently down\nRetrying in",
+        "email": "Email",
+        "password": "Password"
+    },
+    "characterSelect": {
+        "male": "Male",
+        "female": "Female",
+        "tellTheName": "What is your name?",
+        "createNewCharacter": "Create new character",
+        "backToMainScreen": "Back to main screen",
+        "youAreGuestAccount": "You are on guest account, your data can be easily lost if you like the game consider registering account by clicking here",
+        "createAndConnectAccount": "Create and Connect account",
+        "selectCharacter": "Select character",
+        "deleteCharacterConfirmation": "Are you sure you want to delete this character?",
+        "backToCharacterSelect": "Back to character select",
         "maleSingleLetter": "m",
         "femaleSingleLetter": "f",
         "nameMissing": "Name missing",
         "nameIncorrect": "Name is incorrect, use normal letters and symbols",
-        "tellTheName": "What is your name?",
-        "email": "Email",
-        "password": "Password"
+        "sessionExpired": "Your session expired, please reload the app"
     },
     "attributes": {
         "baseLevel": "Base Lvl",

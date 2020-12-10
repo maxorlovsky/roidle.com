@@ -84,8 +84,8 @@
 
                 <div class="hunt-configuration__escape__switcher">
                     <VueToggles :value="escapeOn"
-                        checked-text="On"
-                        unchecked-text="Off"
+                        :checked-text="$t('global.on')"
+                        :unchecked-text="$t('global.off')"
                         checked-bg="#16b3fc"
                         @click="escapeOn = !escapeOn"
                     />
