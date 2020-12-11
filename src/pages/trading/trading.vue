@@ -218,7 +218,7 @@ const tradingPage = {
             let inv = this.temporaryInventory;
 
             if (this.search) {
-                inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search) > -1);
+                inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             }
 
             return inv || [];

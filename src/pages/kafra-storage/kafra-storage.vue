@@ -65,14 +65,14 @@
                     <div v-if="selectedMainTab === 'withdraw'"
                         :class="{'kafra-storage__item__move--disabled': buttonLoading}"
                         class="kafra-storage__item__move"
-                        @click="moveItem(index)"
+                        @click="moveItem(item)"
                     >
                         &lt;
                     </div>
                     <div v-else
                         :class="{'kafra-storage__item__move--disabled': (storageSpace >= storageSpaceMax && !itemInStorage(item.itemId) || buttonLoading) }"
                         class="kafra-storage__item__move"
-                        @click="moveItem(index)"
+                        @click="moveItem(item)"
                     >
                         &gt;
                     </div>
@@ -146,7 +146,7 @@ const kafraStoragePage = {
             let inv = this.itemsTransfer;
 
             if (this.search) {
-                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search) > -1);
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             }
 
             return inv || [];
@@ -239,9 +239,11 @@ const kafraStoragePage = {
 
             mo.socket.emit('getItemInfo', params);
         },
-        moveItem(index) {
+        moveItem(item) {
+            const itemMoved = this.itemsTransfer.find((findItem) => findItem.id === item.id);
+
             this.buttonLoading = true;
-            this.movingItem = this.itemsTransfer[index];
+            this.movingItem = itemMoved;
 
             // If user reached max storage amount, we don't allow him to move items inside
             if (this.selectedMainTab === 'deposit' && this.storageSpace >= this.storageSpaceMax && !this.itemInStorage(this.movingItem.itemId)) {
@@ -251,8 +253,7 @@ const kafraStoragePage = {
             }
 
             if (this.movingItem.amount > 1 && !this.amountToggle) {
-                this.toggledMovedItem = index;
-                this.displayChoseAmount(index);
+                this.displayChoseAmount();
             // Otherwise we move the whole batch
             } else if (this.selectedMainTab === 'withdraw') {
                 mo.socket.emit('withdrawItem', this.movingItem);

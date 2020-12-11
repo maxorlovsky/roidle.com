@@ -74,7 +74,7 @@
                         <div class="shop__item__name-price__price">{{ item.price }} Z</div>
                     </div>
                     <div class="shop__item__move"
-                        @click="moveItem(index, 'itemsLeft', 'itemsRight')"
+                        @click="moveItem(item, 'itemsLeft', 'itemsRight')"
                     >
                         &gt;
                     </div>
@@ -109,7 +109,7 @@
                         <div class="shop__item__name-price__price">{{ item.price }} Z</div>
                     </div>
                     <div class="shop__item__move"
-                        @click="moveItem(index, 'itemsRight', 'itemsLeft')"
+                        @click="moveItem(item, 'itemsRight', 'itemsLeft')"
                     >
                         &lt;
                     </div>
@@ -199,7 +199,7 @@ const shopPage = {
             let inv = this.itemsLeft;
 
             if (this.search) {
-                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search) > -1);
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             }
 
             return inv || [];
@@ -283,7 +283,10 @@ const shopPage = {
 
             mo.socket.emit('getItemInfo', params);
         },
-        moveItem(index, moveFrom, moveTo) {
+        moveItem(item, moveFrom, moveTo) {
+            const index = this[moveFrom].findIndex((findItem) => findItem.itemId === item.itemId &&
+                findItem.durability === item.durability &&
+                findItem.maxDurability === item.maxDurability);
             const movingItem = this[moveFrom][index];
 
             this.moveFrom = moveFrom;
