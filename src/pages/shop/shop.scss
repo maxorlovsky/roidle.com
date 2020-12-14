@@ -173,7 +173,7 @@
         justify-content: space-between;
 
         @media (min-width: $mobileSize) {
-            max-width: 100%;
+            max-width: 1400px;
             top: calc(77px + 25px);
         }
     }
