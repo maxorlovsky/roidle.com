@@ -10,6 +10,13 @@
                 </a>
             </nav>
             <div class="home__top-bar__right">
+                <a href="https://www.reddit.com/r/ROIdle"
+                    class="home__top-bar__reddit-link game-icon"
+                    target="_blank"
+                >
+                    <i class="icon icon-reddit" />
+                </a>
+
                 <a href="https://discord.gg/PjApFha"
                     class="home__top-bar__discord-link game-icon"
                     target="_blank"
