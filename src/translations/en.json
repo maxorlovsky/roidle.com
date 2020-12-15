@@ -455,5 +455,9 @@
         "oldPasswordNotMatch": "Old password is incorrect",
         "passwordIncorrectLength": "Password must be at least {length} characters long",
         "passwordDoesNotMatch": "New password and Confirm passwords does not match"
+    },
+    "ship": {
+        "actionTitle": "Ship Travel",
+        "overweight": "Character is overweight to a point where you can not even aboard the ship. Discard some items, put them in storage, use them or give it to someone else."
     }
 }

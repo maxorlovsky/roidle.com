@@ -104,6 +104,9 @@
                 <dungeon-actions v-if="dungeonAvailable"
                     :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
                 />
+                <ship-actions v-if="shipAvailable"
+                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
+                />
 
                 <div v-if="huntStatus || characterTraveling || characterResting"
                     class="game__action-in-progress"
@@ -154,6 +157,7 @@ import dungeonActions from '@components/dungeon-actions/dungeon-actions.vue';
 import puzzleChallenge from '@components/puzzle-challenge/puzzle-challenge.vue';
 import avatar from '@components/avatar/avatar.vue';
 import tradeWindowRequest from '@components/trade-window-request/trade-window-request.vue';
+import shipActions from '@components/ship-actions/ship-actions.vue';
 
 const gamePage = {
     components: {
@@ -167,6 +171,7 @@ const gamePage = {
         avatar,
         tradeWindowRequest,
         craftActions,
+        shipActions
     },
     data() {
         return {
@@ -185,7 +190,8 @@ const gamePage = {
             cancelingTravel: false,
             showChallenge: false,
             showTradeRequest: false,
-            craftAvailable: false
+            craftAvailable: false,
+            shipAvailable: false
         };
     },
     computed: {
@@ -329,6 +335,12 @@ const gamePage = {
                         this.dungeonAvailable = true;
                     } else {
                         this.dungeonAvailable = false;
+                    }
+
+                    if (this.currentLocation.shipTravel) {
+                        this.shipAvailable = true;
+                    } else {
+                        this.shipAvailable = false;
                     }
 
                     this.showActions = true;
