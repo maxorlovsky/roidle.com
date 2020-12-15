@@ -11,6 +11,12 @@
                 >
                     {{ $t('home.wiki') }}
                 </a>
+                <!--<a href="https://www.patreon.com/roidle"
+                    target="_blank"
+                    rel="noopener nofollow"
+                >
+                    Support the development (Patreon)
+                </a>-->
             </nav>
             <div class="home__top-bar__right">
                 <div class="home__top-bar__right__activity">
@@ -18,6 +24,13 @@
                     <div>{{ $t('home.hunts') }}: {{ hunts }}</div>
                     <div>{{ $t('home.playersRegistered') }}: {{ players }}</div>
                 </div>
+
+                <a href="https://www.reddit.com/r/ROIdle"
+                    class="home__top-bar__reddit-link game-icon"
+                    target="_blank"
+                >
+                    <i class="icon icon-reddit" />
+                </a>
 
                 <a href="https://discord.gg/PjApFha"
                     class="home__top-bar__discord-link game-icon"

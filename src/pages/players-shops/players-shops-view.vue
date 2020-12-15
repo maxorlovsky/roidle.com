@@ -125,7 +125,7 @@ const viewPlayersShopPage = {
             let inv = this.shopItems;
 
             if (this.search) {
-                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search) > -1);
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             }
 
             return inv || [];

@@ -41,6 +41,11 @@
                             />
                         </div>
                     </div>
+                    <div v-if="location.dungeonDown"
+                        class="map__piece__dungeon-icon game-icon"
+                    >
+                        <img :src="`${serverUrl}/dist/assets/images/dungeon-entrance.png`">
+                    </div>
                 </template>
             </div>
         </div>

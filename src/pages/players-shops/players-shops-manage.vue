@@ -301,7 +301,7 @@ const managePlayersShopPage = {
             let inv = this.temporaryInventory;
 
             if (this.search) {
-                inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search) > -1);
+                inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             }
 
             return inv || [];
@@ -310,7 +310,7 @@ const managePlayersShopPage = {
             let inv = this.shopItems;
 
             if (this.searchItems) {
-                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.searchItems) > -1);
+                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.searchItems.toLowerCase()) > -1);
             }
 
             return inv || [];
