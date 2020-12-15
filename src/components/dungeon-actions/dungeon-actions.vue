@@ -90,6 +90,11 @@ export default {
                     this.switchDestination('up');
                 }
             }
+        },
+        inventoryWeight() {
+            if (Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) >= 90) {
+                this.userOverweight = true;
+            }
         }
     },
     mounted() {
@@ -104,9 +109,9 @@ export default {
                 this.closeModal();
             }
         });
-        if (Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) >= 90) {
-            this.userOverweight = true;
-        }
+    },
+    beforeDestroy() {
+        mo.socket.off('travelToDungeonComplete');
     },
     methods: {
         closeModal() {
