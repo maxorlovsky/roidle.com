@@ -183,6 +183,10 @@ export default {
                 case 47:
                     musicTracks = ['15'];
                     break;
+                case 48:
+                case 49:
+                    musicTracks = ['14'];
+                    break;
                 case 2000:
                 case 2001:
                 case 2002:

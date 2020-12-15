@@ -21,7 +21,7 @@
     }
 
     &.payon {
-        background-image: url("#{$assets}/images/payon.jpg");
+        background-image: url("#{$assets}/images/locations/payon.jpg");
     }
 
     &.alberta {
@@ -50,6 +50,10 @@
 
     &.ant.hell {
         background-image: url("#{$assets}/images/locations/ant-hell.jpg");
+    }
+
+    &.archer.village {
+        background-image: url("#{$assets}/images/locations/archer-village.jpg");
     }
 
     &__party {
