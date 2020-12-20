@@ -79,7 +79,7 @@
                     <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                     <div class="equipment-modal__item__amount">
                         {{ item.name }}
-                        <div>{{ itemClassNameCorrection(item.class, item.twoHanded) }}{{ itemDisplayParams(item.params) }}</div>
+                        <div>{{ itemClassNameCorrection(item.class, item.twoHanded) }} {{ itemDisplayParams(item.params) }}</div>
                     </div>
                 </div>
             </template>
@@ -225,13 +225,15 @@ const characterPage = {
 
             if (params) {
                 for (const key of Object.keys(params)) {
-                    paramsString += `${this.attributeNameCorrection(key)} ${params[key]}`;
+                    paramsString += `${this.attributeNameCorrection(key)} ${params[key]}, `;
                 }
             }
 
             // Check if params are empty
             if (paramsString === ', ') {
                 paramsString = '';
+            } else {
+                paramsString = paramsString.substring(0, paramsString.length - 2);
             }
 
             return paramsString;
