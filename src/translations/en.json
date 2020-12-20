@@ -175,6 +175,8 @@
         "huntConfigEscapeSituationExplanation": "allow you to set up scenario when to run away by using Butterfly Wing away from the battle. It will use Butterfly Wing per each escape. If you will run out of them it will not work.",
         "huntConfigHealingItems": "Healing items",
         "huntConfigHealingItemsExplanation": "is what kind of healing items your character will use to restore HP or MP. If there will no such items in the bag, character will not heal himself.",
+        "huntConfigAmmo": "Arrows",
+        "huntConfigAmmoExplanation": "This is solely for Archers. You need to specify which arrows are going to be used as priority and which are secondary after the first are used up. If you're archer out of pre-configured arrows it will use basic melee attack",
         "huntConfigActiveSkills": "Active skills",
         "huntConfigActiveSkillsExplanation": "are a rotation of skills per every 5 rounds. Skill placed in the first slot will trigger on 1st round, 6th, 11th, 16th etc.",
         "startingPosition": "Starting position",
@@ -185,7 +187,8 @@
         "addSkill": "Add skill",
         "useWhileMpHigher": "Use while MP is higher than",
         "useWhenHpLower": "Use when HP is lower than",
-        "noSkillsFound": "No active skills found"
+        "noSkillsFound": "No active skills found",
+        "noAmmo": "No arrows found"
     },
     "rest": {
         "actionTitle": "Rest at Inn",
@@ -349,7 +352,8 @@
         "noItemsToEquip": "No items to equip",
         "skills": "Skills",
         "errorRetrievingEqItems": "Error retrieving equipable items",
-        "twoHandedSword": "Two-handed Sword"
+        "twoHandedSword": "Two-handed Sword",
+        "ammo": "Arrows"
     },
     "equipment": {
         "head": "head",

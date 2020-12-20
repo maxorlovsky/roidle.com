@@ -24,6 +24,14 @@
             </div>
 
             <div class="equipment__avatar">
+                <router-link v-if="characterJobId === 3"
+                    to="/hunt-configuration"
+                    class="equipment__avatar__ammo"
+                >
+                    <img :src="`${serverUrl}/dist/assets/images/items/1750.gif`">
+                    <p>{{ $t('character.ammo') }}</p>
+                </router-link>
+
                 <avatar :head-style="characterHeadStyle"
                     :head-color="characterHeadColor"
                     :gender="characterGender"
@@ -189,6 +197,7 @@ const characterPage = {
             'characterGender',
             'characterEquipment',
             'characterJob',
+            'characterJobId',
             'inventory',
             'serverUrl'
         ])
