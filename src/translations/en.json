@@ -235,7 +235,12 @@
         "toggleItemAmount": "Toggle Item Amount",
         "confirm": "Confirm",
         "deposit": "Deposit",
-        "withdraw": "Withdraw"
+        "withdraw": "Withdraw",
+        "useBank": "Use Bank Services",
+        "noTransactionsFound": "No transactions found",
+        "moneyInBank": "Zeny in bank",
+        "depositTransaction": "deposit + {amount}",
+        "withdrawTransaction": "withdraw - {amount}"
     },
     "puzzle": {
         "actionTitle": "Challenge / Puzzle",
