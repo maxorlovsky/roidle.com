@@ -25,6 +25,7 @@
                     <avatar v-if="equipment && headStyle"
                         :head-style="headStyle"
                         :head-color="headColor"
+                        :dye-color="dyeColor"
                         :gender="gender"
                         :job="job"
                         :head-gears="[
@@ -94,6 +95,8 @@ const profilePage = {
             loading: true,
             name: '',
             headStyle: 0,
+            headColor: 0,
+            dyeColor: 0,
             gender: '',
             job: '',
             partyName: '--',
@@ -180,6 +183,7 @@ const profilePage = {
                 this.partyName = response.partyName;
                 this.headStyle = response.headStyle;
                 this.headColor = response.headColor;
+                this.dyeColor = response.dyeColor;
                 this.gender = response.gender;
                 this.job = response.job;
                 this.equipment = response.equipment;

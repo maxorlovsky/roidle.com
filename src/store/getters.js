@@ -18,6 +18,7 @@ export default {
     characterJobExpPercentage: (state) => state.characterJobExpPercentage,
     characterHeadStyle: (state) => state.characterHeadStyle,
     characterHeadColor: (state) => state.characterHeadColor,
+    characterDyeColor: (state) => state.characterDyeColor,
     characterGender: (state) => state.characterGender,
     characterSkills: (state) => state.characterSkills,
     characterSkillPoints: (state) => state.characterSkillPoints,

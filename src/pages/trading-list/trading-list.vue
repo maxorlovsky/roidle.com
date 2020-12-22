@@ -19,6 +19,7 @@
                 >
                     <avatar :head-style="item.headStyle"
                         :head-color="item.headColor"
+                        :dye-color="item.dyeColor"
                         :head-gears="item.headGears"
                         :gender="item.gender"
                         :job="item.job"
@@ -47,9 +48,6 @@
 </template>
 
 <script>
-// 3rd party libs
-import { mapGetters } from 'vuex';
-
 // Components
 import avatar from '@components/avatar/avatar.vue';
 import loading from '@components/loading/loading.vue';
@@ -65,14 +63,6 @@ const tradingListPage = {
             buttonLoading: false,
             usersList: [],
         };
-    },
-    computed: {
-        ...mapGetters([
-            'characterHeadStyle',
-            'characterHeadColor',
-            'characterGender',
-            'characterSkills'
-        ])
     },
     mounted() {
         mo.socket.on('getListForTradingComplete', (response) => {

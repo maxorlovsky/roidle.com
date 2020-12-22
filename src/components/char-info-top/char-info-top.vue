@@ -3,6 +3,7 @@
         <div class="char-info-wrapper char-info-wrapper--mobile">
             <avatar :head-style="characterHeadStyle"
                 :head-color="characterHeadColor"
+                :dye-color="characterDyeColor"
                 :gender="characterGender"
                 :job="characterJob"
                 :framed="true"
@@ -58,6 +59,7 @@
         <div class="char-info-wrapper char-info-wrapper--desktop">
             <avatar :head-style="characterHeadStyle"
                 :head-color="characterHeadColor"
+                :dye-color="characterDyeColor"
                 :gender="characterGender"
                 :job="characterJob"
                 :framed="true"
@@ -145,6 +147,7 @@ export default {
             'characterJob',
             'characterHeadStyle',
             'characterHeadColor',
+            'characterDyeColor',
             'characterGender',
             'characterBaseLevel',
             'characterJobLevel',

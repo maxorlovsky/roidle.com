@@ -34,6 +34,7 @@
 
                 <avatar :head-style="characterHeadStyle"
                     :head-color="characterHeadColor"
+                    :dye-color="characterDyeColor"
                     :gender="characterGender"
                     :job="characterJob"
                     :head-gears="[
@@ -194,6 +195,7 @@ const characterPage = {
         ...mapGetters([
             'characterHeadStyle',
             'characterHeadColor',
+            'characterDyeColor',
             'characterGender',
             'characterEquipment',
             'characterJob',

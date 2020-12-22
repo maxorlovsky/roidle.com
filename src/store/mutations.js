@@ -244,6 +244,9 @@ export default {
         if (values.headColor) {
             state.characterHeadColor = values.headColor;
         }
+        if (values.dyeColor) {
+            state.characterDyeColor = values.dyeColor;
+        }
 
         // Char params
         if (values.baseLevel) {
@@ -527,6 +530,7 @@ export default {
         state.characterGender = values.character.gender;
         state.characterHeadStyle = values.character.headStyle;
         state.characterHeadColor = values.character.headColor;
+        state.characterDyeColor = values.character.dyeColor;
         state.characterBaseLevel = values.character.baseLevel;
         state.characterJobLevel = values.character.jobLevel;
         state.characterBaseExp = values.character.baseExp;
@@ -677,6 +681,7 @@ export default {
         state.characterGender = 'm';
         state.characterHeadStyle = 0;
         state.characterHeadColor = 0;
+        state.characterDyeColor = 0;
         state.characterBaseLevel = 0;
         state.characterJobLevel = 0;
         state.characterBaseExp = 0;
