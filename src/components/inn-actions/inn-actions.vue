@@ -25,7 +25,7 @@
                 <button :class="{'game-button--selected': typeChosen === 'deluxe'}"
                     class="btn game-button"
                     @click="typeChosen = 'deluxe'"
-                >{{ $t('rest.cheapRoom') }} - 1 {{ $t('rest.min') }} ({{ deluxeInnPrice }} Z)</button>
+                >{{ $t('rest.deluxeRoom') }} - 1 {{ $t('rest.min') }} ({{ deluxeInnPrice }} Z)</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
