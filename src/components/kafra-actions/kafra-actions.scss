@@ -6,4 +6,43 @@
             margin-bottom: 1rem;
         }
     }
+
+    &__bank {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        &__button {
+            margin-right: 1rem;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__bank-amount {
+        margin: 0.5rem 0;
+        width: 100%;
+    }
+
+    &__bank-transactions {
+        max-height: 200px;
+        overflow-y: auto;
+
+        &__empty {
+            font-style: italic;
+            text-align: center;
+        }
+    }
+
+    &__transaction {
+        border-bottom: 1px solid #999;
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.5rem;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
 }

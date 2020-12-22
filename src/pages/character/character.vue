@@ -24,8 +24,17 @@
             </div>
 
             <div class="equipment__avatar">
+                <router-link v-if="characterJobId === 3"
+                    to="/hunt-configuration"
+                    class="equipment__avatar__ammo"
+                >
+                    <img :src="`${serverUrl}/dist/assets/images/items/1750.gif`">
+                    <p>{{ $t('character.ammo') }}</p>
+                </router-link>
+
                 <avatar :head-style="characterHeadStyle"
                     :head-color="characterHeadColor"
+                    :dye-color="characterDyeColor"
                     :gender="characterGender"
                     :job="characterJob"
                     :head-gears="[
@@ -79,7 +88,7 @@
                     <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                     <div class="equipment-modal__item__amount">
                         {{ item.name }}
-                        <div>{{ itemClassNameCorrection(item.class, item.twoHanded) }}{{ itemDisplayParams(item.params) }}</div>
+                        <div>{{ itemClassNameCorrection(item.class, item.twoHanded) }} {{ itemDisplayParams(item.params) }}</div>
                     </div>
                 </div>
             </template>
@@ -186,9 +195,11 @@ const characterPage = {
         ...mapGetters([
             'characterHeadStyle',
             'characterHeadColor',
+            'characterDyeColor',
             'characterGender',
             'characterEquipment',
             'characterJob',
+            'characterJobId',
             'inventory',
             'serverUrl'
         ])
@@ -225,13 +236,15 @@ const characterPage = {
 
             if (params) {
                 for (const key of Object.keys(params)) {
-                    paramsString += `${this.attributeNameCorrection(key)} ${params[key]}`;
+                    paramsString += `${this.attributeNameCorrection(key)} ${params[key]}, `;
                 }
             }
 
             // Check if params are empty
             if (paramsString === ', ') {
                 paramsString = '';
+            } else {
+                paramsString = paramsString.substring(0, paramsString.length - 2);
             }
 
             return paramsString;

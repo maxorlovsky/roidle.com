@@ -9,6 +9,7 @@
     justify-content: center;
     background-image: url("#{$assets}/images/character.jpg");
     background-position: 50% 30%;
+    z-index: 2;
 
     @media (min-width: $mobileSize) {
         background-size: cover;

@@ -28,6 +28,7 @@
                     <avatar v-if="equipment && headStyle"
                         :head-style="headStyle"
                         :head-color="headColor"
+                        :dye-color="dyeColor"
                         :gender="gender"
                         :job="job"
                         :head-gears="[
@@ -105,6 +106,8 @@ const profilePublicPage = {
             characterNotFound: false,
             name: '',
             headStyle: 0,
+            headColor: 0,
+            dyeColor: 0,
             gender: '',
             job: '',
             partyName: '--',
@@ -193,6 +196,7 @@ const profilePublicPage = {
             this.partyName = response.data.partyName;
             this.headStyle = response.data.headStyle;
             this.headColor = response.data.headColor;
+            this.dyeColor = response.data.dyeColor;
             this.gender = response.data.gender;
             this.job = response.data.job;
             this.equipment = response.data.equipment;

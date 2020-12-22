@@ -20,6 +20,7 @@
             border-left: 1px solid #808080;
             border-right: 1px solid #808080;
             padding-top: 2rem;
+            position: relative;
 
             .avatar {
                 left: calc(50% - 60px);
@@ -35,6 +36,13 @@
                 &__headgear {
                     top: calc(50% - 67px);
                 }
+            }
+
+            &__ammo {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                cursor: pointer;
             }
         }
 

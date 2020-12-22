@@ -80,6 +80,7 @@
                 >
                     <avatar :head-style="item.headStyle"
                         :head-color="item.headColor"
+                        :dye-color="item.dyeColor"
                         :head-gears="item.headgearItemIds"
                         :gender="item.gender"
                         :job="item.job"

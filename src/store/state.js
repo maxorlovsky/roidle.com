@@ -8,6 +8,7 @@ export default {
     characterGender: 'm',
     characterHeadStyle: 0,
     characterHeadColor: 0,
+    characterDyeColor: 0,
     characterBaseLevel: 0,
     characterJobLevel: 0,
     characterBaseExp: 0,

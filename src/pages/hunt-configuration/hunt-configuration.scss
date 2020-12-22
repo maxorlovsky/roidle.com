@@ -8,6 +8,7 @@
     &__position,
     &__healing,
     &__escape,
+    &__ammo,
     &__skills {
         display: flex;
         flex-wrap: wrap;
@@ -182,6 +183,10 @@
                     right: 0;
                     font-size: 0.8rem;
                     color: #fff;
+
+                    &--not-enough {
+                        color: #c00;
+                    }
                 }
             }
 
@@ -242,6 +247,41 @@
         &__buttons {
             padding: 1rem;
             margin-top: 0;
+        }
+    }
+
+    &__ammo {
+        padding-bottom: 1rem;
+
+        .ammo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 100%;
+
+            &__item {
+                width: 60px;
+                height: 60px;
+                position: relative;
+                border: 3px solid #808080;
+                border-radius: 8px;
+                background-color: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                img {
+                    width: 60%;
+                }
+
+                &__amount {
+                    position: absolute;
+                    bottom: -5px;
+                    right: 0;
+                    font-size: 0.8rem;
+                    color: #fff;
+                }
+            }
         }
     }
 

@@ -1,0 +1,11 @@
+0 - standard
+1 - scarlet (red) // 42
+2 - white // 16
+3 - black // 109
+4 - lemon (yellow) // 22
+5 - blue (cobalt) // 43
+6 - darkgreen (green) / 44
+7 - orange // 200
+8 - violet // 23
+
+https://ro-character-simulator.ratemyserver.net/charsim.php?gender=0&job=1&hair=-1&viewid=0&location=0&direction=0&action=0&hdye=0&dye=2&framenum=0&bg=0&cart=&mount=0&shield=0&weapon=0&rand=4783473

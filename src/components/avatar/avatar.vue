@@ -3,7 +3,7 @@
         class="avatar"
     >
         <div class="avatar__body">
-            <img :src="`${serverUrl}/dist/assets/images/bodies/${jobLowerCase}_${gender}_0.png`">
+            <img :src="`${serverUrl}/dist/assets/images/bodies/${jobLowerCase}_${gender}_${dyeColor}.png`">
         </div>
         <div :class="[`avatar__head__${headStyle}`, gender]"
             class="avatar__head"
@@ -35,6 +35,10 @@ export default {
         headColor: {
             type: Number,
             required: true
+        },
+        dyeColor: {
+            type: Number,
+            default: 0
         },
         gender: {
             type: String,

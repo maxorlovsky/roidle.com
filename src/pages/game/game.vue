@@ -138,6 +138,11 @@
 
             <puzzle-challenge v-if="showChallenge" />
             <trade-window-request v-if="showTradeRequest" />
+
+            <ul class="snow">
+                <li />
+                <li />
+            </ul>
         </template>
     </section>
 </template>

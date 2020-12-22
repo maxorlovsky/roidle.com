@@ -7,6 +7,7 @@
                 {{ $t('hunt.huntConfigExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigStartingPosition') }}</b> {{ $t('hunt.huntConfigStartingPositionExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigEscapeSituation') }}</b> {{ $t('hunt.huntConfigEscapeSituationExplanation') }}<br>
+                <b>{{ $t('hunt.huntConfigAmmo') }}</b> {{ $t('hunt.huntConfigAmmoExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigHealingItems') }}</b> {{ $t('hunt.huntConfigHealingItemsExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigActiveSkills') }}</b> {{ $t('hunt.huntConfigActiveSkillsExplanation') }}
             </div>
@@ -93,6 +94,28 @@
             </div>
         </div>
 
+        <div v-if="characterJobId === 3"
+            class="hunt-configuration__ammo"
+        >
+            <p>{{ $t('hunt.huntConfigAmmo') }}</p>
+            <div class="ammo">
+                <div v-for="(item, index) in huntAmmo"
+                    :key="index"
+                    class="ammo__item"
+                    @click="chooseHuntAmmo(index)"
+                >
+                    <template v-if="item">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
+                        <span :class="{'ammo__item__amount--not-enough': !calculateAvailableAmount(item.itemId)}"
+                            class="ammo__item__amount"
+                        >
+                            {{ calculateAvailableAmount(item.itemId) }}
+                        </span>
+                    </template>
+                </div>
+            </div>
+        </div>
+
         <div class="hunt-configuration__healing">
             <p>{{ $t('hunt.huntConfigHealingItems') }}</p>
             <div class="healing-items">
@@ -103,7 +126,11 @@
                 >
                     <template v-if="item">
                         <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
-                        <!--<span class="healing-items__item__amount">{{ item.amount }}</span>-->
+                        <span :class="{'healing-items__item__amount--not-enough': !calculateAvailableAmount(item.itemId)}"
+                            class="healing-items__item__amount"
+                        >
+                            {{ calculateAvailableAmount(item.itemId) }}
+                        </span>
                     </template>
                 </div>
             </div>
@@ -184,6 +211,49 @@
             <div class="modal__buttons healing-modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showHealingModal = false"
+                >{{ $t('global.cancel') }}</button>
+            </div>
+        </div>
+
+        <div v-if="showAmmoModal"
+            class="healing-modal modal"
+        >
+            <div v-if="huntAmmo[ammoSelectedSlot]"
+                class="healing-modal__item"
+                @click="removeAmmo(ammoSelectedSlot)"
+            >
+                <div class="healing-modal__item__image">
+                    <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
+                </div>
+                <div>
+                    <div class="healing-modal__item__name">{{ $t('hunt.removeItem') }}</div>
+                </div>
+            </div>
+
+            <template v-if="ammoList && ammoList.length">
+                <div v-for="(item, index) in ammoList"
+                    :key="index"
+                    class="healing-modal__item"
+                    @click="addAmmo(item)"
+                >
+                    <div class="healing-modal__item__image">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
+                    </div>
+                    <div>
+                        <div class="healing-modal__item__name">{{ item.name }} ({{ item.amount }})</div>
+                        <div class="healing-modal__item__amount">{{ item.description }}</div>
+                    </div>
+                </div>
+            </template>
+            <div v-else
+                class="healing-modal__item"
+            >
+                {{ $t('hunt.noAmmo') }}
+            </div>
+
+            <div class="modal__buttons healing-modal__buttons">
+                <button class="btn btn-secondary"
+                    @click="showAmmoModal = false"
                 >{{ $t('global.cancel') }}</button>
             </div>
         </div>
@@ -281,7 +351,11 @@ const huntConfigurationPage = {
             activeSkillsList: [],
             skillSelectedSlot: null,
             escapeWhenHp: '10',
-            escapeOn: false
+            escapeOn: false,
+            showAmmoModal: false,
+            huntAmmo: [null, null],
+            ammoList: [],
+            ammoSelectedSlot: null
         };
     },
     computed: {
@@ -290,6 +364,7 @@ const huntConfigurationPage = {
             'characterHeadColor',
             'characterGender',
             'characterSkills',
+            'characterJobId',
             'inventory',
             'serverUrl'
         ]),
@@ -310,6 +385,10 @@ const huntConfigurationPage = {
                 this.huntHealingItems = response.itemToUseInHunt;
             }
 
+            if (response.ammoToUseInHunt) {
+                this.huntAmmo = response.ammoToUseInHunt;
+            }
+
             if (response.skillsToUseInHunt) {
                 this.activeSkills = response.skillsToUseInHunt;
             }
@@ -327,6 +406,10 @@ const huntConfigurationPage = {
             }
 
             this.loading = false;
+        });
+
+        mo.socket.on('getAmmoItemsComplete', (response) => {
+            this.ammoList = response.items;
         });
 
         mo.socket.on('getHealingItemsComplete', (response) => {
@@ -355,14 +438,27 @@ const huntConfigurationPage = {
         // Trigger to fetch healing items
         mo.socket.emit('getHealingItems');
 
+        // Trigger to fetch healing items
+        mo.socket.emit('getAmmoItems');
+
         // Trigger to fetch already existing user config
         mo.socket.emit('getHuntConfiguration');
     },
     beforeDestroy() {
+        mo.socket.off('getAmmoItemsComplete');
         mo.socket.off('getHealingItemsComplete');
         mo.socket.off('getSkillsDataComplete');
     },
     methods: {
+        calculateAvailableAmount(itemId) {
+            const findItem = this.inventory.find((item) => item.itemId === itemId);
+
+            if (!findItem) {
+                return 0;
+            }
+
+            return findItem.amount;
+        },
         showItemInfo(itemId) {
             mo.socket.emit('getItemInfo', {
                 itemId: itemId
@@ -376,6 +472,17 @@ const huntConfigurationPage = {
                     itemToUseInHunt.push({
                         itemId: this.huntHealingItems[i].itemId,
                         amount: this.huntHealingItems[i].amount
+                    });
+                }
+            }
+
+            const ammoToUseInHunt = [];
+
+            for (let i = 0; i <= 2; ++i) {
+                if (this.huntAmmo[i]) {
+                    ammoToUseInHunt.push({
+                        itemId: this.huntAmmo[i].itemId,
+                        amount: this.huntAmmo[i].amount
                     });
                 }
             }
@@ -399,6 +506,7 @@ const huntConfigurationPage = {
             mo.socket.emit('updateHuntConfiguration', {
                 position: this.position,
                 itemToUseInHunt: itemToUseInHunt,
+                ammoToUseInHunt: ammoToUseInHunt,
                 skillsToUseInHunt: skillsToUseInHunt,
                 healingHp: parseInt(this.healingWhen),
                 escapeOn: this.escapeOn,
@@ -429,6 +537,31 @@ const huntConfigurationPage = {
             // Cleaning up the slot
             this.huntHealingItems[slot] = null;
             this.showHealingModal = false;
+        },
+        chooseHuntAmmo(index) {
+            this.showAmmoModal = true;
+            this.ammoSelectedSlot = index;
+        },
+        addAmmo(item) {
+            let i = 0;
+
+            // Check if same item is set in other slots and remove it
+            for (const ammo of this.huntAmmo) {
+                if (ammo && ammo.itemId === item.itemId) {
+                    this.huntAmmo[i] = null;
+                }
+
+                i++;
+            }
+
+            // Add item
+            this.huntAmmo[this.ammoSelectedSlot] = item;
+            this.showAmmoModal = false;
+        },
+        removeAmmo(slot) {
+            // Cleaning up the slot
+            this.huntAmmo[slot] = null;
+            this.showAmmoModal = false;
         },
         chooseHuntActiveSkills(index) {
             this.showActiveSkillsModal = true;
