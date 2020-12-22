@@ -66,6 +66,9 @@ export default {
     pushToken: (state, value) => {
         state.pushNotification = value;
     },
+    updateCharacterDyeColor: (state, value) => {
+        state.characterDyeColor = value;
+    },
     updateCharacterStyle: (state, value) => {
         state.characterHeadStyle = value.headStyle;
         state.characterHeadColor = value.headColor;

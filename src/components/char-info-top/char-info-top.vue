@@ -388,11 +388,16 @@ export default {
             // Saving current location in a state, so we can access it outside of game.vue
             this.$store.commit('currentLocation', location);
         });
+
+        mo.socket.on('updateDyeColor', (colorId) => {
+            this.$store.commit('updateCharacterDyeColor', colorId);
+        });
     },
     beforeDestroy() {
         this.resetTimer();
 
         if (mo.socket) {
+            mo.socket.off('updateDyeColor');
             mo.socket.off('getRestComplete');
             mo.socket.off('getMapTravelChallengeComplete');
             mo.socket.off('travelingComplete');

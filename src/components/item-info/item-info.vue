@@ -46,7 +46,7 @@
                     @click="discardItem()"
                 >{{ $t('itemInfo.discard') }}</button>
 
-                <button v-if="type === 'healing' || (type === 'consumable' && itemId === 602)"
+                <button v-if="type === 'healing' || (type === 'consumable' && itemId === 602) || (type === 'consumable' && itemId === 20000)"
                     :disabled="buttonLoading"
                     class="btn game-button"
                     @click="useItem(itemId)"
