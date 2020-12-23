@@ -171,7 +171,6 @@
         flex-wrap: wrap;
         position: relative;
         max-width: calc(100% - 95px);
-        z-index: 2;
     }
 
     &__action {
@@ -253,16 +252,6 @@
         background-image: url("#{$assets}/images/snow.png");
         background-repeat: repeat-x;
         background-position: bottom;
-
-        @media (max-width: 768px) {
-            height: 71px;
-            background-position: right bottom;
-        }
-
-        @media (max-width: 767px) {
-            background-position: inherit;
-            height: 60px;
-        }
     }
 
     &:last-of-type {
@@ -278,14 +267,6 @@
         list-style: none;
         z-index: 1;
         perspective: 800px;
-
-        @media (max-width: 768px) {
-            height: 70px;
-        }
-
-        @media (max-width: 767px) {
-            height: 60px;
-        }
 
         li {
             display: block;
