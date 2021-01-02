@@ -22,8 +22,28 @@
             display: block;
         }
 
-        &--discord {
+        &__socials {
+            display: flex;
             justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+
+            .game-icon:hover {
+                background-color: rgba(255, 255, 255, 0.8);
+            }
+
+            &__discord {
+                justify-content: center;
+                margin-right: 1rem;
+            }
+
+            &__reddit a {
+                color: #ff3f19;
+
+                &:hover {
+                    color: #333;
+                }
+            }
         }
 
         &__version {

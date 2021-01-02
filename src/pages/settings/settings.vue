@@ -67,13 +67,26 @@
                 </div>
             </div>
 
-            <div class="settings__setting settings__setting--discord">
-                <a href="https://discord.gg/PjApFha"
-                    class="game-icon"
-                    target="_blank"
-                >
-                    <img :src="`${serverUrl}/dist/assets/images/discord.png`">
-                </a>
+            <div class="settings__setting__socials">
+                <div class="settings__setting__socials__discord">
+                    <a href="https://discord.gg/PjApFha"
+                        class="game-icon"
+                        target="_blank"
+                        rel="noopener nofollow"
+                    >
+                        <img :src="`${serverUrl}/dist/assets/images/discord.png`">
+                    </a>
+                </div>
+
+                <div class="settings__setting__socials__reddit">
+                    <a href="https://www.reddit.com/r/ROIdle"
+                        class="game-icon"
+                        target="_blank"
+                        rel="noopener nofollow"
+                    >
+                        <i class="icon icon-reddit" />
+                    </a>
+                </div>
             </div>
 
             <div class="settings__setting settings__setting--centered settings__setting__version">
