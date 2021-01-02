@@ -27,7 +27,12 @@
         "empty": "Empty",
         "search": "Search",
         "off": "Off",
-        "on": "On"
+        "on": "On",
+        "show": "Show",
+        "all": "All",
+        "consumables": "Consumables",
+        "equipment": "Equipment",
+        "etc": "etc."
     },
     "app": {
         "loginClosed": "Login servers went down or closed, probably because of server restart, wait 5 minutes",

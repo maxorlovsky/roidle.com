@@ -30,16 +30,28 @@
         </div>
 
         <div class="kafra-storage__wrapper">
-            <div class="search-input">
-                <input v-model="search"
-                    :placeholder="$t('global.search')"
-                    maxlength="50"
-                    type="text"
-                >
-                <div v-show="search"
-                    class="search-input__close"
-                    @click="search = ''"
-                >X</div>
+            <div class="kafra-storage__top">
+                <div class="search-input">
+                    <input v-model="search"
+                        :placeholder="$t('global.search')"
+                        maxlength="50"
+                        type="text"
+                    >
+                    <div v-show="search"
+                        class="search-input__close"
+                        @click="search = ''"
+                    >X</div>
+                </div>
+
+                <div class="kafra-storage__top__sorting">
+                    <div class="kafra-storage__top__sorting__label">{{ $t('global.show') }}:</div>
+                    <select v-model="sortBy">
+                        <option value="all">{{ $t('global.all') }}</option>
+                        <option value="consumables">{{ $t('global.consumables') }}</option>
+                        <option value="equipment">{{ $t('global.equipment') }}</option>
+                        <option value="etc">{{ $t('global.etc') }}</option>
+                    </select>
+                </div>
             </div>
 
             <template v-if="itemsTransfer.length">
@@ -115,6 +127,7 @@ import { mapGetters } from 'vuex';
 
 // Utilities
 import { functions } from '@utils/functions.js';
+import { sort as inventorySort } from '@utils/inventory.js';
 
 const kafraStoragePage = {
     data() {
@@ -133,7 +146,8 @@ const kafraStoragePage = {
             storageSpace: 0,
             storageSpaceMax: 0,
             movingItem: null,
-            search: ''
+            search: '',
+            sortBy: 'all',
         };
     },
     computed: {
@@ -148,6 +162,8 @@ const kafraStoragePage = {
             if (this.search) {
                 inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             }
+
+            inv = inventorySort(inv, this.sortBy);
 
             return inv || [];
         }
