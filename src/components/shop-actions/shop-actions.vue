@@ -55,8 +55,18 @@ export default {
     computed: {
         ...mapGetters([
             'characterCrafting',
-            'serverUrl'
+            'serverUrl',
+            'gameModal'
         ])
+    },
+    watch: {
+        gameModal() {
+            if (this.gameModal === 'shop') {
+                return false;
+            }
+
+            this.closeModal();
+        }
     },
     methods: {
         openModal() {
@@ -65,6 +75,8 @@ export default {
             }
 
             this.showModal = true;
+
+            this.$store.commit('gameModal', 'shop');
         },
         closeModal() {
             this.typeChosen = '';

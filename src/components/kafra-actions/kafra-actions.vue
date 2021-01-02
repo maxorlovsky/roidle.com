@@ -66,7 +66,7 @@
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
-                    @click="showResetStatsConfirmation = false; showKafraModal = true"
+                    @click="showResetStatsConfirmation = false; openModal()"
                 >{{ $t('global.cancel') }}</button>
 
                 <button :disabled="characterZeny < resetPrice || characterBaseLevel > 80 || buttonLoading"
@@ -90,7 +90,7 @@
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
-                    @click="showResetSkillsConfirmation = false; showKafraModal = true"
+                    @click="showResetSkillsConfirmation = false; openModal()"
                 >{{ $t('global.cancel') }}</button>
 
                 <button :disabled="characterZeny < resetPrice || characterBaseLevel > 80 || buttonLoading"
@@ -150,7 +150,7 @@
 
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
-                    @click="showBankModal = false; showKafraModal = true"
+                    @click="showBankModal = false; openModal()"
                 >{{ $t('global.close') }}</button>
             </div>
         </div>
@@ -184,7 +184,8 @@ export default {
             'characterZeny',
             'characterSkills',
             'characterBaseLevel',
-            'serverUrl'
+            'serverUrl',
+            'gameModal'
         ]),
 
         barberPrice() {
@@ -198,6 +199,14 @@ export default {
         }
     },
     watch: {
+        gameModal() {
+            if (this.gameModal === 'kafra') {
+                return false;
+            }
+
+            this.showKafraModal = false;
+            this.showBankModal = false;
+        },
         bankTransferFunds() {
             let amount = Number(this.bankTransferFunds);
 
@@ -272,6 +281,7 @@ export default {
         },
         openModal() {
             this.showKafraModal = true;
+            this.$store.commit('gameModal', 'kafra');
         },
         saveLocation() {
             mo.socket.emit('saveLocation');

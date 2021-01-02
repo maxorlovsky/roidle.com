@@ -1,6 +1,6 @@
 <template>
     <div class="kafra-actions game__action">
-        <div @click="showModal = true">
+        <div @click="openModal()">
             <img class="game__action__image"
                 :src="`${serverUrl}/dist/assets/images/craft.png`"
             >
@@ -47,10 +47,18 @@ export default {
         ...mapGetters([
             'characterSkills',
             'characterCrafting',
-            'serverUrl'
+            'serverUrl',
+            'gameModal'
         ])
     },
     watch: {
+        gameModal() {
+            if (this.gameModal === 'craft') {
+                return false;
+            }
+
+            this.showModal = false;
+        },
         characterSkills: {
             immediate: true,
             handler() {
@@ -63,6 +71,11 @@ export default {
         }
     },
     methods: {
+        openModal() {
+            this.showModal = true;
+
+            this.$store.commit('gameModal', 'craft');
+        },
         closeModal() {
             this.typeChosen = '';
             this.showModal = false;

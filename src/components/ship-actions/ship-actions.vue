@@ -1,6 +1,6 @@
 <template>
     <div class="ship-actions game__action">
-        <div @click="showModal = true">
+        <div @click="openModal()">
             <img class="game__action__image"
                 :src="`${serverUrl}/dist/assets/images/ship.png`"
             >
@@ -62,10 +62,18 @@ export default {
         ...mapGetters([
             'characterAttributes',
             'inventoryWeight',
-            'serverUrl'
+            'serverUrl',
+            'gameModal'
         ])
     },
     watch: {
+        gameModal() {
+            if (this.gameModal === 'ship') {
+                return false;
+            }
+
+            this.closeModal();
+        },
         inventoryWeight() {
             if (Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) >= 100) {
                 this.userOverweight = true;
@@ -98,6 +106,10 @@ export default {
         mo.socket.off('getTravelByShipPossibilitiesComplete');
     },
     methods: {
+        openModal() {
+            this.showModal = true;
+            this.$store.commit('gameModal', 'ship');
+        },
         closeModal() {
             this.travelDestinationId = 0;
             this.showModal = false;

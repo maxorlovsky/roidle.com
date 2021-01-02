@@ -73,4 +73,5 @@ export default {
     characterResting: (state) => state.characterResting,
     restTimer: (state) => state.restTimer,
     publicItemInfo: (state) => state.publicItemInfo,
+    gameModal: (state) => state.gameModal,
 };
