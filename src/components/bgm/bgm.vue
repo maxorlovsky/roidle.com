@@ -197,6 +197,9 @@ export default {
                 case 2005:
                     musicTracks = ['46'];
                     break;
+                case 2006:
+                    musicTracks = ['20'];
+                    break;
                 default:
                     musicTracks = ['prontera', 'izlude'];
                     break;
