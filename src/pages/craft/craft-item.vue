@@ -229,6 +229,12 @@ const craftItemPage = {
         mo.socket.off('craftItemComplete');
     },
     methods: {
+        /**
+         * Display materials available in the user inventory
+         *
+         * @param {number} itemId Item ID
+         * @returns {number} Returns amount from inventory
+         */
         userMaterialAmount(itemId) {
             const findItem = this.inventory.find((item) => item.itemId === itemId);
 
