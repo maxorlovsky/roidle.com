@@ -22,13 +22,13 @@
                     v-html="currentDialogText"
                 />
                 <div v-if="neededProgress"
-                    class="quests-details__progress"
+                    class="quest-progress-bar quests-details__progress"
                 >
                     <span>{{ currentProgress }} / {{ neededProgress }}</span>
 
-                    <div class="quests-details__progress__bar">
-                        <div :style="{ 'width': currentProgressPercentage + '%' }"
-                            class="quests-details__progress__bar__current"
+                    <div class="quest-progress-bar__bar">
+                        <div :style="{ 'width': calcualteProgressPercentage(currentProgress, neededProgress) + '%' }"
+                            class="quest-progress-bar__bar__current"
                         />
                     </div>
                 </div>
@@ -61,6 +61,18 @@
                         <div class="quests-list__quest__info__name">{{ quest.name }}</div>
                         <div class="quests-list__quest__info__description">{{ quest.description }}</div>
                         <div class="quests-list__quest__info__rewards">{{ quest.rewards }}</div>
+
+                        <div v-if="quest.currentStep > 1 && quest.neededProgress"
+                            class="quest-progress-bar"
+                        >
+                            <span>{{ quest.currentProgress }} / {{ quest.neededProgress }}</span>
+
+                            <div class="quest-progress-bar__bar">
+                                <div :style="{ 'width': calcualteProgressPercentage(quest.currentProgress, quest.neededProgress) + '%' }"
+                                    class="quest-progress-bar__bar__current"
+                                />
+                            </div>
+                        </div>
                     </div>
                     <div class="quests-list__quest__buttons">
                         <button v-if="quest.currentStep === 1"
@@ -118,11 +130,7 @@ const questsPage = {
             'characterJob',
             'characterName',
             'serverUrl'
-        ]),
-
-        currentProgressPercentage() {
-            return Math.floor(this.currentProgress / this.neededProgress * 100) || 0;
-        }
+        ])
     },
     mounted() {
         mo.socket.on('finishQuestComplete', () => {
@@ -156,6 +164,9 @@ const questsPage = {
         mo.socket.off('reviewQuestComplete');
     },
     methods: {
+        calcualteProgressPercentage(currentProgress, neededProgress) {
+            return Math.floor(currentProgress / neededProgress * 100) || 0;
+        },
         showQuest(quest) {
             this.selectedMission = quest;
 
