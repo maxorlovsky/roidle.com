@@ -160,7 +160,9 @@
             <puzzle-challenge v-if="showChallenge" />
             <trade-window-request v-if="showTradeRequest" />
 
-            <ul class="snow">
+            <ul v-if="enableXmas"
+                class="snow"
+            >
                 <li />
                 <li />
             </ul>
@@ -217,7 +219,8 @@ const gamePage = {
             showChallenge: false,
             showTradeRequest: false,
             craftAvailable: false,
-            shipAvailable: false
+            shipAvailable: false,
+            enableXmas: false
         };
     },
     computed: {
