@@ -14,7 +14,7 @@
             >
             <div class="item-info__description">
                 <b>{{ name }}</b>
-                <div>{{ $t('itemInfo.type') }}: <span class="ucfirst">{{ type }}</span> <span v-if="twoHanded">({{ $t('itemInfo.twoHanded') }})</span></div>
+                <div>{{ $t('itemInfo.type') }}: <span class="ucfirst">{{ itemClass }}</span> <span v-if="twoHanded">({{ $t('itemInfo.twoHanded') }})</span></div>
                 <div v-if="params">{{ $t('itemInfo.params') }}: <b>{{ params }}</b></div>
                 <div v-if="requiredLevel">{{ $t('itemInfo.requiredLevel') }}: {{ requiredLevel }}</div>
 
@@ -46,13 +46,13 @@
                     @click="discardItem()"
                 >{{ $t('itemInfo.discard') }}</button>
 
-                <button v-if="type === 'healing' || (type === 'consumable' && itemId === 602) || (type === 'consumable' && itemId === 20000)"
+                <button v-if="itemClass === 'healing' || (itemClass === 'consumable' && itemId === 602) || (itemClass === 'consumable' && itemId === 20000)"
                     :disabled="buttonLoading"
                     class="btn game-button"
                     @click="useItem(itemId)"
                 >{{ $t('itemInfo.use') }}</button>
-                <button v-else-if="broken || durability < maxDurability"
-                    :disabled="buttonLoading"
+                <button v-else-if="repairIsAvailable(type)"
+                    :disabled="repairIsDisabled"
                     class="btn game-button"
                     @click="repairItem(id)"
                 >{{ $t('itemInfo.repair') }}</button>
@@ -123,6 +123,7 @@ export default {
             itemId: 0,
             name: '',
             type: '',
+            itemClass: '',
             description: '',
             params: '',
             twoHanded: false,
@@ -150,7 +151,15 @@ export default {
             'characterSkills',
             'serverUrl',
             'publicItemInfo'
-        ])
+        ]),
+
+        repairIsDisabled() {
+            if (this.buttonLoading || (this.durability === this.maxDurability && !this.broken)) {
+                return true;
+            }
+
+            return false;
+        },
     },
     watch: {
         publicItemInfo() {
@@ -243,6 +252,18 @@ export default {
             this.repairMaterials = [];
             this.showRepair = false;
         },
+        repairIsAvailable(type) {
+            if ((!this.characterSkills[32] || this.characterSkills[32] <= 0) && (!this.characterSkills[33] || this.characterSkills[33] <= 0)) {
+                return false;
+            }
+
+            // Do a separate if check for code readability
+            if (type !== 'weapon' && type !== 'armor') {
+                return false;
+            }
+
+            return true;
+        },
         repairItem() {
             this.buttonLoading = true;
             this.repairMaterials = [];
@@ -279,7 +300,8 @@ export default {
             this.id = item.inventoryId;
             this.itemId = item.id;
             this.name = item.name;
-            this.type = item.class ? item.class : item.type;
+            this.type = item.type;
+            this.itemClass = item.class;
             this.twoHanded = item.twoHanded || false;
             this.description = item.description ? item.description : '';
             this.params = '';
