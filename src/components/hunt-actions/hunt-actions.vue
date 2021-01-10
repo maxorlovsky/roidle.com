@@ -114,10 +114,18 @@ export default {
             'huntStatus',
             'characterId',
             'characterSkills',
-            'serverUrl'
+            'serverUrl',
+            'gameModal'
         ])
     },
     watch: {
+        gameModal() {
+            if (this.gameModal === 'hunt') {
+                return false;
+            }
+
+            this.showHuntModal = false;
+        },
         characterSkills: {
             immediate: true,
             handler() {
@@ -159,6 +167,8 @@ export default {
         openHunt() {
             // Showing hunt modal
             this.showHuntModal = true;
+
+            this.$store.commit('gameModal', 'hunt');
         },
         cancelHunt() {
             // Reset all variables and dialogs

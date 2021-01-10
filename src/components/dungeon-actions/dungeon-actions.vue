@@ -1,6 +1,6 @@
 <template>
     <div class="dungeon-actions game__action">
-        <div @click="showModal = true">
+        <div @click="openModal()">
             <img class="game__action__image"
                 :src="`${serverUrl}/dist/assets/images/dungeon-entrance.png`"
             >
@@ -76,10 +76,18 @@ export default {
             'currentLocation',
             'characterAttributes',
             'inventoryWeight',
-            'serverUrl'
+            'serverUrl',
+            'gameModal'
         ])
     },
     watch: {
+        gameModal() {
+            if (this.gameModal === 'dungeon') {
+                return false;
+            }
+
+            this.closeModal();
+        },
         currentLocation: {
             immediate: true,
             handler() {
@@ -114,6 +122,10 @@ export default {
         mo.socket.off('travelToDungeonComplete');
     },
     methods: {
+        openModal() {
+            this.showModal = true;
+            this.$store.commit('gameModal', 'dungeon');
+        },
         closeModal() {
             this.showModal = false;
         },

@@ -250,6 +250,12 @@
                 font-size: 1.2rem;
                 font-weight: bold;
             }
+
+            &__value {
+                &--not-enough {
+                    color: #b00;
+                }
+            }
         }
     }
 

@@ -65,6 +65,14 @@
                     <div class="craft-item__price__item__value">{{ staticTimer(price.timeRequired * amount) }}</div>
                 </div>
                 <div class="craft-item__price__item">
+                    <div class="craft-item__price__item__title">{{ $t('global.mpCost') }}</div>
+                    <div :class="{'craft-item__price__item__value--not-enough': characterMp < craftableItem.mpCost * amount}"
+                        class="craft-item__price__item__value"
+                    >
+                        {{ craftableItem.mpCost * amount }} MP
+                    </div>
+                </div>
+                <div class="craft-item__price__item">
                     <div class="craft-item__price__item__title">{{ $t('craft.priceForTool', {
                         tool: tool
                     }) }}</div>
@@ -72,7 +80,7 @@
                 </div>
                 <div class="craft-item__price__item">
                     <div class="craft-item__price__item__title">{{ $t('craft.locationTax', {
-                        locationTax: characterLocation
+                        location: characterLocation
                     }) }} ({{ price.tax }}%)</div>
                     <div class="craft-item__price__item__value">{{ price.taxForRent * amount }} Z</div>
                 </div>
@@ -153,7 +161,7 @@ const craftItemPage = {
             }
 
             // Check if user have enough MP to craft
-            if (this.characterMp < this.craftableItem.mpCost) {
+            if (this.characterMp < (this.craftableItem.mpCost * this.amount)) {
                 haveItems = false;
             }
 
@@ -221,6 +229,12 @@ const craftItemPage = {
         mo.socket.off('craftItemComplete');
     },
     methods: {
+        /**
+         * Display materials available in the user inventory
+         *
+         * @param {number} itemId Item ID
+         * @returns {number} Returns amount from inventory
+         */
         userMaterialAmount(itemId) {
             const findItem = this.inventory.find((item) => item.itemId === itemId);
 

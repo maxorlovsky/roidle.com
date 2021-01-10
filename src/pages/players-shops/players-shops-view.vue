@@ -12,19 +12,31 @@
                 <div class="players-shops__title">{{ $t('shop.insideTheShop') }}</div>
                 <div class="players-shops__shop-title">"{{ shopName }}"</div>
 
-                <div class="search-input">
-                    <input v-model="search"
-                        :placeholder="$t('global.search')"
-                        maxlength="50"
-                        type="text"
-                    >
-                    <div v-show="search"
-                        class="search-input__close"
-                        @click="search = ''"
-                    >X</div>
+                <div class="players-shops__top">
+                    <div class="search-input">
+                        <input v-model="search"
+                            :placeholder="$t('global.search')"
+                            maxlength="50"
+                            type="text"
+                        >
+                        <div v-show="search"
+                            class="search-input__close"
+                            @click="search = ''"
+                        >X</div>
+                    </div>
+
+                    <div class="players-shops__top__sorting">
+                        <div class="players-shops__top__sorting__label">{{ $t('global.show') }}:</div>
+                        <select v-model="sortBy">
+                            <option value="all">{{ $t('global.all') }}</option>
+                            <option value="consumables">{{ $t('global.consumables') }}</option>
+                            <option value="equipment">{{ $t('global.equipment') }}</option>
+                            <option value="etc">{{ $t('global.etc') }}</option>
+                        </select>
+                    </div>
                 </div>
 
-                <template v-if="shopItems.length">
+                <template v-if="filteredItems.length">
                     <div v-for="(item, index) in filteredItems"
                         :key="index"
                         class="players-shops__sold-item players-shops__view-shop"
@@ -97,6 +109,9 @@ import { mapGetters } from 'vuex';
 // Components
 import loading from '@components/loading/loading.vue';
 
+// Utils
+import { sort as inventorySort } from '@utils/inventory.js';
+
 const viewPlayersShopPage = {
     components: {
         loading,
@@ -113,6 +128,7 @@ const viewPlayersShopPage = {
             itemAmountMax: 1,
             buyingItem: null,
             search: '',
+            sortBy: 'all',
         };
     },
     computed: {
@@ -127,6 +143,8 @@ const viewPlayersShopPage = {
             if (this.search) {
                 inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             }
+
+            inv = inventorySort(inv, this.sortBy);
 
             return inv || [];
         }

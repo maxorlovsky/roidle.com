@@ -179,5 +179,6 @@ export default {
     // Resting
     characterResting: false,
     restTimer: null,
-    publicItemInfo: null
+    publicItemInfo: null,
+    gameModal: null
 };

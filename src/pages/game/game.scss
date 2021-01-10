@@ -56,6 +56,10 @@
         background-image: url("#{$assets}/images/locations/archer-village.jpg");
     }
 
+    &.payon.dungeon {
+        background-image: url("#{$assets}/images/locations/payon-dungeon.jpg");
+    }
+
     &__party {
         display: flex;
         align-items: center;
@@ -189,6 +193,10 @@
             width: calc(25% - 1rem);
         }
 
+        &--prioritize {
+            z-index: 3;
+        }
+
         &__image {
             display: block;
             margin: 0 auto;
@@ -215,7 +223,7 @@
 
     &__action-in-progress {
         position: absolute;
-        z-index: 2;
+        z-index: 3;
         top: 0;
         left: 0;
         width: calc(100% - 1rem);

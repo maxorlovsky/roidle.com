@@ -61,7 +61,8 @@ export default {
         ...mapGetters([
             'characterSkills',
             'characterCrafting',
-            'serverUrl'
+            'serverUrl',
+            'gameModal'
         ]),
 
         cheapInnPrice() {
@@ -73,6 +74,15 @@ export default {
         deluxeInnPrice() {
             return discount(1000, this.characterSkills[25]);
         },
+    },
+    watch: {
+        gameModal() {
+            if (this.gameModal === 'inn') {
+                return false;
+            }
+
+            this.showModal = false;
+        }
     },
     mounted() {
         mo.socket.on('requestRestComplete', (response) => {
@@ -93,6 +103,8 @@ export default {
             }
 
             this.showModal = true;
+
+            this.$store.commit('gameModal', 'inn');
         },
         startRest() {
             mo.socket.emit('requestRest', this.typeChosen);

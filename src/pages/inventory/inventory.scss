@@ -11,18 +11,43 @@
         padding-bottom: $chat-tabs-height-padding;
     }
 
-    &__weight {
+    &__top {
         margin: 1rem 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    &__weight {
         padding: 0.2rem 0.4rem;
         border: 2px solid #fff;
         background-color: rgba(0, 0, 0, 0.8);
         color: #fff;
         font-size: 1rem;
-        width: 100%;
+        width: 50%;
         border-radius: 2px;
+
+        @media (min-width: $mobileSize) {
+            width: 80%;
+        }
 
         &--critical {
             color: #c00;
+        }
+    }
+
+    &__sorting {
+        display: flex;
+        align-items: center;
+
+        &__label {
+            font-size: 1rem;
+            padding-right: 0.5rem;
+        }
+
+        select {
+            font-size: 1rem;
         }
     }
 

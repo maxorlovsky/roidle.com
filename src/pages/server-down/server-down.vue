@@ -13,6 +13,7 @@
                 <a href="https://www.reddit.com/r/ROIdle"
                     class="home__top-bar__reddit-link game-icon"
                     target="_blank"
+                    rel="noopener nofollow"
                 >
                     <i class="icon icon-reddit" />
                 </a>
@@ -20,6 +21,7 @@
                 <a href="https://discord.gg/PjApFha"
                     class="home__top-bar__discord-link game-icon"
                     target="_blank"
+                    rel="noopener nofollow"
                 >
                     <img :src="`${serverUrl}/dist/assets/images/discord.png`">
                 </a>

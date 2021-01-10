@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    gameModal: (state, value) => {
+        state.gameModal = value;
+    },
     restingComplete: (state) => {
         state.restTimer = null;
         state.characterResting = false;

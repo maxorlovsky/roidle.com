@@ -1,7 +1,18 @@
 <template>
     <section class="inventory">
         <div class="inventory-wrapper">
-            <div class="inventory__weight">{{ $t('global.weight') }}: <span :class="{'inventory__weight--critical': criticalWeight}">{{ inventoryWeight }}</span> / {{ characterAttributes.weight }}</div>
+            <div class="inventory__top">
+                <div class="inventory__weight">{{ $t('global.weight') }}: <span :class="{'inventory__weight--critical': criticalWeight}">{{ inventoryWeight }}</span> / {{ characterAttributes.weight }}</div>
+                <div class="inventory__sorting">
+                    <div class="inventory__sorting__label">{{ $t('global.show') }}:</div>
+                    <select v-model="sortBy">
+                        <option value="all">{{ $t('global.all') }}</option>
+                        <option value="consumables">{{ $t('global.consumables') }}</option>
+                        <option value="equipment">{{ $t('global.equipment') }}</option>
+                        <option value="etc">{{ $t('global.etc') }}</option>
+                    </select>
+                </div>
+            </div>
 
             <div class="search-input">
                 <input v-model="search"
@@ -41,10 +52,14 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Utils
+import { sort as inventorySort } from '@utils/inventory.js';
+
 const inventoryPage = {
     data() {
         return {
-            search: ''
+            search: '',
+            sortBy: 'all',
         };
     },
     computed: {
@@ -65,6 +80,8 @@ const inventoryPage = {
             if (this.search) {
                 inv = inv.filter((item) => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             }
+
+            inv = inventorySort(inv, this.sortBy);
 
             return inv || [];
         }

@@ -76,7 +76,10 @@
                 class="game__actions"
             >
                 <hunt-actions v-if="huntAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
+                    :class="{
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--prioritize': gameModal === 'hunt'
+                    }"
                 />
 
                 <!--<div v-if="outsideActions"
@@ -89,23 +92,41 @@
                 </div>-->
 
                 <kafra-actions v-if="kafraAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting}"
+                    :class="{
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting,
+                        'game__action--prioritize': gameModal === 'kafra'
+                    }"
                 />
                 <inn-actions v-if="innAvailable"
                     :disabled="characterCrafting"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
+                    :class="{
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--prioritize': gameModal === 'inn'
+                    }"
                 />
                 <shop-actions v-if="shopsAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
+                    :class="{
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--prioritize': gameModal === 'shop'
+                    }"
                 />
                 <craft-actions v-if="craftAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting}"
+                    :class="{
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting,
+                        'game__action--prioritize': gameModal === 'craft'
+                    }"
                 />
                 <dungeon-actions v-if="dungeonAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
+                    :class="{
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--prioritize': gameModal === 'dungeon'
+                    }"
                 />
                 <ship-actions v-if="shipAvailable"
-                    :class="{'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting}"
+                    :class="{
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--prioritize': gameModal === 'ship'
+                    }"
                 />
 
                 <div v-if="huntStatus || characterTraveling || characterResting"
@@ -139,7 +160,9 @@
             <puzzle-challenge v-if="showChallenge" />
             <trade-window-request v-if="showTradeRequest" />
 
-            <ul class="snow">
+            <ul v-if="enableXmas"
+                class="snow"
+            >
                 <li />
                 <li />
             </ul>
@@ -196,7 +219,8 @@ const gamePage = {
             showChallenge: false,
             showTradeRequest: false,
             craftAvailable: false,
-            shipAvailable: false
+            shipAvailable: false,
+            enableXmas: false
         };
     },
     computed: {
@@ -215,7 +239,8 @@ const gamePage = {
             'characterCrafting',
             'characterTraveling',
             'characterResting',
-            'serverUrl'
+            'serverUrl',
+            'gameModal'
         ])
     },
     watch: {
