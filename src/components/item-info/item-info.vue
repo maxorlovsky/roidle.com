@@ -14,7 +14,7 @@
             >
             <div class="item-info__description">
                 <b>{{ name }}</b>
-                <div>{{ $t('itemInfo.type') }}: <span class="ucfirst">{{ itemClass }}</span> <span v-if="twoHanded">({{ $t('itemInfo.twoHanded') }})</span></div>
+                <div>{{ $t('itemInfo.type') }}: <span class="ucfirst">{{ itemClass ? itemClass : type }}</span> <span v-if="twoHanded">({{ $t('itemInfo.twoHanded') }})</span></div>
                 <div v-if="params">{{ $t('itemInfo.params') }}: <b>{{ params }}</b></div>
                 <div v-if="requiredLevel">{{ $t('itemInfo.requiredLevel') }}: {{ requiredLevel }}</div>
 
@@ -46,7 +46,7 @@
                     @click="discardItem()"
                 >{{ $t('itemInfo.discard') }}</button>
 
-                <button v-if="itemClass === 'healing' || (itemClass === 'consumable' && itemId === 602) || (itemClass === 'consumable' && itemId === 20000)"
+                <button v-if="type === 'healing' || (type === 'consumable' && itemId === 602) || (type === 'consumable' && itemId === 20000)"
                     :disabled="buttonLoading"
                     class="btn game-button"
                     @click="useItem(itemId)"
