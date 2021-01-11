@@ -14,7 +14,7 @@
             >
             <div class="item-info__description">
                 <b>{{ name }}</b>
-                <div>{{ $t('itemInfo.type') }}: <span class="ucfirst">{{ itemClass }}</span> <span v-if="twoHanded">({{ $t('itemInfo.twoHanded') }})</span></div>
+                <div>{{ $t('itemInfo.type') }}: <span class="ucfirst">{{ itemClass ? itemClass : type }}</span> <span v-if="twoHanded">({{ $t('itemInfo.twoHanded') }})</span></div>
                 <div v-if="params">{{ $t('itemInfo.params') }}: <b>{{ params }}</b></div>
                 <div v-if="requiredLevel">{{ $t('itemInfo.requiredLevel') }}: {{ requiredLevel }}</div>
 
