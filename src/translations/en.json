@@ -111,7 +111,7 @@
     "chat": {
         "chat": "chat",
         "from": "From",
-        "needBasicLevel": "Need Basic Level {level} to use chat",
+        "needBasicLevel": "Need Basic Skill {level} to use chat",
         "message": "Message"
     },
     "craft": {
@@ -404,6 +404,10 @@
         "huntPreferences": "Hunt preferences",
         "huntPreferencesCaution": "With caution (hunt as less mobs as possible to be in advantage)",
         "huntPreferencesYolo": "YOLO leveling (gather every mob around the area, usually the amount of your party size)",
+        "travelPreferences": "Travel preferences",
+        "travelIndependent": "Travel independence. Travel as solo player independently from a party",
+        "travelTogether": "Travel together. Travel together with same members in the same location. In this state party members must not craft, rest at inn or hunt. In this case error system message will be sent to the party.",
+        "travelTogetherIgnore": "Travel together if possible. Travel together with same members in the same location. In case member is busy crafting, resting, hunting - party will travel anyway leaving out the members of the party who are busy.",
         "needBasicLevelToOrganize": "You need to have Basic Skill level {level} to organize party",
         "organizeParty": "Organize party",
         "updateParty": "Update party",
