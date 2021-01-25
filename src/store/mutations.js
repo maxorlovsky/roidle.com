@@ -108,6 +108,7 @@ export default {
         state.partyLoot = null;
         state.partyHunt = null;
         state.partyHuntPreference = null;
+        state.partyTravelPreference = null;
         state.partyLeader = false;
         state.partyLeaderId = 0;
     },
@@ -115,6 +116,7 @@ export default {
         state.partyLoot = value.loot;
         state.partyHunt = value.hunt;
         state.partyHuntPreference = value.huntPreference;
+        state.partyTravelPreference = value.travelPreference;
     },
     setPartyMembersIds: (state, value) => {
         state.partyMembersIds = value;
@@ -131,6 +133,7 @@ export default {
         state.partyLoot = value.loot;
         state.partyHunt = value.hunt;
         state.partyHuntPreference = value.huntPreference;
+        state.partyTravelPreference = value.travelPreference;
         state.partyLeader = value.leader === state.characterId;
         state.partyLeaderId = value.leader;
     },
@@ -838,6 +841,7 @@ export default {
         state.partyLoot = null;
         state.partyHunt = null;
         state.partyHuntPreference = null;
+        state.partyTravelPreference = null;
         state.partyLeader = false;
         state.partyLeaderId = 0;
         state.partyInvites = 0;

@@ -312,6 +312,14 @@ export default {
             });
         });
 
+        mo.socket.on('travelToMapComplete', (response) => {
+            // In case response is positive, we request to get travel of the user
+            // In case there are some error it should appear in system chat
+            if (response) {
+                this.$store.commit('travelStart');
+            }
+        });
+
         mo.socket.on('getTravelComplete', (response) => {
             // In case response is positive and challeenge is now enabled, we need to stop the timer
             if (response.status && response.challenge) {
@@ -397,6 +405,7 @@ export default {
         this.resetTimer();
 
         if (mo.socket) {
+            mo.socket.off('travelToMapComplete');
             mo.socket.off('updateDyeColor');
             mo.socket.off('getRestComplete');
             mo.socket.off('getMapTravelChallengeComplete');

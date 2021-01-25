@@ -57,6 +57,7 @@ export default {
     partyLoot: (state) => state.partyLoot,
     partyHunt: (state) => state.partyHunt,
     partyHuntPreference: (state) => state.partyHuntPreference,
+    partyTravelPreference: (state) => state.partyTravelPreference,
     isGuest: (state) => state.isGuest,
     pushNotification: (state) => state.pushNotification,
     currentLocation: (state) => state.currentLocation,
