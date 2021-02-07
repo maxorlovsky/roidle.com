@@ -163,6 +163,7 @@ export default {
     currentLocation: null,
     puzzleChallenge: null,
     puzzleChallengeNr: 0,
+    puzzleChallengeLeader: false,
     tradeRequestId: 0,
     tradeRequestName: '',
     // Crafting

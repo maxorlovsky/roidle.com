@@ -8,6 +8,11 @@
             >
                 <loading />
             </div>
+            <div v-else-if="puzzleChallengeLeader"
+                class="modal__content"
+            >
+                {{ $t('puzzle.leaderNavigating') }}
+            </div>
             <div v-else
                 class="modal__content"
             >
@@ -26,7 +31,7 @@
                 </div>
             </div>
 
-            <div v-if="!loading"
+            <div v-if="!loading && !puzzleChallengeLeader"
                 class="modal__buttons puzzle-challenge__buttons"
             >
                 <button :disabled="buttonLoading"
@@ -66,7 +71,8 @@ export default {
     computed: {
         ...mapGetters([
             'puzzleChallenge',
-            'puzzleChallengeNr'
+            'puzzleChallengeNr',
+            'puzzleChallengeLeader'
         ])
     },
     watch: {
@@ -92,10 +98,7 @@ export default {
             this.$store.commit('travelingComplete');
 
             // Remove challenge
-            this.$store.commit('puzzleChallenge', {
-                puzzleText: '',
-                puzzleNr: 0
-            });
+            this.$store.commit('puzzleChallengeReset');
 
             // If challenge failed we need to request getTravel again
             if (!response) {

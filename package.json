@@ -5,7 +5,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/maxtream/game"
+    "url": "https://github.com/maxorlovsky/roidle.com"
   },
   "scripts": {
     "clean": "rm -rf ./public/*",
