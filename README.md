@@ -2,7 +2,7 @@
 
 This is a repository of client side (frontend) of the project [roidle.com](https://roidle.com). In this repo it is possible to follow up on the changes. Or fork it to develop your own client
 
-# What is roidle?
+## What is roidle?
 This is a fan / hobby made game, done by one person and is currently in Open Alpha access.
 
 ## Run on local device
