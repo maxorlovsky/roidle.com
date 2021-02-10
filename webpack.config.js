@@ -200,6 +200,27 @@ module.exports = (env = {}) => {
         });
     }
 
+    if (env.local) {
+        config.devServer.https = true;
+        config.devServer.public = '';
+        config.devServer.port = 8080;
+        config.devServer.proxy = {
+            '/api': {
+                target: 'https://api.game.maxorlovsky.com/public',
+                secure: false,
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            },
+            '/socket.io': {
+                target: 'https://api.game.maxorlovsky.com',
+                secure: false,
+                ws: true
+            }
+        }
+    }
+
     config.plugins.push(new ReplaceInFileWebpackPlugin([
         {
             dir: path.resolve('./public/'),
