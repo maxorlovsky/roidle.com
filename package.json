@@ -5,7 +5,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/maxtream/game"
+    "url": "https://github.com/maxorlovsky/roidle.com"
   },
   "scripts": {
     "clean": "rm -rf ./public/*",
@@ -21,7 +21,7 @@
     "@babel/core": "7.9.6",
     "@babel/polyfill": "7.8.7",
     "@babel/preset-env": "7.9.6",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "babel-loader": "8.1.0",
     "babel-minify-webpack-plugin": "0.3.1",
     "bootstrap": "4.5.0",
@@ -44,7 +44,7 @@
     "replace-in-file-webpack-plugin": "1.0.6",
     "sass": "1.26.5",
     "sass-loader": "8.0.2",
-    "socket.io": "2.3.0",
+    "socket.io": "2.4.0",
     "stylelint": "13.4.0",
     "vue": "2.6.11",
     "vue-analytics": "5.22.1",

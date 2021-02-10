@@ -297,8 +297,8 @@ export default {
         mo.socket.on('getMapTravelChallengeComplete', (response) => {
             // Only react in case there is challenge provided
             if (response) {
-                // Stop traveling, save new location
-                this.$store.commit('puzzleChallenge', response);
+                // Stop travel, asking for a challenge
+                this.$store.dispatch('puzzleChallenge', response);
             }
         });
 

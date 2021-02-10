@@ -252,7 +252,8 @@
         "submit": "Submit",
         "randomChallengeText1": "You're feeling a bit lost, just some parts of the dungeon feels familiar, you are tried hard to navigate your way into the depths of this place. As if there is some kind of puzzle that need to be solved?",
         "randomChallengeText2": "You've reached the stairs to the next level, at least that is what you think, but there are more stairs leading down, which one to choose? You need to solve this puzzle somehow.",
-        "randomChallengeText3": "Are you on the right path? You were sure that you memorized the map of the dungeon very well before dwelling into it."
+        "randomChallengeText3": "Are you on the right path? You were sure that you memorized the map of the dungeon very well before dwelling into it.",
+        "leaderNavigating": "Leader is navigating your party through the dungeon and seems to be lost. It is a very fascinating scene, looking how yours leader might trying to connect dots and pieces of the map."
     },
     "register": {
         "register": "Register",
