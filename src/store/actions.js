@@ -2,6 +2,14 @@
 import { functions } from '@utils/functions.js';
 
 export default {
+    puzzleChallenge({ commit }, value) {
+        // In case it's a party configuration is set for party travel with leader, user will see different
+        if (value.puzzleGettingSolvedByLeader) {
+            commit('puzzleChallengeLeader');
+        } else {
+            commit('puzzleChallenge', value);
+        }
+    },
     removePartyMember({ commit, state }, value) {
         const members = state.partyMembers || [];
         const membersIds = state.partyMembersIds || [];

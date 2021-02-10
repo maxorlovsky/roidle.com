@@ -132,6 +132,7 @@ const repairPage = {
             if (response) {
                 this.brokenItems = [];
                 this.itemsToFix = [];
+                this.equipeToFix = [];
 
                 mo.socket.emit('getBrokenItems');
             }
@@ -152,12 +153,22 @@ const repairPage = {
     },
     methods: {
         repairItems() {
-            const ids = [];
+            const itemsIds = [];
+            const equipmentIds = [];
 
             this.buttonLoading = true;
-            this.itemsToFix.map((item) => ids.push(item.id));
+            this.itemsToFix.map((item) => {
+                if (item.equipment) {
+                    equipmentIds.push(item.id);
+                } else {
+                    itemsIds.push(item.id);
+                }
 
-            mo.socket.emit('repairItems', ids);
+                return true;
+            });
+
+
+            mo.socket.emit('repairItems', itemsIds, equipmentIds);
         },
         showItemInfo(item) {
             mo.socket.emit('getItemInfo', {
@@ -170,7 +181,8 @@ const repairPage = {
 
             this.itemsToFix.push({
                 id: item.id,
-                price: item.price
+                price: item.price,
+                equipment: item.equipment
             });
         },
         removeItem(item) {

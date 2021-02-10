@@ -30,6 +30,7 @@ export default {
             name: 0
         };
         state.characterTraveling = false;
+        state.travelingDungeon = false;
     },
     travelInProgress: (state, value) => {
         state.travelTimer = value.finishTime;
@@ -59,9 +60,18 @@ export default {
         state.tradeRequestId = value.id;
         state.tradeRequestName = value.name;
     },
+    puzzleChallengeReset: (state) => {
+        state.puzzleChallenge = null;
+        state.puzzleChallengeNr = null;
+        state.puzzleChallengeLeader = null;
+    },
     puzzleChallenge: (state, value) => {
         state.puzzleChallenge = value.puzzleText;
         state.puzzleChallengeNr = value.puzzleNr;
+    },
+    puzzleChallengeLeader: (state) => {
+        state.puzzleChallengeLeader = true;
+        state.puzzleChallenge = 'on';
     },
     currentLocation: (state, value) => {
         state.currentLocation = value;
@@ -108,6 +118,7 @@ export default {
         state.partyLoot = null;
         state.partyHunt = null;
         state.partyHuntPreference = null;
+        state.partyTravelPreference = null;
         state.partyLeader = false;
         state.partyLeaderId = 0;
     },
@@ -115,6 +126,7 @@ export default {
         state.partyLoot = value.loot;
         state.partyHunt = value.hunt;
         state.partyHuntPreference = value.huntPreference;
+        state.partyTravelPreference = value.travelPreference;
     },
     setPartyMembersIds: (state, value) => {
         state.partyMembersIds = value;
@@ -131,6 +143,7 @@ export default {
         state.partyLoot = value.loot;
         state.partyHunt = value.hunt;
         state.partyHuntPreference = value.huntPreference;
+        state.partyTravelPreference = value.travelPreference;
         state.partyLeader = value.leader === state.characterId;
         state.partyLeaderId = value.leader;
     },
@@ -838,6 +851,7 @@ export default {
         state.partyLoot = null;
         state.partyHunt = null;
         state.partyHuntPreference = null;
+        state.partyTravelPreference = null;
         state.partyLeader = false;
         state.partyLeaderId = 0;
         state.partyInvites = 0;
@@ -845,6 +859,7 @@ export default {
         state.currentLocation = null;
         state.puzzleChallenge = null;
         state.puzzleChallengeNr = 0;
+        state.puzzleChallengeLeader = null;
         state.tradeRequestId = 0;
         state.tradeRequestName = null;
         state.craftTimer = null;
