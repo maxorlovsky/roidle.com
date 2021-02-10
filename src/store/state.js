@@ -157,11 +157,13 @@ export default {
     partyLoot: null,
     partyHunt: null,
     partyHuntPreference: null,
+    partyTravelPreference: null,
     isGuest: false,
     pushNotification: '',
     currentLocation: null,
     puzzleChallenge: null,
     puzzleChallengeNr: 0,
+    puzzleChallengeLeader: false,
     tradeRequestId: 0,
     tradeRequestName: '',
     // Crafting

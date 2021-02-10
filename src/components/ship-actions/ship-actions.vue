@@ -23,7 +23,7 @@
                     :class="{'ship-actions__travel-buttons--selected': travelDestinationId === travelTo.locationId}"
                     class="btn game-button ship-actions__travel-buttons"
                     @click="travelDestinationId = travelTo.locationId"
-                >{{ $t('map.travelTo') }} {{ travelTo.name }} ({{ travelTo.price }} Z) - {{ staticTimer(travelTo.timeToTravel) }}</button>
+                >{{ $t('map.travelTo') }} {{ travelTo.name }} ({{ travelPrice(travelTo.price) }} Z) - {{ staticTimer(travelTo.timeToTravel) }}</button>
             </div>
             <div class="modal__buttons">
                 <button :disabled="buttonLoading"
@@ -63,8 +63,9 @@ export default {
             'characterAttributes',
             'inventoryWeight',
             'serverUrl',
-            'gameModal'
-        ])
+            'gameModal',
+            'partyMembersIds'
+        ]),
     },
     watch: {
         gameModal() {
@@ -106,6 +107,9 @@ export default {
         mo.socket.off('getTravelByShipPossibilitiesComplete');
     },
     methods: {
+        travelPrice(price) {
+            return price * (this.partyMembersIds.length || 1);
+        },
         openModal() {
             this.showModal = true;
             this.$store.commit('gameModal', 'ship');

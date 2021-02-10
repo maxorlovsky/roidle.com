@@ -144,6 +144,27 @@
                     </div>
                 </div>
 
+                <div class="party__window__travel-preference">
+                    <div class="form-heading">{{ $t('party.travelPreferences') }}:</div>
+                    <div class="form-check">
+                        <input id="travel-preference-independence"
+                            v-model="createParty.travelPreference"
+                            type="radio"
+                            value="0"
+                        >
+                        <label for="travel-preference-independence">{{ $t('party.travelIndependent') }}</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input id="travel-preference-together"
+                            v-model="createParty.travelPreference"
+                            type="radio"
+                            value="1"
+                        >
+                        <label for="travel-preference-together">{{ $t('party.travelTogether') }}</label>
+                    </div>
+                </div>
+
                 <div v-if="!party"
                     class="party__window__button"
                 >
@@ -289,7 +310,8 @@ const partyPage = {
                 name: '',
                 loot: 'party',
                 hunt: 'together',
-                huntPreference: 0
+                huntPreference: 0,
+                travelPreference: 0,
             },
             createPartyError: '',
             buttonLoading: false,
@@ -314,6 +336,7 @@ const partyPage = {
             'partyLoot',
             'partyHunt',
             'partyHuntPreference',
+            'partyTravelPreference',
             'characterId',
             'characterSkills'
         ])
@@ -359,6 +382,12 @@ const partyPage = {
             immediate: true,
             handler() {
                 this.createParty.huntPreference = this.partyHuntPreference || 0;
+            }
+        },
+        partyTravelPreference: {
+            immediate: true,
+            handler() {
+                this.createParty.travelPreference = this.partyTravelPreference || 0;
             }
         }
     },
@@ -417,12 +446,6 @@ const partyPage = {
 
                 return false;
             }
-
-            this.$store.commit('updateParty', {
-                loot: this.createParty.loot,
-                hunt: this.createParty.hunt,
-                huntPreference: this.createParty.huntPreference
-            });
         });
 
         mo.socket.on('organizePartyComplete', (response) => {

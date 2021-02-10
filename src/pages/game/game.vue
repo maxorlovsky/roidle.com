@@ -398,8 +398,10 @@ const gamePage = {
             this.$router.push('/party');
         },
         setUpSocketEvents() {
-            mo.socket.on('interruptTravelComplete', () => {
-                this.$store.commit('travelingComplete');
+            mo.socket.on('interruptTravelComplete', (response) => {
+                if (response) {
+                    this.$store.commit('travelingComplete');
+                }
             });
 
             mo.socket.on('retreatFromHuntComplete', () => {

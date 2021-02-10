@@ -297,8 +297,8 @@ export default {
         mo.socket.on('getMapTravelChallengeComplete', (response) => {
             // Only react in case there is challenge provided
             if (response) {
-                // Stop traveling, save new location
-                this.$store.commit('puzzleChallenge', response);
+                // Stop travel, asking for a challenge
+                this.$store.dispatch('puzzleChallenge', response);
             }
         });
 
@@ -310,6 +310,14 @@ export default {
                 location: response.locationName,
                 locationId: response.locationId
             });
+        });
+
+        mo.socket.on('travelToMapComplete', (response) => {
+            // In case response is positive, we request to get travel of the user
+            // In case there are some error it should appear in system chat
+            if (response) {
+                this.$store.commit('travelStart');
+            }
         });
 
         mo.socket.on('getTravelComplete', (response) => {
@@ -397,6 +405,7 @@ export default {
         this.resetTimer();
 
         if (mo.socket) {
+            mo.socket.off('travelToMapComplete');
             mo.socket.off('updateDyeColor');
             mo.socket.off('getRestComplete');
             mo.socket.off('getMapTravelChallengeComplete');

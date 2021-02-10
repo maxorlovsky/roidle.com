@@ -62,7 +62,8 @@
                 <button class="btn btn-secondary"
                     @click="showModal = false"
                 >{{ $t('global.cancel') }}</button>
-                <button class="btn game-button"
+                <button :disabled="buttonLoading"
+                    class="btn game-button"
                     @click="confirmTravel()"
                 >{{ $t('map.go') }}</button>
             </div>
@@ -93,6 +94,7 @@ const mapPage = {
     data() {
         return {
             loading: true,
+            buttonLoading: false,
             showModal: false,
             humanReadableDate: '',
             travelDestinationName: '',
@@ -128,14 +130,6 @@ const mapPage = {
         }
     },
     mounted() {
-        mo.socket.on('travelToMapComplete', (response) => {
-            // In case response is positive, we request to get travel of the user
-            // In case there are some error it should appear in system chat
-            if (response) {
-                this.$store.commit('travelStart');
-            }
-        });
-
         mo.socket.on('getMapsComplete', (response) => {
             this.$store.commit('allMaps', response);
         });
@@ -144,21 +138,17 @@ const mapPage = {
             this.humanReadableDate = response.humanReadableDate;
             this.travelDestinationName = response.travelDestinationName;
 
+            this.buttonLoading = false;
             this.showModal = true;
         });
-
-        this.$store.commit('enableChat', false);
 
         if (Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) >= 90) {
             this.userOverweight = true;
         }
     },
     beforeDestroy() {
-        mo.socket.off('travelToMapComplete');
         mo.socket.off('getMapsComplete');
         mo.socket.off('selectMapToTravelComplete');
-
-        this.$store.commit('enableChat', true);
     },
     methods: {
         ifPlayerDetected(location) {
@@ -204,6 +194,8 @@ const mapPage = {
             this.travelDestinationId = locationId;
 
             mo.socket.emit('selectMapToTravel', locationId);
+
+            this.buttonLoading = true;
         }
     }
 };
