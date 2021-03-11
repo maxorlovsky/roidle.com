@@ -39,8 +39,8 @@
             <div v-if="field.rightSide.frontline"
                 class="hunt-battle__line"
             >
-                <div v-for="laner in field.rightSide.frontline"
-                    :key="laner.id"
+                <div v-for="(laner, index) in field.rightSide.frontline"
+                    :key="index"
                     class="hunt-battle__player"
                 >
                     <hunt-battle-avatar :laner="laner" />
@@ -50,8 +50,8 @@
             <div v-if="field.rightSide.midline"
                 class="hunt-battle__line"
             >
-                <div v-for="laner in field.rightSide.midline"
-                    :key="laner.id"
+                <div v-for="(laner, index) in field.rightSide.midline"
+                    :key="index"
                     class="hunt-battle__player"
                 >
                     <hunt-battle-avatar :laner="laner" />
@@ -61,8 +61,8 @@
             <div v-if="field.rightSide.backline"
                 class="hunt-battle__line"
             >
-                <div v-for="laner in field.rightSide.backline"
-                    :key="laner.id"
+                <div v-for="(laner, index) in field.rightSide.backline"
+                    :key="index"
                     class="hunt-battle__player"
                 >
                     <hunt-battle-avatar :laner="laner" />
