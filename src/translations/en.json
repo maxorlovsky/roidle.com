@@ -193,7 +193,14 @@
         "useWhileMpHigher": "Use while MP is higher than",
         "useWhenHpLower": "Use when HP is lower than",
         "noSkillsFound": "No active skills found",
-        "noAmmo": "No arrows found"
+        "noAmmo": "No arrows found",
+        "targetPriority": "Target Priority",
+        "huntConfigTargetPriority": "Target Priority",
+        "huntConfigTargetPriorityExplanation": "In case you're a range character, you can select which your target your character try to prioritize. For example backline in case you reach them. In case it's not possible target is selected at random.",
+        "notInRangeAction": "Action when not in range",
+        "notInRangeActionExplanation": "Select what to do in case character is out of XP, Mana or Arrows. Should character advance into melee range, or sit back and recover mana. Idling recover mana faster than normal attacks.",
+        "advance": "Advance",
+        "idle": "Idle"
     },
     "rest": {
         "actionTitle": "Rest at Inn",
