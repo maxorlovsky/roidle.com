@@ -249,6 +249,14 @@
             display: block;
             margin: 0.2rem auto;
         }
+
+        &--auto-height {
+            height: auto;
+        }
+    }
+
+    &__hunt-field {
+        padding: 1rem 0;
     }
 }
 

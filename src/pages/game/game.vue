@@ -130,6 +130,7 @@
                 />
 
                 <div v-if="huntStatus || characterTraveling || characterResting"
+                    :class="{'game__action-in-progress--auto-height': huntStatus}"
                     class="game__action-in-progress"
                 >
                     <div v-if="characterTraveling">
@@ -146,8 +147,16 @@
                             @click="cancelRest()"
                         >{{ $t('game.cancelRest') }}</button>
                     </div>
-                    <div v-if="huntStatus">
+                    <div v-if="huntStatus"
+                        class="game__hunt-field"
+                    >
                         <div>{{ $t('game.huntInProgress') }}</div>
+
+                        <hunt-battle v-if="field"
+                            :field="field"
+                        />
+                        <loading v-else />
+
                         <div>{{ huntStatusTimerDisplay }}</div>
                         <button v-if="!retreatFromHunt"
                             class="btn btn-secondary"
@@ -186,6 +195,7 @@ import puzzleChallenge from '@components/puzzle-challenge/puzzle-challenge.vue';
 import avatar from '@components/avatar/avatar.vue';
 import tradeWindowRequest from '@components/trade-window-request/trade-window-request.vue';
 import shipActions from '@components/ship-actions/ship-actions.vue';
+import huntBattle from '@components/hunt-battle/hunt-battle.vue';
 
 const gamePage = {
     components: {
@@ -199,7 +209,8 @@ const gamePage = {
         avatar,
         tradeWindowRequest,
         craftActions,
-        shipActions
+        shipActions,
+        huntBattle
     },
     data() {
         return {
@@ -220,7 +231,8 @@ const gamePage = {
             showTradeRequest: false,
             craftAvailable: false,
             shipAvailable: false,
-            enableXmas: false
+            enableXmas: false,
+            field: null,
         };
     },
     computed: {
@@ -382,6 +394,7 @@ const gamePage = {
         clearInterval(this.huntInterval);
 
         if (mo.socket) {
+            mo.socket.off('huntField');
             mo.socket.off('interruptTravelComplete');
             mo.socket.off('retreatFromHuntComplete');
         }
@@ -412,6 +425,14 @@ const gamePage = {
                     status: 'retreating',
                     timeFinish: null
                 });
+            });
+
+            mo.socket.on('huntField', (field) => {
+                this.field = field;
+            });
+
+            mo.socket.on('cleanField', () => {
+                this.field = null;
             });
         },
         markHuntAsRetreating() {
