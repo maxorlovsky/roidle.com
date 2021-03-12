@@ -24,7 +24,7 @@
             </div>
 
             <div class="equipment__avatar">
-                <router-link v-if="characterJobId === 3"
+                <router-link v-if="characterJobId === 3 || characterJobId === 6"
                     to="/hunt-configuration"
                     class="equipment__avatar__ammo"
                 >

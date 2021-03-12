@@ -413,10 +413,18 @@ export default {
 
             // If socket is registered, we're progressing by fetching user data
             mo.socket.on('selectCharacterComplete', (response) => {
+                if (!response) {
+                    alert('Something went wrong while loading character, please contact admin on discord');
+
+                    return false;
+                }
+
                 // Triggering another call to fetch inventory
                 mo.socket.emit('getInventory');
-                // Triggering another call to fetch message
+                // Triggering another call to fetch notifications messages
                 mo.socket.emit('getMessages');
+                // Triggering another call to fetch chat messages
+                mo.socket.emit('getChatMessages');
 
                 this.$store.commit('characterInit', response);
 

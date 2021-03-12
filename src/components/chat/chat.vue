@@ -52,7 +52,8 @@
             >
                 <p v-for="(chat, index) in chatLog.system"
                     :key="index"
-                >{{ chat.message }}</p>
+                    v-html="chat.message"
+                />
             </div>
             <div v-show="selectedTab === 2"
                 ref="chatBody-battle"
@@ -128,9 +129,8 @@
         <div :class="{'chat__system-message--shown': showSystemMessage}"
             class="chat__system-message"
             @click="stopSystemPopup()"
-        >
-            {{ systemMessage }}
-        </div>
+            v-html="systemMessage"
+        />
 
         <div v-if="showEmoticons"
             class="modal chat__modal chat__emoticons"
@@ -213,13 +213,7 @@ export default {
                         this.tabNotification[2] = true;
                     }
 
-                    // Update name variable with character name
-                    chat.message = chat.message.replace(/{name}/g, this.characterName)
-                        .replace(/(&skill;)/g, '<span class="chat__input__message--skill">')
-                        .replace(/(&endskill;)/g, '</span>')
-                        .replace(/(&bold;)/g, '<span class="chat__input__message--bold">')
-                        .replace(/(&endbold;)/g, '</span>')
-                        .replace(/(\n)/g, '<br>');
+                    chat.message = this.stylizeChat(chat.message);
 
                     // Check if chat is becoming too large and cleaning up first properties to not consume so much memory
                     // For battle chat we try to log a lot of stuff, so holding up to 500 lines
@@ -235,6 +229,8 @@ export default {
                     if (this.systemMessageTimeout) {
                         this.stopSystemPopup();
                     }
+
+                    chat.message = this.stylizeChat(chat.message);
 
                     // In case we receive an important flag, we need to show chat window and switch to system tab
                     if (chat.important) {
@@ -309,6 +305,15 @@ export default {
         }
     },
     methods: {
+        stylizeChat(message) {
+            // Update name variable with character name
+            return message.replace(/{name}/g, this.characterName)
+                .replace(/(&skill;)/g, '<span class="chat__input__message--skill">')
+                .replace(/(&endskill;)/g, '</span>')
+                .replace(/(&bold;)/g, '<span class="chat__input__message--bold">')
+                .replace(/(&endbold;)/g, '</span>')
+                .replace(/(\n)/g, '<br>');
+        },
         closeEmoticons() {
             this.showEmoticons = false;
         },

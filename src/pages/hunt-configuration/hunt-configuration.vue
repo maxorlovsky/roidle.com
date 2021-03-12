@@ -6,6 +6,8 @@
             <div class="hunt-configuration__explanation__text">
                 {{ $t('hunt.huntConfigExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigStartingPosition') }}</b> {{ $t('hunt.huntConfigStartingPositionExplanation') }}<br>
+                <b>{{ $t('hunt.huntConfigTargetPriority') }}</b> {{ $t('hunt.huntConfigTargetPriorityExplanation') }}<br>
+                <b>{{ $t('hunt.notInRangeAction') }}</b> {{ $t('hunt.notInRangeActionExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigEscapeSituation') }}</b> {{ $t('hunt.huntConfigEscapeSituationExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigAmmo') }}</b> {{ $t('hunt.huntConfigAmmoExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigHealingItems') }}</b> {{ $t('hunt.huntConfigHealingItemsExplanation') }}<br>
@@ -59,6 +61,68 @@
             </div>
         </div>
 
+        <div class="hunt-configuration__target-priority">
+            <p>{{ $t('hunt.targetPriority') }}</p>
+
+            <div :class="{'hunt-configuration__target-priority__item--selected': targetPriority === 'frontline'}"
+                class="hunt-configuration__target-priority__item hunt-configuration__target-priority__item--frontline"
+                @click="targetPriority = 'frontline'"
+            >
+                <avatar v-for="index in 3"
+                    :key="index"
+                    :head-style="characterHeadStyle"
+                    :head-color="characterHeadColor"
+                    :gender="characterGender"
+                    :just-head="true"
+                    job="Novice"
+                />
+            </div>
+
+            <div :class="{'hunt-configuration__target-priority__item--selected': targetPriority === 'midline'}"
+                class="hunt-configuration__target-priority__item hunt-configuration__target-priority__item--midline"
+                @click="targetPriority = 'midline'"
+            >
+                <avatar v-for="index in 3"
+                    :key="index"
+                    :head-style="characterHeadStyle"
+                    :head-color="characterHeadColor"
+                    :gender="characterGender"
+                    :just-head="true"
+                    job="Novice"
+                />
+            </div>
+
+            <div :class="{'hunt-configuration__target-priority__item--selected': targetPriority === 'backline'}"
+                class="hunt-configuration__target-priority__item hunt-configuration__target-priority__item--backline"
+                @click="targetPriority = 'backline'"
+            >
+                <avatar v-for="index in 3"
+                    :key="index"
+                    :head-style="characterHeadStyle"
+                    :head-color="characterHeadColor"
+                    :gender="characterGender"
+                    :just-head="true"
+                    job="Novice"
+                />
+            </div>
+        </div>
+
+        <div class="hunt-configuration__not-in-range-action">
+            <p>{{ $t('hunt.notInRangeAction') }}</p>
+
+            <div class="hunt-configuration__not-in-range-action__wrapper">
+                <div class="hunt-configuration__not-in-range-action__switcher">
+                    <VueToggles :value="notInRangeAction"
+                        :checked-text="$t('hunt.advance')"
+                        :unchecked-text="$t('hunt.idle')"
+                        width="110"
+                        checked-bg="#16b3fc"
+                        @click="notInRangeAction = !notInRangeAction"
+                    />
+                </div>
+            </div>
+        </div>
+
         <div class="hunt-configuration__escape">
             <p>{{ $t('hunt.huntConfigEscapeSituation') }}</p>
 
@@ -94,7 +158,7 @@
             </div>
         </div>
 
-        <div v-if="characterJobId === 3"
+        <div v-if="characterJobId === 3 || characterJobId === 6"
             class="hunt-configuration__ammo"
         >
             <p>{{ $t('hunt.huntConfigAmmo') }}</p>
@@ -341,6 +405,8 @@ const huntConfigurationPage = {
         return {
             loading: true,
             position: 'frontline',
+            targetPriority: 'frontline',
+            notInRangeAction: true,
             showHealingModal: false,
             huntHealingItems: [null, null, null],
             healingItemsList: [],
@@ -380,6 +446,12 @@ const huntConfigurationPage = {
             if (response.position) {
                 this.position = response.position;
             }
+
+            if (response.targetPriority) {
+                this.targetPriority = response.targetPriority;
+            }
+
+            this.notInRangeAction = response.advanceAction;
 
             if (response.itemToUseInHunt) {
                 this.huntHealingItems = response.itemToUseInHunt;
@@ -505,6 +577,8 @@ const huntConfigurationPage = {
 
             mo.socket.emit('updateHuntConfiguration', {
                 position: this.position,
+                targetPriority: this.targetPriority,
+                advanceAction: this.notInRangeAction,
                 itemToUseInHunt: itemToUseInHunt,
                 ammoToUseInHunt: ammoToUseInHunt,
                 skillsToUseInHunt: skillsToUseInHunt,

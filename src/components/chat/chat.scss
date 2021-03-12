@@ -10,7 +10,7 @@ $docked-menu: 60px;
     height: $chat-height;
     border-top-right-radius: 4px;
     transition: 0.1s;
-    z-index: 2;
+    z-index: 3;
 
     @media (min-width: $mobileSize) {
         max-width: 1000px;

@@ -1,0 +1,79 @@
+.hunt-battle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__vs {
+        width: 10%;
+    }
+
+    &__line {
+        min-width: 120px;
+    }
+
+    &__side {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 45%;
+
+        &--left {
+            justify-content: flex-end;
+        }
+
+        &--right {
+            justify-content: flex-start;
+        }
+    }
+}
+
+.hunt-battle-avatar {
+    height: 200px;
+
+    &__hp-text,
+    &__mp-text {
+        color: #fff;
+        font-size: 0.8rem;
+    }
+
+    &__bar {
+        width: 50%;
+        height: 5px;
+        background-color: #a00;
+        position: relative;
+        margin: 0 auto;
+
+        &__hp,
+        &__mp {
+            position: absolute;
+            height: 5px;
+        }
+
+        &__hp {
+            background-color: #080;
+        }
+
+        &__mp {
+            background-color: #08d;
+        }
+    }
+
+    &__name {
+        color: #fff;
+        font-size: 0.8rem;
+    }
+
+    .avatar {
+        &__head {
+            top: 17px;
+        }
+
+        &__headgear {
+            top: calc(50% - 67px);
+        }
+    }
+
+    &__mob-image {
+        padding: 0.4rem 0;
+    }
+}
