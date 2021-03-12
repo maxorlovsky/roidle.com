@@ -44,41 +44,25 @@ export default {
                 },
                 {
                     text: this.$t('tutorial.tutorialText5'),
-                    element: '.game__settings'
+                    element: '.game__additions'
                 },
                 {
                     text: this.$t('tutorial.tutorialText6'),
-                    element: '.game__hunt-config'
-                },
-                {
-                    text: this.$t('tutorial.tutorialText7'),
                     element: '.game__actions',
                     modal: 'modal--down'
                 },
                 {
-                    text: this.$t('tutorial.tutorialText8'),
+                    text: this.$t('tutorial.tutorialText7'),
                     element: '.chat',
                     modal: 'modal--up'
                 },
                 {
+                    text: this.$t('tutorial.tutorialText8'),
+                    element: '.docked-menu'
+                },
+                {
                     text: this.$t('tutorial.tutorialText9'),
-                    element: '.docked-menu__button--character'
-                },
-                {
-                    text: this.$t('tutorial.tutorialText10'),
-                    element: '.docked-menu__button--map'
-                },
-                {
-                    text: this.$t('tutorial.tutorialText11'),
-                    element: '.docked-menu__button--quests'
-                },
-                {
-                    text: this.$t('tutorial.tutorialText12'),
-                    element: '.docked-menu__button--inventory'
-                },
-                {
-                    text: this.$t('tutorial.tutorialText13'),
-                    element: '.docked-menu__button--quests'
+                    element: '.docked-menu'
                 }
             ],
             displayedText: '',
