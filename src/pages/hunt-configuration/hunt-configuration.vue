@@ -158,7 +158,7 @@
             </div>
         </div>
 
-        <div v-if="characterJobId === 3"
+        <div v-if="characterJobId === 3 || characterJobId === 6"
             class="hunt-configuration__ammo"
         >
             <p>{{ $t('hunt.huntConfigAmmo') }}</p>
