@@ -77,6 +77,11 @@ const craftPage = {
                     name: this.$t('craft.maces')
                 },
                 {
+                    itemId: 1701,
+                    type: 'bow',
+                    name: this.$t('craft.bows')
+                },
+                {
                     itemId: 2101,
                     type: 'shield',
                     name: this.$t('craft.shields')
@@ -100,6 +105,11 @@ const craftPage = {
                     itemId: 2501,
                     type: 'garment',
                     name: this.$t('craft.garments')
+                },
+                {
+                    itemId: 1750,
+                    type: 'arrow',
+                    name: this.$t('craft.arrows')
                 },
                 {
                     itemId: 501,

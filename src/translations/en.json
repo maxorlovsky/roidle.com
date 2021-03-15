@@ -150,7 +150,9 @@
         "bodyArmors": "Body Armors",
         "footwear": "Footwear",
         "garments": "Garments",
-        "healingPotions": "Healing Potions"
+        "healingPotions": "Healing Potions",
+        "bows": "Bows",
+        "arrows": "Arrows"
     },
     "map": {
         "dungeonActionTitle": "Dungeon",
