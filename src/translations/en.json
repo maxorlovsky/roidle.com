@@ -152,7 +152,8 @@
         "garments": "Garments",
         "healingPotions": "Healing Potions",
         "bows": "Bows",
-        "arrows": "Arrows"
+        "arrows": "Arrows",
+        "staffs": "Staffs"
     },
     "map": {
         "dungeonActionTitle": "Dungeon",
