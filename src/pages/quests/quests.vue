@@ -120,7 +120,8 @@ const questsPage = {
             currentDialogText: '',
             selectedMissionAction: 0,
             currentProgress: 0,
-            neededProgress: null
+            neededProgress: null,
+            completeQuestClose: false
         };
     },
     computed: {
@@ -134,10 +135,11 @@ const questsPage = {
     },
     mounted() {
         mo.socket.on('finishQuestComplete', () => {
+            // Creating a flag to close quest when load finishes
+            this.completeQuestClose = true;
+
             // Refetching quests
             mo.socket.emit('fetchQuests');
-
-            this.closeQuest();
         });
 
         mo.socket.on('fetchQuestsComplete', (response) => {
@@ -145,6 +147,11 @@ const questsPage = {
             this.buttonLoading = false;
 
             this.quests = response;
+
+            if (this.completeQuestClose) {
+                this.completeQuestClose = false;
+                this.closeQuest();
+            }
         });
 
         mo.socket.on('reviewQuestComplete', (response) => {
