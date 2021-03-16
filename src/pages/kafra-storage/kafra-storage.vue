@@ -129,6 +129,8 @@ import { mapGetters } from 'vuex';
 import { functions } from '@utils/functions.js';
 import { sort as inventorySort } from '@utils/inventory.js';
 
+let itemsStorage = [];
+
 const kafraStoragePage = {
     data() {
         return {
@@ -141,8 +143,6 @@ const kafraStoragePage = {
             displayAmountModal: false,
             amountModal: 0,
             amountModalMax: 0,
-            itemsInventory: [],
-            itemsStorage: [],
             storageSpace: 0,
             storageSpaceMax: 0,
             movingItem: null,
@@ -153,6 +153,7 @@ const kafraStoragePage = {
     computed: {
         ...mapGetters([
             'characterZeny',
+            'inventory',
             'serverUrl'
         ]),
 
@@ -175,10 +176,10 @@ const kafraStoragePage = {
         selectedMainTab() {
             if (this.selectedMainTab === 'withdraw') {
                 // Switching arrays
-                this.itemsTransfer = JSON.parse(JSON.stringify(this.itemsStorage));
+                this.itemsTransfer = JSON.parse(JSON.stringify(itemsStorage));
             } else {
                 // Switching arrays
-                this.itemsTransfer = JSON.parse(JSON.stringify(this.itemsInventory));
+                this.itemsTransfer = JSON.parse(JSON.stringify(this.inventory));
             }
         },
         amountModal() {
@@ -204,8 +205,8 @@ const kafraStoragePage = {
             this.loading = false;
             this.buttonLoading = false;
 
-            this.itemsInventory = response.itemsInventory;
-            this.itemsStorage = response.itemsStorage;
+            itemsStorage = JSON.parse(JSON.stringify(response.itemsStorage));
+
             this.storageSpace = response.itemsStorage.length;
             this.storageSpaceMax = response.storageSpaceMax;
             this.movingItem = null;
@@ -216,24 +217,14 @@ const kafraStoragePage = {
             }
 
             if (this.selectedMainTab === 'withdraw') {
-                this.itemsTransfer = JSON.parse(JSON.stringify(this.itemsStorage));
+                this.itemsTransfer = itemsStorage;
             } else {
-                this.itemsTransfer = JSON.parse(JSON.stringify(this.itemsInventory));
+                this.itemsTransfer = this.inventory;
             }
-        });
-
-        mo.socket.on('storageUpdateComplete', (response) => {
-            this.buttonLoading = false;
-
-            this.$store.commit('setInventoryData', {
-                inventory: response.inventory,
-                inventoryWeight: response.inventoryWeight
-            });
         });
     },
     beforeDestroy() {
         mo.socket.off('openKafraStorageComplete');
-        mo.socket.off('storageUpdateComplete');
     },
     methods: {
         // To check that item that is in inventory is not in storage, to be able to move it even in case storage is technically full
@@ -256,6 +247,11 @@ const kafraStoragePage = {
             mo.socket.emit('getItemInfo', params);
         },
         moveItem(item) {
+            // Block action if previous one is still in progress
+            if (this.buttonLoading) {
+                return false;
+            }
+
             const itemMoved = this.itemsTransfer.find((findItem) => findItem.id === item.id);
 
             this.buttonLoading = true;

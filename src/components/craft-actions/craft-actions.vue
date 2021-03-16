@@ -17,8 +17,7 @@
                     @click="$router.push('/repair')"
                 >{{ $t('craft.repairItems') }}</button>
 
-                <button :disabled="disableCraft"
-                    class="btn game-button"
+                <button class="btn game-button"
                     @click="$router.push('/craft')"
                 >{{ $t('craft.craftItems') }}</button>
             </div>
@@ -39,13 +38,11 @@ export default {
     name: 'craft-actions',
     data() {
         return {
-            showModal: false,
-            disableCraft: true
+            showModal: false
         };
     },
     computed: {
         ...mapGetters([
-            'characterSkills',
             'characterCrafting',
             'serverUrl',
             'gameModal'
@@ -58,16 +55,6 @@ export default {
             }
 
             this.showModal = false;
-        },
-        characterSkills: {
-            immediate: true,
-            handler() {
-                if (this.characterSkills[29] >= 1 || this.characterSkills[30] >= 1 || this.characterSkills[36] >= 1) {
-                    this.disableCraft = false;
-                } else {
-                    this.disableCraft = true;
-                }
-            }
         }
     },
     methods: {

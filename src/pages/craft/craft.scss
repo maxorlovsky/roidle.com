@@ -46,6 +46,10 @@
             width: calc(100% - 115px);
             font-size: 0.8rem;
 
+            &__name--not-available {
+                color: #b00;
+            }
+
             > div {
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -137,8 +141,8 @@
         }
 
         &__image {
-            min-width: 75px;
-            min-height: 100px;
+            width: 75px;
+            height: 100px;
         }
 
         &__info {
