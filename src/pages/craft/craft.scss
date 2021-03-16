@@ -46,6 +46,10 @@
             width: calc(100% - 115px);
             font-size: 0.8rem;
 
+            &__name--not-available {
+                color: #b00;
+            }
+
             > div {
                 overflow: hidden;
                 text-overflow: ellipsis;

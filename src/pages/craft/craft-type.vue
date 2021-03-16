@@ -18,7 +18,7 @@
                     <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                 </div>
                 <div class="craft__item__info">
-                    <div :class="{'craft__item__info__name--low-level': item.level > characterBaseLevel}"
+                    <div :class="{'craft__item__info__name--low-level': notAvailable(item)}"
                         class="craft__item__info__name"
                     >
                         {{ item.name }} <template v-if="item.outputAmount > 1">(x{{ item.outputAmount }}) </template>({{ $t('craft.requiredLevel') }}: {{ item.level }})
@@ -59,6 +59,7 @@ const craftType = {
     },
     computed: {
         ...mapGetters([
+            'characterSkills',
             'characterBaseLevel',
             'serverUrl'
         ])
@@ -80,6 +81,29 @@ const craftType = {
         mo.socket.off('getCraftItemsComplete');
     },
     methods: {
+        notAvailable(item) {
+            if (item.level > this.characterBaseLevel) {
+                return true;
+            }
+
+            if (item.category === 'weapon' && this.characterSkills[29] >= 1) {
+                return false;
+            }
+
+            if (item.category === 'armor' && this.characterSkills[30] >= 1) {
+                return false;
+            }
+
+            if (item.category === 'ammunition' && this.characterSkills[31] >= 1) {
+                return false;
+            }
+
+            if (item.category === 'alchemy' && this.characterSkills[36] >= 1) {
+                return false;
+            }
+
+            return true;
+        },
         cancelCraft() {
             mo.socket.emit('cancelCraft');
         },
