@@ -7,7 +7,7 @@
     p {
         margin: 0.2rem 0;
     }
-
+    
     &.prontera {
         background-image: url("#{$assets}/images/locations/prontera.jpg");
     }
@@ -30,6 +30,10 @@
 
     &.morocc {
         background-image: url("#{$assets}/images/locations/morocc.jpg");
+    }
+
+    &.geffen {
+        background-image: url("#{$assets}/images/locations/geffen.jpg");
     }
 
     &.morocc.ruins {
@@ -58,6 +62,14 @@
 
     &.payon.dungeon {
         background-image: url("#{$assets}/images/locations/payon-dungeon.jpg");
+    }
+
+    &.orc.village {
+        background-image: url("#{$assets}/images/locations/orc-village.jpg");
+    }
+
+    &.goblin.village {
+        background-image: url("#{$assets}/images/locations/goblin-village.jpg");
     }
 
     &__party {
