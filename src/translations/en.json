@@ -484,5 +484,10 @@
     "ship": {
         "actionTitle": "Ship Travel",
         "overweight": "Character is overweight to a point where you can not even aboard the ship. Discard some items, put them in storage, use them or give it to someone else."
+    },
+    "monstersLore": {
+        "monsterNotFound": "Monster not found",
+        "element": "Element",
+        "level": "Level"
     }
 }

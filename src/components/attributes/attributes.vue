@@ -1,20 +1,26 @@
 <template>
     <div class="attributes">
-        <div v-if="publicProfile"
+        <div v-if="publicProfile || monster"
             class="attributes__params attributes__params--full"
         >
             <span class="attributes__params__label">{{ $t('global.name') }}</span>
             <span class="attributes__params__value">{{ name }}</span>
         </div>
-        <div class="attributes__params">
+        <div v-if="!monster"
+            class="attributes__params"
+        >
             <span class="attributes__params__label">{{ $t('attributes.baseLevel') }}</span>
             <span class="attributes__params__value">{{ baseLevel }}</span>
         </div>
-        <div class="attributes__params">
+        <div v-if="!monster"
+            class="attributes__params"
+        >
             <span class="attributes__params__label">{{ $t('attributes.jobLevel') }}</span>
             <span class="attributes__params__value">{{ jobLevel }}</span>
         </div>
-        <div class="attributes__params">
+        <div v-if="!monster"
+            class="attributes__params"
+        >
             <span class="attributes__params__label">{{ $t('attributes.job') }}</span>
             <span class="attributes__params__value">{{ job }}</span>
         </div>
@@ -52,7 +58,7 @@
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.speed') }}</span>
-            <span class="attributes__params__value">+{{ speed }}%</span>
+            <span class="attributes__params__value">{{ speed }}</span>
         </div>
         <div class="attributes__params attributes__params--half">
             <span class="attributes__params__label">{{ $t('attributes.catk') }}</span>
@@ -62,11 +68,15 @@
             <span class="attributes__params__label">{{ $t('attributes.cdef') }}</span>
             <span class="attributes__params__value">{{ critDef }}%</span>
         </div>
-        <div class="attributes__params attributes__params--half">
+        <div v-if="!monster"
+            class="attributes__params attributes__params--half"
+        >
             <span class="attributes__params__label">{{ $t('global.party') }}</span>
             <span class="attributes__params__value">{{ partyName || '--' }}</span>
         </div>
-        <div class="attributes__params attributes__params--half">
+        <div v-if="!monster"
+            class="attributes__params attributes__params--half"
+        >
             <span class="attributes__params__label">{{ $t('global.guild') }}</span>
             <span class="attributes__params__value">{{ guildName || '--' }}</span>
         </div>
@@ -78,6 +88,10 @@ export default {
     name: 'stats-public',
     props: {
         publicProfile: {
+            type: Boolean,
+            default: false
+        },
+        monster: {
             type: Boolean,
             default: false
         },

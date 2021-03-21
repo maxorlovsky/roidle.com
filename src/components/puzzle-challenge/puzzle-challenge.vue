@@ -106,6 +106,9 @@ export default {
             }
         });
     },
+    beforeDestroy() {
+        mo.socket.off('challengeReplyComplete');
+    },
     methods: {
         submitChallenge() {
             this.buttonLoading = true;

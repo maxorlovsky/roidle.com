@@ -76,4 +76,5 @@ export default {
     restTimer: (state) => state.restTimer,
     publicItemInfo: (state) => state.publicItemInfo,
     gameModal: (state) => state.gameModal,
+    partyAvailableSkillsIds: (state) => state.partyAvailableSkillsIds,
 };

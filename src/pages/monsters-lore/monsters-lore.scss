@@ -1,0 +1,99 @@
+.monsters-lore {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("#{$assets}/images/character.jpg");
+
+    .monsters-lore-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 1rem 0 $chat-tabs-height-padding 0;
+        width: 100%;
+    }
+
+    .search-autocomplete {
+        width: 100%;
+        padding: 0 0.5rem;
+
+        &__dropdown {
+            left: 0.5rem;
+            width: calc(100% - 1rem);
+        }
+
+        .search-input {
+            margin: 0;
+        }
+    }
+
+    &__attributes {
+        @media (min-width: $mobileSize) {
+            width: calc(49% - 0.5rem);
+        }
+    }
+
+    &__monster {
+        width: 100%;
+        font-size: 1rem;
+
+        .attributes {
+            @media (min-width: $mobileSize) {
+                margin: 0.5rem;
+            }
+        }
+
+        &__wrapper {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+
+            @media (min-width: $mobileSize) {
+                justify-content: space-evenly;
+            }
+        }
+
+        &__image {
+            width: 100%;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        &__empty {
+            padding-top: 1rem;
+            font-style: italic;
+            text-align: center;
+        }
+    }
+
+    &__items {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    &__item {
+        width: 60px;
+        height: 60px;
+        position: relative;
+        border: 3px solid #808080;
+        border-radius: 8px;
+        margin: 1rem 0.5rem;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        img {
+            width: 60%;
+        }
+
+        &__drop-chance {
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            font-size: 0.8rem;
+            color: #fff;
+        }
+    }
+}

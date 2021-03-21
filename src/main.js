@@ -38,6 +38,7 @@ import './pages/players-shops/players-shops-view.vue';
 import './pages/players-shops/players-shops-manage.vue';
 import './pages/transmute-items/transmute-items.vue';
 import './pages/transmute-items/transmute-items-item.vue';
+import './pages/monsters-lore/monsters-lore.vue';
 
 // Router
 import router from './router.js';

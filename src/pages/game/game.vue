@@ -70,6 +70,13 @@
                 >
                     <i class="icon icon-transmutation" />
                 </router-link>
+
+                <router-link v-if="showMonsterLore"
+                    to="/monsters-lore"
+                    class="game__book game-icon"
+                >
+                    <i class="icon icon-book" />
+                </router-link>
             </div>
 
             <div v-if="showActions"
@@ -232,7 +239,7 @@ const gamePage = {
             craftAvailable: false,
             shipAvailable: false,
             enableXmas: false,
-            field: null,
+            field: null
         };
     },
     computed: {
@@ -252,8 +259,17 @@ const gamePage = {
             'characterTraveling',
             'characterResting',
             'serverUrl',
-            'gameModal'
-        ])
+            'gameModal',
+            'partyAvailableSkillsIds'
+        ]),
+
+        showMonsterLore() {
+            if (this.characterSkills[53] >= 1 || this.partyAvailableSkillsIds[53] >= 1) {
+                return true;
+            }
+
+            return false;
+        }
     },
     watch: {
         characterId: {
