@@ -365,7 +365,7 @@ export default {
             mo.socket.on('getPartyComplete', (response) => {
                 // In case  there is a party, we send a request to fetch data about party members, all of them
                 if (response) {
-                    this.$store.commit('setParty', response);
+                    this.$store.dispatch('setParty', response);
 
                     mo.socket.emit('getPartyMembers', response.members);
                 }

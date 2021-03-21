@@ -2,6 +2,23 @@
 import { functions } from '@utils/functions.js';
 
 export default {
+    setParty({ commit, state }, value) {
+        const combinePartySkillsIds = {};
+
+        for (const buffSkills of value.partyBuffsSkills) {
+            // Looping through skills, since it's not a normal array and can't use simple contact/destruct here
+            for (const [key, value] of Object.entries(buffSkills.skills)) {
+                // Check if skill is already in the list and is not lower than the value of current skill
+                if (!combinePartySkillsIds[key] || (combinePartySkillsIds[key] && combinePartySkillsIds[key] < value)) {
+                    combinePartySkillsIds[key] = value;
+                }
+            }
+        }
+
+        state.partyAvailableSkillsIds = combinePartySkillsIds;
+
+        commit('setParty', value);
+    },
     puzzleChallenge({ commit }, value) {
         // In case it's a party configuration is set for party travel with leader, user will see different
         if (value.puzzleGettingSolvedByLeader) {

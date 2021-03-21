@@ -182,5 +182,6 @@ export default {
     characterResting: false,
     restTimer: null,
     publicItemInfo: null,
-    gameModal: null
+    gameModal: null,
+    partyAvailableSkillsIds: {}
 };
