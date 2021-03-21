@@ -53,11 +53,11 @@
                         </div>
                         <div class="attributes__params attributes__params--half">
                             <span class="attributes__params__label">{{ $t('global.bexp') }}</span>
-                            <span class="attributes__params__value">{{ monsterData.stats.int }}</span>
+                            <span class="attributes__params__value">{{ monsterData.exp }}</span>
                         </div>
                         <div class="attributes__params attributes__params--half">
                             <span class="attributes__params__label">{{ $t('global.jexp') }}</span>
-                            <span class="attributes__params__value">{{ monsterData.stats.vit }}</span>
+                            <span class="attributes__params__value">{{ monsterData.jexp }}</span>
                         </div>
                     </div>
 
