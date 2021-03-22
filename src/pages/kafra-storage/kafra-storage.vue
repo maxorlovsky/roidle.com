@@ -159,9 +159,14 @@ const kafraStoragePage = {
 
         filteredItems() {
             let inv = this.itemsTransfer;
+            let itemName = 'itemName';
+
+            if (this.selectedMainTab === 'deposit') {
+                itemName = 'name';
+            }
 
             if (this.search) {
-                inv = inv.filter((item) => item.itemName.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+                inv = inv.filter((item) => item[itemName].toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             }
 
             inv = inventorySort(inv, this.sortBy);
