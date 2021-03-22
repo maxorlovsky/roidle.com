@@ -195,7 +195,9 @@ export default {
             return discount(60, this.characterSkills[25]);
         },
         resetPrice() {
-            return discount(this.characterBaseLevel * 1000, this.characterSkills[25]);
+            // TODO REMOVE
+            // Temporarily it's going to be 1z return discount(this.characterBaseLevel * 1000, this.characterSkills[25]);
+            return 1;
         }
     },
     watch: {
