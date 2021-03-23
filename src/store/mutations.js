@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    closeSkillInfo: (state) => {
+        state.closeSkillInfo = new Date();
+    },
     gameModal: (state, value) => {
         state.gameModal = value;
     },

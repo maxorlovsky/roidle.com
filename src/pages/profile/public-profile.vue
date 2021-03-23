@@ -1,10 +1,12 @@
 <template>
-    <section class="profile">
+    <section class="profile profile--public">
         <template v-if="loading">
             <loading />
         </template>
         <template v-else-if="characterNotFound">
-            <div class="profile__error">Character not found</div>
+            <div class="profile__error">
+                <div class="profile__error__wrapper">{{ $t('character.characterNotFound') }}</div>
+            </div>
         </template>
         <template v-else>
             <div class="equipment">
@@ -79,7 +81,7 @@
         <div class="profile__public-button">
             <a class="btn game-button"
                 href="/"
-            >Back to game</a>
+            >{{ $t('character.backToGame') }}</a>
         </div>
     </section>
 </template>

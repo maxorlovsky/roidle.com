@@ -11,6 +11,7 @@
                 <b>{{ $t('hunt.huntConfigEscapeSituation') }}</b> {{ $t('hunt.huntConfigEscapeSituationExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigAmmo') }}</b> {{ $t('hunt.huntConfigAmmoExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigHealingItems') }}</b> {{ $t('hunt.huntConfigHealingItemsExplanation') }}<br>
+                <b>{{ $t('hunt.huntConfigManaItems') }}</b> {{ $t('hunt.huntConfigManaItemsExplanation') }}<br>
                 <b>{{ $t('hunt.huntConfigActiveSkills') }}</b> {{ $t('hunt.huntConfigActiveSkillsExplanation') }}
             </div>
         </div>
@@ -123,6 +124,86 @@
             </div>
         </div>
 
+        <div class="hunt-configuration__healing">
+            <p>{{ $t('hunt.huntConfigHealingItems') }}</p>
+            <div class="healing-items">
+                <div v-for="(item, index) in huntHealingItems"
+                    :key="index"
+                    class="healing-items__item"
+                    @click="chooseHuntHealingItem(index)"
+                >
+                    <template v-if="item">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
+                        <span :class="{'healing-items__item__amount--not-enough': !calculateAvailableAmount(item.itemId)}"
+                            class="healing-items__item__amount"
+                        >
+                            {{ calculateAvailableAmount(item.itemId) }}
+                        </span>
+                    </template>
+                </div>
+            </div>
+
+            <p>{{ $t('hunt.huntConfigHealingWhen') }}</p>
+            <div class="healing-macro">
+                <select v-model="healingWhen">
+                    <option v-for="index in 9"
+                        :key="index"
+                        :value="10 * index"
+                    >&lt; {{ 10 * index }}% HP</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="hunt-configuration__healing">
+            <p>{{ $t('hunt.huntConfigManaItems') }}</p>
+            <div class="healing-items">
+                <div v-for="(item, index) in huntManaItems"
+                    :key="index"
+                    class="healing-items__item"
+                    @click="chooseHuntManaItem(index)"
+                >
+                    <template v-if="item">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
+                        <span :class="{'healing-items__item__amount--not-enough': !calculateAvailableAmount(item.itemId)}"
+                            class="healing-items__item__amount"
+                        >
+                            {{ calculateAvailableAmount(item.itemId) }}
+                        </span>
+                    </template>
+                </div>
+            </div>
+
+            <p>{{ $t('hunt.huntConfigManaWhen') }}</p>
+            <div class="healing-macro">
+                <select v-model="manaWhen">
+                    <option v-for="index in 9"
+                        :key="index"
+                        :value="10 * index"
+                    >&lt; {{ 10 * index }}% MP</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="hunt-configuration__skills">
+            <p>{{ $t('hunt.huntConfigActiveSkills') }}</p>
+            <div class="active-skills">
+                <div v-for="(item, index) in activeSkills"
+                    :key="index"
+                    class="active-skills__item"
+                    @click="chooseHuntActiveSkills(index)"
+                >
+                    <template v-if="item">
+                        <img :src="`${serverUrl}/dist/assets/images/skills/${item.id}.gif`">
+                        <span v-if="item.hpControl"
+                            class="active-skills__item__hp-control"
+                        >{{ item.hpControl }}%</span>
+
+                        <span class="active-skills__item__mp-control">{{ item.mpControl }}%</span>
+                    </template>
+                </div>
+            </div>
+        </div>
+
         <div class="hunt-configuration__escape">
             <p>{{ $t('hunt.huntConfigEscapeSituation') }}</p>
 
@@ -180,56 +261,6 @@
             </div>
         </div>
 
-        <div class="hunt-configuration__healing">
-            <p>{{ $t('hunt.huntConfigHealingItems') }}</p>
-            <div class="healing-items">
-                <div v-for="(item, index) in huntHealingItems"
-                    :key="index"
-                    class="healing-items__item"
-                    @click="chooseHuntHealingItem(index)"
-                >
-                    <template v-if="item">
-                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
-                        <span :class="{'healing-items__item__amount--not-enough': !calculateAvailableAmount(item.itemId)}"
-                            class="healing-items__item__amount"
-                        >
-                            {{ calculateAvailableAmount(item.itemId) }}
-                        </span>
-                    </template>
-                </div>
-            </div>
-
-            <p>{{ $t('hunt.huntConfigHealingWhen') }}</p>
-            <div class="healing-macro">
-                <select v-model="healingWhen">
-                    <option v-for="index in 9"
-                        :key="index"
-                        :value="10 * index"
-                    >&lt; {{ 10 * index }}% HP</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="hunt-configuration__skills">
-            <p>{{ $t('hunt.huntConfigActiveSkills') }}</p>
-            <div class="active-skills">
-                <div v-for="(item, index) in activeSkills"
-                    :key="index"
-                    class="active-skills__item"
-                    @click="chooseHuntActiveSkills(index)"
-                >
-                    <template v-if="item">
-                        <img :src="`${serverUrl}/dist/assets/images/skills/${item.id}.gif`">
-                        <span v-if="item.hpControl"
-                            class="active-skills__item__hp-control"
-                        >{{ item.hpControl }}%</span>
-
-                        <span class="active-skills__item__mp-control">{{ item.mpControl }}%</span>
-                    </template>
-                </div>
-            </div>
-        </div>
-
         <button :disabled="loading"
             :class="{'disabled': loading}"
             class="btn btn-lg game-button hunt-configuration__save"
@@ -237,85 +268,128 @@
         >{{ $t('global.save') }}</button>
 
         <div v-if="showHealingModal"
-            class="healing-modal modal"
+            class="items-modal modal"
         >
             <div v-if="huntHealingItems[healingSelectedSlot]"
-                class="healing-modal__item"
+                class="items-modal__item"
                 @click="removeHealingItem(healingSelectedSlot)"
             >
-                <div class="healing-modal__item__image">
+                <div class="items-modal__item__image">
                     <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
                 </div>
                 <div>
-                    <div class="healing-modal__item__name">{{ $t('hunt.removeItem') }}</div>
+                    <div class="items-modal__item__name">{{ $t('hunt.removeItem') }}</div>
                 </div>
             </div>
 
             <template v-if="healingItemsList && healingItemsList.length">
                 <div v-for="(item, index) in healingItemsList"
                     :key="index"
-                    class="healing-modal__item"
+                    class="items-modal__item"
                     @click="addHealingItem(item)"
                 >
-                    <div class="healing-modal__item__image">
+                    <div class="items-modal__item__image">
                         <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                     </div>
                     <div>
-                        <div class="healing-modal__item__name">{{ item.name }} ({{ item.amount }})</div>
-                        <div class="healing-modal__item__amount">{{ item.description }}</div>
+                        <div class="items-modal__item__name">{{ item.name }} ({{ item.amount }})</div>
+                        <div class="items-modal__item__amount">{{ item.description }}</div>
                     </div>
                 </div>
             </template>
             <div v-else
-                class="healing-modal__item"
+                class="items-modal__item"
             >
                 {{ $t('hunt.noHealingItems') }}
             </div>
 
-            <div class="modal__buttons healing-modal__buttons">
+            <div class="modal__buttons items-modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showHealingModal = false"
                 >{{ $t('global.cancel') }}</button>
             </div>
         </div>
 
-        <div v-if="showAmmoModal"
-            class="healing-modal modal"
+        <div v-if="showManaModal"
+            class="items-modal modal"
         >
-            <div v-if="huntAmmo[ammoSelectedSlot]"
-                class="healing-modal__item"
-                @click="removeAmmo(ammoSelectedSlot)"
+            <div v-if="huntManaItems[manaSelectedSlot]"
+                class="items-modal__item"
+                @click="removeManaItem(manaSelectedSlot)"
             >
-                <div class="healing-modal__item__image">
+                <div class="items-modal__item__image">
                     <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
                 </div>
                 <div>
-                    <div class="healing-modal__item__name">{{ $t('hunt.removeItem') }}</div>
+                    <div class="items-modal__item__name">{{ $t('hunt.removeItem') }}</div>
+                </div>
+            </div>
+
+            <template v-if="manaItemsList && manaItemsList.length">
+                <div v-for="(item, index) in manaItemsList"
+                    :key="index"
+                    class="items-modal__item"
+                    @click="addManaItem(item)"
+                >
+                    <div class="items-modal__item__image">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
+                    </div>
+                    <div>
+                        <div class="items-modal__item__name">{{ item.name }} ({{ item.amount }})</div>
+                        <div class="items-modal__item__amount">{{ item.description }}</div>
+                    </div>
+                </div>
+            </template>
+            <div v-else
+                class="items-modal__item"
+            >
+                {{ $t('hunt.noManaItems') }}
+            </div>
+
+            <div class="modal__buttons items-modal__buttons">
+                <button class="btn btn-secondary"
+                    @click="showManaModal = false"
+                >{{ $t('global.cancel') }}</button>
+            </div>
+        </div>
+
+        <div v-if="showAmmoModal"
+            class="items-modal modal"
+        >
+            <div v-if="huntAmmo[ammoSelectedSlot]"
+                class="items-modal__item"
+                @click="removeAmmo(ammoSelectedSlot)"
+            >
+                <div class="items-modal__item__image">
+                    <img :src="`${serverUrl}/dist/assets/images/cancel.png`">
+                </div>
+                <div>
+                    <div class="items-modal__item__name">{{ $t('hunt.removeItem') }}</div>
                 </div>
             </div>
 
             <template v-if="ammoList && ammoList.length">
                 <div v-for="(item, index) in ammoList"
                     :key="index"
-                    class="healing-modal__item"
+                    class="items-modal__item"
                     @click="addAmmo(item)"
                 >
-                    <div class="healing-modal__item__image">
+                    <div class="items-modal__item__image">
                         <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                     </div>
                     <div>
-                        <div class="healing-modal__item__name">{{ item.name }} ({{ item.amount }})</div>
-                        <div class="healing-modal__item__amount">{{ item.description }}</div>
+                        <div class="items-modal__item__name">{{ item.name }} ({{ item.amount }})</div>
+                        <div class="items-modal__item__amount">{{ item.description }}</div>
                     </div>
                 </div>
             </template>
             <div v-else
-                class="healing-modal__item"
+                class="items-modal__item"
             >
                 {{ $t('hunt.noAmmo') }}
             </div>
 
-            <div class="modal__buttons healing-modal__buttons">
+            <div class="modal__buttons items-modal__buttons">
                 <button class="btn btn-secondary"
                     @click="showAmmoModal = false"
                 >{{ $t('global.cancel') }}</button>
@@ -389,6 +463,8 @@
 </template>
 
 <script>
+// TODO: A lot of duplicated code in here that can be optimized
+
 // 3rd party libs
 import { mapGetters } from 'vuex';
 import VueToggles from 'vue-toggles';
@@ -412,6 +488,11 @@ const huntConfigurationPage = {
             healingItemsList: [],
             healingSelectedSlot: null,
             healingWhen: '10',
+            showManaModal: false,
+            huntManaItems: [null, null, null],
+            manaItemsList: [],
+            manaSelectedSlot: null,
+            manaWhen: '10',
             showActiveSkillsModal: false,
             activeSkills: [null, null, null, null, null],
             activeSkillsList: [],
@@ -457,6 +538,10 @@ const huntConfigurationPage = {
                 this.huntHealingItems = response.itemToUseInHunt;
             }
 
+            if (response.manaItemToUseInHunt) {
+                this.huntManaItems = response.manaItemToUseInHunt;
+            }
+
             if (response.ammoToUseInHunt) {
                 this.huntAmmo = response.ammoToUseInHunt;
             }
@@ -467,6 +552,10 @@ const huntConfigurationPage = {
 
             if (response.healingHp) {
                 this.healingWhen = response.healingHp;
+            }
+
+            if (response.healingMp) {
+                this.manaWhen = response.healingMp;
             }
 
             if (response.escapeOn) {
@@ -486,6 +575,10 @@ const huntConfigurationPage = {
 
         mo.socket.on('getHealingItemsComplete', (response) => {
             this.healingItemsList = response.items;
+        });
+
+        mo.socket.on('getManaItemsComplete', (response) => {
+            this.manaItemsList = response.items;
         });
 
         mo.socket.on('getSkillsDataComplete', (response) => {
@@ -510,7 +603,10 @@ const huntConfigurationPage = {
         // Trigger to fetch healing items
         mo.socket.emit('getHealingItems');
 
-        // Trigger to fetch healing items
+        // Trigger to fetch mana restore items
+        mo.socket.emit('getManaItems');
+
+        // Trigger to fetch arrows
         mo.socket.emit('getAmmoItems');
 
         // Trigger to fetch already existing user config
@@ -519,6 +615,7 @@ const huntConfigurationPage = {
     beforeDestroy() {
         mo.socket.off('getAmmoItemsComplete');
         mo.socket.off('getHealingItemsComplete');
+        mo.socket.off('getManaItemsComplete');
         mo.socket.off('getSkillsDataComplete');
     },
     methods: {
@@ -544,6 +641,17 @@ const huntConfigurationPage = {
                     itemToUseInHunt.push({
                         itemId: this.huntHealingItems[i].itemId,
                         amount: this.huntHealingItems[i].amount
+                    });
+                }
+            }
+
+            const manaItemToUseInHunt = [];
+
+            for (let i = 0; i <= 2; ++i) {
+                if (this.huntManaItems[i]) {
+                    manaItemToUseInHunt.push({
+                        itemId: this.huntManaItems[i].itemId,
+                        amount: this.huntManaItems[i].amount
                     });
                 }
             }
@@ -580,9 +688,11 @@ const huntConfigurationPage = {
                 targetPriority: this.targetPriority,
                 advanceAction: this.notInRangeAction,
                 itemToUseInHunt: itemToUseInHunt,
+                manaItemToUseInHunt: manaItemToUseInHunt,
                 ammoToUseInHunt: ammoToUseInHunt,
                 skillsToUseInHunt: skillsToUseInHunt,
                 healingHp: parseInt(this.healingWhen),
+                healingMp: parseInt(this.manaWhen),
                 escapeOn: this.escapeOn,
                 escapeHp: parseInt(this.escapeWhenHp)
             });
@@ -590,6 +700,10 @@ const huntConfigurationPage = {
         chooseHuntHealingItem(index) {
             this.showHealingModal = true;
             this.healingSelectedSlot = index;
+
+            this.showManaModal = false;
+            this.showAmmoModal = false;
+            this.showActiveSkillsModal = false;
         },
         addHealingItem(item) {
             let i = 0;
@@ -612,9 +726,42 @@ const huntConfigurationPage = {
             this.huntHealingItems[slot] = null;
             this.showHealingModal = false;
         },
+        chooseHuntManaItem(index) {
+            this.showManaModal = true;
+            this.manaSelectedSlot = index;
+
+            this.showHealingModal = false;
+            this.showAmmoModal = false;
+            this.showActiveSkillsModal = false;
+        },
+        addManaItem(item) {
+            let i = 0;
+
+            // Check if same item is set in other slots and remove it
+            for (const healItem of this.huntManaItems) {
+                if (healItem && healItem.itemId === item.itemId) {
+                    this.huntManaItems[i] = null;
+                }
+
+                i++;
+            }
+
+            // Add item
+            this.huntManaItems[this.manaSelectedSlot] = item;
+            this.showManaModal = false;
+        },
+        removeManaItem(slot) {
+            // Cleaning up the slot
+            this.huntManaItems[slot] = null;
+            this.showManaModal = false;
+        },
         chooseHuntAmmo(index) {
             this.showAmmoModal = true;
             this.ammoSelectedSlot = index;
+
+            this.showManaModal = false;
+            this.showHealingModal = false;
+            this.showActiveSkillsModal = false;
         },
         addAmmo(item) {
             let i = 0;
@@ -640,6 +787,10 @@ const huntConfigurationPage = {
         chooseHuntActiveSkills(index) {
             this.showActiveSkillsModal = true;
             this.skillSelectedSlot = index;
+
+            this.showManaModal = false;
+            this.showHealingModal = false;
+            this.showAmmoModal = false;
         },
         addActiveSkill(item) {
             this.activeSkills[this.skillSelectedSlot] = {

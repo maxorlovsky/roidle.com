@@ -1,48 +1,50 @@
 <template>
     <div class="stats">
-        <div v-for="stat in statsNames"
-            :key="stat"
-            class="stats__stat"
-        >
-            <div class="stats__icon game-icon"
-                @click="showStatInfo(stat)"
+        <div class="stats__wrapper">
+            <div v-for="stat in statsNames"
+                :key="stat"
+                class="stats__stat"
             >
-                <img :src="`${serverUrl}/dist/assets/images/${stat}.png`">
-            </div>
-            <span class="stats__label"
-                @click="showStatInfo(stat)"
-            >{{ stat }}:</span>
-            <div class="stats__numbers">
-                <span class="stats__numbers__base">{{ stats[stat] }}</span>
-                <span class="stats__numbers__bonus">+{{ bonusStats[stat] }}</span>
-                <span class="stats__numbers__cost">
-                    <span :class="{'stats__numbers__arrow--disabled': tempStatusPoints < statCost[stat]}"
-                        class="stats__numbers__arrow"
-                    >></span> {{ statCost[stat] }}
-                </span>
-            </div>
-            <div :class="{'stats__incdec--disabled': stats[stat] === 1 || stats[stat] === characterStats[stat]}"
-                class="stats__incdec"
-                @click="decreaseTempStat(stat)"
-            >-</div>
-            <div :class="{'stats__incdec--disabled': stats[stat] === 99 || tempStatusPoints < statCost[stat]}"
-                class="stats__incdec"
-                @click="increaseTempStat(stat)"
-            >+</div>
-        </div>
-
-        <div class="stats__bottom">
-            <div class="stats__points">
-                <span class="stats__points__label">{{ $t('stats.statusPoints') }}:</span>
-                <span :class="{'stats__points__points--empty': tempStatusPoints === 0 }"
-                    class="stats__points__points"
-                >{{ tempStatusPoints }}</span>
+                <div class="stats__icon game-icon"
+                    @click="showStatInfo(stat)"
+                >
+                    <img :src="`${serverUrl}/dist/assets/images/${stat}.png`">
+                </div>
+                <span class="stats__label"
+                    @click="showStatInfo(stat)"
+                >{{ stat }}:</span>
+                <div class="stats__numbers">
+                    <span class="stats__numbers__base">{{ stats[stat] }}</span>
+                    <span class="stats__numbers__bonus">+{{ bonusStats[stat] }}</span>
+                    <span class="stats__numbers__cost">
+                        <span :class="{'stats__numbers__arrow--disabled': tempStatusPoints < statCost[stat]}"
+                            class="stats__numbers__arrow"
+                        >></span> {{ statCost[stat] }}
+                    </span>
+                </div>
+                <div :class="{'stats__incdec--disabled': stats[stat] === 1 || stats[stat] === characterStats[stat]}"
+                    class="stats__incdec"
+                    @click="decreaseTempStat(stat)"
+                >-</div>
+                <div :class="{'stats__incdec--disabled': stats[stat] === 99 || tempStatusPoints < statCost[stat]}"
+                    class="stats__incdec"
+                    @click="increaseTempStat(stat)"
+                >+</div>
             </div>
 
-            <button :disabled="tempStatusPoints === characterStatusPoints"
-                class="btn game-button stats__apply"
-                @click="saveStats()"
-            >{{ $t('global.save') }}</button>
+            <div class="stats__bottom">
+                <div class="stats__points">
+                    <span class="stats__points__label">{{ $t('stats.statusPoints') }}:</span>
+                    <span :class="{'stats__points__points--empty': tempStatusPoints === 0 }"
+                        class="stats__points__points"
+                    >{{ tempStatusPoints }}</span>
+                </div>
+
+                <button :disabled="tempStatusPoints === characterStatusPoints"
+                    class="btn game-button stats__apply"
+                    @click="saveStats()"
+                >{{ $t('global.save') }}</button>
+            </div>
         </div>
 
         <attributes :patk="attributes.patk"

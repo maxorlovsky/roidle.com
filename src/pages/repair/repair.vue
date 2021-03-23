@@ -171,10 +171,18 @@ const repairPage = {
             mo.socket.emit('repairItems', itemsIds, equipmentIds);
         },
         showItemInfo(item) {
-            mo.socket.emit('getItemInfo', {
+            const itemInfo = {
                 itemId: item.itemId,
                 inventoryId: item.id
-            });
+            };
+
+            if (item.equipment) {
+                delete (itemInfo.inventoryId);
+
+                itemInfo.equipmentId = item.id;
+            }
+
+            mo.socket.emit('getItemInfo', itemInfo);
         },
         addItem(item) {
             item.added = true;

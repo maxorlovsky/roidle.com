@@ -28,7 +28,13 @@
 
     &__attributes {
         @media (min-width: $mobileSize) {
-            width: calc(49% - 0.5rem);
+            width: 33%;
+        }
+    }
+
+    &__stats-attributes {
+        @media (min-width: $mobileSize) {
+            width: 70%;
         }
     }
 

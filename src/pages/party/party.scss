@@ -4,7 +4,6 @@
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
     position: relative;
-    padding-bottom: $chat-tabs-height-padding;
 
     &__tabs {
         width: 100%;
@@ -90,6 +89,7 @@
             margin-top: 1rem;
             text-align: center;
             width: 100%;
+            margin-bottom: $chat-tabs-height-padding;
         }
 
         &__error {
@@ -116,6 +116,10 @@
             flex-wrap: wrap;
             width: 100%;
 
+            @media (min-width: $mobileSize) {
+                justify-content: space-between;
+            }
+
             &__member {
                 color: #000;
                 background-color: rgba(255, 255, 255, 0.8);
@@ -127,6 +131,15 @@
                 display: flex;
                 align-items: center;
                 flex-wrap: wrap;
+
+                @media (min-width: $mobileSize) {
+                    width: 49%;
+
+                    &:nth-child(2n) {
+                        margin-left: 1%;
+                        margin-top: 0;
+                    }
+                }
 
                 &:first-child {
                     margin-top: 0;
