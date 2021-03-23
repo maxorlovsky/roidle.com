@@ -4,7 +4,6 @@
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
     position: relative;
-    padding-bottom: $chat-tabs-height-padding;
 
     &__tabs {
         width: 100%;
@@ -90,6 +89,7 @@
             margin-top: 1rem;
             text-align: center;
             width: 100%;
+            margin-bottom: $chat-tabs-height-padding;
         }
 
         &__error {

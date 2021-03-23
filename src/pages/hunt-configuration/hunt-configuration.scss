@@ -3,9 +3,13 @@
     background-repeat: no-repeat;
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    display: block;
+
+    @media (min-width: $mobileSize) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
 
     &__explanation,
     &__position,

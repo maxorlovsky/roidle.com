@@ -3,10 +3,14 @@
     background-repeat: no-repeat;
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: block;
     
+    @media (min-width: $mobileSize) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
     .equipment {
         display: flex;
         width: 100%;

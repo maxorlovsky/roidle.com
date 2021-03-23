@@ -32,6 +32,8 @@
                 </ul>
             </div>
 
+            <loading v-if="loading" />
+
             <div v-if="showMonster"
                 class="monsters-lore__monster"
             >
@@ -129,13 +131,16 @@ import { mapGetters } from 'vuex';
 
 // Components
 import attributes from '@components/attributes/attributes.vue';
+import loading from '@components/loading/loading.vue';
 
 const monstersLorePage = {
     components: {
-        attributes
+        attributes,
+        loading
     },
     data() {
         return {
+            loading: false,
             buttonLoading: false,
             monsterData: null,
             showMonster: false,
@@ -178,6 +183,7 @@ const monstersLorePage = {
             this.showMonster = true;
             this.monsterData = response;
             this.buttonLoading = false;
+            this.loading = false;
         });
 
         mo.socket.emit('getMonsterNames');
@@ -204,6 +210,7 @@ const monstersLorePage = {
             this.open = false;
 
             this.buttonLoading = true;
+            this.loading = true;
 
             mo.socket.emit('getEncyclopediaMonster', this.search);
         },
