@@ -18,22 +18,41 @@
         <div v-else
             class="craft__wrapper"
         >
-            <div v-for="(item, index) in craftableItems"
-                :key="index"
-                class="craft__item"
-            >
-                <div class="craft__item__image-amount">
-                    <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
-                </div>
-                <div class="craft__item__info">
-                    <div :class="{'craft__item__info__name--not-available': notAvailable(item.category)}"
-                        class="craft__item__info__name"
-                    >{{ item.name }}</div>
-                </div>
-                <router-link :to="`/craft-type/${item.type}`"
-                    class="craft__item__move"
+            <div class="craft--mobile">
+                <div v-for="(item, index) in craftableItems"
+                    :key="index"
+                    class="craft__item"
                 >
-                    &gt;
+                    <div class="craft__item__image-amount">
+                        <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
+                    </div>
+                    <div class="craft__item__info">
+                        <div :class="{'craft__item__info__name--not-available': notAvailable(item.category)}"
+                            class="craft__item__info__name"
+                        >{{ item.name }}</div>
+                    </div>
+                    <router-link :to="`/craft-type/${item.type}`"
+                        class="craft__item__move"
+                    >
+                        &gt;
+                    </router-link>
+                </div>
+            </div>
+            <div class="craft--desktop">
+                <p class="craft__title">{{ $t('craft.craftItems') }}</p>
+
+                <router-link v-for="(item, index) in craftableItems"
+                    :key="index"
+                    :to="`/craft-type/${item.type}`"
+                    :class="{'craft__item--not-available': notAvailable(item.category)}"
+                    class="craft__item"
+                >
+                    <div class="craft__item__image-amount">
+                        <img :src="`${serverUrl}/dist/assets/images/items/large/${item.itemId}.gif`">
+                    </div>
+                    <div class="craft__item__info">
+                        <div class="craft__item__info__name">{{ item.name }}</div>
+                    </div>
                 </router-link>
             </div>
         </div>
