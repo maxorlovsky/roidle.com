@@ -212,12 +212,16 @@
     }
 
     &__escape {
+        @media (min-width: $mobileSize) {
+            width: 49%;
+        }
+
         &__wrapper {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            width: 90%;
+            width: 100%;
             max-width: 400px;
             margin: 0 auto 1rem auto;
         }
@@ -336,7 +340,7 @@
         }
     }
 
-    .healing-modal {
+    .items-modal {
         width: 90%;
         max-width: 425px;
         padding: 0;
@@ -376,7 +380,7 @@
         .ammo {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
+            justify-content: center;
             width: 100%;
 
             &__item {
@@ -389,6 +393,11 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                margin-right: 1rem;
+
+                &:last-child {
+                    margin-right: 0;
+                }
 
                 img {
                     width: 60%;
