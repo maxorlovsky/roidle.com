@@ -46,6 +46,14 @@
         align-items: center;
         flex-wrap: wrap;
 
+        @media (min-width: $mobileSize) {
+            width: 49%;
+
+            &:nth-child(2n) {
+                margin-left: 1%;
+            }
+        }
+
         &__info {
             width: 50%;
             font-size: 1rem;
@@ -62,17 +70,10 @@
 
             .btn {
                 margin-bottom: 0.5rem;
-
-                @media (min-width: $mobileSize) {
-                    margin-bottom: 0;
-                }
+                width: 100%;
 
                 &:last-child {
                     margin-bottom: 0;
-
-                    @media (min-width: $mobileSize) {
-                        margin-left: 1rem;
-                    }
                 }
             }
         }

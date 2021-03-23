@@ -77,4 +77,5 @@ export default {
     publicItemInfo: (state) => state.publicItemInfo,
     gameModal: (state) => state.gameModal,
     partyAvailableSkillsIds: (state) => state.partyAvailableSkillsIds,
+    closeSkillInfo: (state) => state.closeSkillInfo,
 };

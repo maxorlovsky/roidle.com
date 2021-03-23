@@ -359,8 +359,6 @@
         "tutorialText9": "That is it. IMPORTANT! You should start with quests though, as there it explains you how to start playing in a bit of a narrative way. Also you will receive your first weapon! Good luck and thank you for playing!"
     },
     "character": {
-        "firstJob": "1st job",
-        "secondJob": "2nd job",
         "requirements": "Requirements",
         "maxLevel": "Max Level",
         "manaCost": "Mana Cost",

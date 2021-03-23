@@ -22,6 +22,7 @@
             <bgm v-if="resetComponent && enableBgm" />
 
             <item-info />
+            <skill-info />
 
             <tutorial v-if="showTutorial" />
             <tutorial-blocker v-if="showTutorial" />
@@ -87,6 +88,7 @@ import dockedMenu from '@components/docked-menu/docked-menu.vue';
 import loading from '@components/loading/loading.vue';
 import levelUp from '@components/level-up/level-up.vue';
 import itemInfo from '@components/item-info/item-info.vue';
+import skillInfo from '@components/skill-info/skill-info.vue';
 import tutorial from '@components/tutorial/tutorial.vue';
 import tutorialBlocker from '@components/tutorial/tutorial-blocker.vue';
 
@@ -100,6 +102,7 @@ export default {
         loading,
         levelUp,
         itemInfo,
+        skillInfo,
         tutorial,
         tutorialBlocker,
     },

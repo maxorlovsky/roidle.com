@@ -105,6 +105,8 @@
             </div>
         </div>
 
+        <skills-list class="character__skills-list" />
+
         <stats />
 
         <button class="btn game-button btn-lg skills-button"
@@ -120,11 +122,13 @@ import { mapGetters } from 'vuex';
 // Components
 import avatar from '../../components/avatar/avatar.vue';
 import stats from '../../components/stats/stats.vue';
+import skillsList from '@components/skills-list/skills-list.vue';
 
 const characterPage = {
     components: {
         avatar,
-        stats
+        stats,
+        skillsList
     },
     data() {
         return {
@@ -223,6 +227,9 @@ const characterPage = {
     },
     beforeDestroy() {
         mo.socket.off('getEquipableItemsComplete');
+
+        // On exiting of the page closing skill info
+        this.$store.commit('closeSkillInfo');
     },
     methods: {
         showItemInfo(item) {

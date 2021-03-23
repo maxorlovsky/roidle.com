@@ -3,6 +3,9 @@
     background-repeat: no-repeat;
     background-position: center;
     background-image: url("#{$assets}/images/character.jpg");
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 
     &__explanation,
     &__position,
@@ -46,6 +49,10 @@
         align-items: center;
         width: 100%;
         padding-bottom: 1rem;
+
+        @media (min-width: $mobileSize) {
+            width: 31%;
+        }
 
         &__item {
             position: relative;
@@ -116,6 +123,10 @@
         width: 100%;
         padding-bottom: 1rem;
 
+        @media (min-width: $mobileSize) {
+            width: 31%;
+        }
+
         &__item {
             position: relative;
             width: 60px;
@@ -179,6 +190,10 @@
     }
 
     &__not-in-range-action {
+        @media (min-width: $mobileSize) {
+            width: 31%;
+        }
+
         &__wrapper {
             display: flex;
             flex-wrap: wrap;
@@ -241,11 +256,19 @@
     }
 
     &__healing {
+        @media (min-width: $mobileSize) {
+            width: 49%;
+        }
+
         .healing-items {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
             width: 100%;
+
+            @media (min-width: $mobileSize) {
+                justify-content: center;
+            }
 
             &__item {
                 width: 60px;
@@ -257,6 +280,14 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                @media (min-width: $mobileSize) {
+                    margin-right: 1rem;
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
 
                 img {
                     width: 60%;
@@ -280,7 +311,7 @@
                 width: 30px;
                 height: 30px;
                 color: #fff;
-                background-color: rgb(22, 179, 252);
+                background-color: $mainColor;
                 text-align: center;
                 font-size: 1.25rem;
                 margin-left: 1rem;
@@ -371,11 +402,19 @@
     }
 
     &__skills {
+        @media (min-width: $mobileSize) {
+            width: 49%;
+        }
+
         .active-skills {
             display: flex;
             justify-content: space-around;
             margin-bottom: 1rem;
             width: 100%;
+
+            @media (min-width: $mobileSize) {
+                justify-content: center;
+            }
     
             &__item {
                 width: 60px;
@@ -387,6 +426,14 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                @media (min-width: $mobileSize) {
+                    margin-right: 1rem;
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
     
                 img {
                     width: 60%;
@@ -411,7 +458,7 @@
                 width: 30px;
                 height: 30px;
                 color: #fff;
-                background-color: rgb(22, 179, 252);
+                background-color: $mainColor;
                 text-align: center;
                 font-size: 1.25rem;
                 margin-left: 1rem;

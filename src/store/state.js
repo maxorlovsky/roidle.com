@@ -183,5 +183,6 @@ export default {
     restTimer: null,
     publicItemInfo: null,
     gameModal: null,
-    partyAvailableSkillsIds: {}
+    partyAvailableSkillsIds: {},
+    closeSkillInfo: null,
 };

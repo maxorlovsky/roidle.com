@@ -88,7 +88,8 @@
                         </div>
                     </div>
 
-                    <attributes :monster="true"
+                    <attributes class="monsters-lore__stats-attributes"
+                        :monster="true"
                         :name="monsterData.name"
                         :patk="monsterData.attributes.patk"
                         :matk="monsterData.attributes.matk"
