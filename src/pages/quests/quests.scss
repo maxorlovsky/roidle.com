@@ -107,6 +107,7 @@
         width: calc(100% - 2rem);
         height: 100%;
         z-index: 3;
+        position: relative;
 
         &__info {
             display: flex;
