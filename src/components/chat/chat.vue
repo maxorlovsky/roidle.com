@@ -32,6 +32,10 @@
                     :key="index"
                     :class="[`chat__body__${chat.type}`, { 'chat__body__self': chat.self }]"
                 >
+                    <span v-if="chat.timestamp"
+                        class="chat__body__chat__timestamp"
+                    >({{ chat.timestamp }})</span>
+
                     <span v-if="chat.type === 'private'"
                         class="chat__body__chat--type--message"
                         @click="sendPrivateMessage(`${chat.character}`)"
@@ -40,6 +44,7 @@
                         class="chat__body__chat--type--message"
                         @click="sendPrivateMessage(`#${chat.type}`)"
                     >[ #{{ chat.type }} ]</span>
+
                     <span @click="openModal(chat.character)">{{ chat.character }}</span>:
                     <span class="chat__body__message"
                         v-html="chat.message"
@@ -147,6 +152,7 @@
 <script>
 // 3rd party libs
 import { mapGetters } from 'vuex';
+import { format as dateFormat } from 'date-fns';
 
 // Utilities
 import { functions } from '@utils/functions.js';
@@ -280,6 +286,7 @@ export default {
                         to: chat.to ? chat.to : null,
                         character: chat.character,
                         message: chat.message,
+                        timestamp: chat.timestamp ? dateFormat(new Date(chat.timestamp), 'dd MMM HH:mm:ss') : null,
                         self: this.characterName === chat.character
                     });
                 }
