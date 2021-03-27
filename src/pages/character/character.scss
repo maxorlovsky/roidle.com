@@ -20,6 +20,7 @@
 
         @media (min-width: $mobileSize) {
             width: 49%;
+            order: 1;
             border-right: 1px solid $mainColor;
             border-bottom: 1px solid $mainColor;
         }
@@ -172,25 +173,37 @@
     }
 
     @media (min-width: $mobileSize) {
+        .attributes {
+            order: 2;
+            width: 49%;
+            border-top: 0;
+            align-items: center;
+            height: 250px;
+            border-left: 1px solid $mainColor;
+        }
+
         .stats {
-            border-top: 1px solid $mainColor;
             padding-bottom: 50px;
+            order: 3;
+            width: 49%;
+            border-right: 1px solid $mainColor;
+
+            &__wrapper {
+                width: 100%;
+            }
         }
 
         .skills-list {
             width: 49%;
             margin-left: 1%;
-            overflow-y: auto;
-            height: 250px;
+            order: 4;
             border-left: 1px solid $mainColor;
-            border-bottom: 1px solid $mainColor;
-
-            &__skill {
-                justify-content: center;
-            }
+            border-top: 1px solid $mainColor;
+            max-height: 590px;
+            overflow-y: auto;
 
             &__bottom {
-                padding: 0.5rem 0 1.5rem 0;
+                padding: 0.5rem 0 50px 0;
             }
         }
     }

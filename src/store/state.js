@@ -185,4 +185,25 @@ export default {
     gameModal: null,
     partyAvailableSkillsIds: {},
     closeSkillInfo: null,
+    attributesComponents: {
+        patk: 0,
+        matk: 0,
+        pdef: 0,
+        mdef: 0,
+        hit: 0,
+        eva: 0,
+        speed: 0,
+        crit: 0,
+        critDef: 0,
+        maxHp: 0,
+        maxMp: 0,
+        publicProfile: false,
+        monster: false,
+        name: '',
+        job: '',
+        baseLevel: 0,
+        jobLevel: 0,
+        partyName: '--',
+        guildName: '--'
+    }
 };

@@ -1,8 +1,8 @@
 .skills-list {
     width: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
 
     &__wrapper {
-        background-color: rgba(255, 255, 255, 0.8);
         font-size: 1rem;
         padding: 1.25rem;
     }
@@ -50,7 +50,6 @@
         display: flex;
         align-items: center;
         padding: 0.5rem 0 2.5rem 0;
-        background-color: rgba(255, 255, 255, 0.8);
     }
 
     &__points {

@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    setAttributesComponents: (state, value) => {
+        state.attributesComponents = value;
+    },
     closeSkillInfo: (state) => {
         state.closeSkillInfo = new Date();
     },

@@ -1,171 +1,99 @@
 <template>
     <div class="attributes">
-        <div v-if="publicProfile || monster"
+        <div v-if="attributesComponents.publicProfile || attributesComponents.monster"
             class="attributes__params attributes__params--full"
         >
             <span class="attributes__params__label">{{ $t('global.name') }}</span>
-            <span class="attributes__params__value">{{ name }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.name }}</span>
         </div>
-        <div v-if="!monster"
+        <div v-if="!attributesComponents.monster"
             class="attributes__params"
         >
             <span class="attributes__params__label">{{ $t('attributes.baseLevel') }}</span>
-            <span class="attributes__params__value">{{ baseLevel }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.baseLevel }}</span>
         </div>
-        <div v-if="!monster"
+        <div v-if="!attributesComponents.monster"
             class="attributes__params"
         >
             <span class="attributes__params__label">{{ $t('attributes.jobLevel') }}</span>
-            <span class="attributes__params__value">{{ jobLevel }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.jobLevel }}</span>
         </div>
-        <div v-if="!monster"
+        <div v-if="!attributesComponents.monster"
             class="attributes__params"
         >
             <span class="attributes__params__label">{{ $t('attributes.job') }}</span>
-            <span class="attributes__params__value">{{ job }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.job }}</span>
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.mhp') }}</span>
-            <span class="attributes__params__value">{{ maxHp }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.maxHp }}</span>
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.mmp') }}</span>
-            <span class="attributes__params__value">{{ maxMp }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.maxMp }}</span>
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.patk') }}</span>
-            <span class="attributes__params__value">{{ patk }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.patk }}</span>
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.matk') }}</span>
-            <span class="attributes__params__value">{{ matk }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.matk }}</span>
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.pdef') }}</span>
-            <span class="attributes__params__value">{{ pdef }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.pdef }}</span>
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.mdef') }}</span>
-            <span class="attributes__params__value">{{ mdef }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.mdef }}</span>
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.hit') }}</span>
-            <span class="attributes__params__value">{{ hit }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.hit }}</span>
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.eva') }}</span>
-            <span class="attributes__params__value">{{ eva }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.eva }}</span>
         </div>
         <div class="attributes__params">
             <span class="attributes__params__label">{{ $t('attributes.speed') }}</span>
-            <span class="attributes__params__value">{{ speed }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.speed }}</span>
         </div>
         <div class="attributes__params attributes__params--half">
             <span class="attributes__params__label">{{ $t('attributes.catk') }}</span>
-            <span class="attributes__params__value">{{ crit }}%</span>
+            <span class="attributes__params__value">{{ attributesComponents.crit }}%</span>
         </div>
         <div class="attributes__params attributes__params--half">
             <span class="attributes__params__label">{{ $t('attributes.cdef') }}</span>
-            <span class="attributes__params__value">{{ critDef }}%</span>
+            <span class="attributes__params__value">{{ attributesComponents.critDef }}%</span>
         </div>
-        <div v-if="!monster"
+        <div v-if="!attributesComponents.monster"
             class="attributes__params attributes__params--half"
         >
             <span class="attributes__params__label">{{ $t('global.party') }}</span>
-            <span class="attributes__params__value">{{ partyName || '--' }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.partyName || '--' }}</span>
         </div>
-        <div v-if="!monster"
+        <div v-if="!attributesComponents.monster"
             class="attributes__params attributes__params--half"
         >
             <span class="attributes__params__label">{{ $t('global.guild') }}</span>
-            <span class="attributes__params__value">{{ guildName || '--' }}</span>
+            <span class="attributes__params__value">{{ attributesComponents.guildName || '--' }}</span>
         </div>
     </div>
 </template>
 
 <script>
+// 3rd party libs
+import { mapGetters } from 'vuex';
+
 export default {
-    name: 'stats-public',
-    props: {
-        publicProfile: {
-            type: Boolean,
-            default: false
-        },
-        monster: {
-            type: Boolean,
-            default: false
-        },
-        name: {
-            type: String,
-            default: ''
-        },
-        job: {
-            type: String,
-            default: ''
-        },
-        baseLevel: {
-            type: Number,
-            default: 0
-        },
-        jobLevel: {
-            type: Number,
-            default: 0
-        },
-        partyName: {
-            type: String,
-            default: '--'
-        },
-        guildName: {
-            type: String,
-            default: '--'
-        },
-        patk: {
-            type: Number,
-            required: true
-        },
-        matk: {
-            type: Number,
-            required: true
-        },
-        pdef: {
-            type: Number,
-            required: true
-        },
-        mdef: {
-            type: Number,
-            required: true
-        },
-        hit: {
-            type: Number,
-            required: true
-        },
-        eva: {
-            type: Number,
-            required: true
-        },
-        speed: {
-            type: Number,
-            required: true
-        },
-        crit: {
-            type: Number,
-            required: true
-        },
-        critDef: {
-            type: Number,
-            required: true
-        },
-        maxHp: {
-            type: Number,
-            required: true
-        },
-        maxMp: {
-            type: Number,
-            required: true
-        }
-    },
+    name: 'attributes',
     data() {
         return {};
-    }
+    },
+    computed: {
+        ...mapGetters(['attributesComponents'])
+    },
 };
 </script>
