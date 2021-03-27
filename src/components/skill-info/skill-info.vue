@@ -70,16 +70,8 @@ export default {
                 this.mp = skill.mp;
             }
 
-            // Transform object of requirements into readable text
-            if (skill.requirements) {
-                for (const [key, value] of Object.entries(skill.requirements)) {
-                    const foundSkill = this.availableSkills.find((skill) => skill.id === Number(key));
-
-                    this.requirements += `${foundSkill.name} (${value}), `;
-                }
-
-                // Stripping last 2 elements, in case it's even populated
-                this.requirements = this.requirements.substring(0, this.requirements.length - 2);
+            if (skill.requirementsString) {
+                this.requirements = skill.requirementsString;
             }
         },
         closeSkillInfoModal() {
