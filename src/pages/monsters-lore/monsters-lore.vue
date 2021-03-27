@@ -90,21 +90,7 @@
                         </div>
                     </div>
 
-                    <attributes class="monsters-lore__stats-attributes"
-                        :monster="true"
-                        :name="monsterData.name"
-                        :patk="monsterData.attributes.patk"
-                        :matk="monsterData.attributes.matk"
-                        :pdef="monsterData.attributes.pdef"
-                        :mdef="monsterData.attributes.mdef"
-                        :hit="monsterData.attributes.hit"
-                        :eva="monsterData.attributes.eva"
-                        :speed="monsterData.attributes.speed"
-                        :crit="monsterData.attributes.crit"
-                        :crit-def="monsterData.attributes.critDef"
-                        :max-hp="monsterData.attributes.maxHp"
-                        :max-mp="monsterData.attributes.maxMp"
-                    />
+                    <attributes class="monsters-lore__stats-attributes" />
 
                     <div class="monsters-lore__items">
                         <div v-for="(item, index) in monsterData.drops"
@@ -127,7 +113,7 @@
 
 <script>
 // 3rd party libs
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 // Components
 import attributes from '@components/attributes/attributes.vue';
@@ -182,6 +168,11 @@ const monstersLorePage = {
         mo.socket.on('getEncyclopediaMonsterComplete', (response) => {
             this.showMonster = true;
             this.monsterData = response;
+            this.setCharacterAttributes({
+                ...this.monsterData.attributes,
+                name: this.monsterData.name,
+                monster: true
+            });
             this.buttonLoading = false;
             this.loading = false;
         });
@@ -193,6 +184,8 @@ const monstersLorePage = {
         mo.socket.off('getEncyclopediaMonsterComplete');
     },
     methods: {
+        ...mapActions(['setCharacterAttributes']),
+
         showItemInfo(itemId) {
             mo.socket.emit('getItemInfo', {
                 itemId: itemId

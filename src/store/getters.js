@@ -78,4 +78,5 @@ export default {
     gameModal: (state) => state.gameModal,
     partyAvailableSkillsIds: (state) => state.partyAvailableSkillsIds,
     closeSkillInfo: (state) => state.closeSkillInfo,
+    attributesComponents: (state) => state.attributesComponents
 };

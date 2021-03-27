@@ -58,24 +58,7 @@
                 </div>
             </div>
 
-            <attributes :public-profile="true"
-                :name="name"
-                :patk="attributes.patk"
-                :matk="attributes.matk"
-                :pdef="attributes.pdef"
-                :mdef="attributes.mdef"
-                :hit="attributes.hit"
-                :eva="attributes.eva"
-                :speed="attributes.speed"
-                :crit="attributes.crit"
-                :crit-def="attributes.critDef"
-                :max-hp="attributes.maxHp"
-                :max-mp="attributes.maxMp"
-                :party-name="partyName"
-                :job="job"
-                :base-level="baseLevel"
-                :job-level="jobLevel"
-            />
+            <attributes />
         </template>
 
         <div class="profile__public-button">
@@ -88,7 +71,7 @@
 
 <script>
 // 3rd party libs
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
 
 // Components
@@ -169,19 +152,6 @@ const profilePublicPage = {
                     name: this.$t('equipment.accessory')
                 }
             ],
-            attributes: {
-                patk: 0,
-                matk: 0,
-                pdef: 0,
-                mdef: 0,
-                hit: 0,
-                eva: 0,
-                speed: 0,
-                crit: 0,
-                critDef: 0,
-                maxHp: 0,
-                maxMp: 0
-            },
             baseLevel: 0,
             jobLevel: 0
         };
@@ -202,9 +172,18 @@ const profilePublicPage = {
             this.gender = response.data.gender;
             this.job = response.data.job;
             this.equipment = response.data.equipment;
-            this.attributes = response.data.attributes;
             this.baseLevel = response.data.baseLevel;
             this.jobLevel = response.data.jobLevel;
+
+            this.setCharacterAttributes({
+                ...response.data.attributes,
+                publicProfile: true,
+                partyName: this.partyName,
+                name: this.name,
+                job: this.job,
+                baseLevel: this.baseLevel,
+                jobLevel: this.jobLevel
+            });
         } catch (error) {
             this.characterNotFound = true;
 
@@ -214,6 +193,8 @@ const profilePublicPage = {
         }
     },
     methods: {
+        ...mapActions(['setCharacterAttributes']),
+
         async getItemInfo(item) {
             if (item && item.itemId) {
                 try {

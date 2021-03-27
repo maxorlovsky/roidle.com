@@ -149,8 +149,14 @@ $docked-menu: 60px;
             margin-bottom: 0;
         }
 
-        &__chat--type--message {
-            cursor: pointer;
+        &__chat {
+            &--type--message {
+                cursor: pointer;
+            }
+
+            &__timestamp {
+                font-size: 0.6rem;
+            }
         }
     }
 

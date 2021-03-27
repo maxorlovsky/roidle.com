@@ -53,31 +53,14 @@
                 </div>
             </div>
 
-            <attributes :public-profile="true"
-                :name="name"
-                :patk="attributes.patk"
-                :matk="attributes.matk"
-                :pdef="attributes.pdef"
-                :mdef="attributes.mdef"
-                :hit="attributes.hit"
-                :eva="attributes.eva"
-                :speed="attributes.speed"
-                :crit="attributes.crit"
-                :crit-def="attributes.critDef"
-                :max-hp="attributes.maxHp"
-                :max-mp="attributes.maxMp"
-                :party-name="partyName"
-                :job="job"
-                :base-level="baseLevel"
-                :job-level="jobLevel"
-            />
+            <attributes />
         </template>
     </section>
 </template>
 
 <script>
 // 3rd party libs
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 // Components
 import avatar from '@components/avatar/avatar.vue';
@@ -156,19 +139,6 @@ const profilePage = {
                     name: this.$t('equipment.accessory')
                 }
             ],
-            attributes: {
-                patk: 0,
-                matk: 0,
-                pdef: 0,
-                mdef: 0,
-                hit: 0,
-                eva: 0,
-                speed: 0,
-                crit: 0,
-                critDef: 0,
-                maxHp: 0,
-                maxMp: 0
-            },
             baseLevel: 0,
             jobLevel: 0
         };
@@ -187,9 +157,18 @@ const profilePage = {
                 this.gender = response.gender;
                 this.job = response.job;
                 this.equipment = response.equipment;
-                this.attributes = response.attributes;
                 this.baseLevel = response.baseLevel;
                 this.jobLevel = response.jobLevel;
+
+                this.setCharacterAttributes({
+                    ...response.attributes,
+                    publicProfile: true,
+                    partyName: this.partyName,
+                    name: this.name,
+                    job: this.job,
+                    baseLevel: this.baseLevel,
+                    jobLevel: this.jobLevel
+                });
 
                 this.loading = false;
             } else {
@@ -209,6 +188,8 @@ const profilePage = {
         mo.socket.off('getCharacterInfoComplete');
     },
     methods: {
+        ...mapActions(['setCharacterAttributes']),
+
         getItemInfo(item) {
             if (item && item.itemId) {
                 mo.socket.emit('getItemInfo', {

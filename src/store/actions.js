@@ -2,6 +2,31 @@
 import { functions } from '@utils/functions.js';
 
 export default {
+    setCharacterAttributes({ commit }, value) {
+        const attributesComponents = {
+            patk: value.patk,
+            matk: value.matk,
+            pdef: value.pdef,
+            mdef: value.mdef,
+            hit: value.hit,
+            eva: value.eva,
+            speed: value.speed,
+            crit: value.crit,
+            critDef: value.critDef,
+            maxHp: value.maxHp,
+            maxMp: value.maxMp,
+            publicProfile: value.publicProfile || false,
+            monster: value.monster || false,
+            name: value.name || '',
+            job: value.job || '',
+            baseLevel: value.baseLevel || 0,
+            jobLevel: value.jobLevel || 0,
+            partyName: value.partyName || '--',
+            guildName: value.guildName || '--',
+        };
+
+        commit('setAttributesComponents', attributesComponents);
+    },
     setParty({ commit, state }, value) {
         const combinePartySkillsIds = {};
 

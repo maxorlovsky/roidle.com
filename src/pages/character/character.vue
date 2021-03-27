@@ -105,9 +105,11 @@
             </div>
         </div>
 
-        <skills-list class="character__skills-list" />
-
         <stats />
+
+        <attributes />
+
+        <skills-list class="character__skills-list" />
 
         <button class="btn game-button btn-lg skills-button"
             @click="goToSkills()"
@@ -123,12 +125,14 @@ import { mapGetters } from 'vuex';
 import avatar from '../../components/avatar/avatar.vue';
 import stats from '../../components/stats/stats.vue';
 import skillsList from '@components/skills-list/skills-list.vue';
+import attributes from '@components/attributes/attributes.vue';
 
 const characterPage = {
     components: {
         avatar,
         stats,
-        skillsList
+        skillsList,
+        attributes
     },
     data() {
         return {
@@ -204,7 +208,6 @@ const characterPage = {
             'characterEquipment',
             'characterJob',
             'characterJobId',
-            'inventory',
             'serverUrl'
         ])
     },

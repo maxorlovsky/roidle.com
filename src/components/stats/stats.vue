@@ -47,23 +47,6 @@
             </div>
         </div>
 
-        <attributes :patk="attributes.patk"
-            :matk="attributes.matk"
-            :pdef="attributes.pdef"
-            :mdef="attributes.mdef"
-            :hit="attributes.hit"
-            :eva="attributes.eva"
-            :speed="attributes.speed"
-            :crit="attributes.crit"
-            :crit-def="attributes.critDef"
-            :max-hp="attributes.maxHp"
-            :max-mp="attributes.maxMp"
-            :party-name="partyName"
-            :job="characterJob"
-            :base-level="characterBaseLevel"
-            :job-level="characterJobLevel"
-        />
-
         <div v-if="statExplanation.show"
             class="modal"
             @click="statExplanation.show = false"
@@ -74,16 +57,10 @@
 
 <script>
 // 3rd party libs
-import { mapGetters } from 'vuex';
-
-// Components
-import attributes from '@components/attributes/attributes.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
     name: 'stats',
-    components: {
-        attributes
-    },
     data() {
         return {
             statsNames: ['str', 'dex', 'int', 'vit', 'wis', 'luk'],
@@ -111,19 +88,6 @@ export default {
                 wis: 2,
                 luk: 2
             },
-            attributes: {
-                patk: 0,
-                matk: 0,
-                pdef: 0,
-                mdef: 0,
-                hit: 0,
-                eva: 0,
-                speed: 0,
-                crit: 0,
-                critDef: 0,
-                maxHp: 0,
-                maxMp: 0
-            },
             tempStatusPoints: 0,
             statExplanation: {
                 show: false,
@@ -133,18 +97,20 @@ export default {
     },
     computed: {
         ...mapGetters([
+            'attributesComponents',
             'characterEquipment',
             'characterStats',
             'characterBonusStats',
             'characterAttributes',
             'characterStatusPoints',
-            'characterBaseLevel',
             'characterJobLevel',
             'characterJobId',
             'characterJob',
             'partyName',
+            'characterBaseLevel',
+            'characterJobLevel',
             'serverUrl'
-        ])
+        ]),
     },
     watch: {
         characterStats: {
@@ -160,7 +126,13 @@ export default {
         },
         characterAttributes: {
             handler() {
-                this.attributes = Object.assign({}, this.characterAttributes);
+                this.setCharacterAttributes({
+                    ...this.characterAttributes,
+                    partyName: this.partyName,
+                    job: this.characterJob,
+                    baseLevel: this.characterBaseLevel,
+                    jobLevel: this.characterJobLevel
+                });
             }
         }
     },
@@ -168,7 +140,14 @@ export default {
         // On hypo request, we update user attributes, this object is not really used for anything beside display, so it's safe to manipulate
         mo.socket.on('getCharacterHypotheticalAttributesComplete', (response) => {
             this.bonusStats = response.bonusStats;
-            this.attributes = response.attributes;
+
+            this.setCharacterAttributes({
+                ...response.attributes,
+                partyName: this.partyName,
+                job: this.characterJob,
+                baseLevel: this.characterBaseLevel,
+                jobLevel: this.characterJobLevel
+            });
         });
 
         // After successful saving of stats sending request to update character stats globally
@@ -192,6 +171,8 @@ export default {
         mo.socket.off('saveCharacterStatsComplete');
     },
     methods: {
+        ...mapActions(['setCharacterAttributes']),
+
         showStatInfo(stat) {
             this.statExplanation.show = true;
 
@@ -214,14 +195,20 @@ export default {
             this.$store.commit('setCharacterData', {
                 stats: this.stats,
                 bonusStats: this.bonusStats,
-                attributes: this.attributes,
+                attributes: this.attributesComponents,
                 statusPoints: this.tempStatusPoints
             });
         },
         updateTempStats() {
             this.stats = Object.assign({}, this.characterStats);
             this.bonusStats = Object.assign({}, this.characterBonusStats);
-            this.attributes = Object.assign({}, this.characterAttributes);
+            this.setCharacterAttributes({
+                ...this.characterAttributes,
+                partyName: this.partyName,
+                job: this.characterJob,
+                baseLevel: this.characterBaseLevel,
+                jobLevel: this.characterJobLevel
+            });
             this.tempStatusPoints = this.characterStatusPoints;
 
             this.recalculateStatCosts();
