@@ -136,7 +136,7 @@
             </div>
             <div class="trading__window__actions">
                 <button class="btn btn-secondary"
-                    @click="cancelTrade()"
+                    @click="$router.go(-1);"
                 >{{ $t('trade.cancelTrade') }}</button>
                 <button :disabled="buttonLoading || !leftTradeApproved || !rightTradeApproved || zenyLeft < 0 || zenyLeft > characterZeny"
                     class="btn btn-success"
