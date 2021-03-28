@@ -85,6 +85,7 @@
                 class="item-info__repair"
             >
                 <div class="item-info__repair__caution-text">{{ $t('itemInfo.confirmationToRepair') }}</div>
+
                 <div class="item-info__repair__materials">
                     <div v-for="material in repairMaterials"
                         :key="material.itemId"
@@ -96,6 +97,10 @@
                         >{{ material.amount }}/{{ userMaterialAmount(material.itemId) }}</div>
                     </div>
                 </div>
+
+                <b class="item-info__repair__materials-text">
+                    {{ repairMaterialsText(repairMaterials) }}
+                </b>
 
                 <button class="btn btn-secondary"
                     @click="closeRepairModal()"
@@ -182,6 +187,17 @@ export default {
         mo.socket.off('getItemRepairMaterialsComplete');
     },
     methods: {
+        repairMaterialsText(repairMaterials) {
+            let materialText = '';
+
+            for (const material of repairMaterials) {
+                materialText += `${material.name} x${material.amount}, `;
+            }
+
+            materialText = materialText.substring(0, materialText.length - 2);
+
+            return materialText;
+        },
         setUpSocketEvents() {
             mo.socket.on('merchantRepairItemComplete', (response) => {
                 this.buttonLoading = false;
