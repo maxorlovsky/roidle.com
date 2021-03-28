@@ -208,7 +208,6 @@ const kafraStoragePage = {
 
         mo.socket.on('openKafraStorageComplete', (response) => {
             this.loading = false;
-            this.buttonLoading = false;
 
             itemsStorage = JSON.parse(JSON.stringify(response.itemsStorage));
 
@@ -227,8 +226,18 @@ const kafraStoragePage = {
                 this.itemsTransfer = this.inventory;
             }
         });
+
+        mo.socket.on('depositItemComplete', () => {
+            this.buttonLoading = false;
+        });
+
+        mo.socket.on('withdrawItemComplete', () => {
+            this.buttonLoading = false;
+        });
     },
     beforeDestroy() {
+        mo.socket.off('depositItemComplete');
+        mo.socket.off('withdrawItemComplete');
         mo.socket.off('openKafraStorageComplete');
     },
     methods: {
