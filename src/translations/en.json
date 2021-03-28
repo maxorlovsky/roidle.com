@@ -229,6 +229,7 @@
         "discard": "Discard",
         "use": "Use",
         "repair": "Repair",
+        "equip": "Equip",
         "confirmationToDiscard": "Are you sure you want to discard this item?",
         "confirmationToRepair": "Do you wish to use those materials in order to repair the item?"
     },

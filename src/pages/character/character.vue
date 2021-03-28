@@ -292,10 +292,7 @@ const characterPage = {
         },
         equipItem(item) {
             // Triggering equip of an item on server
-            mo.socket.emit('equipItem', {
-                item,
-                slot: this.slot
-            });
+            mo.socket.emit('equipItem', item);
 
             this.showEquipmentModal = false;
         },
