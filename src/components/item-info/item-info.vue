@@ -51,11 +51,18 @@
                     class="btn game-button"
                     @click="useItem(itemId)"
                 >{{ $t('itemInfo.use') }}</button>
+
                 <button v-else-if="repairIsAvailable(type)"
-                    :disabled="repairIsDisabled"
+                    :disabled="buttonLoading || repairIsDisabled"
                     class="btn game-button"
                     @click="repairItem(id)"
                 >{{ $t('itemInfo.repair') }}</button>
+
+                <button v-if="equipIsAvailable()"
+                    :disabled="buttonLoading || equipIsDisabled"
+                    class="btn btn-success"
+                    @click="equipItem()"
+                >{{ $t('itemInfo.equip') }}</button>
             </div>
 
             <div v-if="showDiscard"
@@ -85,6 +92,7 @@
                 class="item-info__repair"
             >
                 <div class="item-info__repair__caution-text">{{ $t('itemInfo.confirmationToRepair') }}</div>
+
                 <div class="item-info__repair__materials">
                     <div v-for="material in repairMaterials"
                         :key="material.itemId"
@@ -96,6 +104,10 @@
                         >{{ material.amount }}/{{ userMaterialAmount(material.itemId) }}</div>
                     </div>
                 </div>
+
+                <b class="item-info__repair__materials-text">
+                    {{ repairMaterialsText(repairMaterials) }}
+                </b>
 
                 <button class="btn btn-secondary"
                     @click="closeRepairModal()"
@@ -132,6 +144,7 @@ export default {
             maxDurability: null,
             defaultDurability: 0,
             weight: 0,
+            jobs: null,
             applicableJob: '',
             broken: false,
             showDiscard: false,
@@ -145,6 +158,7 @@ export default {
     computed: {
         ...mapGetters([
             'socketConnection',
+            'characterJobId',
             'closeItemInfo',
             'selfBagItemInfo',
             'inventory',
@@ -155,6 +169,14 @@ export default {
 
         repairIsDisabled() {
             if (this.buttonLoading || (this.durability === this.maxDurability && !this.broken)) {
+                return true;
+            }
+
+            return false;
+        },
+
+        equipIsDisabled() {
+            if (this.buttonLoading || (this.jobs && !this.jobs.includes(this.characterJobId))) {
                 return true;
             }
 
@@ -182,6 +204,37 @@ export default {
         mo.socket.off('getItemRepairMaterialsComplete');
     },
     methods: {
+        equipIsAvailable() {
+            if (this.type === 'weapon' || this.type === 'armor') {
+                return true;
+            }
+
+            return false;
+        },
+        equipItem() {
+            // Triggering equip of an item on server
+            mo.socket.emit('equipItem', {
+                id: this.id,
+                itemId: this.itemId,
+                refined: this.refined,
+                durability: this.durability,
+                maxDurability: this.maxDurability
+            });
+
+            // Closing item info
+            this.closeItemInfoModal();
+        },
+        repairMaterialsText(repairMaterials) {
+            let materialText = '';
+
+            for (const material of repairMaterials) {
+                materialText += `${material.name} x${material.amount}, `;
+            }
+
+            materialText = materialText.substring(0, materialText.length - 2);
+
+            return materialText;
+        },
         setUpSocketEvents() {
             mo.socket.on('merchantRepairItemComplete', (response) => {
                 this.buttonLoading = false;
@@ -311,6 +364,7 @@ export default {
             this.requiredLevel = 0;
             this.weight = item.weight;
             this.applicableJobs = item.jobs === null ? 'All' : '';
+            this.jobs = item.jobs;
             this.broken = false;
 
             // Making params human readable

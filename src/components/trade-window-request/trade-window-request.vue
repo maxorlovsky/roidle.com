@@ -1,5 +1,7 @@
 <template>
-    <div class="trade-window-request">
+    <div v-if="tradeRequestId"
+        class="trade-window-request"
+    >
         <div class="modal">
             <div class="modal__header">{{ $t('trade.tradeRequest') }}</div>
             <div class="modal__content">
@@ -31,47 +33,52 @@ export default {
     },
     computed: {
         ...mapGetters([
+            'socketConnection',
             'tradeRequestId',
             'tradeRequestName',
         ])
     },
-    mounted() {
-        mo.socket.on('acceptTradeComplete', (response) => {
-            // In case response is successful we send user to trade page
-            if (response) {
-                // Do it as a delayed action, since after store commit destory will be initiated
-                this.$nextTick(() => {
-                    this.$router.push('/trading');
-                });
+    watch: {
+        socketConnection() {
+            if (this.socketConnection) {
+                this.setUpSocketEvents();
             }
-
-            // In any case we do reset of trade request first, so this modal would close
-            this.$store.commit('tradeRequest', {
-                id: 0,
-                name: 0
+        },
+        tradeRequestId() {
+            if (this.tradeRequestId) {
+                this.showTradeRequest = true;
+            } else {
+                this.showTradeRequest = false;
+            }
+        },
+    },
+    beforeDestroy() {
+        mo.socket.off('rejectTradeComplete');
+    },
+    methods: {
+        setUpSocketEvents() {
+            mo.socket.on('rejectTradeComplete', () => {
+                this.closeTradeRequest();
             });
-        });
-
-        mo.socket.on('rejectTradeComplete', () => {
+        },
+        closeTradeRequest() {
             // Reset trade request, so this modal would close
             this.$store.commit('tradeRequest', {
                 id: 0,
                 name: 0
             });
-        });
-    },
-    beforeDestroy() {
-        mo.socket.off('acceptTradeComplete');
-        mo.socket.off('rejectTradeComplete');
-    },
-    methods: {
+        },
         rejectTrade() {
+            this.closeTradeRequest();
+
             mo.socket.emit('rejectTrade');
         },
         viewCharacter(name) {
             this.$router.push(`/profile/${name}`);
         },
         acceptTrade() {
+            this.closeTradeRequest();
+
             mo.socket.emit('acceptTrade');
         }
     }

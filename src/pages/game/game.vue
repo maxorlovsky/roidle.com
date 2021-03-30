@@ -174,7 +174,6 @@
             </div>
 
             <puzzle-challenge v-if="showChallenge" />
-            <trade-window-request v-if="showTradeRequest" />
 
             <ul v-if="enableXmas"
                 class="snow"
@@ -200,7 +199,6 @@ import craftActions from '@components/craft-actions/craft-actions.vue';
 import dungeonActions from '@components/dungeon-actions/dungeon-actions.vue';
 import puzzleChallenge from '@components/puzzle-challenge/puzzle-challenge.vue';
 import avatar from '@components/avatar/avatar.vue';
-import tradeWindowRequest from '@components/trade-window-request/trade-window-request.vue';
 import shipActions from '@components/ship-actions/ship-actions.vue';
 import huntBattle from '@components/hunt-battle/hunt-battle.vue';
 
@@ -214,7 +212,6 @@ const gamePage = {
         dungeonActions,
         puzzleChallenge,
         avatar,
-        tradeWindowRequest,
         craftActions,
         shipActions,
         huntBattle
@@ -254,7 +251,6 @@ const gamePage = {
             'puzzleChallenge',
             'currentLocation',
             'characterSkills',
-            'tradeRequestId',
             'characterCrafting',
             'characterTraveling',
             'characterResting',
@@ -277,16 +273,6 @@ const gamePage = {
             handler() {
                 if (this.characterId) {
                     this.loading = false;
-                }
-            }
-        },
-        tradeRequestId: {
-            immediate: true,
-            handler() {
-                if (this.tradeRequestId) {
-                    this.showTradeRequest = true;
-                } else {
-                    this.showTradeRequest = false;
                 }
             }
         },

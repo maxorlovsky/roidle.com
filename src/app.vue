@@ -24,6 +24,8 @@
             <item-info />
             <skill-info />
 
+            <trade-window-request v-if="dockedMenu" />
+
             <tutorial v-if="showTutorial" />
             <tutorial-blocker v-if="showTutorial" />
 
@@ -91,6 +93,7 @@ import itemInfo from '@components/item-info/item-info.vue';
 import skillInfo from '@components/skill-info/skill-info.vue';
 import tutorial from '@components/tutorial/tutorial.vue';
 import tutorialBlocker from '@components/tutorial/tutorial-blocker.vue';
+import tradeWindowRequest from '@components/trade-window-request/trade-window-request.vue';
 
 export default {
     name: 'app',
@@ -105,6 +108,7 @@ export default {
         skillInfo,
         tutorial,
         tutorialBlocker,
+        tradeWindowRequest,
     },
     store: store,
     data() {
@@ -241,6 +245,16 @@ export default {
         ]),
 
         setUpMainSocketEvents() {
+            mo.socket.on('acceptTradeComplete', (response) => {
+                // In case response is successful we send user to trade page
+                if (response) {
+                    // Do it as a delayed action, since after store commit destory will be initiated
+                    this.$nextTick(() => {
+                        this.$router.push('/trading');
+                    });
+                }
+            });
+
             mo.socket.on('huntUpdate', () => {
                 mo.socket.emit('getHunt');
             });
