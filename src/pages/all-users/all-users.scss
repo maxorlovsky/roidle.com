@@ -1,0 +1,49 @@
+.all-users {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("#{$assets}/images/character.jpg");
+
+    &__characters {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    &__character {
+        width: 100%;
+        color: #000;
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid $mainColor;
+        border-radius: 4px;
+        padding: 1rem 1rem 1rem 0;
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        &__info {
+            width: 70%;
+            font-size: 1rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &__buttons {
+            width: 30%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            .btn {
+                margin-bottom: 0.5rem;
+                width: 100%;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}

@@ -93,35 +93,45 @@
                 v{{ version }}
             </div>
 
-            <div v-if="admin"
-                class="settings__setting"
-            >
-                <div class="settings__setting__slider game-icon">
-                    <div class="settings__setting__title">{{ $t('settings.closeLogins') }}</div>
+            <template v-if="admin">
+                <div class="settings__setting">
+                    <div class="settings__setting__slider game-icon">
+                        <div class="settings__setting__title">{{ $t('settings.closeLogins') }}</div>
+                    </div>
+
+                    <div class="settings__setting__icon game-icon"
+                        @click="closeLogin()"
+                    >
+                        <i :class="{'settings__setting__icon--enabled': allowLogins, 'settings__setting__icon--disabled': !allowLogins}"
+                            class="icon icon-turn-off"
+                        />
+                    </div>
                 </div>
 
-                <div class="settings__setting__icon game-icon"
-                    @click="closeLogin()"
-                >
-                    <i :class="{'settings__setting__icon--enabled': allowLogins, 'settings__setting__icon--disabled': !allowLogins}"
-                        class="icon icon-turn-off"
-                    />
-                </div>
-            </div>
+                <div class="settings__setting">
+                    <div class="settings__setting__slider game-icon">
+                        <div class="settings__setting__title">{{ $t('settings.kickOnlineUsers') }}</div>
+                    </div>
 
-            <div v-if="admin"
-                class="settings__setting"
-            >
-                <div class="settings__setting__slider game-icon">
-                    <div class="settings__setting__title">{{ $t('settings.kickOnlineUsers') }}</div>
+                    <div class="settings__setting__icon game-icon"
+                        @click="kickUsers()"
+                    >
+                        <i class="icon icon-turn-off" />
+                    </div>
                 </div>
 
-                <div class="settings__setting__icon game-icon"
-                    @click="kickUsers()"
-                >
-                    <i class="icon icon-turn-off" />
+                <div class="settings__setting">
+                    <div class="settings__setting__slider game-icon">
+                        <div class="settings__setting__title">Connected users</div>
+                    </div>
+
+                    <router-link to="/all-users"
+                        class="settings__setting__icon game-icon"
+                    >
+                        X
+                    </router-link>
                 </div>
-            </div>
+            </template>
         </div>
     </section>
 </template>
