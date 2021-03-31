@@ -126,12 +126,20 @@
                     class="character-select__select-character__delete"
                 >
                     <div class="character-select__select-character__delete__caution-text">{{ $t('characterSelect.deleteCharacterConfirmation') }}</div>
-                    <button class="btn btn-secondary"
-                        @click="closeDeleteModal()"
-                    >{{ $t('global.no') }}</button>
-                    <button class="btn btn-danger"
-                        @click="deleteConfirm()"
-                    >{{ $t('global.yes') }}</button>
+
+                    <input v-model="deleteConfirmationUserText"
+                        class="character-select__select-character__delete__text-input"
+                    >
+
+                    <div class="character-select__select-character__delete__buttons">
+                        <button class="btn btn-secondary"
+                            @click="closeDeleteModal()"
+                        >{{ $t('global.no') }}</button>
+                        <button :disabled="deleteConfirmationUserText !== $t('characterSelect.deleteCharacterConfirmationWord')"
+                            class="btn btn-danger"
+                            @click="deleteConfirm()"
+                        >{{ $t('global.yes') }}</button>
+                    </div>
                 </div>
 
                 <register v-if="showRegisterModal && isGuest"
@@ -193,7 +201,8 @@ const characterSelectPage = {
             message: '',
             maxAmountCharacter: 10,
             showRegisterModal: false,
-            showChangePasswordModal: false
+            showChangePasswordModal: false,
+            deleteConfirmationUserText: ''
         };
     },
     computed: {
@@ -255,6 +264,7 @@ const characterSelectPage = {
             }
         },
         async deleteConfirm() {
+            this.deleteConfirmationUserText = '';
             this.buttonLoading = true;
 
             try {
@@ -276,6 +286,7 @@ const characterSelectPage = {
         },
         closeDeleteModal() {
             this.deleteCharacterId = 0;
+            this.deleteConfirmationUserText = '';
             this.showDelete = false;
         },
         deleteCharacter(characterId) {
