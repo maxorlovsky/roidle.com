@@ -495,5 +495,19 @@
         "monsterNotFound": "Monster not found",
         "element": "Element",
         "level": "Level"
+    },
+    "statistics": {
+        "quests": "Quests completed",
+        "monstersKilled": "Monster killed",
+        "itemsCrafted": "Items crafted",
+        "itemsCraftFailed": "Items failed to craft",
+        "itemsTransmuted": "Items transmuted",
+        "locationsTraveled": "Locations traveled",
+        "deaths": "Deaths",
+        "rests": "Inn Rests",
+        "age": "Age",
+        "years": "Year(s)",
+        "months": "Month(s)",
+        "days": "Day(s)"
     }
 }
