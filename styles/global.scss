@@ -20,7 +20,7 @@ $nav-link-padding-y: 0;
 $nav-link-padding-x: 0;
 
 /* Font-Awesome variables */
-$assets: "/dist/assets" !default;
+$assets: "../assets" !default;
 
 // Importing lib styles
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

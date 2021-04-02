@@ -200,6 +200,8 @@ export default {
         socketConnection() {
             if (this.socketConnection) {
                 this.setUpSocketEvents();
+            } else {
+                this.destroySocketEvents();
             }
         },
         characterSkills: {
@@ -299,11 +301,6 @@ export default {
             if (!this.showChat) {
                 this.fullChat = false;
             }
-        }
-    },
-    beforeDestroy() {
-        if (mo.socket) {
-            mo.socket.off('chat');
         }
     },
     mounted() {
@@ -467,6 +464,11 @@ export default {
             mo.socket.on('chat', (message) => {
                 this.$store.commit('sendChat', [message]);
             });
+        },
+        destroySocketEvents() {
+            if (mo.socket) {
+                mo.socket.off('chat');
+            }
         },
         scrollChat() {
             for (const chat of this.chats) {

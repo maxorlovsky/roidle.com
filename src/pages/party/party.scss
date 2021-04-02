@@ -40,7 +40,7 @@
                 color: #888;
             }
 
-            &:nth-last-child() {
+            &:nth-last-child(1) {
                 border-right: 0;
             }
         }

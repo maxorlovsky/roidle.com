@@ -14,12 +14,17 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const config = {
     mode: 'development',
     entry: {
-        bundle: ['@babel/polyfill', './src/main.js'],
+        bundle: [
+            'core-js',
+            'regenerator-runtime/runtime',
+            './src/main.js'
+        ],
         styles: ['./styles/global.scss']
     },
     output: {
         filename: '[name].js',
-        path: path.resolve('./public/dist')
+        path: path.resolve('./public/dist'),
+        publicPath: '/dist/'
     },
     module: {
         rules: [
@@ -35,12 +40,7 @@ const config = {
             },
             {
                 test: /\.vue$/,
-                loader: 'vue-loader',
-                options: {
-                    loaders: {
-
-                    }
-                }
+                loader: 'vue-loader'
             },
             {
                 test: /\.scss$/,
@@ -50,7 +50,7 @@ const config = {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            config: {
+                            postcssOptions: {
                                 path: './postcss.config.js'
                             }
                         }
@@ -64,11 +64,23 @@ const config = {
                         }
                     }
                 ]
-            }
+            },
+            {
+                test: /\.css$/i,
+                loader: 'css-loader'
+            },
+            {
+                test: /.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/i,
+                loader: 'file-loader'
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                loader: 'file-loader'
+            },
         ]
     },
     resolve: {
-        extensions: ['.vue', '.js', '.html'],
+        extensions: ['.vue', '.ts', '.js', '.html'],
         modules: ['node_modules'],
         alias: {
             vue: 'vue/dist/vue.js',
@@ -108,6 +120,12 @@ const config = {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendors',
                     chunks: 'all'
+                },
+                styles: {
+                    name: 'styles',
+                    test: /\.css$/,
+                    chunks: 'all',
+                    enforce: true
                 }
             }
         },
@@ -165,10 +183,6 @@ module.exports = (env = {}) => {
                 to: 'assets/'
             },
             {
-                from: './node_modules/socket.io-client/dist/socket.io.js',
-                to: 'socket.io.js'
-            },
-            {
                 from: './src/firebase-messaging-sw.js',
                 to: 'firebase-messaging-sw.js'
             }
@@ -218,7 +232,7 @@ module.exports = (env = {}) => {
                 secure: false,
                 ws: true
             }
-        }
+        };
     }
 
     config.plugins.push(new ReplaceInFileWebpackPlugin([

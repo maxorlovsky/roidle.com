@@ -73,7 +73,7 @@
 // 3rd party libs
 import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 // Utilities
 import { functions } from '@utils/functions.js';

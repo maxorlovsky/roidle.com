@@ -39,7 +39,7 @@
                 color: #f5f5f5;
             }
 
-            &:nth-last-child() {
+            &:nth-last-child(1) {
                 border-right: 0;
             }
         }
