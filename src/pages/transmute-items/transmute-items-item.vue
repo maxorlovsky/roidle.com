@@ -20,7 +20,8 @@
                         <div v-for="(subitem, subindex) in item.materials"
                             :key="subindex"
                             class="transmute-items__item__image-amount"
-                            @click="showItemInfo(subitem)"
+                            @click.exact="showItemInfo(subitem)"
+                            @click.ctrl="parseItemToChat(subitem.name)"
                         >
                             <img :src="`${serverUrl}/dist/assets/images/items/${subitem.itemId}.gif`">
                             <span :class="{'transmute-items__item__amount--not-enough': doesNotMeetRequirements(item)}"
@@ -93,10 +94,14 @@ import { mapGetters } from 'vuex';
 // Components
 import loading from '@components/loading/loading.vue';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 const transmuteItemsItemPage = {
     components: {
         loading
     },
+    mixins: [chatMixin],
     data() {
         return {
             loading: true,

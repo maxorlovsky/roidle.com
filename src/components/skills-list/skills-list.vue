@@ -8,11 +8,13 @@
                 <img :src="`${serverUrl}/dist/assets/images/skills/${skill.id}.gif`"
                     :class="{'skills-list__skill__image--disabled': tempSkills[skill.id] === 0}"
                     class="skills-list__skill__image"
-                    @click="openSkillInfo(skill)"
+                    @click.exact="openSkillInfo(skill)"
+                    @click.ctrl="parseSkillToChat(skill.name)"
                 >
 
                 <div class="skills-list__skill__info"
-                    @click="openSkillInfo(skill)"
+                    @click.exact="openSkillInfo(skill)"
+                    @click.ctrl="parseSkillToChat(skill.name)"
                 >
                     <div>{{ skill.name }}</div>
                     <div>Lv: {{ tempSkills[skill.id] }} / {{ skill.maxLevel }}</div>
@@ -51,8 +53,12 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 export default {
     name: 'skills-list',
+    mixins: [chatMixin],
     data() {
         return {
             availableSkills: [],

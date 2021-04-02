@@ -145,7 +145,8 @@
                             'players-shops__sold-item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
                         }"
                             class="players-shops__sold-item__image-amount"
-                            @click="showItemInfo(item)"
+                            @click.exact="showItemInfo(item)"
+                            @click.ctrl="parseItemToChat(item.itemName)"
                         >
                             <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                             <span v-if="item.maxDurability">{{ item.durability }}/{{ item.maxDurability }}</span>
@@ -257,10 +258,14 @@ import { mapGetters } from 'vuex';
 // Components
 import loading from '@components/loading/loading.vue';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 const managePlayersShopPage = {
     components: {
         loading,
     },
+    mixins: [chatMixin],
     data() {
         return {
             loading: true,

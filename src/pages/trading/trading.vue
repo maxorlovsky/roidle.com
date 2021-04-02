@@ -62,7 +62,8 @@
                                 'trading__item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
                             }"
                                 class="trading__item__image-amount"
-                                @click="showItemInfo(item)"
+                                @click.exact="showItemInfo(item)"
+                                @click.ctrl="parseItemToChat(item.name)"
                             >
                                 <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                                 <span v-if="item.maxDurability">
@@ -108,7 +109,8 @@
                                 'trading__item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
                             }"
                                 class="trading__item__image-amount"
-                                @click="showItemInfo(item)"
+                                @click.exact="showItemInfo(item)"
+                                @click.ctrl="parseItemToChat(item.name)"
                             >
                                 <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                                 <span v-if="item.maxDurability">
@@ -184,7 +186,11 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 const tradingPage = {
+    mixins: [chatMixin],
     data() {
         return {
             buttonLoading: false,

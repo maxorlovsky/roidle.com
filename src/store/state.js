@@ -206,5 +206,8 @@ export default {
         partyName: '--',
         guildName: '--'
     },
-    huntField: null
+    huntField: null,
+    allSkillsNames: [],
+    allItemsNames: [],
+    putIntoChat: ''
 };

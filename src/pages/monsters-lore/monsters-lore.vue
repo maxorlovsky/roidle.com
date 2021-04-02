@@ -96,7 +96,8 @@
                         <div v-for="(item, index) in monsterData.drops"
                             :key="index"
                             class="monsters-lore__item"
-                            @click="showItemInfo(item.itemId)"
+                            @click.exact="showItemInfo(item.itemId)"
+                            @click.ctrl="parseItemToChat(item.itemName)"
                         >
                             <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                             <span class="monsters-lore__item__drop-chance">{{ item.dropChance.toFixed(2) / 100 }}%</span>
@@ -119,11 +120,15 @@ import { mapGetters, mapActions } from 'vuex';
 import attributes from '@components/attributes/attributes.vue';
 import loading from '@components/loading/loading.vue';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 const monstersLorePage = {
     components: {
         attributes,
         loading
     },
+    mixins: [chatMixin],
     data() {
         return {
             loading: false,

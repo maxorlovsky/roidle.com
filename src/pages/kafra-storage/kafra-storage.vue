@@ -65,7 +65,8 @@
                         'kafra-storage__item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
                     }"
                         class="kafra-storage__item__image-amount"
-                        @click="showItemInfo(item)"
+                        @click.exact="showItemInfo(item)"
+                        @click.ctrl="parseItemToChat(item.name)"
                     >
                         <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                         <span v-if="item.maxDurability">{{ item.durability }}/{{ item.maxDurability }}</span>
@@ -129,9 +130,13 @@ import { mapGetters } from 'vuex';
 import { functions } from '@utils/functions.js';
 import { sort as inventorySort } from '@utils/inventory.js';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 let itemsStorage = [];
 
 const kafraStoragePage = {
+    mixins: [chatMixin],
     data() {
         return {
             loading: true,

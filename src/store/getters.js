@@ -79,5 +79,8 @@ export default {
     partyAvailableSkillsIds: (state) => state.partyAvailableSkillsIds,
     closeSkillInfo: (state) => state.closeSkillInfo,
     attributesComponents: (state) => state.attributesComponents,
-    huntField: (state) => state.huntField
+    huntField: (state) => state.huntField,
+    allSkillsNames: (state) => state.allSkillsNames,
+    allItemsNames: (state) => state.allItemsNames,
+    putIntoChat: (state) => state.putIntoChat,
 };

@@ -9,7 +9,8 @@
             class="craft__wrapper"
         >
             <div class="craft-item__item"
-                @click="showItemInfo(craftableItem.itemId)"
+                @click.exact="showItemInfo(craftableItem.itemId)"
+                @click.ctrl="parseItemToChat(craftableItem.name)"
             >
                 <div class="craft-item__item__title">{{ $t('craft.item') }}</div>
                 <img :src="`${serverUrl}/dist/assets/images/items/large/${craftableItem.itemId}.gif`"
@@ -43,7 +44,8 @@
                 <div v-for="material in craftableItem.craftMaterials"
                     :key="material.id"
                     class="craft-item__materials__material"
-                    @click="showItemInfo(material.id)"
+                    @click.exact="showItemInfo(material.id)"
+                    @click.ctrl="parseItemToChat(material.name)"
                 >
                     <img :src="`${serverUrl}/dist/assets/images/items/${material.id}.gif`">
                     <div :class="{'craft-item__materials__material__amount--found': inventory.find((item) => item.itemId === material.id && item.amount >= (material.amount * amount))}"
@@ -113,12 +115,13 @@ import loading from '@components/loading/loading.vue';
 
 // Mixins
 import timerMixin from '@mixins/timers.js';
+import chatMixin from '@mixins/chat.js';
 
 const craftItemPage = {
     components: {
         loading,
     },
-    mixins: [timerMixin],
+    mixins: [timerMixin, chatMixin],
     data() {
         return {
             loading: true,

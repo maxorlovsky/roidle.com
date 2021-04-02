@@ -3,6 +3,13 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    putIntoChat: (state, value) => {
+        state.putIntoChat = value;
+    },
+    setPreloadedData: (state, value) => {
+        state.allSkillsNames = value.skillsNames;
+        state.allItemsNames = value.itemsNames;
+    },
     setHuntField: (state, value) => {
         state.huntField = value;
     },

@@ -100,6 +100,7 @@
                     <div v-for="material in repairMaterials"
                         :key="material.itemId"
                         class="item-info__repair__materials__material"
+                        @click.ctrl="parseItemToChat(material.name)"
                     >
                         <img :src="`${serverUrl}/dist/assets/images/items/${material.itemId}.gif`">
                         <div :class="{'item-info__repair__materials__material__amount--found': haveEnoughMaterials(material)}"
@@ -128,8 +129,12 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 export default {
     name: 'item-info',
+    mixins: [chatMixin],
     data() {
         return {
             buttonLoading: false,

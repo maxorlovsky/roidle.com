@@ -245,6 +245,10 @@ export default {
         ]),
 
         setUpMainSocketEvents() {
+            mo.socket.on('getPreloadedDataComplete', (value) => {
+                this.$store.commit('setPreloadedData', value);
+            });
+
             mo.socket.on('huntField', (field) => {
                 this.$store.commit('setHuntField', field);
             });
@@ -407,6 +411,8 @@ export default {
             mo.socket.on('kickedFromParty', () => {
                 this.$store.commit('leaveParty');
             });
+
+            mo.socket.emit('getPreloadedData');
         },
         setUpSocketEvents() {
             mo.socket.emit('reconnect', functions.storage('get', 'session'));
