@@ -8,6 +8,10 @@
         <div v-if="requirements">{{ $t('character.requirements') }}: <b class="skill-info__requirement">{{ requirements }}</b></div>
         <div>{{ $t('character.maxLevel') }}: <b>{{ maxLevel }}</b></div>
         <div v-if="mp">{{ $t('character.manaCost') }}: <b>{{ mp }}</b></div>
+        <div v-if="element"
+            class="skill-info__element"
+        >{{ $t('global.element') }}: <b :class="`element--${element}`">{{ element }}</b></div>
+
         <span v-html="explanation" />
     </div>
 </template>
@@ -26,7 +30,8 @@ export default {
             requirements: '',
             maxLevel: 0,
             mp: null,
-            explanation: ''
+            explanation: '',
+            element: ''
         };
     },
     computed: {
@@ -63,6 +68,7 @@ export default {
             this.explanation = skill.explanation;
             this.mp = '';
             this.requirements = '';
+            this.element = '';
 
             if (skill.mp && Array.isArray(skill.mp)) {
                 this.mp = `[${skill.mp.join(', ')}]`;
@@ -72,6 +78,10 @@ export default {
 
             if (skill.requirementsString) {
                 this.requirements = skill.requirementsString;
+            }
+
+            if (skill.element) {
+                this.element = skill.element;
             }
         },
         closeSkillInfoModal() {

@@ -160,4 +160,8 @@
             width: 100%;
         }
     }
+
+    &__element {
+        text-transform: capitalize;
+    }
 }

@@ -46,8 +46,8 @@
 
                     <div class="attributes monsters-lore__attributes">
                         <div class="attributes__params attributes__params--half">
-                            <span class="attributes__params__label">{{ $t('monstersLore.element') }}</span>
-                            <span class="attributes__params__value capitalize">{{ monsterData.element }}</span>
+                            <span class="attributes__params__label">{{ $t('global.element') }}</span>
+                            <span :class="['attributes__params__value', `attributes__params__value--${monsterData.element}`, 'capitalize']">{{ monsterData.element }}</span>
                         </div>
                         <div class="attributes__params attributes__params--half">
                             <span class="attributes__params__label">{{ $t('monstersLore.level') }}</span>

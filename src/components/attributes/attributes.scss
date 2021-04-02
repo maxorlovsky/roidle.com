@@ -33,6 +33,34 @@
             overflow: hidden;
             text-overflow: ellipsis;
             color: $mainColor;
+            
+            &--fire {
+                color: $element-fire;
+            }
+        
+            &--water {
+                color: $element-water;
+            }
+        
+            &--wind {
+                color: $element-wind;
+            }
+        
+            &--earth {
+                color: $element-earth;
+            }
+        
+            &--ghost {
+                color: $element-ghost;
+            }
+        
+            &--holy {
+                color: $element-holy;
+            }
+        
+            &--dark {
+                color: $element-dark;
+            }
         }
     }
 }

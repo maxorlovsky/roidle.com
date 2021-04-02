@@ -32,7 +32,8 @@
         "all": "All",
         "consumables": "Consumables",
         "equipment": "Equipment",
-        "etc": "etc."
+        "etc": "etc.",
+        "element": "Element"
     },
     "app": {
         "loginClosed": "Login servers went down or closed, probably because of server restart, wait 5 minutes",
@@ -493,7 +494,6 @@
     },
     "monstersLore": {
         "monsterNotFound": "Monster not found",
-        "element": "Element",
         "level": "Level"
     },
     "statistics": {
