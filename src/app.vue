@@ -245,6 +245,14 @@ export default {
         ]),
 
         setUpMainSocketEvents() {
+            mo.socket.on('huntField', (field) => {
+                this.$store.commit('setHuntField', field);
+            });
+
+            mo.socket.on('cleanField', () => {
+                this.$store.commit('clearHuntField');
+            });
+
             mo.socket.on('acceptTradeComplete', (response) => {
                 // In case response is successful we send user to trade page
                 if (response) {

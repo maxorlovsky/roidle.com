@@ -159,10 +159,7 @@
                     >
                         <div>{{ $t('game.huntInProgress') }}</div>
 
-                        <hunt-battle v-if="field"
-                            :field="field"
-                        />
-                        <loading v-else />
+                        <hunt-battle />
 
                         <div>{{ huntStatusTimerDisplay }}</div>
                         <button v-if="!retreatFromHunt"
@@ -396,7 +393,6 @@ const gamePage = {
         clearInterval(this.huntInterval);
 
         if (mo.socket) {
-            mo.socket.off('huntField');
             mo.socket.off('interruptTravelComplete');
             mo.socket.off('retreatFromHuntComplete');
         }
@@ -427,14 +423,6 @@ const gamePage = {
                     status: 'retreating',
                     timeFinish: null
                 });
-            });
-
-            mo.socket.on('huntField', (field) => {
-                this.field = field;
-            });
-
-            mo.socket.on('cleanField', () => {
-                this.field = null;
             });
         },
         markHuntAsRetreating() {

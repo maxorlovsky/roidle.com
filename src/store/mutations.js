@@ -3,6 +3,12 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    setHuntField: (state, value) => {
+        state.huntField = value;
+    },
+    clearHuntField: (state) => {
+        state.huntField = null;
+    },
     setAttributesComponents: (state, value) => {
         state.attributesComponents = value;
     },
