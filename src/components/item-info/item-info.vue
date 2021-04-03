@@ -173,7 +173,8 @@ export default {
             'inventory',
             'characterSkills',
             'serverUrl',
-            'publicItemInfo'
+            'publicItemInfo',
+            'partyAvailableSkillsIds'
         ]),
 
         repairIsDisabled() {
@@ -315,7 +316,10 @@ export default {
             this.showRepair = false;
         },
         repairIsAvailable(type) {
-            if ((!this.characterSkills[32] || this.characterSkills[32] <= 0) && (!this.characterSkills[33] || this.characterSkills[33] <= 0)) {
+            if ((!this.characterSkills[32] || this.characterSkills[32] <= 0) &&
+                (!this.characterSkills[33] || this.characterSkills[33] <= 0) &&
+                (!this.partyAvailableSkillsIds[32] || this.partyAvailableSkillsIds[32] <= 0)
+            ) {
                 return false;
             }
 
@@ -331,12 +335,15 @@ export default {
             this.repairMaterials = [];
 
             // Check if character have the skill to repair the item
-            if ((!this.characterSkills[32] || this.characterSkills[32] <= 0) && (!this.characterSkills[33] || this.characterSkills[33] <= 0)) {
+            if ((!this.characterSkills[32] || this.characterSkills[32] <= 0) &&
+                (!this.characterSkills[33] || this.characterSkills[33] <= 0) &&
+                (!this.partyAvailableSkillsIds[32] || this.partyAvailableSkillsIds[32] <= 0)
+            ) {
                 this.$store.commit('sendChat', [
                     {
                         type: 'system',
                         character: 'System',
-                        message: 'You don\'t have the knowledge how to repair or maintain your items (Require Maintain Item or Repair Item skill)',
+                        message: this.$t('itemInfo.repairItemDeclined'),
                         important: true
                     }
                 ]);
