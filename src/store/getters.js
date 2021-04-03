@@ -83,4 +83,7 @@ export default {
     allSkillsNames: (state) => state.allSkillsNames,
     allItemsNames: (state) => state.allItemsNames,
     putIntoChat: (state) => state.putIntoChat,
+    online: (state) => state.online,
+    hunts: (state) => state.hunts,
+    playersRegistered: (state) => state.playersRegistered
 };

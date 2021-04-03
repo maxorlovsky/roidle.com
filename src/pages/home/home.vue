@@ -1,49 +1,6 @@
 <template>
     <section class="home">
-        <div class="home__top-bar">
-            <nav class="home__top-bar__links">
-                <router-link to="/">
-                    {{ $t('home.home') }}
-                </router-link>
-                <a href="https://roidle.fandom.com/wiki/ROIdle_Wiki"
-                    target="_blank"
-                    rel="noopener nofollow"
-                >
-                    {{ $t('home.wiki') }}
-                </a>
-                <!--<a href="https://www.patreon.com/roidle"
-                    target="_blank"
-                    rel="noopener nofollow"
-                >
-                    Support the development (Patreon)
-                </a>-->
-            </nav>
-            <div class="home__top-bar__right">
-                <div class="home__top-bar__right__activity">
-                    <div>{{ $t('home.online') }}: {{ online }}</div>
-                    <div>{{ $t('home.hunts') }}: {{ hunts }}</div>
-                    <div>{{ $t('home.playersRegistered') }}: {{ players }}</div>
-                </div>
-
-                <a href="https://www.reddit.com/r/ROIdle"
-                    class="home__top-bar__reddit-link game-icon"
-                    target="_blank"
-                    rel="noopener nofollow"
-                >
-                    <i class="icon icon-reddit" />
-                </a>
-
-                <a href="https://discord.gg/PjApFha"
-                    class="home__top-bar__discord-link game-icon"
-                    target="_blank"
-                    rel="noopener nofollow"
-                >
-                    <img :src="`${serverUrl}/dist/assets/images/discord.png`">
-                </a>
-
-                <volume-control-home />
-            </div>
-        </div>
+        <top-navigation />
 
         <div class="home__logo">
             <img :src="`${serverUrl}/dist/assets/images/logo.png`">
@@ -108,7 +65,7 @@
         <div class="home__online game-icon">
             <div>{{ $t('home.online') }}: {{ online }}</div>
             <div>{{ $t('home.hunts') }}: {{ hunts }}</div>
-            <div>{{ $t('global.players') }}: {{ players }}</div>
+            <div>{{ $t('global.players') }}: {{ playersRegistered }}</div>
         </div>
 
         <div class="home__wrapper">
@@ -262,26 +219,20 @@ import { functions } from '@utils/functions.js';
 
 // Components
 import loading from '@components/loading/loading.vue';
-import volumeControlHome from '@components/volume-control-home/volume-control-home.vue';
 import register from '@components/register/register.vue';
+import topNavigation from '@components/top-navigation/top-navigation.vue';
 
 const homePage = {
     components: {
         loading,
-        volumeControlHome,
-        register
+        register,
+        topNavigation
     },
     data() {
         return {
             loading: true,
             buttonLoading: false,
             isLoggedIn: false,
-            online: 0,
-            hunts: 0,
-            crafts: 0,
-            rests: 0,
-            travels: 0,
-            players: 0,
             version: mo.version,
             showRegisterModal: false,
             form: {
@@ -294,7 +245,10 @@ const homePage = {
     computed: {
         ...mapGetters([
             'isGuest',
-            'serverUrl'
+            'serverUrl',
+            'online',
+            'hunts',
+            'playersRegistered',
         ])
     },
     mounted() {
@@ -305,8 +259,6 @@ const homePage = {
             // If not just remove loading state
             this.loading = false;
         }
-
-        this.getOnline();
     },
     methods: {
         async login() {
@@ -348,20 +300,6 @@ const homePage = {
         },
         openReg() {
             this.showRegisterModal = true;
-        },
-        async getOnline() {
-            try {
-                const response = await axios.get(`${mo.serverUrl}/api/online?cache=${new Date().getTime()}`);
-
-                this.online = response.data.online;
-                this.hunts = response.data.hunts;
-                this.travels = response.data.travels;
-                this.crafts = response.data.crafts;
-                this.rests = response.data.rests;
-                this.players = response.data.registered;
-            } catch (error) {
-                console.error(error);
-            }
         },
         loadGame() {
             // In case we're already loading, stop click events

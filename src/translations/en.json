@@ -44,6 +44,7 @@
     "home": {
         "home": "Home",
         "wiki": "Wiki",
+        "leaderboards": "Leaderboards",
         "online": "Online",
         "hunts": "Hunts",
         "playersRegistered": "Players registered",
@@ -511,5 +512,15 @@
         "years": "Year(s)",
         "months": "Month(s)",
         "days": "Day(s)"
+    },
+    "leaderboards": {
+        "leaderboard": "Characters Leaderboard",
+        "updatesNotice": "Updates every 3 hours",
+        "avatar": "Avatar",
+        "name": "Name",
+        "monstersKilled": "Monsters killed",
+        "level": "Level",
+        "top": "Top",
+        "richestPerson": "Richest person"
     }
 }

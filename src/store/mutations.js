@@ -3,6 +3,11 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    setOnline: (state, value) => {
+        state.online = value.online;
+        state.hunts = value.hunts;
+        state.playersRegistered = value.registered;
+    },
     putIntoChat: (state, value) => {
         state.putIntoChat = value;
     },

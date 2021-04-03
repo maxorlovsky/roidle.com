@@ -209,5 +209,8 @@ export default {
     huntField: null,
     allSkillsNames: [],
     allItemsNames: [],
-    putIntoChat: ''
+    putIntoChat: '',
+    online: 0,
+    hunts: 0,
+    playersRegistered: 0,
 };

@@ -40,6 +40,7 @@ import './pages/transmute-items/transmute-items.vue';
 import './pages/transmute-items/transmute-items-item.vue';
 import './pages/monsters-lore/monsters-lore.vue';
 import './pages/all-users/all-users.vue';
+import './pages/leaderboards/leaderboards.vue';
 
 // Router
 import router from './router.js';

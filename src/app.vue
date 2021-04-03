@@ -221,8 +221,16 @@ export default {
             // For all public paths we disable music
             this.enableBgm = false;
         } else {
+            const ignoredPages = [
+                '/',
+                '/character-select',
+                '/server-down',
+                '/public/character',
+                '/leaderboards'
+            ];
+
             // In case it's not a home page that we're trying to get into we will try
-            if (!['/', '/character-select', '/server-down', '/public/character'].includes(this.$route.path) &&
+            if (!ignoredPages.includes(this.$route.path) &&
                 functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')
             ) {
                 if (this.$route.path !== '/game') {
@@ -233,7 +241,7 @@ export default {
             }
 
             // If up to this point user still don't have socket connection, we must redirect him to home page
-            if (!mo.socket && !['/', '/character-select', '/server-down', '/public/character'].includes(this.$route.path)) {
+            if (!mo.socket && !ignoredPages.includes(this.$route.path)) {
                 this.$router.replace('/');
             }
         }
