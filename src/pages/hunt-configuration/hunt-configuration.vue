@@ -209,7 +209,8 @@
 
             <div class="hunt-configuration__escape__wrapper">
                 <div class="hunt-configuration__escape__item"
-                    @click="showItemInfo(602)"
+                    @click.exact="showItemInfo(602)"
+                    @click.ctrl="parseItemToChat('Butterfly Wing')"
                 >
                     <img :src="`${serverUrl}/dist/assets/images/items/602.gif`">
                     <span :class="{'hunt-configuration__escape__item__amount--not-enough': !butterflyWingsAmount}"
@@ -472,11 +473,15 @@ import VueToggles from 'vue-toggles';
 // Components
 import avatar from '@components/avatar/avatar.vue';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 const huntConfigurationPage = {
     components: {
         avatar,
         VueToggles
     },
+    mixins: [chatMixin],
     data() {
         return {
             loading: true,

@@ -34,7 +34,8 @@
                     'inventory__item--high-quality': item.durability && item.durability > item.defaultDurability
                 }"
                 class="inventory__item"
-                @click="showItemInfo(item)"
+                @click.exact="showItemInfo(item)"
+                @click.ctrl="parseItemToChat(item.name)"
             >
                 <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                 <span v-if="item.maxDurability"
@@ -55,7 +56,11 @@ import { mapGetters } from 'vuex';
 // Utils
 import { sort as inventorySort } from '@utils/inventory.js';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 const inventoryPage = {
+    mixins: [chatMixin],
     data() {
         return {
             search: '',

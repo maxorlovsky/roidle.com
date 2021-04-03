@@ -8,6 +8,14 @@ $mobileSize: 768px;
 $chat-tabs-height: 35px;
 $chat-tabs-height-padding: $chat-tabs-height + 10px;
 
+$element-fire: #f00;
+$element-water: #00e;
+$element-wind: #0a0;
+$element-earth: #960;
+$element-ghost: #999;
+$element-holy: #ffd12b;
+$element-dark: #540164;
+
 /* Boostrap variables */
 $link-hover-decoration: none;
 $link-color: $mainColor;
@@ -20,7 +28,7 @@ $nav-link-padding-y: 0;
 $nav-link-padding-x: 0;
 
 /* Font-Awesome variables */
-$assets: "/dist/assets" !default;
+$assets: "../assets" !default;
 
 // Importing lib styles
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

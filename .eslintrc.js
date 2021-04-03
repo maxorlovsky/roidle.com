@@ -335,6 +335,7 @@ module.exports = {
         "vue/name-property-casing": ["error", "kebab-case"],
         "vue/no-v-html": "off",
         "vue/singleline-html-element-content-newline": "off",
+        "vue/component-definition-name-casing": "off",
         "wrap-iife": "error",
         "wrap-regex": "error",
         "yield-star-spacing": "error",

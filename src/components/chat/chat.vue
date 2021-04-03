@@ -157,6 +157,9 @@ import { format as dateFormat } from 'date-fns';
 // Utilities
 import { functions } from '@utils/functions.js';
 
+// Check if in chat we need to paste skill or item
+const chatRegex = new RegExp(/\[Skill:[\w /-]+\]|\[Item:[\w\s]+\]/g);
+
 export default {
     name: 'chat',
     data() {
@@ -193,13 +196,18 @@ export default {
             'characterName',
             'showChat',
             'serverUrl',
-            'admin'
+            'admin',
+            'allSkillsNames',
+            'allItemsNames',
+            'putIntoChat'
         ])
     },
     watch: {
         socketConnection() {
             if (this.socketConnection) {
                 this.setUpSocketEvents();
+            } else {
+                this.destroySocketEvents();
             }
         },
         characterSkills: {
@@ -276,6 +284,8 @@ export default {
                     chat.message = this.addEmotes(chat.message);
                     chat.message = this.addEmotes(chat.message);
 
+                    chat.message = this.addSkillInfoCheck(chat.message);
+
                     // Check if chat is becoming too large and cleaning up first properties to not consume so much memory
                     if (this.chatLog.regular.length > 100) {
                         this.chatLog.regular.shift();
@@ -299,11 +309,13 @@ export default {
             if (!this.showChat) {
                 this.fullChat = false;
             }
-        }
-    },
-    beforeDestroy() {
-        if (mo.socket) {
-            mo.socket.off('chat');
+        },
+        putIntoChat() {
+            if (this.message) {
+                this.message += ` ${this.putIntoChat}`;
+            } else {
+                this.message = this.putIntoChat;
+            }
         }
     },
     mounted() {
@@ -367,6 +379,25 @@ export default {
 
             this.modalCharacterName = characterName;
             this.showChatModal = true;
+        },
+        addSkillInfoCheck(message) {
+            let match = null;
+
+            while ((match = chatRegex.exec(message))) {
+                // Removing [ and ] symbols
+                const stripResult = match[0].substr(1, match[0].length - 2);
+                // Striping by : as this is the only thing that should remain
+                const splitResult = stripResult.split(':');
+
+                // Define if it's a skill
+                if (splitResult[0] === 'Skill' && this.allSkillsNames.includes(splitResult[1])) {
+                    message = message.replace(match, ` <a href="javascript:;" class="chat__skill" onClick="mo.socket.emit('getSkillInfoByName', '${splitResult[1]}')">[${splitResult[1]}]</a> `);
+                } else if (splitResult[0] === 'Item' && this.allItemsNames.includes(splitResult[1])) {
+                    message = message.replace(match, ` <a href="javascript:;" class="chat__item" onClick="mo.socket.emit('getItemInfoByName', '${splitResult[1]}')">[${splitResult[1]}]</a> `);
+                }
+            }
+
+            return message;
         },
         addEmotes(message) {
             message = message.replace(/(?:^|\W)\/bawi(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/bawi.png"> `)
@@ -467,6 +498,11 @@ export default {
             mo.socket.on('chat', (message) => {
                 this.$store.commit('sendChat', [message]);
             });
+        },
+        destroySocketEvents() {
+            if (mo.socket) {
+                mo.socket.off('chat');
+            }
         },
         scrollChat() {
             for (const chat of this.chats) {

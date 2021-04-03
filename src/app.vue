@@ -73,7 +73,7 @@
 // 3rd party libs
 import { mapGetters, mapActions } from 'vuex';
 import axios from 'axios';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 // Utilities
 import { functions } from '@utils/functions.js';
@@ -245,6 +245,18 @@ export default {
         ]),
 
         setUpMainSocketEvents() {
+            mo.socket.on('getPreloadedDataComplete', (value) => {
+                this.$store.commit('setPreloadedData', value);
+            });
+
+            mo.socket.on('huntField', (field) => {
+                this.$store.commit('setHuntField', field);
+            });
+
+            mo.socket.on('cleanField', () => {
+                this.$store.commit('clearHuntField');
+            });
+
             mo.socket.on('acceptTradeComplete', (response) => {
                 // In case response is successful we send user to trade page
                 if (response) {
@@ -399,6 +411,8 @@ export default {
             mo.socket.on('kickedFromParty', () => {
                 this.$store.commit('leaveParty');
             });
+
+            mo.socket.emit('getPreloadedData');
         },
         setUpSocketEvents() {
             mo.socket.emit('reconnect', functions.storage('get', 'session'));

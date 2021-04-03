@@ -13,7 +13,8 @@
                 class="craft__item"
             >
                 <div class="craft__item__image-amount"
-                    @click="showItemInfo(item)"
+                    @click.exact="showItemInfo(item)"
+                    @click.ctrl="parseItemToChat(item.name)"
                 >
                     <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                 </div>
@@ -45,12 +46,13 @@ import loading from '@components/loading/loading.vue';
 
 // Mixins
 import timerMixin from '@mixins/timers.js';
+import chatMixin from '@mixins/chat.js';
 
 const craftType = {
     components: {
         loading,
     },
-    mixins: [timerMixin],
+    mixins: [timerMixin, chatMixin],
     data() {
         return {
             loading: true,

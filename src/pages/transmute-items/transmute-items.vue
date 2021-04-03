@@ -20,7 +20,8 @@
                     class="transmute-items__item"
                 >
                     <div class="transmute-items__item__image-amount"
-                        @click="showItemInfo(item)"
+                        @click.exact="showItemInfo(item)"
+                        @click.ctrl="parseItemToChat(item.itemName)"
                     >
                         <img :src="`${serverUrl}/dist/assets/images/items/${item.id}.gif`">
                         <span>{{ item.amount }}</span>
@@ -46,10 +47,14 @@ import { mapGetters } from 'vuex';
 // Components
 import loading from '@components/loading/loading.vue';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 const transmuteItemsPage = {
     components: {
         loading
     },
+    mixins: [chatMixin],
     data() {
         return {
             loading: true,

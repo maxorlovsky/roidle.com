@@ -18,7 +18,8 @@
                     <span class="equipment__placeholder">{{ eq.name }}</span>
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__info"
-                        @click.prevent="showItemInfo(characterEquipment[eq.slot])"
+                        @click.exact.prevent="showItemInfo(characterEquipment[eq.slot])"
+                        @click.ctrl="parseItemToChat(characterEquipment[eq.slot].name)"
                     >?</div>
                 </div>
             </div>
@@ -62,7 +63,8 @@
                     <span class="equipment__placeholder">{{ eq.name }}</span>
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
                         class="equipment__info"
-                        @click.prevent="showItemInfo(characterEquipment[eq.slot])"
+                        @click.exact.prevent="showItemInfo(characterEquipment[eq.slot])"
+                        @click.ctrl="parseItemToChat(characterEquipment[eq.slot].name)"
                     >?</div>
                 </div>
             </div>
@@ -83,7 +85,8 @@
                 <div v-for="(item, index) in items"
                     :key="index"
                     class="equipment-modal__item"
-                    @click="equipItem(item)"
+                    @click.exact="equipItem(item)"
+                    @click.ctrl="parseItemToChat(item.name)"
                 >
                     <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                     <div class="equipment-modal__item__amount">
@@ -127,7 +130,11 @@ import stats from '../../components/stats/stats.vue';
 import skillsList from '@components/skills-list/skills-list.vue';
 import attributes from '@components/attributes/attributes.vue';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 const characterPage = {
+    mixins: [chatMixin],
     components: {
         avatar,
         stats,

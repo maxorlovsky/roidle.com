@@ -16,6 +16,9 @@
                 <b>{{ name }}</b>
                 <div>{{ $t('itemInfo.type') }}: <span class="ucfirst">{{ itemClass ? itemClass : type }}</span> <span v-if="twoHanded">({{ $t('itemInfo.twoHanded') }})</span></div>
                 <div v-if="params">{{ $t('itemInfo.params') }}: <b>{{ params }}</b></div>
+                <div v-if="element"
+                    class="item-info__element"
+                >{{ $t('global.element') }}: <b :class="`element--${element}`">{{ element }}</b></div>
                 <div v-if="requiredLevel">{{ $t('itemInfo.requiredLevel') }}: {{ requiredLevel }}</div>
 
                 <div v-if="durability >= 0 && durability !== null && defaultDurability">
@@ -97,6 +100,7 @@
                     <div v-for="material in repairMaterials"
                         :key="material.itemId"
                         class="item-info__repair__materials__material"
+                        @click.ctrl="parseItemToChat(material.name)"
                     >
                         <img :src="`${serverUrl}/dist/assets/images/items/${material.itemId}.gif`">
                         <div :class="{'item-info__repair__materials__material__amount--found': haveEnoughMaterials(material)}"
@@ -125,8 +129,12 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 export default {
     name: 'item-info',
+    mixins: [chatMixin],
     data() {
         return {
             buttonLoading: false,
@@ -152,7 +160,8 @@ export default {
             showDiscardAmountMax: null,
             showDiscardItem: null,
             showRepair: false,
-            repairMaterials: []
+            repairMaterials: [],
+            element: ''
         };
     },
     computed: {
@@ -358,6 +367,7 @@ export default {
             this.twoHanded = item.twoHanded || false;
             this.description = item.description ? item.description : '';
             this.params = '';
+            this.element = '';
             this.durability = null;
             this.maxDurability = null;
             this.defaultDurability = 0;
@@ -370,7 +380,11 @@ export default {
             // Making params human readable
             if (item.params) {
                 for (const param of Object.keys(item.params)) {
-                    this.params += `${param.toUpperCase()}: ${item.params[param]}, `;
+                    if (param === 'element') {
+                        this.element = item.params[param];
+                    } else {
+                        this.params += `${param.toUpperCase()}: ${item.params[param]}, `;
+                    }
                 }
 
                 this.params = this.params.substring(0, this.params.length - 2);

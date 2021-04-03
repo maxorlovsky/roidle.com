@@ -32,7 +32,8 @@
         "all": "All",
         "consumables": "Consumables",
         "equipment": "Equipment",
-        "etc": "etc."
+        "etc": "etc.",
+        "element": "Element"
     },
     "app": {
         "loginClosed": "Login servers went down or closed, probably because of server restart, wait 5 minutes",
@@ -75,7 +76,8 @@
         "youAreGuestAccount": "You are on guest account, your data can be easily lost if you like the game consider registering account by clicking here",
         "createAndConnectAccount": "Create and Connect account",
         "selectCharacter": "Select character",
-        "deleteCharacterConfirmation": "Are you sure you want to delete this character?",
+        "deleteCharacterConfirmation": "Are you sure you want to delete this character? Type \"DELETE\" in uppercase letter to confirm.",
+        "deleteCharacterConfirmationWord": "DELETE",
         "backToCharacterSelect": "Back to character select",
         "maleSingleLetter": "m",
         "femaleSingleLetter": "f",
@@ -492,7 +494,20 @@
     },
     "monstersLore": {
         "monsterNotFound": "Monster not found",
-        "element": "Element",
         "level": "Level"
+    },
+    "statistics": {
+        "quests": "Quests completed",
+        "monstersKilled": "Monster killed",
+        "itemsCrafted": "Items crafted",
+        "itemsCraftFailed": "Items failed to craft",
+        "itemsTransmuted": "Items transmuted",
+        "locationsTraveled": "Locations traveled",
+        "deaths": "Deaths",
+        "rests": "Inn Rests",
+        "age": "Age",
+        "years": "Year(s)",
+        "months": "Month(s)",
+        "days": "Day(s)"
     }
 }
