@@ -238,5 +238,22 @@
                 font-size: 1rem;
             }
         }
+
+        &__alphabetical {
+            color: #fff;
+            padding: 0.5rem;
+
+            .game-icon {
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            &--active {
+                .game-icon {
+                    background-color: rgba(255, 255, 255, 0.8);
+                    color: $mainColor;
+                }
+            }
+        }
     }
 }

@@ -17,6 +17,43 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
+
+        &__alphabetical {
+            color: #fff;
+            padding: 0.5rem;
+
+            &--desktop {
+                display: none;
+
+                @media (min-width: $mobileSize) {
+                    display: block;
+                }
+            }
+
+            &--mobile {
+                @media (min-width: $mobileSize) {
+                    display: none;
+                }
+            }
+    
+            .game-icon {
+                cursor: pointer;
+                transition: 0.3s;
+            }
+    
+            &--active {
+                .game-icon {
+                    background-color: rgba(255, 255, 255, 0.8);
+                    color: $mainColor;
+                }
+            }
+        }
+    }
+
+    &__search-wrapper {
+        display: flex;
+        width: 100%;
+        align-items: center;
     }
 
     &__weight {
