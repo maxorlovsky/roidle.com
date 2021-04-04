@@ -18,6 +18,8 @@
                 <li>Remixed Izlude and intro music: <a href="https://www.youtube.com/watch?v=o2ca823Up6o" target="_blank">StudioA' - Everlasting Wanderers</a></li>
                 <li>Remixed Payon Forest music: <a href="https://www.youtube.com/watch?v=GkSSwd7onnM" target="_blank">[Apple Project] Peaceful Forest -昼下がりの街角-</a></li>
                 <li>Remixed Geffen music: <a href="https://www.youtube.com/watch?v=-5YczdukIRU" target="_blank">StudioA' - Theme of Geffen</a></li>
+                <li>Vector graphics / illustrations: <a href="https://www.freepik.com/" target="_blank">Freepik</a></li>
+                <li>Vector graphics / illustrations: <a href="https://freesvg.org/" target="_blank">Free SVG</a></li>
             </ul>
             <!-- eslint-enable -->
         </div>
