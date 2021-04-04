@@ -18,4 +18,12 @@ const sort = (inventory, sort) => {
     return inventory;
 };
 
-export { sort };
+const isEquipableGear = (itemId) => {
+    if (itemId >= 1100 && itemId <= 5999) {
+        return true;
+    }
+
+    return false;
+};
+
+export { sort, isEquipableGear };
