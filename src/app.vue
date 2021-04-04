@@ -7,6 +7,8 @@
         <div v-else
             class="game-block"
         >
+            <top-navigation v-if="!dockedMenu" />
+
             <char-info-top v-if="dockedMenu" />
 
             <router-view :class="{'docked-menu-open': dockedMenu, 'body-content--game': characterId}"
@@ -66,6 +68,8 @@
                 @click="reconnect()"
             />
         </div>
+
+        <footer-component v-if="!dockedMenu" />
     </section>
 </template>
 
@@ -94,6 +98,8 @@ import skillInfo from '@components/skill-info/skill-info.vue';
 import tutorial from '@components/tutorial/tutorial.vue';
 import tutorialBlocker from '@components/tutorial/tutorial-blocker.vue';
 import tradeWindowRequest from '@components/trade-window-request/trade-window-request.vue';
+import footerComponent from '@components/footer/footer.vue';
+import topNavigation from '@components/top-navigation/top-navigation.vue';
 
 export default {
     name: 'app',
@@ -109,6 +115,8 @@ export default {
         tutorial,
         tutorialBlocker,
         tradeWindowRequest,
+        footerComponent,
+        topNavigation
     },
     store: store,
     data() {
@@ -221,8 +229,18 @@ export default {
             // For all public paths we disable music
             this.enableBgm = false;
         } else {
+            const ignoredPages = [
+                '/',
+                '/character-select',
+                '/server-down',
+                '/public/character',
+                '/leaderboards',
+                '/terms-and-conditions',
+                '/legal'
+            ];
+
             // In case it's not a home page that we're trying to get into we will try
-            if (!['/', '/character-select', '/server-down', '/public/character'].includes(this.$route.path) &&
+            if (!ignoredPages.includes(this.$route.path) &&
                 functions.storage('get', 'session') && functions.storage('get', 'selectedCharacter')
             ) {
                 if (this.$route.path !== '/game') {
@@ -233,7 +251,7 @@ export default {
             }
 
             // If up to this point user still don't have socket connection, we must redirect him to home page
-            if (!mo.socket && !['/', '/character-select', '/server-down', '/public/character'].includes(this.$route.path)) {
+            if (!mo.socket && !ignoredPages.includes(this.$route.path)) {
                 this.$router.replace('/');
             }
         }

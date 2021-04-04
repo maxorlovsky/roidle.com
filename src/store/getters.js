@@ -48,6 +48,7 @@ export default {
     resetChat: (state) => state.resetChat,
     closeTutorial: (state) => state.closeTutorial,
     admin: (state) => state.admin,
+    moderator: (state) => state.moderator,
     party: (state) => state.party,
     partyName: (state) => state.partyName,
     partyMembers: (state) => state.partyMembers,
@@ -83,4 +84,7 @@ export default {
     allSkillsNames: (state) => state.allSkillsNames,
     allItemsNames: (state) => state.allItemsNames,
     putIntoChat: (state) => state.putIntoChat,
+    online: (state) => state.online,
+    hunts: (state) => state.hunts,
+    playersRegistered: (state) => state.playersRegistered
 };

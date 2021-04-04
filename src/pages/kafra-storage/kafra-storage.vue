@@ -43,6 +43,16 @@
                     >X</div>
                 </div>
 
+                <div :class="{'kafra-storage__top__alphabetical--active': sortAlphabetically}"
+                    class="kafra-storage__top__alphabetical"
+                >
+                    <div class="game-icon"
+                        @click="sortAtoZ()"
+                    >
+                        <i class="icon icon-sort-alphabetically" />
+                    </div>
+                </div>
+
                 <div class="kafra-storage__top__sorting">
                     <div class="kafra-storage__top__sorting__label">{{ $t('global.show') }}:</div>
                     <select v-model="sortBy">
@@ -153,6 +163,7 @@ const kafraStoragePage = {
             movingItem: null,
             search: '',
             sortBy: 'all',
+            sortAlphabetically: functions.storage('get', 'sortInventory')
         };
     },
     computed: {
@@ -175,6 +186,14 @@ const kafraStoragePage = {
             }
 
             inv = inventorySort(inv, this.sortBy);
+
+            if (this.sortAlphabetically) {
+                // eslint-disable-next-line
+                inv.sort((a,b) => (a[itemName] > b[itemName]) ? 1 : ((b[itemName] > a[itemName]) ? -1 : 0));
+            } else {
+                // eslint-disable-next-line
+                inv.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0));
+            }
 
             return inv || [];
         }
@@ -246,6 +265,11 @@ const kafraStoragePage = {
         mo.socket.off('openKafraStorageComplete');
     },
     methods: {
+        sortAtoZ() {
+            this.sortAlphabetically = !this.sortAlphabetically;
+
+            functions.storage('set', 'sortInventory', this.sortAlphabetically);
+        },
         // To check that item that is in inventory is not in storage, to be able to move it even in case storage is technically full
         itemInStorage(itemId) {
             const findIndex = this.itemsStorage.findIndex((storageItem) => storageItem.itemId === itemId && storageItem.type !== 'weapon' && storageItem.type !== 'armor');

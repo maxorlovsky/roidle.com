@@ -3,6 +3,11 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    setOnline: (state, value) => {
+        state.online = value.online;
+        state.hunts = value.hunts;
+        state.playersRegistered = value.registered;
+    },
     putIntoChat: (state, value) => {
         state.putIntoChat = value;
     },
@@ -700,6 +705,11 @@ export default {
         if (values.character.admin) {
             state.admin = values.character.admin;
         }
+
+        // Setting moderator state
+        if (values.character.admin) {
+            state.moderator = values.character.moderator;
+        }
     },
     displayDockedMenu: (state, values) => {
         state.dockedMenu = values;
@@ -894,5 +904,6 @@ export default {
         state.characterResting = false;
 
         state.admin = 0;
+        state.moderator = 0;
     }
 };

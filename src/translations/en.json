@@ -44,11 +44,13 @@
     "home": {
         "home": "Home",
         "wiki": "Wiki",
+        "leaderboards": "Leaderboards",
         "online": "Online",
         "hunts": "Hunts",
         "playersRegistered": "Players registered",
         "earlyAccessExplanation": "This is a fan / hobby made game, done by one person and is currently in Open Alpha access.",
         "registerAccount": "Register account",
+        "forgotPassword": "Forgot password",
         "playNowRegisterLater": "Play now, register later",
         "startGame": "Start the game",
         "feature1Title": "Idle & inremental text MMORPG - hunt and do quests",
@@ -233,7 +235,9 @@
         "repair": "Repair",
         "equip": "Equip",
         "confirmationToDiscard": "Are you sure you want to discard this item?",
-        "confirmationToRepair": "Do you wish to use those materials in order to repair the item?"
+        "confirmationToRepair": "Do you wish to use those materials in order to repair the item?",
+        "repairItemDeclined": "You don't have the knowledge how to repair or maintain your items (Require Maintain Item or Repair Item skill)"
+
     },
     "kafra": {
         "actionTitle": "Kafra Services",
@@ -277,6 +281,13 @@
         "email": "Email",
         "password": "Password",
         "confirmPassword": "Confirm password"
+    },
+    "forgotPassword": {
+        "email": "Email",
+        "characterName": "Any existing character name on your account",
+        "requestPassword": "Request password",
+        "successMessage": "New password was generated and sent to your email",
+        "errorMessage": "Match not found, try different combination"
     },
     "shop": {
         "shopDealers": "Shop Dealers",
@@ -509,5 +520,19 @@
         "years": "Year(s)",
         "months": "Month(s)",
         "days": "Day(s)"
+    },
+    "leaderboards": {
+        "leaderboard": "Characters Leaderboard",
+        "updatesNotice": "Updates every 3 hours",
+        "avatar": "Avatar",
+        "name": "Name",
+        "monstersKilled": "Monsters killed",
+        "level": "Level",
+        "top": "Top",
+        "richestPerson": "Richest person"
+    },
+    "footer": {
+        "termsAndConditions": "Terms and Conditions",
+        "legal": "Legal and Usage of assets"
     }
 }

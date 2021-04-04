@@ -261,6 +261,9 @@ import loading from '@components/loading/loading.vue';
 // Mixins
 import chatMixin from '@mixins/chat.js';
 
+// Utils
+import { isEquipableGear } from '@utils/inventory.js';
+
 const managePlayersShopPage = {
     components: {
         loading,
@@ -502,7 +505,7 @@ const managePlayersShopPage = {
             }
 
             // We're trying to detect if such item is already in the list, in this case zeny propery should be ignorred and hidden
-            const findItem = this.shopItems.find((findItem) => findItem.itemId === item.itemId && !findItem.maxDurability);
+            const findItem = this.shopItems.find((findItem) => findItem.itemId === item.itemId && !findItem.maxDurability && !isEquipableGear(item.itemId));
 
             // If item found, we hide zeny property
             if (findItem) {

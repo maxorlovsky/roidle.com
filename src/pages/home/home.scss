@@ -9,65 +9,10 @@
     max-width: 1400px;
     min-height: 100vh;
 
-    &__top-bar {
-        width: 100%;
-        max-height: 85px;
-        padding: 0 0.5rem;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        &__links {
-            display: flex;
-            align-items: center;
-
-            a {
-                color: #fff;
-                display: block;
-                padding: 2rem 1rem;
-                font-weight: bold;
-                text-transform: uppercase;
-    
-                &:hover {
-                    color: #999;
-                }
-            }
-        }
-
-        &__right {
-            display: flex;
-            align-items: center;
-
-            .game-icon:hover {
-                background-color: rgba(255, 255, 255, 0.8);
-            }
-
-            &__activity {
-                color: #fff;
-                padding-right: 1rem;
-
-                @media (max-width: $mobileSize) {
-                    display: none;
-                }
-            }
-        }
-
-        &__discord-link {
-            font-size: 1rem;
-            margin-right: 1rem;
-        }
-
-        &__reddit-link {
-            color: #ff3f19;
-            margin-right: 1rem;
-        }
-    }
-
     &__logo {
         width: 100%;
         text-align: center;
-        margin-top: 2rem;
+        padding-top: 2rem;
     }
 
     &__early-access {
@@ -129,7 +74,7 @@
         align-items: center;
         flex-wrap: wrap;
         width: 90%;
-        margin: 1rem auto;
+        margin: 1rem auto 0 auto;
 
         &__features {
             color: #fff;
@@ -183,12 +128,6 @@
                 }
             }
         }
-    }
-
-    &__version {
-        width: 100%;
-        text-align: center;
-        padding-bottom: 2rem;
     }
 
     &__auth-form {

@@ -147,6 +147,7 @@ export default {
     resetChat: null,
     closeTutorial: null,
     admin: 0,
+    moderator: 0,
     party: false,
     partyName: null,
     partyMembers: [],
@@ -209,5 +210,8 @@ export default {
     huntField: null,
     allSkillsNames: [],
     allItemsNames: [],
-    putIntoChat: ''
+    putIntoChat: '',
+    online: 0,
+    hunts: 0,
+    playersRegistered: 0,
 };

@@ -1,0 +1,67 @@
+.leaderboards {
+    font-size: 1rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("#{$assets}/images/character.jpg");
+    box-shadow: 1rem 0 1.5rem #000;
+    margin: 0 auto;
+    max-width: 1400px;
+    min-height: 100vh;
+
+    h1 {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 2rem;
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    &__notice {
+        font-style: italic;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+    }
+
+    &__board {
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 1rem;
+
+        @media (min-width: $mobileSize) {
+            width: 49%;
+        }
+    }
+
+    &__titles {
+        > div {
+            font-weight: bold;
+        }
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #999;
+
+        &__avatar {
+            width: 20%;
+            text-align: center;
+        }
+
+        &__name {
+            width: 50%;
+        }
+
+        &__value {
+            width: 30%;
+        }
+    }
+}
