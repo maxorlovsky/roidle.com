@@ -522,5 +522,9 @@
         "level": "Level",
         "top": "Top",
         "richestPerson": "Richest person"
+    },
+    "footer": {
+        "termsAndConditions": "Terms and Conditions",
+        "legal": "Legal and Usage of assets"
     }
 }

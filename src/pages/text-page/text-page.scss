@@ -1,0 +1,16 @@
+.text-page {
+    font-size: 1rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("#{$assets}/images/character.jpg");
+    box-shadow: 1rem 0 1.5rem #000;
+    margin: 0 auto;
+    max-width: 1400px;
+    min-height: 100vh;
+
+    &__wrapper {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 1rem;
+    }
+}

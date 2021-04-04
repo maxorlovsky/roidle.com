@@ -42,6 +42,10 @@ import './pages/monsters-lore/monsters-lore.vue';
 import './pages/all-users/all-users.vue';
 import './pages/leaderboards/leaderboards.vue';
 
+// Text pages
+import './pages/text-page/terms-and-conditions.vue';
+import './pages/text-page/legal.vue';
+
 // Router
 import router from './router.js';
 

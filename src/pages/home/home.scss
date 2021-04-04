@@ -12,7 +12,7 @@
     &__logo {
         width: 100%;
         text-align: center;
-        margin-top: 2rem;
+        padding-top: 2rem;
     }
 
     &__early-access {
@@ -74,7 +74,7 @@
         align-items: center;
         flex-wrap: wrap;
         width: 90%;
-        margin: 1rem auto;
+        margin: 1rem auto 0 auto;
 
         &__features {
             color: #fff;
@@ -128,12 +128,6 @@
                 }
             }
         }
-    }
-
-    &__version {
-        width: 100%;
-        text-align: center;
-        padding-bottom: 2rem;
     }
 
     &__auth-form {

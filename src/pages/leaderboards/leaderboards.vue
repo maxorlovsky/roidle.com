@@ -1,7 +1,5 @@
 <template>
     <div class="leaderboards">
-        <top-navigation />
-
         <h1>{{ $t('leaderboards.leaderboard') }}</h1>
 
         <p class="leaderboards__notice">{{ $t('leaderboards.updatesNotice') }}</p>

@@ -1,7 +1,5 @@
 <template>
     <section class="home">
-        <top-navigation />
-
         <div class="home__logo">
             <img :src="`${serverUrl}/dist/assets/images/logo.png`">
         </div>
@@ -199,8 +197,6 @@
             </div>
         </div>
 
-        <div class="home__version">v{{ version }}</div>
-
         <register v-if="showRegisterModal && !isLoggedIn"
             class="modal"
             @closeModal="showRegisterModal = false"
@@ -220,20 +216,17 @@ import { functions } from '@utils/functions.js';
 // Components
 import loading from '@components/loading/loading.vue';
 import register from '@components/register/register.vue';
-import topNavigation from '@components/top-navigation/top-navigation.vue';
 
 const homePage = {
     components: {
         loading,
-        register,
-        topNavigation
+        register
     },
     data() {
         return {
             loading: true,
             buttonLoading: false,
             isLoggedIn: false,
-            version: mo.version,
             showRegisterModal: false,
             form: {
                 login: '',
