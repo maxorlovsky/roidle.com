@@ -223,7 +223,8 @@ const viewPlayersShopPage = {
             mo.socket.emit('shopBuyItem', {
                 shopId: this.shopId,
                 shopItemId: this.buyingItem.id,
-                amount: this.itemAmountValue
+                amount: this.itemAmountValue,
+                price: this.buyingItem.price * this.itemAmountValue
             });
         },
         closeItemAmountModal() {
