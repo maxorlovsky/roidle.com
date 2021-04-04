@@ -705,6 +705,11 @@ export default {
         if (values.character.admin) {
             state.admin = values.character.admin;
         }
+
+        // Setting moderator state
+        if (values.character.admin) {
+            state.moderator = values.character.moderator;
+        }
     },
     displayDockedMenu: (state, values) => {
         state.dockedMenu = values;
@@ -899,5 +904,6 @@ export default {
         state.characterResting = false;
 
         state.admin = 0;
+        state.moderator = 0;
     }
 };

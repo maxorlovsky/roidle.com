@@ -114,7 +114,7 @@
                     <button class="btn game-button"
                         @click="trade(modalCharacterName)"
                     >{{ $t('global.trade') }}</button>
-                    <button v-if="admin"
+                    <button v-if="admin || moderator"
                         class="btn btn-warning"
                         @click="mute(modalCharacterName)"
                     >{{ $t('global.mute') }}</button>
@@ -197,6 +197,7 @@ export default {
             'showChat',
             'serverUrl',
             'admin',
+            'moderator',
             'allSkillsNames',
             'allItemsNames',
             'putIntoChat'
@@ -354,14 +355,14 @@ export default {
                 return false;
             }
 
-            console.warn(`Ban: ${name}`);
+            mo.socket.emit('adminBanPlayer', name);
         },
         mute(name) {
-            if (!this.admin) {
+            if (!this.admin && !this.moderator) {
                 return false;
             }
 
-            console.warn(`Mute: ${name}`);
+            mo.socket.emit('adminMutePlayer', name);
         },
         trade(characterName) {
             mo.socket.emit('initiateTrading', characterName);
@@ -498,10 +499,20 @@ export default {
             mo.socket.on('chat', (message) => {
                 this.$store.commit('sendChat', [message]);
             });
+
+            mo.socket.on('adminMutePlayerComplete', () => {
+                this.showChatModal = false;
+            });
+
+            mo.socket.on('adminBanPlayerComplete', () => {
+                this.showChatModal = false;
+            });
         },
         destroySocketEvents() {
             if (mo.socket) {
                 mo.socket.off('chat');
+                mo.socket.off('adminMutePlayerComplete');
+                mo.socket.off('adminBanPlayerComplete');
             }
         },
         scrollChat() {

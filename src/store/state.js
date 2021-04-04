@@ -147,6 +147,7 @@ export default {
     resetChat: null,
     closeTutorial: null,
     admin: 0,
+    moderator: 0,
     party: false,
     partyName: null,
     partyMembers: [],

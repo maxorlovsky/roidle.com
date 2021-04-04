@@ -48,6 +48,7 @@ export default {
     resetChat: (state) => state.resetChat,
     closeTutorial: (state) => state.closeTutorial,
     admin: (state) => state.admin,
+    moderator: (state) => state.moderator,
     party: (state) => state.party,
     partyName: (state) => state.partyName,
     partyMembers: (state) => state.partyMembers,
