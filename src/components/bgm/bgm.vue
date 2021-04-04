@@ -203,7 +203,7 @@ export default {
                     musicTracks = ['04'];
                     break;
                 case 65:
-                    musicTracks = ['13'];
+                    musicTracks = ['13', 'geffen-mix'];
                     break;
                 case 52:
                 case 53:
