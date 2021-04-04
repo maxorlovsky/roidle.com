@@ -50,6 +50,7 @@
         "playersRegistered": "Players registered",
         "earlyAccessExplanation": "This is a fan / hobby made game, done by one person and is currently in Open Alpha access.",
         "registerAccount": "Register account",
+        "forgotPassword": "Forgot password",
         "playNowRegisterLater": "Play now, register later",
         "startGame": "Start the game",
         "feature1Title": "Idle & inremental text MMORPG - hunt and do quests",
@@ -280,6 +281,13 @@
         "email": "Email",
         "password": "Password",
         "confirmPassword": "Confirm password"
+    },
+    "forgotPassword": {
+        "email": "Email",
+        "characterName": "Any existing character name on your account",
+        "requestPassword": "Request password",
+        "successMessage": "New password was generated and sent to your email",
+        "errorMessage": "Match not found, try different combination"
     },
     "shop": {
         "shopDealers": "Shop Dealers",

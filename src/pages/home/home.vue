@@ -40,6 +40,9 @@
             <div class="home__auth-form__helpers">
                 <span @click="openReg()">{{ $t('home.registerAccount') }}</span>
             </div>
+            <div class="home__auth-form__helpers">
+                <span @click="openRestore()">{{ $t('home.forgotPassword') }}</span>
+            </div>
         </div>
 
         <div v-if="!loading && !isLoggedIn"
@@ -202,6 +205,12 @@
             @closeModal="showRegisterModal = false"
             @registrationSuccess="authenticate()"
         />
+
+        <forgot-password v-if="showForgotPasswordModal && !isLoggedIn"
+            class="modal"
+            @closeModal="showForgotPasswordModal = false"
+        />
+
     </section>
 </template>
 
@@ -216,11 +225,13 @@ import { functions } from '@utils/functions.js';
 // Components
 import loading from '@components/loading/loading.vue';
 import register from '@components/register/register.vue';
+import forgotPassword from '@components/forgot-password/forgot-password.vue';
 
 const homePage = {
     components: {
         loading,
-        register
+        register,
+        forgotPassword
     },
     data() {
         return {
@@ -228,6 +239,7 @@ const homePage = {
             buttonLoading: false,
             isLoggedIn: false,
             showRegisterModal: false,
+            showForgotPasswordModal: false,
             form: {
                 login: '',
                 password: '',
@@ -293,6 +305,11 @@ const homePage = {
         },
         openReg() {
             this.showRegisterModal = true;
+            this.showForgotPasswordModal = false;
+        },
+        openRestore() {
+            this.showRegisterModal = false;
+            this.showForgotPasswordModal = true;
         },
         loadGame() {
             // In case we're already loading, stop click events
