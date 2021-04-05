@@ -1,35 +1,5 @@
 <template>
     <div class="home">
-        <div class="home__top-bar">
-            <nav class="home__top-bar__links">
-                <a href="https://roidle.fandom.com/wiki/ROIdle_Wiki"
-                    target="_blank"
-                    rel="noopener nofollow"
-                >
-                    {{ $t('home.wiki') }}
-                </a>
-            </nav>
-            <div class="home__top-bar__right">
-                <a href="https://www.reddit.com/r/ROIdle"
-                    class="home__top-bar__reddit-link game-icon"
-                    target="_blank"
-                    rel="noopener nofollow"
-                >
-                    <i class="icon icon-reddit" />
-                </a>
-
-                <a href="https://discord.gg/PjApFha"
-                    class="home__top-bar__discord-link game-icon"
-                    target="_blank"
-                    rel="noopener nofollow"
-                >
-                    <img :src="`${serverUrl}/dist/assets/images/discord.png`">
-                </a>
-
-                <volume-control-home />
-            </div>
-        </div>
-
         <div class="home__logo">
             <img :src="`${serverUrl}/dist/assets/images/logo.png`">
         </div>
