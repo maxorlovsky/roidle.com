@@ -28,7 +28,7 @@
                 >
                     <avatar :head-style="leaderboard.headStyle"
                         :head-color="leaderboard.headColor"
-                        :dye-color="leaderboard.dyeStyle"
+                        :dye-color="leaderboard.dyeColor"
                         :gender="leaderboard.gender"
                         :job="leaderboard.jobName"
                         :framed="true"
@@ -168,7 +168,7 @@ const leaderboardsPage = {
     methods: {
         async getLeaderboards() {
             try {
-                const response = await axios.get(`${mo.serverUrl}/api/leaderboards`);
+                const response = await axios.get(`${mo.serverUrl}/api/leaderboards?cache=${new Date().getTime()}`);
 
                 this.boardsBreakdown(response.data);
 
