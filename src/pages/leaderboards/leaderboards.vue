@@ -66,7 +66,7 @@
                 >
                     <avatar :head-style="leaderboard.headStyle"
                         :head-color="leaderboard.headColor"
-                        :dye-color="leaderboard.dyeStyle"
+                        :dye-color="leaderboard.dyeColor"
                         :gender="leaderboard.gender"
                         :job="leaderboard.jobName"
                         :framed="true"
@@ -104,7 +104,7 @@
                 >
                     <avatar :head-style="leaderboard.headStyle"
                         :head-color="leaderboard.headColor"
-                        :dye-color="leaderboard.dyeStyle"
+                        :dye-color="leaderboard.dyeColor"
                         :gender="leaderboard.gender"
                         :job="leaderboard.jobName"
                         :framed="true"
