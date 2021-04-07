@@ -86,12 +86,6 @@ const craftPage = {
                     name: this.$t('craft.daggers')
                 },
                 {
-                    itemId: 1301,
-                    category: 'weapon',
-                    type: 'axe',
-                    name: this.$t('craft.axes')
-                },
-                {
                     itemId: 1351,
                     category: 'weapon',
                     type: '2haxe',
