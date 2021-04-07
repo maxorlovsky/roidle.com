@@ -47,7 +47,7 @@
             </a>
             <div v-if="serverWentDown"
                 class="modal"
-                @click="reconnect()"
+                @click="reload()"
             >
                 {{ $t('app.serverWentDown') }}
                 <div class="app__disconnect-button">
@@ -500,6 +500,15 @@ export default {
                 mo.socket.off('connect_timeout');
                 mo.socket.off('selectCharacterComplete');
             }
+        },
+        reload() {
+            if (this.buttonLoading) {
+                return false;
+            }
+
+            this.buttonLoading = true;
+
+            location.reload();
         },
         async reconnect() {
             if (this.buttonLoading) {
