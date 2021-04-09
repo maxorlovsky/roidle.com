@@ -81,13 +81,9 @@ const tradingListPage = {
     },
     methods: {
         viewCharacter(name) {
-            this.buttonLoading = true;
-
             this.$router.push(`/profile/${name}`);
         },
         trade(name) {
-            this.buttonLoading = true;
-
             mo.socket.emit('initiateTrading', name);
         }
     }

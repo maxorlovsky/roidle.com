@@ -348,8 +348,6 @@ export default {
             if (response) {
                 this.$router.push('/trading');
             }
-
-            this.buttonLoading = false;
         });
 
         mo.socket.on('tradeRequestReceived', (response) => {
