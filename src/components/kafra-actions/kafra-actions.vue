@@ -274,6 +274,7 @@ export default {
         });
     },
     beforeDestroy() {
+        mo.socket.off('checkKafraComplete');
         mo.socket.off('transferBankFundsComplete');
         mo.socket.off('getBankFundsComplete');
         mo.socket.off('characterResetStatsComplete');
