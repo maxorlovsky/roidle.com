@@ -1,5 +1,5 @@
 // 3rd party libs
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 
 // Vuex
 import { store } from './store/index.js';
