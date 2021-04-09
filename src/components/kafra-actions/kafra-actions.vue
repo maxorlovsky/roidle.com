@@ -222,6 +222,14 @@ export default {
         }
     },
     mounted() {
+        mo.socket.on('checkKafraComplete', (response) => {
+            this.showKafraModal = false;
+
+            if (response) {
+                this.$router.push('/kafra-storage');
+            }
+        });
+
         mo.socket.on('transferBankFundsComplete', (response) => {
             this.buttonLoading = false;
 
@@ -365,9 +373,7 @@ export default {
                 return false;
             }
 
-            this.showKafraModal = false;
-
-            this.$router.push('/kafra-storage');
+            mo.socket.emit('checkKafra');
         },
         statResetStart() {
             this.showKafraModal = false;

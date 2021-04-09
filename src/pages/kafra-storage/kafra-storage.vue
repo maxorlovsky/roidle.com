@@ -233,6 +233,13 @@ const kafraStoragePage = {
         mo.socket.on('openKafraStorageComplete', (response) => {
             this.loading = false;
 
+            // In case kafra can't be opened, we just send user back
+            if (!response) {
+                this.$router.go(-1);
+
+                return false;
+            }
+
             itemsStorage = JSON.parse(JSON.stringify(response.itemsStorage));
 
             this.storageSpace = response.itemsStorage.length;
@@ -260,6 +267,9 @@ const kafraStoragePage = {
         });
     },
     beforeDestroy() {
+        // Sending request to close Kafra from this account
+        mo.socket.emit('closeKafra');
+
         mo.socket.off('depositItemComplete');
         mo.socket.off('withdrawItemComplete');
         mo.socket.off('openKafraStorageComplete');
