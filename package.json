@@ -15,7 +15,7 @@
     "build": "yarn clean && yarn jslint && yarn stylelint && yarn webpack",
     "release": "git pull && yarn && yarn jslint && yarn stylelint && node_modules/.bin/webpack --config webpack.config.js --env production",
     "watch": "node_modules/.bin/webpack serve",
-    "watch:local": "node_modules/.bin/webpack --env local"
+    "watch:local": "node_modules/.bin/webpack serve --env local"
   },
   "dependencies": {
     "@babel/core": "7.13.14",
