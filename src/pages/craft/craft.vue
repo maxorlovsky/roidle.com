@@ -181,7 +181,10 @@ const craftPage = {
             }
 
             return true;
-        }
+        },
+        cancelCraft() {
+            mo.socket.emit('cancelCraft');
+        },
     },
 };
 
