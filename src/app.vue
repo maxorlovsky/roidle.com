@@ -214,7 +214,7 @@ export default {
 
         // We ping the server, to know that it's alive, in case it isn't we're redirecting user to server-down page
         try {
-            await axios.get(`${mo.serverUrl}/api/ping`);
+            await axios.get(`${mo.serverUrl}/api/ping?cache=${new Date().getTime()}`);
         } catch (error) {
             this.$router.replace('/server-down');
             this.removeLoader();

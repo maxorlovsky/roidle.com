@@ -64,7 +64,7 @@
                 </div>
                 <div class="craft-item__price__item">
                     <div class="craft-item__price__item__title">{{ $t('craft.timeRequired') }}</div>
-                    <div class="craft-item__price__item__value">{{ staticTimer(price.timeRequired * amount) }}</div>
+                    <div class="craft-item__price__item__value">{{ staticTimer(craftableItem.time * amount) }}</div>
                 </div>
                 <div class="craft-item__price__item">
                     <div class="craft-item__price__item__title">{{ $t('global.mpCost') }}</div>

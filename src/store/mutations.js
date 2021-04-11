@@ -902,6 +902,7 @@ export default {
         };
         state.restTimer = null;
         state.characterResting = false;
+        state.huntField = null;
 
         state.admin = 0;
         state.moderator = 0;

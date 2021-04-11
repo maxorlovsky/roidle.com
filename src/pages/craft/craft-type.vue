@@ -106,9 +106,6 @@ const craftType = {
 
             return true;
         },
-        cancelCraft() {
-            mo.socket.emit('cancelCraft');
-        },
         showItemInfo(item) {
             mo.socket.emit('getItemInfo', {
                 itemId: item.itemId
