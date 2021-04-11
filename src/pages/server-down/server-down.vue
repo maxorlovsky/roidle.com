@@ -36,7 +36,7 @@ const serverDownPage = {
     methods: {
         async checkServerStatus() {
             try {
-                const response = await axios.get(`${mo.serverUrl}/api/ping`);
+                const response = await axios.get(`${mo.serverUrl}/api/ping?cache=${new Date().getTime()}`);
 
                 // In case of message OK sent, server are back up, we redirect user to home page
                 if (response.data.message === 'OK') {
