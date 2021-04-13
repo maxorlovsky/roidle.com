@@ -157,7 +157,8 @@
         "healingPotions": "Potions",
         "bows": "Bows",
         "arrows": "Arrows",
-        "staffs": "Staffs"
+        "staffs": "Staffs",
+        "confirmationToCancel": "Are you sure you want to cancel the craft? You WILL NOT receive materials back for canceling the process."
     },
     "map": {
         "dungeonActionTitle": "Dungeon",
