@@ -14,6 +14,18 @@
                     {{ $t('craft.abandonCraftExplanation') }}
                 </div>
             </div>
+
+            <div v-if="showCancelModal"
+                class="craft__cancel"
+            >
+                <div class="craft__cancel__caution-text">{{ $t('craft.confirmationToCancel') }}</div>
+                <button class="btn btn-secondary"
+                    @click="showCancelModal = false"
+                >{{ $t('global.no') }}</button>
+                <button class="btn btn-danger"
+                    @click="confirmCancelCraft()"
+                >{{ $t('global.yes') }}</button>
+            </div>
         </div>
         <div v-else
             class="craft__wrapper"
@@ -66,6 +78,7 @@ import { mapGetters } from 'vuex';
 const craftPage = {
     data() {
         return {
+            showCancelModal: false,
             craftableItems: [
                 {
                     itemId: 1101,
@@ -182,8 +195,12 @@ const craftPage = {
 
             return true;
         },
-        cancelCraft() {
+        confirmCancelCraft() {
             mo.socket.emit('cancelCraft');
+            this.showCancelModal = false;
+        },
+        cancelCraft() {
+            this.showCancelModal = true;
         },
     },
 };

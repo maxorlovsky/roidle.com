@@ -172,7 +172,13 @@ const questsPage = {
     },
     methods: {
         calcualteProgressPercentage(currentProgress, neededProgress) {
-            return Math.floor(currentProgress / neededProgress * 100) || 0;
+            let percentage = Math.floor(currentProgress / neededProgress * 100) || 0;
+
+            if (percentage > 100) {
+                percentage = 100;
+            }
+
+            return percentage;
         },
         showQuest(quest) {
             this.selectedMission = quest;
