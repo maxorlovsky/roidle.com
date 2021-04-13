@@ -226,7 +226,7 @@ export default {
             }
         },
         calculateCost(stat) {
-            return Math.floor(stat / 10) + 2;
+            return Math.floor((stat - 1) / 10) + 2;
         },
         calculateAttributes() {
             mo.socket.emit('getCharacterHypotheticalAttributes', this.stats);
