@@ -26,11 +26,13 @@
                         class="players-shops__list__item"
                     >
                         <div class="players-shops__list__item__image">
-                            <div v-if="item.image" />
-                            <div v-else
-                                class="players-shops__list__item__image__no-image"
-                            >
-                                <img :src="`${serverUrl}/dist/assets/images/items/672.gif`">
+                            <div class="players-shops__list__item__image__shop-image">
+                                <img v-if="item.image"
+                                    :src="`/merchant-shops/${item.image}`"
+                                >
+                                <img v-else
+                                    :src="`${serverUrl}/dist/assets/images/items/672.gif`"
+                                >
                             </div>
                         </div>
 
