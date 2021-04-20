@@ -238,6 +238,8 @@ export default {
             if (response) {
                 mo.socket.emit('getMyShop');
             }
+
+            this.buttonLoading = false;
         });
 
         mo.socket.on('shopPlaceBuyOrderComplete', (response) => {
@@ -246,6 +248,8 @@ export default {
                 this.closeModal();
                 mo.socket.emit('getMyShop');
             }
+
+            this.buttonLoading = false;
         });
 
         mo.socket.on('getItemInfoForBuyComplete', (item) => {
@@ -278,9 +282,13 @@ export default {
             });
         },
         cancelBuyOrder(item) {
+            this.buttonLoading = true;
+
             mo.socket.emit('shopCancelBuyOrder', item.id);
         },
         confirmBuyOrder() {
+            this.buttonLoading = true;
+
             mo.socket.emit('shopPlaceBuyOrder', {
                 itemId: this.buyItem.itemId,
                 amount: this.buyItem.amount,
