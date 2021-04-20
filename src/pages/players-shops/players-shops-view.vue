@@ -110,7 +110,7 @@
                         class="players-shops__sold-item players-shops__view-shop"
                     >
                         <div class="players-shops__sold-item__image-amount"
-                            @click.exact="showItemInfo(item)"
+                            @click.exact="getItem(item)"
                             @click.ctrl="parseItemToChat(item.itemName)"
                         >
                             <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
@@ -416,6 +416,11 @@ const viewPlayersShopPage = {
             this.selectSellingItem(findItems[0], 0);
 
             this.sellingItems = findItems;
+        },
+        getItem(item) {
+            mo.socket.emit('getItemInfo', {
+                itemId: item.itemId
+            });
         },
         showItemInfo(item) {
             mo.socket.emit('getItemInfo', {
