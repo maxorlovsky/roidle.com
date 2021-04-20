@@ -94,46 +94,7 @@
                 >{{ $t('shop.update') }}</button>
             </div>
 
-            <div class="players-shops__transactions">
-                <div class="players-shops__title">{{ $t('shop.transactions') }}</div>
-
-                <loading v-if="loadingTransactions" />
-                <template v-else>
-                    <div v-for="transaction in transactions"
-                        :key="transaction.id"
-                        class="players-shops__transactions-item"
-                    >
-                        <div :class="{
-                                'players-shops__transactions-item__item--broken': transaction.broken,
-                                'players-shops__transactions-item__item--not-pristine': transaction.defaultDurability && transaction.durability < transaction.defaultDurability,
-                                'players-shops__transactions-item__item--high-quality': transaction.durability && transaction.durability > transaction.defaultDurability
-                            }"
-                            class="players-shops__transactions-item__item"
-                            @click="getItem(transaction.itemId)"
-                        >
-                            <img :src="`${serverUrl}/dist/assets/images/items/${transaction.itemId}.gif`">
-                            <span v-if="transaction.maxDurability"
-                                class="players-shops__transactions-item__item__amount"
-                            >
-                                {{ transaction.durability }}/{{ transaction.maxDurability }}
-                            </span>
-                            <span v-else
-                                class="players-shops__transactions-item__item__amount"
-                            >{{ transaction.amount }}</span>
-                        </div>
-
-                        <div class="players-shops__transactions-item__info">
-                            <b>{{ $t('shop.soldTo') }}</b>: <a :href="`${serverUrl}/public/character/${transaction.clientName}`"
-                                target="_blank"
-                            >{{ transaction.clientName }}</a><br>
-                            <b>{{ $t('shop.fullPrice') }}</b>: {{ transaction.price }}Z<br>
-                            <b>{{ $t('shop.setPrice') }}</b>: {{ transaction.price - transaction.tax }}Z<br>
-                            <b>{{ $t('shop.tax') }}</b>: {{ transaction.tax }}Z<br>
-                            <b>{{ $t('shop.soldWhen') }}</b>: {{ formatDate(transaction.date, 'dd MMM HH:mm:ss') }}
-                        </div>
-                    </div>
-                </template>
-            </div>
+            <players-shops-transactions />
 
             <div class="players-shops__inventory-wrapper">
                 <div class="players-shops__title">{{ $t('shop.inventory') }}</div>
@@ -321,12 +282,12 @@
 <script>
 // 3rd party libs
 import { mapGetters } from 'vuex';
-import { format as dateFormat } from 'date-fns';
 
 // Components
 import loading from '@components/loading/loading.vue';
 import fileUpload from '@components/file-upload/file-upload.vue';
 import playersShopsBuyItem from './players-shops-buy-item.vue';
+import playersShopsTransactions from './players-shops-transactions.vue';
 
 // Mixins
 import chatMixin from '@mixins/chat.js';
@@ -339,12 +300,12 @@ const managePlayersShopPage = {
         loading,
         fileUpload,
         playersShopsBuyItem,
+        playersShopsTransactions
     },
     mixins: [chatMixin],
     data() {
         return {
             loading: true,
-            loadingTransactions: true,
             buttonLoading: false,
             temporaryInventory: [],
             displayCashboxAmountModal: false,
@@ -372,8 +333,7 @@ const managePlayersShopPage = {
             searchItems: '',
             shopImage: false,
             shopId: 0,
-            canUploadImage: false,
-            transactions: []
+            canUploadImage: false
         };
     },
     computed: {
@@ -509,12 +469,6 @@ const managePlayersShopPage = {
             this.loading = false;
         });
 
-        mo.socket.on('getMyShopTransactionsComplete', (response) => {
-            this.transactions = response;
-
-            this.loadingTransactions = false;
-        });
-
         mo.socket.on('updateShopComplete', (response) => {
             if (response.status) {
                 this.errorMessage = '';
@@ -542,28 +496,17 @@ const managePlayersShopPage = {
 
         mo.socket.emit('getLocationVendingPrice');
         mo.socket.emit('getMyShop');
-        // Fetching transactions
-        mo.socket.emit('getMyShopTransactions');
     },
     beforeDestroy() {
         mo.socket.off('shopTakeItemFromShopComplete');
         mo.socket.off('shopUpdateItemPriceComplete');
         mo.socket.off('shopPlaceSellItemComplete');
         mo.socket.off('getMyShopComplete');
-        mo.socket.off('getMyShopTransactionsComplete');
         mo.socket.off('updateShopComplete');
         mo.socket.off('shopCashboxOperationComplete');
         mo.socket.off('getLocationVendingPriceComplete');
     },
     methods: {
-        formatDate(date) {
-            return dateFormat(new Date(date), 'dd MMM yy HH:mm:ss');
-        },
-        getItem(itemId) {
-            mo.socket.emit('getItemInfo', {
-                itemId: itemId
-            });
-        },
         updateShopImage(shopImagePath) {
             this.shopImage = shopImagePath;
         },

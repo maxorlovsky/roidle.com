@@ -267,7 +267,8 @@
         "noTransactionsFound": "No transactions found",
         "moneyInBank": "Zeny in bank",
         "depositTransaction": "deposit + {amount}",
-        "withdrawTransaction": "withdraw - {amount}"
+        "withdrawTransaction": "withdraw - {amount}",
+        "shopReturnTransaction": "returned money from shop + {amount}"
     },
     "puzzle": {
         "actionTitle": "Challenge / Puzzle",
@@ -312,6 +313,7 @@
         "inventory": "Inventory",
         "itemsOnCounter": "Items on counter",
         "shopLocationTaxForSelling": "{location}'s tax for item selling is",
+        "shopLocationTaxForBuying": "{location}'s tax for item buying is",
         "endPrice": "End price",
         "yourPrice": "Your price",
         "confirm": "Confirm",
@@ -344,11 +346,19 @@
         "tax": "Tax",
         "soldWhen": "On",
         "buyingItem": "Buying orders",
+        "willingToBuy": "Willing to buy",
         "addNewOrder": "Add new order",
         "buyItemMinDurability": "Minimum durability that will satisfy this setting",
         "buyItemMaxDurability": "Maximum durability that will satisfy this setting",
         "buyItemPrice": "Your price to buy this item (excl. tax)",
-        "buyItemPriceWithTax": "Price to buy this item (incl. tax)"
+        "buyPriceRemaining": "Remaining zeny on order",
+        "buyPricePerItem": "Price per item",
+        "buyDurabilityRange": "Max. Durability range",
+        "youAboutToSell": "You are about to sell an item",
+        "youReceive": "You will receive",
+        "boughtFrom": "Bought from",
+        "youPaid": "You paid",
+        "sellerReceived": "Seller received"
     },
     "stats": {
         "statusPoints": "Status points",

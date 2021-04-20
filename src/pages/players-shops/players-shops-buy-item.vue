@@ -2,52 +2,42 @@
     <div class="players-shops__buy">
         <div class="players-shops__title">{{ $t('shop.buyingItem') }}</div>
 
+        <p>{{ $t('shop.shopLocationTaxForBuying', {
+            location: characterLocation
+        }) }} <b>{{ tax }}%</b></p>
+
         <button class="btn game-button players-shops__buy__add"
             @click="displayItemBuyModal = true"
         >{{ $t('shop.addNewOrder') }}</button>
 
-        <!--<p>{{ $t('shop.shopLocationTaxForSelling', {
-            location: characterLocation
-        }) }} <b>{{ locationTax }}%</b></p>
-
-        <div class="search-input">
-            <input v-model="search"
-                :placeholder="$t('global.search')"
-                maxlength="50"
-                type="text"
-            >
-            <div v-show="search"
-                class="search-input__close"
-                @click="search = ''"
-            >X</div>
-        </div>-->
-
         <template v-if="items.length">
             <div v-for="(item, index) in filteredItems"
                 :key="index"
-                class="players-shops__sold-item"
+                class="players-shops__buy-item"
             >
-                <div :class="{
-                    'players-shops__sold-item__image-amount--broken': item.broken,
-                    'players-shops__sold-item__image-amount--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
-                    'players-shops__sold-item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
-                }"
-                    class="players-shops__sold-item__image-amount"
-                    @click.exact="showItemInfo(item)"
+                <div class="players-shops__buy-item__image-amount"
+                    @click.exact="showItemInfo(item.itemId)"
                     @click.ctrl="parseItemToChat(item.itemName)"
                 >
                     <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
-                    <span v-if="item.maxDurability">{{ item.durability }}/{{ item.maxDurability }}</span>
-                    <span v-else>{{ item.amount }}</span>
+                    <span>{{ item.amount }}</span>
                 </div>
-                <div class="players-shops__sold-item__name-price">
-                    <div class="players-shops__sold-item__name-price__name">{{ item.itemName }}</div>
-                    <div class="players-shops__sold-item__name-price__price">
-                        {{ $t('shop.endPrice') }}: {{ Math.floor(Number(item.price) + (Number(item.price) * (tax / 100))) }} Z
+                <div class="players-shops__buy-item__name-price">
+                    <div class="players-shops__buy-item__name-price__name">{{ item.itemName }}</div>
+                    <div v-if="item.maxDurability"
+                        class="players-shops__buy-item__name-price__durability"
+                    >
+                        {{ $t('shop.buyDurabilityRange') }}: {{ item.durability }} - {{ item.maxDurability }}
+                    </div>
+                    <div class="players-shops__buy-item__name-price__price">
+                        {{ $t('shop.buyPricePerItem') }}: {{ Math.floor(item.price / item.amount) }}Z
+                    </div>
+                    <div class="players-shops__buy-item__name-price__price">
+                        {{ $t('shop.buyPriceRemaining') }}: {{ item.price }}Z
                     </div>
                 </div>
-                <div :class="{ 'players-shops__sold-item__move--disabled': buttonLoading }"
-                    class="players-shops__sold-item__move"
+                <div :class="{ 'players-shops__buy-item__move--disabled': buttonLoading }"
+                    class="players-shops__buy-item__move"
                     @click="cancelBuyOrder(item)"
                 >
                     &lt;
@@ -55,7 +45,7 @@
             </div>
         </template>
         <template v-else>
-            <div class="players-shops__buy-wrapper__empty">{{ $t('global.empty') }}</div>
+            <div class="players-shops__buy__empty">{{ $t('global.empty') }}</div>
         </template>
 
         <div v-if="displayItemBuyModal"
@@ -151,7 +141,7 @@
                     </div>
 
                     <div>
-                        <div class="form-heading">{{ $t('shop.buyItemPriceWithTax') }}:</div>
+                        <div class="form-heading">{{ $t('shop.fullPrice') }}:</div>
                         <b>{{ fullPrice }}</b>
                     </div>
                 </template>
@@ -173,8 +163,12 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Mixins
+import chatMixin from '@mixins/chat.js';
+
 export default {
     name: 'players-shops-buy-item',
+    mixins: [chatMixin],
     props: {
         tax: {
             type: Number,
@@ -209,11 +203,9 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'huntStatus',
-            'characterId',
-            'characterSkills',
-            'serverUrl',
-            'allItemsNames'
+            'characterLocation',
+            'allItemsNames',
+            'serverUrl'
         ]),
 
         matches() {
@@ -228,7 +220,7 @@ export default {
         fullPrice() {
             const price = Number(this.buyItem.price);
 
-            return Math.floor(price + (price * (this.tax / 100))) * this.buyItem.amount;
+            return price * this.buyItem.amount;
         },
         filteredItems() {
             let inv = this.items;
@@ -241,9 +233,19 @@ export default {
         }
     },
     mounted() {
-        mo.socket.on('shopPlaceBuyOrderComplete', () => {
-            this.closeModal();
-            mo.socket.emit('getMyShop');
+        mo.socket.on('shopCancelBuyOrderComplete', (response) => {
+            // In case of success we trigger call to re-fetch shop
+            if (response) {
+                mo.socket.emit('getMyShop');
+            }
+        });
+
+        mo.socket.on('shopPlaceBuyOrderComplete', (response) => {
+            // In case of success we close modal and trigger call to re-fetch shop
+            if (response) {
+                this.closeModal();
+                mo.socket.emit('getMyShop');
+            }
         });
 
         mo.socket.on('getItemInfoForBuyComplete', (item) => {
@@ -265,11 +267,18 @@ export default {
         });
     },
     beforeDestroy() {
+        mo.socket.off('shopCancelBuyOrderComplete');
+        mo.socket.off('shopPlaceBuyOrderComplete');
         mo.socket.off('getItemInfoForBuyComplete');
     },
     methods: {
-        cancelBuyOrder() {
-            //
+        showItemInfo(itemId) {
+            mo.socket.emit('getItemInfo', {
+                itemId: itemId
+            });
+        },
+        cancelBuyOrder(item) {
+            mo.socket.emit('shopCancelBuyOrder', item.id);
         },
         confirmBuyOrder() {
             mo.socket.emit('shopPlaceBuyOrder', {
