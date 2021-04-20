@@ -36,6 +36,7 @@
                         {{ $t('shop.rentExplanation', {
                             location: characterLocation
                         }) }}<br>
+                        {{ $t('shop.setupPrice') }}: <b>{{ setupPrice }}Z</b><br>
                         {{ $t('shop.rentPricePerDay') }}: <b>{{ currentPricePerDay }}Z</b>
                     </div>
                     <div class="form-heading">{{ $t('shop.initialMoneyInCashbox') }}:</div>
@@ -51,7 +52,7 @@
                     <div>{{ $t('shop.shopClosureDaysExplanation') }}</div>
                     <div class="form-heading">{{ $t('shop.inWhatDayShopClose') }}:</div>
                     <input v-model="days"
-                        :placeholder="$t('shop.inWhatDaysShopClose')"
+                        :placeholder="$t('shop.inWhatDayShopClose')"
                         type="number"
                         min="0"
                         :max="maxDays"
@@ -92,9 +93,10 @@ const openPlayersShopsPage = {
             shopDescription: '',
             cashboxAmount: 0,
             maxCashboxAmount: 20000000,
-            days: '0',
-            maxDays: 90,
+            days: '7',
+            maxDays: 14,
             errorMessage: '',
+            setupPrice: 0,
             currentPricePerDay: 0
         };
     },
@@ -109,7 +111,9 @@ const openPlayersShopsPage = {
             return this.characterSkills[26] >= 1;
         },
         formValidation() {
-            return this.shopName && this.cashboxAmount >= this.currentPricePerDay && (this.days && this.days >= 0);
+            const days = Number(this.days);
+
+            return this.shopName && this.cashboxAmount >= this.currentPricePerDay && (days && days >= 0);
         }
     },
     watch: {
@@ -129,6 +133,8 @@ const openPlayersShopsPage = {
 
             if (amount > this.maxDays) {
                 amount = this.maxDays;
+            } else if (amount < 1) {
+                amount = 1;
             }
 
             this.days = amount;
@@ -147,8 +153,8 @@ const openPlayersShopsPage = {
         });
 
         mo.socket.on('getLocationVendingPriceComplete', (response) => {
+            this.setupPrice = response.setupPrice;
             this.currentPricePerDay = response.pricePerDay;
-            this.cashboxAmount = response;
         });
 
         mo.socket.emit('getLocationVendingPrice');

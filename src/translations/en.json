@@ -302,6 +302,7 @@
         "shopName": "Shop Name",
         "shopDescription": "Shop Description: (can be empty)",
         "shopDescriptionPlaceholder": "Shop Description",
+        "setupPrice": "Set up price",
         "rentPricePerDay": "Rent price per day",
         "rentPricePerDayExplanation": "Rent price per day is vary depending on multiple factors and is updating each day",
         "moneyInCashbox": "Zeny in cashbox",

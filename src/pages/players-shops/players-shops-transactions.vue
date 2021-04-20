@@ -4,50 +4,57 @@
 
         <loading v-if="loading" />
         <template v-else>
-            <div v-for="transaction in transactions"
-                :key="transaction.id"
-                class="players-shops__transactions-item"
-            >
-                <div :class="{
-                        'players-shops__transactions-item__item--broken': transaction.broken,
-                        'players-shops__transactions-item__item--not-pristine': transaction.defaultDurability && transaction.durability < transaction.defaultDurability,
-                        'players-shops__transactions-item__item--high-quality': transaction.durability && transaction.durability > transaction.defaultDurability
-                    }"
-                    class="players-shops__transactions-item__item"
-                    @click.exact="getItem(transaction.itemId)"
-                    @click.ctrl="parseItemToChat(transaction.itemName)"
+            <template v-if="transactions.length">
+                <div v-for="transaction in transactions"
+                    :key="transaction.id"
+                    class="players-shops__transactions-item"
                 >
-                    <img :src="`${serverUrl}/dist/assets/images/items/${transaction.itemId}.gif`">
-                    <span v-if="transaction.maxDurability"
-                        class="players-shops__transactions-item__item__amount"
+                    <div :class="{
+                            'players-shops__transactions-item__item--broken': transaction.broken,
+                            'players-shops__transactions-item__item--not-pristine': transaction.defaultDurability && transaction.durability < transaction.defaultDurability,
+                            'players-shops__transactions-item__item--high-quality': transaction.durability && transaction.durability > transaction.defaultDurability
+                        }"
+                        class="players-shops__transactions-item__item"
+                        @click.exact="getItem(transaction.itemId)"
+                        @click.ctrl="parseItemToChat(transaction.itemName)"
                     >
-                        {{ transaction.durability }}/{{ transaction.maxDurability }}
-                    </span>
-                    <span v-else
-                        class="players-shops__transactions-item__item__amount"
-                    >{{ transaction.amount }}</span>
-                </div>
+                        <img :src="`${serverUrl}/dist/assets/images/items/${transaction.itemId}.gif`">
+                        <span v-if="transaction.maxDurability"
+                            class="players-shops__transactions-item__item__amount"
+                        >
+                            {{ transaction.durability }}/{{ transaction.maxDurability }}
+                        </span>
+                        <span v-else
+                            class="players-shops__transactions-item__item__amount"
+                        >{{ transaction.amount }}</span>
+                    </div>
 
-                <div class="players-shops__transactions-item__info">
-                    <template v-if="transaction.type === 'buy'">
-                        <b>{{ $t('shop.boughtFrom') }}</b>: <a :href="`${serverUrl}/public/character/${transaction.clientName}`"
-                            target="_blank"
-                        >{{ transaction.clientName }}</a><br>
-                        <b>{{ $t('shop.youPaid') }}</b>: {{ transaction.price + transaction.tax }}Z<br>
-                        <b>{{ $t('shop.sellerReceived') }}</b>: {{ transaction.price }}Z<br>
-                        <b>{{ $t('shop.tax') }}</b>: {{ transaction.tax }}Z<br>
-                        <b>{{ $t('shop.soldWhen') }}</b>: {{ formatDate(transaction.date, 'dd MMM HH:mm:ss') }}
-                    </template>
-                    <template v-else>
-                        <b>{{ $t('shop.soldTo') }}</b>: <a :href="`${serverUrl}/public/character/${transaction.clientName}`"
-                            target="_blank"
-                        >{{ transaction.clientName }}</a><br>
-                        <b>{{ $t('shop.fullPrice') }}</b>: {{ transaction.price }}Z<br>
-                        <b>{{ $t('shop.setPrice') }}</b>: {{ transaction.price - transaction.tax }}Z<br>
-                        <b>{{ $t('shop.tax') }}</b>: {{ transaction.tax }}Z<br>
-                        <b>{{ $t('shop.soldWhen') }}</b>: {{ formatDate(transaction.date, 'dd MMM HH:mm:ss') }}
-                    </template>
+                    <div class="players-shops__transactions-item__info">
+                        <template v-if="transaction.type === 'buy'">
+                            <b>{{ $t('shop.boughtFrom') }}</b>: <a :href="`${serverUrl}/public/character/${transaction.clientName}`"
+                                target="_blank"
+                            >{{ transaction.clientName }}</a><br>
+                            <b>{{ $t('shop.youPaid') }}</b>: {{ transaction.price + transaction.tax }}Z<br>
+                            <b>{{ $t('shop.sellerReceived') }}</b>: {{ transaction.price }}Z<br>
+                            <b>{{ $t('shop.tax') }}</b>: {{ transaction.tax }}Z<br>
+                            <b>{{ $t('shop.soldWhen') }}</b>: {{ formatDate(transaction.date, 'dd MMM HH:mm:ss') }}
+                        </template>
+                        <template v-else>
+                            <b>{{ $t('shop.soldTo') }}</b>: <a :href="`${serverUrl}/public/character/${transaction.clientName}`"
+                                target="_blank"
+                            >{{ transaction.clientName }}</a><br>
+                            <b>{{ $t('shop.fullPrice') }}</b>: {{ transaction.price }}Z<br>
+                            <b>{{ $t('shop.setPrice') }}</b>: {{ transaction.price - transaction.tax }}Z<br>
+                            <b>{{ $t('shop.tax') }}</b>: {{ transaction.tax }}Z<br>
+                            <b>{{ $t('shop.soldWhen') }}</b>: {{ formatDate(transaction.date, 'dd MMM HH:mm:ss') }}
+                        </template>
+                    </div>
                 </div>
+            </template>
+            <div v-else
+                class="players-shops__transactions__empty"
+            >
+                {{ $t('global.empty') }}
             </div>
         </template>
     </div>
