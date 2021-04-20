@@ -154,6 +154,14 @@ const config = {
                     '^/api': ''
                 }
             },
+            '/merchant-shops': {
+                target: 'http://localhost:8225/merchant-shops',
+                secure: false,
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/merchant-shops': ''
+                }
+            },
             '/socket.io': {
                 target: 'http://localhost:8225',
                 secure: false,

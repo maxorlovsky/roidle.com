@@ -32,6 +32,7 @@
 
                 <div class="players-shops__form-element players-shops__form-border">
                     <div class="form-heading">{{ $t('shop.rentPricePerDay') }}: <b>{{ currentPricePerDay }}Z</b></div>
+                    <div>{{ $t('shop.rentPricePerDayExplanation') }}</div>
                 </div>
 
                 <div class="players-shops__form-element players-shops__form-border">
@@ -56,9 +57,29 @@
                     <input v-model="days"
                         :placeholder="$t('shop.inWhatDayShopClose')"
                         type="number"
-                        min="0"
+                        min="1"
                         :max="maxDays"
                     >
+                </div>
+
+                <div class="players-shops__form-element players-shops__form-border">
+                    <div class="players-shops__form-element players-shops__image">
+                        <div class="form-heading">{{ $t('shop.shopImage') }}:</div>
+                        <file-upload :is-empty="!shopImage"
+                            :event-params="{
+                                'shopId': shopId
+                            }"
+                            :display-picture="`/merchant-shops/${shopImage}`"
+                            event-name="shopUploadImage"
+                            input-accept="image/*"
+                            @upload-complete="updateShopImage"
+                        />
+                        <div class="players-shops__image__notice">{{ $t('shop.shopImageNotice') }}:</div>
+
+                        <div v-if="!canUploadImage"
+                            class="players-shops__image__requirement"
+                        >{{ $t('shop.needVendingLevelToUpload') }}</div>
+                    </div>
                 </div>
 
                 <div v-if="errorMessage"
@@ -72,6 +93,8 @@
                     @click="updateShop()"
                 >{{ $t('shop.update') }}</button>
             </div>
+
+            <players-shops-transactions />
 
             <div class="players-shops__inventory-wrapper">
                 <div class="players-shops__title">{{ $t('shop.inventory') }}</div>
@@ -180,6 +203,11 @@
                     <div class="players-shops__sold-items-wrapper__empty">{{ $t('global.empty') }}</div>
                 </template>
             </div>
+
+            <players-shops-buy-item :tax="locationTax"
+                :items="shopItemsToBuy"
+                :parent-button-loading="buttonLoading"
+            />
         </div>
 
         <div v-if="displayCashboxAmountModal"
@@ -257,6 +285,9 @@ import { mapGetters } from 'vuex';
 
 // Components
 import loading from '@components/loading/loading.vue';
+import fileUpload from '@components/file-upload/file-upload.vue';
+import playersShopsBuyItem from './players-shops-buy-item.vue';
+import playersShopsTransactions from './players-shops-transactions.vue';
 
 // Mixins
 import chatMixin from '@mixins/chat.js';
@@ -267,6 +298,9 @@ import { isEquipableGear } from '@utils/inventory.js';
 const managePlayersShopPage = {
     components: {
         loading,
+        fileUpload,
+        playersShopsBuyItem,
+        playersShopsTransactions
     },
     mixins: [chatMixin],
     data() {
@@ -283,7 +317,7 @@ const managePlayersShopPage = {
             shopName: '',
             shopDescription: '',
             days: '0',
-            maxDays: 90,
+            maxDays: 14,
             errorMessage: '',
             displayItemAmountModal: false,
             displayItemAmountProperty: false,
@@ -294,14 +328,19 @@ const managePlayersShopPage = {
             transferItem: null,
             locationTax: 0,
             shopItems: [],
+            shopItemsToBuy: [],
             search: '',
-            searchItems: ''
+            searchItems: '',
+            shopImage: false,
+            shopId: 0,
+            canUploadImage: false
         };
     },
     computed: {
         ...mapGetters([
             'characterLocation',
             'inventory',
+            'characterSkills',
             'serverUrl'
         ]),
 
@@ -325,6 +364,16 @@ const managePlayersShopPage = {
         }
     },
     watch: {
+        characterSkills: {
+            immediate: true,
+            handler() {
+                if (this.characterSkills[26] >= 10) {
+                    this.canUploadImage = true;
+                } else {
+                    this.canUploadImage = false;
+                }
+            }
+        },
         itemAmountPrice() {
             let amount = Number(this.itemAmountPrice);
 
@@ -407,11 +456,15 @@ const managePlayersShopPage = {
                 this.$router.push('/players-shops');
             }
 
+            this.shopId = response.id;
             this.shopName = response.name;
             this.shopDescription = response.description;
             this.shopCashboxAmount = response.cashbox;
             this.days = response.days;
             this.shopItems = response.items;
+            this.shopItemsToBuy = response.itemsToBuy;
+            this.currentPricePerDay = response.rentPrice;
+            this.shopImage = response.image;
 
             this.loading = false;
         });
@@ -438,7 +491,6 @@ const managePlayersShopPage = {
         });
 
         mo.socket.on('getLocationVendingPriceComplete', (response) => {
-            this.currentPricePerDay = response.pricePerDay;
             this.locationTax = response.locationVendingTax;
         });
 
@@ -455,6 +507,9 @@ const managePlayersShopPage = {
         mo.socket.off('getLocationVendingPriceComplete');
     },
     methods: {
+        updateShopImage(shopImagePath) {
+            this.shopImage = shopImagePath;
+        },
         takeBackItem(item) {
             // In case some loading is in progress we ignore click on this item
             if (this.buttonLoading) {
