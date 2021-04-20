@@ -1,6 +1,10 @@
 const mixin = {
     methods: {
-        parseItemToChat(itemName) {
+        parseItemToChat(itemName, itemNameSecondary) {
+            if (!itemName) {
+                itemName = itemNameSecondary;
+            }
+
             const message = `[Item:${itemName}]`;
 
             this.$store.commit('putIntoChat', message);
