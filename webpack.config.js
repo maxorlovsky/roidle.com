@@ -235,6 +235,14 @@ module.exports = (env = {}) => {
                     '^/api': ''
                 }
             },
+            '/merchant-shops': {
+                target: 'https://api.game.maxorlovsky.com/merchant-shops',
+                secure: false,
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/merchant-shops': ''
+                }
+            },
             '/socket.io': {
                 target: 'https://api.game.maxorlovsky.com',
                 secure: false,
