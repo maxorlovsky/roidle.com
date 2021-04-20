@@ -65,7 +65,6 @@ export default {
     },
     computed: {
         ...mapGetters(['serverUrl']),
-
     },
     mounted() {
         this.reset();
