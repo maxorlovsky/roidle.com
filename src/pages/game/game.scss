@@ -68,6 +68,10 @@
         background-image: url("#{$assets}/images/locations/orc-village.jpg");
     }
 
+    &.orc.dungeon {
+        background-image: url("#{$assets}/images/locations/orc-cave.jpg");
+    }
+
     &.goblin.village {
         background-image: url("#{$assets}/images/locations/goblin-village.jpg");
     }
