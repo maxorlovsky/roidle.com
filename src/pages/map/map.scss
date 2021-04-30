@@ -1,16 +1,17 @@
 $amountOfMapsPerRow: 12;
+$mapPieceWidth: 200px;
 
 .map {
     position: relative;
 
     &__row {
         display: flex;
-        width: calc(205px * #{$amountOfMapsPerRow});
+        width: calc(#{$mapPieceWidth} * #{$amountOfMapsPerRow});
     }
 
     &__piece {
-        width: 203px;
-        height: 203px;
+        width: $mapPieceWidth;
+        height: $mapPieceWidth;
         border: 2px solid transparent;
         position: relative;
 
