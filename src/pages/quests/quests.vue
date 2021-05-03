@@ -32,14 +32,59 @@
                         />
                     </div>
                 </div>
+                <template v-else-if="toCompleteProgress">
+                    <div v-for="(progress, index) in toCompleteProgress"
+                        :key="index"
+                        class="quest-progress-bar-new quest-progress-bar-new--preview"
+                    >
+                        <span class="quest-progress-bar-new__label">{{ progress.label }}</span>
+                        <span class="quest-progress-bar-new__amount">{{ progress.currentAmount }} / {{ progress.requiredAmount }}</span>
+
+                        <div class="quest-progress-bar-new__bar">
+                            <div :style="{ 'width': calcualteProgressPercentage(progress.currentAmount, progress.requiredAmount) + '%' }"
+                                class="quest-progress-bar-new__bar__current"
+                            />
+                        </div>
+                    </div>
+                </template>
+
+                <div v-if="quiz.questions.length"
+                    class="quests-quiz"
+                >
+                    <div v-for="(question, questionIndex) in quiz.questions"
+                        v-show="quiz.currentlyViewedQuestion === questionIndex"
+                        :key="question.question"
+                        class="quests-quiz__item"
+                    >
+                        <div class="quests-quiz__question">{{ question.question }}</div>
+                        <div v-for="(answer, answerIndex) in question.answers"
+                            :key="answer"
+                            :class="{ 'quests-quiz__answer--selected': quiz.answers[question.questionNr] === answerIndex }"
+                            class="quests-quiz__answer"
+                            @click="selectQuizAnswer(question.questionNr, answerIndex)"
+                        >{{ answer }}</div>
+                    </div>
+
+                    <div class="quests-quiz__actions">
+                        <button :disabled="buttonLoading || quiz.currentlyViewedQuestion === 0"
+                            class="btn btn-secondary"
+                            @click="quiz.currentlyViewedQuestion--"
+                        >{{ $t('quests.prev') }}</button>
+
+                        <button :disabled="buttonLoading || quiz.currentlyViewedQuestion === quiz.questions.length - 1"
+                            class="btn btn-secondary"
+                            @click="quiz.currentlyViewedQuestion++"
+                        >{{ $t('quests.next') }}</button>
+                    </div>
+                </div>
                 <div class="quests-details__actions">
                     <button v-if="selectedMissionAction"
-                        :disabled="buttonLoading"
+                        :disabled="buttonLoading || (quiz.questions.length > 0 && !quiz.everyThingAnswered)"
                         class="btn btn-success"
                         @click="completeQuest()"
                     >{{ $t('quests.endDiscussions') }}</button>
                     <button v-else
-                        :disabled="buttonLoading"
+                        :disabled="buttonLoading || (quiz.questions.length > 0 && !quiz.everyThingAnswered)"
                         class="btn game-button"
                         @click="proceedWithQuest()"
                     >{{ $t('quests.next') }}</button>
@@ -73,6 +118,21 @@
                                 />
                             </div>
                         </div>
+                        <template v-else-if="quest.currentStep > 1 && quest.toCompleteProgress">
+                            <div v-for="(progress, index) in quest.toCompleteProgress"
+                                :key="index"
+                                class="quest-progress-bar-new"
+                            >
+                                <span class="quest-progress-bar-new__label">{{ progress.label }}</span>
+                                <span class="quest-progress-bar-new__amount">{{ progress.currentAmount }} / {{ progress.requiredAmount }}</span>
+
+                                <div class="quest-progress-bar-new__bar">
+                                    <div :style="{ 'width': calcualteProgressPercentage(progress.currentAmount, progress.requiredAmount) + '%' }"
+                                        class="quest-progress-bar-new__bar__current"
+                                    />
+                                </div>
+                            </div>
+                        </template>
                     </div>
                     <div class="quests-list__quest__buttons">
                         <button v-if="quest.currentStep === 1"
@@ -100,6 +160,7 @@
 
 <script>
 // 3rd party libs
+import { set } from 'vue';
 import { mapGetters } from 'vuex';
 
 // Components
@@ -121,7 +182,14 @@ const questsPage = {
             selectedMissionAction: 0,
             currentProgress: 0,
             neededProgress: null,
-            completeQuestClose: false
+            completeQuestClose: false,
+            toCompleteProgress: null,
+            quiz: {
+                questions: [],
+                answers: [],
+                currentlyViewedQuestion: 0,
+                everyThingAnswered: false
+            },
         };
     },
     computed: {
@@ -131,7 +199,7 @@ const questsPage = {
             'characterJob',
             'characterName',
             'serverUrl'
-        ])
+        ]),
     },
     mounted() {
         mo.socket.on('finishQuestComplete', () => {
@@ -171,6 +239,17 @@ const questsPage = {
         mo.socket.off('reviewQuestComplete');
     },
     methods: {
+        selectQuizAnswer(questionNr, answerNr) {
+            set(this.quiz.answers, questionNr, answerNr);
+
+            // Check if all answered were marked
+            const checkIfAllAnswered = this.quiz.answers.find((answer) => answer === -1);
+
+            // In case -1 results not found, that means all is good and everything was answered
+            if (!checkIfAllAnswered) {
+                this.quiz.everyThingAnswered = true;
+            }
+        },
         calcualteProgressPercentage(currentProgress, neededProgress) {
             let percentage = Math.floor(currentProgress / neededProgress * 100) || 0;
 
@@ -186,6 +265,19 @@ const questsPage = {
             if (quest.neededProgress >= 0) {
                 this.currentProgress = quest.currentProgress;
                 this.neededProgress = quest.neededProgress;
+            }
+
+            // Put new completion progress info into the new quest variable
+            this.toCompleteProgress = quest.toCompleteProgress;
+
+            // In case there's a quiz required for the quest, prepare varaibles for it
+            if (quest.quizQuest) {
+                this.quiz.questions = quest.quizQuest;
+
+                // Generate proper array for answer, for vuex to recognize reactivity
+                for (const question of quest.quizQuest) {
+                    this.quiz.answers[question.questionNr] = -1;
+                }
             }
 
             this.currentDialogStep = 0;
@@ -236,7 +328,10 @@ const questsPage = {
         completeQuest() {
             this.buttonLoading = true;
 
-            mo.socket.emit('finishQuest', this.selectedMission.id);
+            mo.socket.emit('finishQuest', {
+                selectedMissionId: this.selectedMission.id,
+                quizAnswers: this.quiz.answers.length ? this.quiz.answers : null,
+            });
         },
         closeQuest() {
             // Reset the quest
@@ -247,6 +342,14 @@ const questsPage = {
             this.selectedMissionAction = 0;
             this.currentProgress = 0;
             this.neededProgress = null;
+            this.completeQuestClose = false;
+            this.toCompleteProgress = null;
+            this.quiz = {
+                questions: [],
+                answers: [],
+                currentlyViewedQuestion: 0,
+                everyThingAnswered: false
+            };
         },
         transformText(text) {
             // Update name variable with character name

@@ -175,4 +175,83 @@
             }
         }
     }
+
+    .quest-progress-bar-new {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 200px;
+        margin: 0 auto;
+        font-size: 0.75rem;
+
+        &--preview {
+            font-size: 1rem;
+            width: 350px;
+            margin-bottom: 1rem;
+
+            .quest-progress-bar-new__bar {
+                max-width: 350px;
+            }
+        }
+
+        &__label {
+            width: 75%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        &__amount {
+            width: 25%;
+            text-align: right;
+        }
+
+        &__bar {
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto;
+            height: 5px;
+            background-color: #ccc;
+            position: relative;
+
+            &__current {
+                position: absolute;
+                height: 5px;
+                background-color: #080;
+            }
+        }
+    }
+
+    &-quiz {
+        width: 600px;
+        margin: 0 auto;
+        border: 1px solid #999;
+        border-radius: 8px;
+        background-color: #eee;
+
+        &__question {
+            border-bottom: 1px solid #999;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+        }
+
+        &__answer {
+            margin: 0.5rem;
+            border: 1px solid #999;
+            border-radius: 2px;
+            padding: 0.5rem;
+            cursor: pointer;
+
+            &--selected {
+                border: 1px solid $mainColor;
+                background-color: $mainColorOpacity;
+            }
+        }
+
+        &__actions {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.5rem;
+        }
+    }
 }
