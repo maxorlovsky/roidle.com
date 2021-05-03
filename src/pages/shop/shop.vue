@@ -249,9 +249,7 @@ const shopPage = {
             this.loading = false;
         });
 
-        mo.socket.on('buyItemsComplete', (response) => {
-            this.$store.commit('saveZeny', response.zeny);
-
+        mo.socket.on('buyItemsComplete', () => {
             // Reset item lists and other variables
             this.itemsRight = [];
             this.totalValue = 0;
@@ -259,9 +257,7 @@ const shopPage = {
             this.buttonLoading = false;
         });
 
-        mo.socket.on('sellItemsComplete', (response) => {
-            this.$store.commit('saveZeny', response.zeny);
-
+        mo.socket.on('sellItemsComplete', () => {
             // Reset item lists and other variables
             this.itemsRight = [];
             this.totalValue = 0;
