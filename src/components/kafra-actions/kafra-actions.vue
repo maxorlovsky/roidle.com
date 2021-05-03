@@ -25,7 +25,7 @@
                     :disabled="buttonLoading"
                     class="btn game-button"
                     @click="openBank()"
-                >{{ $t('kafra.useBank') }} ({{ bankPrice }} Z)</button>
+                >{{ $t('kafra.useBank') }} <!--({{ bankPrice }} Z)--></button>
                 <button :disabled="buttonLoading"
                     class="btn game-button"
                     @click="openBarberShop()"
@@ -277,6 +277,7 @@ export default {
         },
         openBank() {
             // If character don't have enough zeny, we dissallow him to use kafra storage service
+            /* Temporary disabled
             if (this.characterZeny < this.bankPrice) {
                 this.$store.commit('sendChat', [
                     {
@@ -287,7 +288,7 @@ export default {
                 ]);
 
                 return false;
-            }
+            }*/
 
             mo.socket.emit('checkBank');
         },
