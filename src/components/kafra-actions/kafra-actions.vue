@@ -25,7 +25,7 @@
                     :disabled="buttonLoading"
                     class="btn game-button"
                     @click="openBank()"
-                >{{ $t('kafra.useBank') }}</button>
+                >{{ $t('kafra.useBank') }} ({{ bankPrice }} Z)</button>
                 <button :disabled="buttonLoading"
                     class="btn game-button"
                     @click="openBarberShop()"
@@ -100,60 +100,9 @@
             </div>
         </div>
 
-        <div v-if="showBankModal"
-            class="modal"
-        >
-            <div class="modal__header">{{ $t('kafra.useBank') }}</div>
-            <div class="modal__content kafra-actions__buttons">
-                <div class="form-heading">{{ $t('kafra.moneyInBank') }}: <b>{{ bankMoneyAmount }}Z</b></div>
-
-                <input v-model="bankTransferFunds"
-                    :placeholder="$t('global.amount')"
-                    class="kafra-actions__bank-amount"
-                    type="number"
-                >
-
-                <div class="kafra-actions__bank">
-                    <button :disabled="buttonLoading || bankTransferFunds < 1"
-                        class="btn game-button kafra-actions__bank__button"
-                        @click="transferFunds('deposit')"
-                    >
-                        {{ $t('kafra.deposit') }}
-                    </button>
-                    <button :disabled="buttonLoading || bankTransferFunds < 1"
-                        class="btn game-button kafra-actions__bank__button"
-                        @click="transferFunds('withdraw')"
-                    >
-                        {{ $t('kafra.withdraw') }}
-                    </button>
-                </div>
-
-                <div class="kafra-actions__bank-transactions">
-                    <div v-if="bankTransactions && bankTransactions.length">
-                        <div v-for="transaction in bankTransactions"
-                            :key="transaction.id"
-                            class="kafra-actions__transaction"
-                        >
-                            <b>{{ transaction.characterName }}</b>
-                            <span>{{ $t(`kafra.${transaction.type}Transaction`, {
-                                amount: transaction.money
-                            }) }}</span>
-                        </div>
-                    </div>
-                    <div v-else
-                        class="kafra-actions__bank-transactions__empty"
-                    >
-                        {{ $t('kafra.noTransactionsFound') }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal__buttons">
-                <button class="btn btn-secondary"
-                    @click="showBankModal = false; openModal()"
-                >{{ $t('global.close') }}</button>
-            </div>
-        </div>
+        <kafra-bank v-if="showBankModal"
+            @close="closeBank()"
+        />
     </div>
 </template>
 
@@ -161,11 +110,17 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Components
+import kafraBank from './kafra-bank.vue';
+
 // Utils
 import discount from '@utils/discount.js';
 
 export default {
     name: 'kafra-actions',
+    components: {
+        kafraBank
+    },
     data() {
         return {
             showKafraModal: false,
@@ -173,14 +128,10 @@ export default {
             showResetSkillsConfirmation: false,
             showBankModal: false,
             buttonLoading: false,
-            bankMoneyAmount: 0,
-            bankTransactions: [],
-            bankTransferFunds: 0
         };
     },
     computed: {
         ...mapGetters([
-            'characterLocation',
             'characterZeny',
             'characterSkills',
             'characterBaseLevel',
@@ -191,13 +142,14 @@ export default {
         barberPrice() {
             return discount(1000, this.characterSkills[25]);
         },
+        bankPrice() {
+            return discount(50, this.characterSkills[25]);
+        },
         storagePrice() {
             return discount(60, this.characterSkills[25]);
         },
         resetPrice() {
-            // TODO REMOVE
-            // Temporarily it's going to be 1z return discount(this.characterBaseLevel * 1000, this.characterSkills[25]);
-            return 1;
+            return discount(this.characterBaseLevel * 1000, this.characterSkills[25]);
         }
     },
     watch: {
@@ -208,46 +160,23 @@ export default {
 
             this.showKafraModal = false;
             this.showBankModal = false;
-        },
-        bankTransferFunds() {
-            let amount = Number(this.bankTransferFunds);
-
-            if (amount < 0) {
-                amount = 0;
-            } else if (amount > 2000000000) {
-                amount = 2000000000;
-            }
-
-            this.bankTransferFunds = amount;
         }
     },
     mounted() {
+        mo.socket.on('checkBankComplete', (response) => {
+            // In case of success, opening bank
+            if (response) {
+                this.showKafraModal = false;
+                this.showBankModal = true;
+            }
+        });
+
         mo.socket.on('checkKafraComplete', (response) => {
             this.showKafraModal = false;
 
             if (response) {
                 this.$router.push('/kafra-storage');
             }
-        });
-
-        mo.socket.on('transferBankFundsComplete', (response) => {
-            this.buttonLoading = false;
-
-            // In case of success response update bank funds
-            if (response) {
-                this.bankTransferFunds = 0;
-
-                mo.socket.emit('getBankFunds');
-            }
-        });
-
-        mo.socket.on('getBankFundsComplete', (response) => {
-            this.bankMoneyAmount = response.money;
-            this.bankTransactions = response.transactions;
-
-            this.buttonLoading = false;
-            this.showKafraModal = false;
-            this.showBankModal = true;
         });
 
         mo.socket.on('characterResetStatsComplete', (response) => {
@@ -274,21 +203,15 @@ export default {
         });
     },
     beforeDestroy() {
+        mo.socket.off('checkBankComplete');
         mo.socket.off('checkKafraComplete');
-        mo.socket.off('transferBankFundsComplete');
-        mo.socket.off('getBankFundsComplete');
         mo.socket.off('characterResetStatsComplete');
         mo.socket.off('characterResetSkillsComplete');
     },
     methods: {
-        transferFunds(type) {
-            this.buttonLoading = true;
-
-            if (this.bankTransferFunds < 1) {
-                return false;
-            }
-
-            mo.socket.emit('transferBankFunds', type, Number(this.bankTransferFunds));
+        closeBank() {
+            this.showBankModal = false;
+            this.openModal();
         },
         openModal() {
             this.showKafraModal = true;
@@ -301,7 +224,7 @@ export default {
         },
         openBarberShop() {
             // If character don't have enough zeny, we dissallow him to use kafra storage service
-            if (this.characterZeny < 1000) {
+            if (this.characterZeny < this.barberPrice) {
                 this.$store.commit('sendChat', [
                     {
                         type: 'system',
@@ -317,37 +240,13 @@ export default {
 
             this.$router.push('/barber-services');
         },
-        openBank() {
-            if (this.buttonLoading) {
-                return false;
-            }
-
-            // If character basic skill level is less than 6 he is not allowed to use kafra service yet
-            if (this.characterSkills[1] < 6) {
-                this.$store.commit('sendChat', [
-                    {
-                        type: 'system',
-                        character: 'System',
-                        message: this.$t('kafra.needBasicLevel', {
-                            level: 6
-                        })
-                    }
-                ]);
-
-                return false;
-            }
-
-            this.buttonLoading = true;
-
-            mo.socket.emit('getBankFunds');
-        },
         openStorage() {
             if (this.buttonLoading) {
                 return false;
             }
 
             // If character don't have enough zeny, we dissallow him to use kafra storage service
-            if (this.characterZeny < 60) {
+            if (this.characterZeny < this.storagePrice) {
                 this.$store.commit('sendChat', [
                     {
                         type: 'system',
@@ -375,6 +274,22 @@ export default {
             }
 
             mo.socket.emit('checkKafra');
+        },
+        openBank() {
+            // If character don't have enough zeny, we dissallow him to use kafra storage service
+            if (this.characterZeny < this.bankPrice) {
+                this.$store.commit('sendChat', [
+                    {
+                        type: 'system',
+                        character: 'System',
+                        message: this.$t('kafra.insufficientZenyForBank')
+                    }
+                ]);
+
+                return false;
+            }
+
+            mo.socket.emit('checkBank');
         },
         statResetStart() {
             this.showKafraModal = false;

@@ -257,6 +257,7 @@
         "resetSkills": "Reset skills",
         "insufficientZenyForBarber": "Insufficient Zeny to use Barber Shop Service",
         "insufficientZenyForStorage": "Insufficient Zeny to use Kafra Storage Service",
+        "insufficientZenyForBank": "Insufficient Zeny to use Bank Service",
         "needBasicLevel": "You need basic level {level} to start using Kafra Storage Services",
         "barberChangeStyle": "Change style",
         "toggleItemAmount": "Toggle Item Amount",
