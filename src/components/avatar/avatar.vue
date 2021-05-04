@@ -3,7 +3,9 @@
         class="avatar"
     >
         <div class="avatar__body">
-            <img :src="`${serverUrl}/dist/assets/images/bodies/${jobLowerCase}_${gender}_${dyeColor}.png`">
+            <img :src="`${serverUrl}/dist/assets/images/bodies/${jobLowerCase}_${gender}_${dyeColor}.png`"
+                :class="[`avatar__body--job-${jobLowerCase}`, `avatar__body--job-${jobLowerCase}-${gender}`]"
+            >
         </div>
         <div :class="[`avatar__head__${headStyle}`, gender]"
             class="avatar__head"
