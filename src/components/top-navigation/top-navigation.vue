@@ -13,12 +13,6 @@
             <router-link to="/leaderboards">
                 {{ $t('home.leaderboards') }}
             </router-link>
-            <!--<a href="https://www.patreon.com/roidle"
-                target="_blank"
-                rel="noopener nofollow"
-            >
-                Support the development (Patreon)
-            </a>-->
         </nav>
         <div class="top-navigation__right">
             <div class="top-navigation__right__activity">
@@ -26,6 +20,14 @@
                 <div>{{ $t('home.hunts') }}: {{ hunts }}</div>
                 <div>{{ $t('home.playersRegistered') }}: {{ playersRegistered }}</div>
             </div>
+
+            <a href="https://www.patreon.com/roidle"
+                class="top-navigation__patreon-link game-icon"
+                target="_blank"
+                rel="noopener nofollow"
+            >
+                <i class="icon icon-patreon" />
+            </a>
 
             <a href="https://www.reddit.com/r/ROIdle"
                 class="top-navigation__reddit-link game-icon"

@@ -70,6 +70,16 @@
                 </div>
 
                 <div class="settings__setting__socials">
+                    <div class="settings__setting__socials__patreon">
+                        <a href="https://www.patreon.com/roidle"
+                            class="game-icon"
+                            target="_blank"
+                            rel="noopener nofollow"
+                        >
+                            <i class="icon icon-patreon" />
+                        </a>
+                    </div>
+
                     <div class="settings__setting__socials__discord">
                         <a href="https://discord.gg/PjApFha"
                             class="game-icon"
