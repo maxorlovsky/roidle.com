@@ -72,6 +72,15 @@
                     color: #333;
                 }
             }
+
+            &__patreon a {
+                color: #ff424d;
+                margin-right: 1rem;
+
+                &:hover {
+                    color: #333;
+                }
+            }
         }
 
         &__version {

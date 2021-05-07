@@ -74,7 +74,7 @@
                             input-accept="image/*"
                             @upload-complete="updateShopImage"
                         />
-                        <div class="players-shops__image__notice">{{ $t('shop.shopImageNotice') }}:</div>
+                        <div class="players-shops__image__notice">{{ $t('shop.shopImageNotice') }}</div>
 
                         <div v-if="!canUploadImage"
                             class="players-shops__image__requirement"

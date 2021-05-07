@@ -36,6 +36,10 @@
         background-image: url("#{$assets}/images/locations/geffen.jpg");
     }
 
+    &.al.de.baran {
+        background-image: url("#{$assets}/images/locations/aldebaran.jpg");
+    }
+
     &.morocc.ruins {
         background-image: url("#{$assets}/images/locations/desert.jpg");
     }
@@ -68,8 +72,16 @@
         background-image: url("#{$assets}/images/locations/orc-village.jpg");
     }
 
+    &.orc.dungeon {
+        background-image: url("#{$assets}/images/locations/orc-cave.jpg");
+    }
+
     &.goblin.village {
         background-image: url("#{$assets}/images/locations/goblin-village.jpg");
+    }
+
+    &.mjolnir {
+        background-image: url("#{$assets}/images/locations/mountains.jpg");
     }
 
     &__party {

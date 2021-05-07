@@ -8,6 +8,12 @@
     justify-content: space-between;
     font-size: 1rem;
 
+    @media (max-width: $mobileSize) {
+        flex-wrap: wrap;
+        justify-content: center;
+        max-height: initial;
+    }
+
     &__links {
         display: flex;
         align-items: center;
@@ -28,6 +34,10 @@
     &__right {
         display: flex;
         align-items: center;
+
+        @media (max-width: $mobileSize) {
+            padding-bottom: 1rem;
+        }
 
         .game-icon:hover {
             background-color: rgba(255, 255, 255, 0.8);
@@ -50,6 +60,11 @@
 
     &__reddit-link {
         color: #ff3f19;
+        margin-right: 1rem;
+    }
+
+    &__patreon-link {
+        color: #ff424d;
         margin-right: 1rem;
     }
 }
