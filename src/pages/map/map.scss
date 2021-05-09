@@ -61,7 +61,7 @@ $mapPieceWidth: 200px;
 
         &__players {
             position: absolute;
-            top: 95px;
+            top: 92px;
             left: 50%;
             transform: translateX(-50%);
             background-color: transparent;
@@ -71,14 +71,13 @@ $mapPieceWidth: 200px;
             width: 100%;
 
             &__player {
-                padding-right: 0.5rem;
                 position: relative;
                 border: 1px solid #fff;
                 box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
                 text-align: center;
                 background-color: rgba(0, 0, 0, 0.9);
                 border-radius: 7px;
-                margin: 0 0.5rem;
+                margin: 0 0.25rem;
                 width: 50px;
                 height: 50px;
 
