@@ -391,7 +391,8 @@
         "confirmTrade": "Confirm Trade",
         "wait": "Wait...",
         "playersTradingList": "Player trading list",
-        "noPlayersOnLocation": "No players on the location to trade"
+        "noPlayersOnLocation": "No players on the location to trade",
+        "canNotBeTraded": "You wanted to trade {itemName}, but it is as if universe itself forbid you to do it and you decided to keep it"
     },
     "tutorial": {
         "tutorial": "Tutorial",

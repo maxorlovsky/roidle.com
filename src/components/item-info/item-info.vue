@@ -45,7 +45,7 @@
                     @click="closeItemInfoModal()"
                 >{{ $t('global.close') }}</button>
                 <button class="btn btn-danger"
-                    :disabled="buttonLoading"
+                    :disabled="buttonLoading || discardIsDisabled"
                     @click="discardItem()"
                 >{{ $t('itemInfo.discard') }}</button>
 
@@ -161,7 +161,8 @@ export default {
             showDiscardItem: null,
             showRepair: false,
             repairMaterials: [],
-            element: ''
+            element: '',
+            restriction: 0
         };
     },
     computed: {
@@ -176,6 +177,14 @@ export default {
             'publicItemInfo',
             'partyAvailableSkillsIds'
         ]),
+
+        discardIsDisabled() {
+            if (this.restriction >= 3) {
+                return true;
+            }
+
+            return false;
+        },
 
         repairIsDisabled() {
             if (this.buttonLoading || (this.durability === this.maxDurability && !this.broken)) {
@@ -383,6 +392,7 @@ export default {
             this.applicableJobs = item.jobs === null ? 'All' : '';
             this.jobs = item.jobs;
             this.broken = false;
+            this.restriction = item.restriction;
 
             // Making params human readable
             if (item.params) {
