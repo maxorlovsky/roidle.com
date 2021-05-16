@@ -252,6 +252,10 @@ export default {
                 case 2007:
                     musicTracks = ['20'];
                     break;
+                case 2008:
+                case 2009:
+                    musicTracks = ['48'];
+                    break;
                 default:
                     musicTracks = ['prontera', 'izlude'];
                     break;

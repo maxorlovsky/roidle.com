@@ -390,6 +390,20 @@ const tradingPage = {
                 return false;
             }
 
+            if (item.restriction >= 1) {
+                this.$store.commit('sendChat', [
+                    {
+                        type: 'system',
+                        character: 'System',
+                        message: this.$t('trade.canNotBeTraded', {
+                            itemName: item.name
+                        })
+                    }
+                ]);
+
+                return false;
+            }
+
             // Block all interaction while this happens
             this.buttonLoading = true;
 
