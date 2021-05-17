@@ -21,7 +21,7 @@
                 <div class="quests-details__text"
                     v-html="currentDialogText"
                 />
-                <div v-if="neededProgress"
+                <div v-if="neededProgress && selectedMission.currentStep"
                     class="quest-progress-bar quests-details__progress"
                 >
                     <span>{{ currentProgress }} / {{ neededProgress }}</span>
@@ -32,7 +32,7 @@
                         />
                     </div>
                 </div>
-                <template v-else-if="toCompleteProgress">
+                <template v-else-if="toCompleteProgress && selectedMission.currentStep">
                     <div v-for="(progress, index) in toCompleteProgress"
                         :key="index"
                         class="quest-progress-bar-new quest-progress-bar-new--preview"
