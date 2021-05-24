@@ -95,7 +95,7 @@
                     <div class="equipment-modal__item__amount">
                         <div v-if="item.currentlyEquiped"
                             class="equipment-modal__item__currently-equipped-label"
-                        >Currently equipped</div>
+                        >{{ $t('character.currentlyEquippedItem') }}</div>
                         <div>{{ item.name }}</div>
                         <div>
                             {{ itemClassNameCorrection(item.class, item.twoHanded) }}

@@ -419,7 +419,8 @@
         "twoHandedSword": "Two-handed Sword",
         "ammo": "Arrows",
         "characterNotFound": "Character not found",
-        "backToGame": "Back to game"
+        "backToGame": "Back to game",
+        "currentlyEquippedItem": "Currently equipped"
     },
     "equipment": {
         "head": "head",
