@@ -558,10 +558,17 @@
         "updatesNotice": "Updates every 3 hours",
         "avatar": "Avatar",
         "name": "Name",
-        "monstersKilled": "Monsters killed",
+        "monstersKilled": "Monsters killed (33+ Lv / weekly)",
+        "monstersKilledValue": "Monsters killed",
         "level": "Level",
         "top": "Top",
-        "richestPerson": "Richest person"
+        "richestPerson": "Richest person",
+        "deaths": "Most deaths (weekly)",
+        "deathsValue": "Deaths",
+        "quests": "Quests (weekly)",
+        "questsValue": "Quests",
+        "crafts": "Craftsmans",
+        "craftsValue": "Crafts"
     },
     "footer": {
         "termsAndConditions": "Terms and Conditions",

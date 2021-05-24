@@ -49,54 +49,19 @@
                 </a>
             </div>
 
-            <div class="leaderboards__board">
-                <h2>{{ $t('leaderboards.monstersKilled') }}</h2>
+            <div v-for="board in otherLeaderboards"
+                :key="board.label"
+                class="leaderboards__board"
+            >
+                <h2>{{ $t(board.label) }}</h2>
 
                 <div class="leaderboards__item leaderboards__titles">
                     <div class="leaderboards__item__avatar">{{ $t('leaderboards.avatar') }}</div>
                     <div class="leaderboards__item__name">{{ $t('leaderboards.name') }}</div>
-                    <div class="leaderboards__item__value">{{ $t('leaderboards.monstersKilled') }}</div>
+                    <div class="leaderboards__item__value">{{ $t(board.valueLabel) }}</div>
                 </div>
 
-                <a v-for="leaderboard in topMonstersKilled"
-                    :key="leaderboard.id"
-                    :href="`${serverUrl}/public/character/${leaderboard.name}`"
-                    target="_blank"
-                    class="leaderboards__item"
-                >
-                    <avatar :head-style="leaderboard.headStyle"
-                        :head-color="leaderboard.headColor"
-                        :dye-color="leaderboard.dyeColor"
-                        :gender="leaderboard.gender"
-                        :job="leaderboard.jobName"
-                        :framed="true"
-                        :head-gears="[
-                            leaderboard.head,
-                            leaderboard.face,
-                            leaderboard.mouth
-                        ]"
-                    />
-
-                    <div class="leaderboards__item__name">
-                        {{ leaderboard.name }}
-                    </div>
-
-                    <div class="leaderboards__item__value">
-                        {{ leaderboard.value }}
-                    </div>
-                </a>
-            </div>
-
-            <div class="leaderboards__board">
-                <h2>{{ $t('leaderboards.richestPerson') }}</h2>
-
-                <div class="leaderboards__item leaderboards__titles">
-                    <div class="leaderboards__item__avatar">{{ $t('leaderboards.avatar') }}</div>
-                    <div class="leaderboards__item__name">{{ $t('leaderboards.name') }}</div>
-                    <div class="leaderboards__item__value">{{ $t('global.money') }}</div>
-                </div>
-
-                <a v-for="leaderboard in topZeny"
+                <a v-for="leaderboard in board.stats"
                     :key="leaderboard.id"
                     :href="`${serverUrl}/public/character/${leaderboard.name}`"
                     target="_blank"
@@ -148,15 +113,41 @@ const leaderboardsPage = {
         return {
             loading: true,
             topJobsLeaderboards: {
+                alchemist: [],
+                blacksmith: [],
                 fighter: [],
                 thief: [],
                 archer: [],
                 mage: [],
-                acolyte: [],
-                merchant: []
+                acolyte: []
             },
-            topMonstersKilled: [],
-            topZeny: []
+            otherLeaderboards: {
+                monstersKilled: {
+                    label: 'leaderboards.monstersKilled',
+                    valueLabel: 'leaderboards.monstersKilledValue',
+                    stats: []
+                },
+                zeny: {
+                    label: 'leaderboards.richestPerson',
+                    valueLabel: 'global.money',
+                    stats: [],
+                },
+                quests: {
+                    label: 'leaderboards.quests',
+                    valueLabel: 'leaderboards.questsValue',
+                    stats: [],
+                },
+                deaths: {
+                    label: 'leaderboards.deaths',
+                    valueLabel: 'leaderboards.deathsValue',
+                    stats: [],
+                },
+                crafts: {
+                    label: 'leaderboards.crafts',
+                    valueLabel: 'leaderboards.craftsValue',
+                    stats: [],
+                }
+            }
         };
     },
     computed: {
@@ -183,9 +174,13 @@ const leaderboardsPage = {
             this.topJobsLeaderboards.archer = leaderboards.filter((board) => board.board === 'topArcher');
             this.topJobsLeaderboards.mage = leaderboards.filter((board) => board.board === 'topMage');
             this.topJobsLeaderboards.acolyte = leaderboards.filter((board) => board.board === 'topAcolyte');
-            this.topJobsLeaderboards.merchant = leaderboards.filter((board) => board.board === 'topMerchant');
-            this.topMonstersKilled = leaderboards.filter((board) => board.board === 'monstersKilled');
-            this.topZeny = leaderboards.filter((board) => board.board === 'zeny');
+            this.topJobsLeaderboards.alchemist = leaderboards.filter((board) => board.board === 'topAlchemist');
+            this.topJobsLeaderboards.blacksmith = leaderboards.filter((board) => board.board === 'topBlacksmith');
+            this.otherLeaderboards.zeny.stats = leaderboards.filter((board) => board.board === 'zeny');
+            this.otherLeaderboards.monstersKilled.stats = leaderboards.filter((board) => board.board === 'monstersKilled');
+            this.otherLeaderboards.quests.stats = leaderboards.filter((board) => board.board === 'quests');
+            this.otherLeaderboards.deaths.stats = leaderboards.filter((board) => board.board === 'deaths');
+            this.otherLeaderboards.crafts.stats = leaderboards.filter((board) => board.board === 'itemsCrafted');
         }
     }
 };
