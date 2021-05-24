@@ -408,6 +408,8 @@ const viewPlayersShopPage = {
             // In case it's weapon or armor, always default to 1
             if (sellingItem.type === 'weapon' || sellingItem.type === 'armor') {
                 this.itemAmountMax = 1;
+            } else if (sellingItem.amount < findItems[0].amount) {
+                this.itemAmountMax = sellingItem.amount;
             } else {
                 this.itemAmountMax = findItems[0].amount;
             }
