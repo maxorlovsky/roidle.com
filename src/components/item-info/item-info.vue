@@ -490,8 +490,6 @@ export default {
         },
         closeDiscardModal() {
             this.showDiscard = false;
-            this.showDiscardAmount = null;
-            this.showDiscardAmountMax = null;
             this.showDiscardItem = null;
         }
     }
