@@ -3,6 +3,10 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    changePartyLeader: (state, id) => {
+        state.partyLeader = (id === state.characterId);
+        state.partyLeaderId = id;
+    },
     setOnline: (state, value) => {
         state.online = value.online;
         state.hunts = value.hunts;

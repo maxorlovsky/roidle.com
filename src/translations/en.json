@@ -478,7 +478,9 @@
         "characterName": "Character name",
         "invite": "Invite",
         "confirmationToLeave": "Are you sure you want to leave the party?",
-        "confirmationToKick": "Are you sure you want to kick this member out of the party?"
+        "confirmationToKick": "Are you sure you want to kick this member out of the party?",
+        "promoteToLeader": "Promote to Leader",
+        "confirmationToChangeLeader": "Are you sure you want to make this member the party leader?"
     },
     "quests": {
         "rewards": "Rewards",

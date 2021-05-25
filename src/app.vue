@@ -263,6 +263,10 @@ export default {
         ]),
 
         setUpMainSocketEvents() {
+            mo.socket.on('partyLeaderUpdate', (id) => {
+                this.$store.commit('changePartyLeader', id);
+            });
+
             mo.socket.on('getPreloadedDataComplete', (value) => {
                 this.$store.commit('setPreloadedData', value);
             });

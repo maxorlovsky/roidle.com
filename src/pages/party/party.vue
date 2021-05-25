@@ -44,6 +44,11 @@
                                 class="btn btn-sm btn-danger"
                                 @click="kickConfirm(item.id)"
                             >{{ $t('party.kick') }}</button>
+                            <button v-if="partyLeader && item.id !== partyLeaderId"
+                                :disabled="buttonLoading"
+                                class="btn btn-sm btn-warning"
+                                @click="makeLeader(item.id)"
+                            >{{ $t('party.promoteToLeader') }}</button>
                             <button v-if="item.id === characterId"
                                 :disabled="buttonLoading || (partyLeader && partyMembers.length > 1)"
                                 class="btn btn-sm btn-danger"
@@ -288,6 +293,21 @@
                 >{{ $t('global.yes') }}</button>
             </div>
         </div>
+
+        <div v-if="changeLeaderShow"
+            class="party__leave"
+        >
+            <div class="party__leave__caution-text">{{ $t('party.confirmationToChangeLeader') }}</div>
+            <div class="party__leave__actions">
+                <button class="btn btn-secondary"
+                    @click="makeLeaderClose()"
+                >{{ $t('global.no') }}</button>
+                <button :disabled="buttonLoading"
+                    class="btn game-button"
+                    @click="makeCharacterLeader()"
+                >{{ $t('global.yes') }}</button>
+            </div>
+        </div>
     </section>
 </template>
 
@@ -323,7 +343,9 @@ const partyPage = {
             disableOrganize: true,
             showLeave: false,
             kickMemberId: 0,
-            kickShow: false
+            kickShow: false,
+            changeLeaderMemberId: 0,
+            changeLeaderShow: false
         };
     },
     computed: {
@@ -392,6 +414,12 @@ const partyPage = {
         }
     },
     mounted() {
+        mo.socket.on('changePartyLeaderComplete', () => {
+            this.buttonLoading = false;
+
+            this.makeLeaderClose();
+        });
+
         mo.socket.on('kickFromPartyComplete', () => {
             this.buttonLoading = false;
 
@@ -479,6 +507,7 @@ const partyPage = {
         mo.socket.emit('getPartyInvites');
     },
     beforeDestroy() {
+        mo.socket.off('changePartyLeaderComplete');
         mo.socket.off('partyInviteDeclineComplete');
         mo.socket.off('kickFromPartyComplete');
         mo.socket.off('partyInviteAcceptComplete');
@@ -499,6 +528,14 @@ const partyPage = {
         kickConfirm(id) {
             this.kickMemberId = id;
             this.kickShow = true;
+        },
+        makeLeaderClose() {
+            this.changeLeaderMemberId = 0;
+            this.changeLeaderShow = false;
+        },
+        makeLeader(id) {
+            this.changeLeaderMemberId = id;
+            this.changeLeaderShow = true;
         },
         declineInvite(partyId) {
             this.buttonLoading = true;
@@ -545,6 +582,11 @@ const partyPage = {
             this.buttonLoading = true;
 
             mo.socket.emit('kickFromParty', this.kickMemberId);
+        },
+        makeCharacterLeader() {
+            this.buttonLoading = true;
+
+            mo.socket.emit('changePartyLeader', this.changeLeaderMemberId);
         },
         viewCharacter(name) {
             this.buttonLoading = true;
