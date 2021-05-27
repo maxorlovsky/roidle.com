@@ -121,7 +121,8 @@
     "craft": {
         "actionTitle": "Craft Services",
         "repairItems": "Blacksmith - Repair Items",
-        "craftItems": "Craft items",
+        "smithy": "Smithy",
+        "laboratory": "Laboratory",
         "item": "Item",
         "craftTime": "Craft time",
         "successChance": "Success Chance",
@@ -158,7 +159,10 @@
         "bows": "Bows",
         "arrows": "Arrows",
         "staffs": "Staffs",
-        "confirmationToCancel": "Are you sure you want to cancel the craft? You WILL NOT receive materials back for canceling the process."
+        "confirmationToCancel": "Are you sure you want to cancel the craft? You WILL NOT receive materials back for canceling the process.",
+        "poisons": "Poisons",
+        "tonics": "Tonics",
+        "grindingStation": "Grinding station"
     },
     "map": {
         "dungeonActionTitle": "Dungeon",
