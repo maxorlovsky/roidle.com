@@ -170,6 +170,12 @@ const craftPage = {
                     category: 'alchemy',
                     type: 'tonics',
                     name: this.$t('craft.tonics')
+                },
+                {
+                    itemId: 678,
+                    category: 'alchemy',
+                    type: 'poisons',
+                    name: this.$t('craft.poisons')
                 }
             ]
         };
