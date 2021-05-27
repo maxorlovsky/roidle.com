@@ -131,10 +131,29 @@
         overflow-y: auto;
 
         &__item {
-            padding: 1rem;
+            padding: 0.5rem;
             border-bottom: 2px solid #333;
             display: flex;
             align-items: center;
+            cursor: pointer;
+
+            &:hover:not(.equipment-modal__item--currently-equipped):not(.equipment-modal__item--empty) {
+                background-color: $mainColorOpacity;
+            }
+
+            &--empty {
+                cursor: default;
+            }
+
+            &--currently-equipped {
+                background-color: rgba(155, 155, 155, 0.35);
+                cursor: default;
+            }
+
+            &__currently-equipped-label {
+                color: #009200;
+                font-size: 0.75rem;
+            }
 
             &__amount {
                 padding-left: 0.5rem;

@@ -78,6 +78,8 @@
                     <input ref="discardAmount"
                         v-model="showDiscardAmount"
                         :placeholder="$t('global.amount')"
+                        min="1"
+                        :max="showDiscardAmountMax"
                         type="number"
                         size="4"
                     >
@@ -213,6 +215,17 @@ export default {
         },
         closeItemInfo() {
             this.closeItemInfoModal();
+        },
+        showDiscardAmount() {
+            let amount = Number(this.showDiscardAmount);
+
+            if (amount < 1) {
+                amount = 1;
+            } else if (amount > this.showDiscardAmountMax) {
+                amount = this.showDiscardAmountMax;
+            }
+
+            this.showDiscardAmount = amount;
         }
     },
     beforeDestroy() {
@@ -477,8 +490,6 @@ export default {
         },
         closeDiscardModal() {
             this.showDiscard = false;
-            this.showDiscardAmount = null;
-            this.showDiscardAmountMax = null;
             this.showDiscardItem = null;
         }
     }

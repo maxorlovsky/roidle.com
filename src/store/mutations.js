@@ -3,6 +3,10 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    changePartyLeader: (state, id) => {
+        state.partyLeader = (id === state.characterId);
+        state.partyLeaderId = id;
+    },
     setOnline: (state, value) => {
         state.online = value.online;
         state.hunts = value.hunts;
@@ -379,46 +383,46 @@ export default {
             eva: state.characterBonusStats.eva
         };
 
-        if (values.bonusStats && values.bonusStats.str) {
+        if (values.bonusStats && values.bonusStats.str >= 0) {
             characterBonusStats.str = values.bonusStats.str;
         }
-        if (values.bonusStats && values.bonusStats.dex) {
+        if (values.bonusStats && values.bonusStats.dex >= 0) {
             characterBonusStats.dex = values.bonusStats.dex;
         }
-        if (values.bonusStats && values.bonusStats.int) {
+        if (values.bonusStats && values.bonusStats.int >= 0) {
             characterBonusStats.int = values.bonusStats.int;
         }
-        if (values.bonusStats && values.bonusStats.vit) {
+        if (values.bonusStats && values.bonusStats.vit >= 0) {
             characterBonusStats.vit = values.bonusStats.vit;
         }
-        if (values.bonusStats && values.bonusStats.wis) {
+        if (values.bonusStats && values.bonusStats.wis >= 0) {
             characterBonusStats.wis = values.bonusStats.wis;
         }
-        if (values.bonusStats && values.bonusStats.luk) {
+        if (values.bonusStats && values.bonusStats.luk >= 0) {
             characterBonusStats.luk = values.bonusStats.luk;
         }
-        if (values.bonusStats && values.bonusStats.patk) {
+        if (values.bonusStats && values.bonusStats.patk >= 0) {
             characterBonusStats.patk = values.bonusStats.patk;
         }
-        if (values.bonusStats && values.bonusStats.matk) {
+        if (values.bonusStats && values.bonusStats.matk >= 0) {
             characterBonusStats.matk = values.bonusStats.matk;
         }
-        if (values.bonusStats && values.bonusStats.pdef) {
+        if (values.bonusStats && values.bonusStats.pdef >= 0) {
             characterBonusStats.pdef = values.bonusStats.pdef;
         }
-        if (values.bonusStats && values.bonusStats.mdef) {
+        if (values.bonusStats && values.bonusStats.mdef >= 0) {
             characterBonusStats.mdef = values.bonusStats.mdef;
         }
-        if (values.bonusStats && values.bonusStats.hit) {
+        if (values.bonusStats && values.bonusStats.hit >= 0) {
             characterBonusStats.hit = values.bonusStats.hit;
         }
-        if (values.bonusStats && values.bonusStats.eva) {
+        if (values.bonusStats && values.bonusStats.eva >= 0) {
             characterBonusStats.eva = values.bonusStats.eva;
         }
-        if (values.bonusStats && values.bonusStats.maxHp) {
+        if (values.bonusStats && values.bonusStats.maxHp >= 0) {
             characterBonusStats.maxHp = values.bonusStats.maxHp;
         }
-        if (values.bonusStats && values.bonusStats.maxMp) {
+        if (values.bonusStats && values.bonusStats.maxMp >= 0) {
             characterBonusStats.maxMp = values.bonusStats.maxMp;
         }
 

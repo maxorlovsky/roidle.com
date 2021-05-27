@@ -18,8 +18,17 @@
                 >{{ $t('craft.repairItems') }}</button>
 
                 <button class="btn game-button"
-                    @click="$router.push('/craft')"
-                >{{ $t('craft.craftItems') }}</button>
+                    @click="$router.push('/craft/smithy')"
+                >{{ $t('craft.smithy') }}</button>
+
+                <button class="btn game-button"
+                    @click="$router.push('/craft/alchemy')"
+                >{{ $t('craft.laboratory') }}</button>
+
+                <button class="btn game-button"
+                    disabled
+                    @click="$router.push('/refinement')"
+                >{{ $t('craft.grindingStation') }}</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"

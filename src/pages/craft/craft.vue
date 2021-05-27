@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="craft--desktop">
-                <p class="craft__title">{{ $t('craft.craftItems') }}</p>
+                <p class="craft__title">{{ title }}</p>
 
                 <router-link v-for="(item, index) in craftableItems"
                     :key="index"
@@ -79,6 +79,7 @@ const craftPage = {
     data() {
         return {
             showCancelModal: false,
+            title: '',
             craftableItems: [
                 {
                     itemId: 1101,
@@ -163,6 +164,18 @@ const craftPage = {
                     category: 'alchemy',
                     type: 'potions',
                     name: this.$t('craft.healingPotions')
+                },
+                {
+                    itemId: 974,
+                    category: 'alchemy',
+                    type: 'tonics',
+                    name: this.$t('craft.tonics')
+                },
+                {
+                    itemId: 678,
+                    category: 'alchemy',
+                    type: 'poisons',
+                    name: this.$t('craft.poisons')
                 }
             ]
         };
@@ -174,6 +187,15 @@ const craftPage = {
             'craftData',
             'serverUrl'
         ])
+    },
+    mounted() {
+        if (this.$route.params.type === 'smithy') {
+            this.craftableItems = this.craftableItems.filter((craftCategory) => ['weapon', 'armor', 'ammunition'].includes(craftCategory.category));
+            this.title = this.$t('craft.smithy');
+        } else {
+            this.craftableItems = this.craftableItems.filter((craftCategory) => ['alchemy'].includes(craftCategory.category));
+            this.title = this.$t('craft.laboratory');
+        }
     },
     methods: {
         notAvailable(category) {
@@ -202,12 +224,12 @@ const craftPage = {
         cancelCraft() {
             this.showCancelModal = true;
         },
-    },
+    }
 };
 
 // Routing
 mo.routes.push({
-    path: '/craft',
+    path: '/craft/:type',
     component: craftPage
 });
 

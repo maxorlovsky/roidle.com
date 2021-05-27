@@ -91,6 +91,7 @@
                             :disabled="leftTradeApproved"
                             type="number"
                             min="0"
+                            :max="characterZeny"
                         > <span>Z</span>
                     </div>
                 </div>

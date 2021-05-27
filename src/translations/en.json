@@ -121,7 +121,8 @@
     "craft": {
         "actionTitle": "Craft Services",
         "repairItems": "Blacksmith - Repair Items",
-        "craftItems": "Craft items",
+        "smithy": "Smithy",
+        "laboratory": "Laboratory",
         "item": "Item",
         "craftTime": "Craft time",
         "successChance": "Success Chance",
@@ -158,7 +159,10 @@
         "bows": "Bows",
         "arrows": "Arrows",
         "staffs": "Staffs",
-        "confirmationToCancel": "Are you sure you want to cancel the craft? You WILL NOT receive materials back for canceling the process."
+        "confirmationToCancel": "Are you sure you want to cancel the craft? You WILL NOT receive materials back for canceling the process.",
+        "poisons": "Poisons",
+        "tonics": "Tonics",
+        "grindingStation": "Grinding station"
     },
     "map": {
         "dungeonActionTitle": "Dungeon",
@@ -419,7 +423,8 @@
         "twoHandedSword": "Two-handed Sword",
         "ammo": "Arrows",
         "characterNotFound": "Character not found",
-        "backToGame": "Back to game"
+        "backToGame": "Back to game",
+        "currentlyEquippedItem": "Currently equipped"
     },
     "equipment": {
         "head": "head",
@@ -477,7 +482,9 @@
         "characterName": "Character name",
         "invite": "Invite",
         "confirmationToLeave": "Are you sure you want to leave the party?",
-        "confirmationToKick": "Are you sure you want to kick this member out of the party?"
+        "confirmationToKick": "Are you sure you want to kick this member out of the party?",
+        "promoteToLeader": "Promote to Leader",
+        "confirmationToChangeLeader": "Are you sure you want to make this member the party leader?"
     },
     "quests": {
         "rewards": "Rewards",
@@ -558,10 +565,17 @@
         "updatesNotice": "Updates every 3 hours",
         "avatar": "Avatar",
         "name": "Name",
-        "monstersKilled": "Monsters killed",
+        "monstersKilled": "Monsters killed (33+ Lv / weekly)",
+        "monstersKilledValue": "Monsters killed",
         "level": "Level",
         "top": "Top",
-        "richestPerson": "Richest person"
+        "richestPerson": "Richest person",
+        "deaths": "Most deaths (weekly)",
+        "deathsValue": "Deaths",
+        "quests": "Quests (weekly)",
+        "questsValue": "Quests",
+        "crafts": "Craftsmans",
+        "craftsValue": "Crafts"
     },
     "footer": {
         "termsAndConditions": "Terms and Conditions",

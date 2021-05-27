@@ -84,19 +84,30 @@
             <template v-if="items && items.length">
                 <div v-for="(item, index) in items"
                     :key="index"
+                    :class="{'equipment-modal__item--currently-equipped': item.currentlyEquiped}"
                     class="equipment-modal__item"
                     @click.exact="equipItem(item)"
                     @click.ctrl="parseItemToChat(item.name)"
                 >
-                    <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
+                    <item-block :item="item"
+                        :show-item-info="false"
+                    />
                     <div class="equipment-modal__item__amount">
-                        {{ item.name }}
-                        <div>{{ itemClassNameCorrection(item.class, item.twoHanded) }} {{ itemDisplayParams(item.params) }}</div>
+                        <div v-if="item.currentlyEquiped"
+                            class="equipment-modal__item__currently-equipped-label"
+                        >{{ $t('character.currentlyEquippedItem') }}</div>
+                        <div>{{ item.name }}</div>
+                        <div>
+                            {{ itemClassNameCorrection(item.class, item.twoHanded) }}
+                            <span class=""
+                                v-html="itemDisplayParams(item.params)"
+                            />
+                        </div>
                     </div>
                 </div>
             </template>
             <div v-else
-                class="equipment-modal__item"
+                class="equipment-modal__item equipment-modal__item--empty"
             >
                 {{ $t('character.noItemsToEquip') }}
             </div>
@@ -129,6 +140,7 @@ import avatar from '../../components/avatar/avatar.vue';
 import stats from '../../components/stats/stats.vue';
 import skillsList from '@components/skills-list/skills-list.vue';
 import attributes from '@components/attributes/attributes.vue';
+import itemBlock from '@components/item-block/item-block.vue';
 
 // Mixins
 import chatMixin from '@mixins/chat.js';
@@ -139,7 +151,8 @@ const characterPage = {
         avatar,
         stats,
         skillsList,
-        attributes
+        attributes,
+        itemBlock
     },
     data() {
         return {
@@ -298,6 +311,10 @@ const characterPage = {
             this.showEquipmentModal = false;
         },
         equipItem(item) {
+            if (item.currentlyEquiped) {
+                return false;
+            }
+
             // Triggering equip of an item on server
             mo.socket.emit('equipItem', item);
 
