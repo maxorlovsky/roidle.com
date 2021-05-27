@@ -137,8 +137,12 @@
             align-items: center;
             cursor: pointer;
 
-            &:hover:not(.equipment-modal__item--currently-equipped) {
+            &:hover:not(.equipment-modal__item--currently-equipped):not(.equipment-modal__item--empty) {
                 background-color: $mainColorOpacity;
+            }
+
+            &--empty {
+                cursor: default;
             }
 
             &--currently-equipped {

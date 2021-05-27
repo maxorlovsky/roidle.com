@@ -107,7 +107,7 @@
                 </div>
             </template>
             <div v-else
-                class="equipment-modal__item"
+                class="equipment-modal__item equipment-modal__item--empty"
             >
                 {{ $t('character.noItemsToEquip') }}
             </div>
