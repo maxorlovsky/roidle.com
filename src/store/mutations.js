@@ -910,5 +910,10 @@ export default {
 
         state.admin = 0;
         state.moderator = 0;
+
+        state.partyMembers = [];
+        state.partyMembersIds = [];
+
+        state.isGuest = false;
     }
 };

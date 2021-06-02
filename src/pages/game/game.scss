@@ -84,6 +84,14 @@
         background-image: url("#{$assets}/images/locations/mountains.jpg");
     }
 
+    &.byalan {
+        background-image: url("#{$assets}/images/locations/byalan.jpg");
+    }
+
+    &.undersea.tunnel {
+        background-image: url("#{$assets}/images/locations/undersea.jpg");
+    }
+
     &__party {
         display: flex;
         align-items: center;

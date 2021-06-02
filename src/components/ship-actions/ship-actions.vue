@@ -64,7 +64,8 @@ export default {
             'inventoryWeight',
             'serverUrl',
             'gameModal',
-            'partyMembersIds'
+            'partyMembersIds',
+            'partyTravelPreference',
         ]),
     },
     watch: {
@@ -108,7 +109,14 @@ export default {
     },
     methods: {
         travelPrice(price) {
-            return price * (this.partyMembersIds.length || 1);
+            let outcomePrice = price;
+
+            // In case user is in party and their travel preference is set to 1, that means that they travel together
+            if (this.partyMembersIds && this.partyTravelPreference === 1) {
+                outcomePrice *= this.partyMembersIds.length;
+            }
+
+            return outcomePrice;
         },
         openModal() {
             this.showModal = true;

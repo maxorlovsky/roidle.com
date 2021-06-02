@@ -12,7 +12,16 @@
                 :class="{
                     'map__piece--selected': location.id === characterLocationId,
                     'map__piece--traveling': location.id === travelData.locationId,
-                    'map__piece--disabled': (characterTraveling || characterCrafting || characterResting || huntStatus || userOverweight || currentLocation.dungeon) && location.id !== travelData.locationId
+                    'map__piece--disabled': (
+                        characterTraveling ||
+                        characterCrafting ||
+                        characterResting ||
+                        huntStatus ||
+                        userOverweight ||
+                        currentLocation.dungeon ||
+                        (currentLocation.nonTravelable && location.id !== currentLocation.id) ||
+                        (location.nonTravelable && location.id !== currentLocation.id)
+                    ) && location.id !== travelData.locationId
                 }"
                 class="map__piece"
                 @click="selectMap(location.id)"
@@ -135,11 +144,14 @@ const mapPage = {
         });
 
         mo.socket.on('selectMapToTravelComplete', (response) => {
-            this.humanReadableDate = response.humanReadableDate;
-            this.travelDestinationName = response.travelDestinationName;
+            if (response) {
+                this.humanReadableDate = response.humanReadableDate;
+                this.travelDestinationName = response.travelDestinationName;
+
+                this.showModal = true;
+            }
 
             this.buttonLoading = false;
-            this.showModal = true;
         });
 
         if (Math.floor((this.inventoryWeight * 100) / this.characterAttributes.weight) >= 90) {
@@ -186,7 +198,16 @@ const mapPage = {
         },
         selectMap(locationId) {
             // If it's a black square or user is on the same location, we don't do anything
-            if (locationId >= 999 || locationId === this.characterLocationId || this.characterTraveling || this.characterCrafting || this.characterResting || this.huntStatus || this.userOverweight || this.currentLocation.dungeon) {
+            if (locationId >= 999 ||
+                locationId === this.characterLocationId ||
+                this.characterTraveling ||
+                this.characterCrafting ||
+                this.characterResting ||
+                this.huntStatus ||
+                this.userOverweight ||
+                this.currentLocation.dungeon ||
+                (this.currentLocation.nonTravelable && location.id !== this.currentLocation.id)
+            ) {
                 return false;
             }
 
