@@ -317,8 +317,10 @@ export default {
                 return false;
             }
 
-            if (this.matches[index || this.current]) {
-                this.itemBuyItem = this.matches[index || this.current];
+            if (index && this.matches[index]) {
+                this.itemBuyItem = this.matches[index];
+            } else if (this.current && this.matches[this.current]) {
+                this.itemBuyItem = this.matches[this.current];
             }
 
             this.open = false;
