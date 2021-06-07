@@ -165,6 +165,7 @@ export default {
                     musicTracks = ['03', 'peaceful-forest-mix'];
                     break;
                 case 19:
+                case 79:
                     musicTracks = ['52'];
                     break;
                 case 27:
@@ -255,6 +256,12 @@ export default {
                 case 2008:
                 case 2009:
                     musicTracks = ['48'];
+                    break;
+                case 2010:
+                case 2011:
+                case 2012:
+                case 2013:
+                    musicTracks = ['29', '49'];
                     break;
                 default:
                     musicTracks = ['prontera', 'izlude'];

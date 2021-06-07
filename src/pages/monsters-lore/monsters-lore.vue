@@ -201,8 +201,10 @@ const monstersLorePage = {
                 return false;
             }
 
-            if (this.matches[index || this.current]) {
-                this.search = this.matches[index || this.current];
+            if (index && this.matches[index]) {
+                this.search = this.matches[index];
+            } else if (this.current && this.matches[this.current]) {
+                this.search = this.matches[this.current];
             }
 
             this.open = false;

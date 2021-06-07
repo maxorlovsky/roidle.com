@@ -139,6 +139,7 @@
                 &__info {
                     width: 65%;
                     font-size: 1rem;
+                    position: relative;
 
                     &--online,
                     &--offline {
@@ -151,6 +152,12 @@
 
                     &--offline {
                         color: #900;
+                    }
+
+                    &--leader {
+                        position: absolute;
+                        top: 0;
+                        right: 1rem;
                     }
                 }
         

@@ -13,7 +13,10 @@
             <div v-if="selectedTab ==='party' && party"
                 class="party__window"
             >
-                <div class="party__window__members">
+                <loading v-if="!partyMembers.length" />
+                <div v-else
+                    class="party__window__members"
+                >
                     <div v-for="item in partyMembers"
                         :key="item.id"
                         class="party__window__members__member"
@@ -36,6 +39,11 @@
                             <div v-else
                                 class="party__window__members__member__info--offline"
                             >{{ $t('party.offline') }}</div>
+
+                            <img v-if="item.id === partyLeaderId"
+                                :src="`${serverUrl}/dist/assets/images/items/2235.gif`"
+                                class="party__window__members__member__info--leader"
+                            >
                         </div>
 
                         <div class="party__window__members__member__buttons">
@@ -316,11 +324,13 @@
 import { mapGetters } from 'vuex';
 
 // Components
+import loading from '@components/loading/loading.vue';
 import avatar from '@components/avatar/avatar.vue';
 
 const partyPage = {
     components: {
-        avatar
+        avatar,
+        loading
     },
     data() {
         return {
@@ -360,7 +370,8 @@ const partyPage = {
             'partyHuntPreference',
             'partyTravelPreference',
             'characterId',
-            'characterSkills'
+            'characterSkills',
+            'serverUrl'
         ])
     },
     watch: {
