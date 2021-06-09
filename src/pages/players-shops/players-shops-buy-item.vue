@@ -253,18 +253,20 @@ export default {
         });
 
         mo.socket.on('getItemInfoForBuyComplete', (item) => {
-            this.buyItem.itemId = item.id;
-            this.buyItem.amount = 1;
-            this.buyItem.price = item.value;
+            if (item) {
+                this.buyItem.itemId = item.id;
+                this.buyItem.amount = 1;
+                this.buyItem.price = item.value;
 
-            if (item.defaultDurability) {
-                this.buyItem.defaultDurability = item.defaultDurability;
-                this.buyItem.minDurability = item.defaultDurability;
-                this.buyItem.maxDurability = item.defaultDurability;
-            } else {
-                this.buyItem.defaultDurability = 0;
-                this.buyItem.minDurability = 0;
-                this.buyItem.maxDurability = 0;
+                if (item.defaultDurability) {
+                    this.buyItem.defaultDurability = item.defaultDurability;
+                    this.buyItem.minDurability = item.defaultDurability;
+                    this.buyItem.maxDurability = item.defaultDurability;
+                } else {
+                    this.buyItem.defaultDurability = 0;
+                    this.buyItem.minDurability = 0;
+                    this.buyItem.maxDurability = 0;
+                }
             }
 
             this.buttonLoading = false;
