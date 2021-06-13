@@ -52,36 +52,12 @@
             class="modal"
         >
             <div class="modal__content players-shops__buy-search">
-                <div class="search-autocomplete">
-                    <div class="search-input">
-                        <input v-model="itemBuyItem"
-                            placeholder="Search item name"
-                            :readonly="buttonLoading"
-                            maxlength="100"
-                            type="text"
-                            @keydown.enter="enter"
-                            @keydown.down="down"
-                            @keydown.up="up"
-                            @input="change"
-                        >
-                        <div v-show="itemBuyItem"
-                            class="search-input__close"
-                            @click="itemBuyItem = ''"
-                        >X</div>
-                    </div>
-
-                    <ul v-show="open"
-                        class="search-autocomplete__dropdown"
-                    >
-                        <li v-for="(suggestion, index) in matches"
-                            :key="suggestion"
-                            :class="{'search-autocomplete__dropdown--active': isActive(index)}"
-                            @click="suggestionClick(index)"
-                        >
-                            {{ suggestion }}
-                        </li>
-                    </ul>
-                </div>
+                <search-autocomplete :button-loading="buttonLoading"
+                    :suggestions="suggestions"
+                    :max-height="120"
+                    @loading="searchLoading"
+                    @search="searchProcess"
+                />
 
                 <template v-if="buyItem.itemId">
                     <div class="players-shops__buy-search__item"
@@ -163,11 +139,17 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Components
+import searchAutocomplete from '@components/search-autocomplete/search-autocomplete.vue';
+
 // Mixins
 import chatMixin from '@mixins/chat.js';
 
 export default {
     name: 'players-shops-buy-item',
+    components: {
+        searchAutocomplete
+    },
     mixins: [chatMixin],
     props: {
         tax: {
@@ -208,7 +190,7 @@ export default {
             'serverUrl'
         ]),
 
-        matches() {
+        suggestions() {
             return this.allItemsNames.filter((str) => {
                 try {
                     return str.toLowerCase().indexOf(this.itemBuyItem.toLowerCase()) >= 0;
@@ -314,48 +296,15 @@ export default {
             this.buyItem.itemId = 0;
             this.buyItem.defaultDurability = 0;
         },
-        enter(index) {
-            if (this.buttonLoading) {
-                return false;
-            }
-
-            if (index && this.matches[index]) {
-                this.itemBuyItem = this.matches[index];
-            } else if (this.current && this.matches[this.current]) {
-                this.itemBuyItem = this.matches[this.current];
-            }
-
-            this.open = false;
-
-            this.buttonLoading = true;
-
-            mo.socket.emit('getItemInfoForBuy', this.itemBuyItem);
-        },
-        up() {
-            if (this.current > 0) {
-                this.current--;
+        searchLoading(loading) {
+            if (loading) {
+                this.buttonLoading = true;
+            } else {
+                this.buttonLoading = false;
             }
         },
-        down() {
-            if (this.current < this.matches.length - 1) {
-                this.current++;
-            }
-        },
-        isActive(index) {
-            return index === this.current;
-        },
-        change() {
-            if (this.buttonLoading) {
-                return false;
-            }
-
-            if (!this.open) {
-                this.open = true;
-                this.current = 0;
-            }
-        },
-        suggestionClick(index) {
-            this.enter(index);
+        searchProcess(search) {
+            mo.socket.emit('getItemInfoForBuy', search);
         }
     }
 };

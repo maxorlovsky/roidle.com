@@ -1,36 +1,11 @@
 <template>
     <section class="monsters-lore">
         <div class="monsters-lore-wrapper">
-            <div class="search-autocomplete">
-                <div class="search-input">
-                    <input v-model="search"
-                        :placeholder="$t('global.search')"
-                        :readonly="buttonLoading"
-                        maxlength="50"
-                        type="text"
-                        @keydown.enter="enter"
-                        @keydown.down="down"
-                        @keydown.up="up"
-                        @input="change"
-                    >
-                    <div v-show="search"
-                        class="search-input__close"
-                        @click="search = ''"
-                    >X</div>
-                </div>
-
-                <ul v-show="open"
-                    class="search-autocomplete__dropdown"
-                >
-                    <li v-for="(suggestion, index) in matches"
-                        :key="suggestion"
-                        :class="{'search-autocomplete__dropdown--active': isActive(index)}"
-                        @click="suggestionClick(index)"
-                    >
-                        {{ suggestion }}
-                    </li>
-                </ul>
-            </div>
+            <search-autocomplete :button-loading="buttonLoading"
+                :suggestions="suggestions"
+                @loading="searchLoading"
+                @search="searchProcess"
+            />
 
             <loading v-if="loading" />
 
@@ -119,6 +94,7 @@ import { mapGetters, mapActions } from 'vuex';
 // Components
 import attributes from '@components/attributes/attributes.vue';
 import loading from '@components/loading/loading.vue';
+import searchAutocomplete from '@components/search-autocomplete/search-autocomplete.vue';
 
 // Mixins
 import chatMixin from '@mixins/chat.js';
@@ -126,7 +102,8 @@ import chatMixin from '@mixins/chat.js';
 const monstersLorePage = {
     components: {
         attributes,
-        loading
+        loading,
+        searchAutocomplete
     },
     mixins: [chatMixin],
     data() {
@@ -135,9 +112,6 @@ const monstersLorePage = {
             buttonLoading: false,
             monsterData: null,
             showMonster: false,
-            search: '',
-            open: false,
-            current: 0,
             suggestions: [],
             items: []
         };
@@ -147,17 +121,7 @@ const monstersLorePage = {
             'characterSkills',
             'partyAvailableSkillsIds',
             'serverUrl'
-        ]),
-
-        matches() {
-            return this.suggestions.filter((str) => {
-                try {
-                    return str.toLowerCase().indexOf(this.search.toLowerCase()) >= 0;
-                } catch (e) {
-                    return false;
-                }
-            });
-        }
+        ])
     },
     mounted() {
         if (!this.characterSkills[53] && !this.partyAvailableSkillsIds[53]) {
@@ -196,49 +160,15 @@ const monstersLorePage = {
                 itemId: itemId
             });
         },
-        enter(index) {
-            if (this.buttonLoading) {
-                return false;
-            }
-
-            if (index && this.matches[index]) {
-                this.search = this.matches[index];
-            } else if (this.current && this.matches[this.current]) {
-                this.search = this.matches[this.current];
-            }
-
-            this.open = false;
-
-            this.buttonLoading = true;
-            this.loading = true;
-
-            mo.socket.emit('getEncyclopediaMonster', this.search);
-        },
-        up() {
-            if (this.current > 0) {
-                this.current--;
+        searchLoading(loading) {
+            if (loading) {
+                this.buttonLoading = true;
+            } else {
+                this.buttonLoading = false;
             }
         },
-        down() {
-            if (this.current < this.matches.length - 1) {
-                this.current++;
-            }
-        },
-        isActive(index) {
-            return index === this.current;
-        },
-        change() {
-            if (this.buttonLoading) {
-                return false;
-            }
-
-            if (!this.open) {
-                this.open = true;
-                this.current = 0;
-            }
-        },
-        suggestionClick(index) {
-            this.enter(index);
+        searchProcess(search) {
+            mo.socket.emit('getEncyclopediaMonster', search);
         }
     }
 };
