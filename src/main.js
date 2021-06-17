@@ -43,7 +43,7 @@ import './pages/all-users/all-users.vue';
 import './pages/all-hunts/all-hunts.vue';
 import './pages/leaderboards/leaderboards.vue';
 // 1 import './pages/town-hall/town-hall.vue';
-// 1 import './pages/item-finder/item-finder.vue';
+import './pages/item-finder/item-finder.vue';
 
 // Text pages
 import './pages/text-page/terms-and-conditions.vue';
