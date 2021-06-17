@@ -143,6 +143,18 @@
                             X
                         </router-link>
                     </div>
+
+                    <div class="settings__setting">
+                        <div class="settings__setting__slider game-icon">
+                            <div class="settings__setting__title">Active hunts</div>
+                        </div>
+
+                        <router-link to="/all-hunts"
+                            class="settings__setting__icon game-icon"
+                        >
+                            X
+                        </router-link>
+                    </div>
                 </template>
             </div>
 

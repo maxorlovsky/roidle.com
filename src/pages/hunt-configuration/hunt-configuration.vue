@@ -433,8 +433,8 @@
                             </select>
                         </div>
 
-                        <!-- Heal -->
-                        <div v-if="item.id === 20"
+                        <!-- Heal, Potion Pitcher, Rain of Potions -->
+                        <div v-if="item.id === 20 || item.id === 56 || item.id === 57"
                             class="active-skill-modal__item__hp-control"
                         >
                             <p>{{ $t('hunt.useWhenHpLower') }}</p>

@@ -63,7 +63,8 @@ export default {
         return {
             availableSkills: [],
             tempSkills: {},
-            tempSkillPoints: 0
+            tempSkillPoints: 0,
+            skillPointsInUse: 0
         };
     },
     computed: {
@@ -73,6 +74,11 @@ export default {
             'characterJobId',
             'serverUrl'
         ]),
+    },
+    watch: {
+        characterSkills() {
+            this.calculateOverallskills();
+        }
     },
     mounted() {
         mo.socket.on('saveSkillsComplete', (response) => {
@@ -92,15 +98,30 @@ export default {
         });
 
         mo.socket.emit('getSkillsData');
+
+        this.calculateOverallskills();
     },
     beforeDestroy() {
         mo.socket.off('saveSkillsComplete');
         mo.socket.off('getSkillsDataComplete');
     },
     methods: {
+        calculateOverallskills() {
+            let skillPointsInUse = 0;
+
+            for (const skill in this.characterSkills) {
+                if (this.characterSkills[skill]) {
+                    skillPointsInUse += (this.characterSkills[skill]);
+                }
+            }
+
+            this.skillPointsInUse = skillPointsInUse;
+        },
         skillRequirementMet(skill) {
             // Check if user is under, so he need to spend 9 skills in Basic Skill
-            if (skill.id !== 1 && (!this.characterSkills[1] || this.characterSkills[1] < 9)) {
+            if (skill.jobLimit === 1 && this.skillPointsInUse < 9) {
+                return false;
+            } else if (skill.jobLimit === 2 && this.skillPointsInUse < 58) {
                 return false;
             }
 

@@ -26,6 +26,10 @@
                     class="btn game-button"
                     @click="typeChosen = 'deluxe'"
                 >{{ $t('rest.deluxeRoom') }} - 1 {{ $t('rest.min') }} ({{ deluxeInnPrice }} Z)</button>
+
+                <button class="btn game-button"
+                    @click="$router.push('/item-finder')"
+                >{{ $t('blackMarket.title') }}</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"

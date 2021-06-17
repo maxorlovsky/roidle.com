@@ -50,9 +50,15 @@ export default {
                 return false;
             }
 
-            mo.socket.emit('getItemInfo', {
+            const getItemInfoParams = {
                 itemId: item.itemId
-            });
+            };
+
+            if (item.shopItemId) {
+                getItemInfoParams.shopItemId = item.shopItemId;
+            }
+
+            mo.socket.emit('getItemInfo', getItemInfoParams);
         }
     }
 };

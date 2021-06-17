@@ -219,8 +219,8 @@
         "idle": "Idle"
     },
     "rest": {
-        "actionTitle": "Rest at Inn",
-        "innRooms": "Inn's rooms",
+        "actionTitle": "Tavern",
+        "innRooms": "Tavern",
         "min": "min",
         "cheapRoom": "Cheap room",
         "regularRoom": "Regular room",
@@ -583,5 +583,22 @@
     },
     "townHall": {
         "title": "Town Hall"
+    },
+    "blackMarket": {
+        "title": "Black Market",
+        "explanation": "This tavern.. it's not a regular tavern. You see weird people going in and out of room without ordering any drinks. Your curiousity wins over you and you decided to go into the room. You see suspicious looking people, few of them are identified of you know as Rogues and Wizards. They seems to be.. selling information? Item information. How were they able to get it? There seems to be a hefty fee that you need to pay for such information. Never mind, it will be useful to you.",
+        "item": "Item info",
+        "orders": "Buy/Sell history",
+        "monsterDrops": "Drops from monsters",
+        "market": "Where to buy",
+        "sellOrders": "Sell orders",
+        "buyOrders": "Buy orders",
+        "averagePrice": "Average price",
+        "perItem": "Per item",
+        "shopSellPrice": "Sell price in NPC shop",
+        "costOfResearch": "Cost for each research is",
+        "shopName": "Shop Name",
+        "location": "Location",
+        "pricePerItem": "Price per item"
     }
 }
