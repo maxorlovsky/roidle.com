@@ -123,7 +123,7 @@
                             <img :src="`${serverUrl}/dist/assets/images/mobs/${monster.id}.gif`">
                         </div>
                         <div class="item-finder__drops__name">
-                            {{ monster.name }} {{ Math.floor(monster.dropChance / 100) }}%
+                            {{ monster.name }} {{ monster.dropChance / 100 }}%
                         </div>
                         <div class="item-finder__drops__locations">
                             <div v-for="location in monster.locations"
@@ -301,6 +301,10 @@ const itemFinder = {
 
                     this.item.params = this.item.params.substring(0, this.item.params.length - 2);
                 }
+
+                // Filter dropped by, by higher chance
+                // eslint-disable-next-line
+                response.droppedBy.sort((a,b) => (a.dropChance < b.dropChance) ? 1 : ((b.dropChance < a.dropChance) ? -1 : 0));
 
                 this.droppedBy = response.droppedBy;
 
