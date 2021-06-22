@@ -65,7 +65,7 @@
             />
             <div v-if="serverWentDown"
                 class="server-down-modal"
-                @click="reconnect()"
+                @click="reload()"
             />
         </div>
 
@@ -437,8 +437,6 @@ export default {
             mo.socket.emit('getPreloadedData');
         },
         setUpSocketEvents() {
-            mo.socket.emit('reconnect', functions.storage('get', 'session'));
-
             mo.socket.on('disconnect', (message) => {
                 // Trigger only on server disconnect
                 if (message === 'transport close') {
