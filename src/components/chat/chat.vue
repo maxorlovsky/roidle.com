@@ -156,6 +156,7 @@ import { format as dateFormat } from 'date-fns';
 
 // Utilities
 import { functions } from '@utils/functions.js';
+import { addEmotes } from '@utils/chat.js';
 
 // Check if in chat we need to paste skill or item
 const chatRegex = new RegExp(/\[Skill:[\w /-]+\]|\[Item:[\w\s]+\]/g);
@@ -282,8 +283,8 @@ export default {
                     }
 
                     // Add emotes recognition, because of nature of regex, we need to loop through it two times, otherwise some text might go through
-                    chat.message = this.addEmotes(chat.message);
-                    chat.message = this.addEmotes(chat.message);
+                    chat.message = addEmotes(chat.message);
+                    chat.message = addEmotes(chat.message);
 
                     chat.message = this.addSkillInfoCheck(chat.message);
 
@@ -397,66 +398,6 @@ export default {
                     message = message.replace(match, ` <a href="javascript:;" class="chat__item" onClick="mo.socket.emit('getItemInfoByName', '${splitResult[1]}')">[${splitResult[1]}]</a> `);
                 }
             }
-
-            return message;
-        },
-        addEmotes(message) {
-            message = message.replace(/(?:^|\W)\/bawi(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/bawi.png"> `)
-                .replace(/(?:^|\W)\/bo(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/bo.png"> `)
-                .replace(/(?:^|\W)\/gawi(?:$|\W)/g, `<img src="${mo.serverUrl}/dist/assets/images/emote/gawi.png"> `)
-                .replace(/(?:^|\W)\/!(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/exc.gif"> `)
-                .replace(/(?:^|\W)\/exc(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/exc.gif"> `)
-                .replace(/(?:^|\W)\/\?(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/que.gif"> `)
-                .replace(/(?:^|\W)\/que(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/que.gif"> `)
-                .replace(/(?:^|\W)\/ho(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/ho.gif"> `)
-                .replace(/(?:^|\W)\/lv(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/lv.gif"> `)
-                .replace(/(?:^|\W)\/lv2(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/lv2.gif"> `)
-                .replace(/(?:^|\W)\/swt(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/swt.gif"> `)
-                .replace(/(?:^|\W)\/ic(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/ic.gif"> `)
-                .replace(/(?:^|\W)\/an(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/an.gif"> `)
-                .replace(/(?:^|\W)\/ag(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/an2.gif"> `)
-                .replace(/(?:^|\W)\/\$(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/mon.gif"> `)
-                .replace(/(?:^|\W)\/mon(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/mon.gif"> `)
-                .replace(/(?:^|\W)\/\.\.\.(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/dots.gif"> `)
-                .replace(/(?:^|\W)\/dots(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/dots.gif"> `)
-                .replace(/(?:^|\W)\/thx(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/thx.gif"> `)
-                .replace(/(?:^|\W)\/heh(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/heh.gif"> `)
-                .replace(/(?:^|\W)\/hmm(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/hmm.gif"> `)
-                .replace(/(?:^|\W)\/no1(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/nic1.gif"> `)
-                .replace(/(?:^|\W)\/ok(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/ok.gif"> `)
-                .replace(/(?:^|\W)\/go(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/go.gif"> `)
-                .replace(/(?:^|\W)\/gg(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/gg.gif"> `)
-                .replace(/(?:^|\W)\/kis(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/kis.gif"> `)
-                .replace(/(?:^|\W)\/kis2(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/kis2.gif"> `)
-                .replace(/(?:^|\W)\/pif(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/pif.gif"> `)
-                .replace(/(?:^|\W)\/\?\?(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/que2.gif"> `)
-                .replace(/(?:^|\W)\/que2(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/que2.gif"> `)
-                .replace(/(?:^|\W)\/bzz(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/bzz.gif"> `)
-                .replace(/(?:^|\W)\/e1(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/bzz.gif"> `)
-                .replace(/(?:^|\W)\/rice(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/rice.gif"> `)
-                .replace(/(?:^|\W)\/e2(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/rice.gif"> `)
-                .replace(/(?:^|\W)\/awsm(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/awsm.gif"> `)
-                .replace(/(?:^|\W)\/e3(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/awsm.gif"> `)
-                .replace(/(?:^|\W)\/meh(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/meh.gif"> `)
-                .replace(/(?:^|\W)\/e4(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/meh.gif"> `)
-                .replace(/(?:^|\W)\/shy(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/shy.gif"> `)
-                .replace(/(?:^|\W)\/e5(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/shy.gif"> `)
-                .replace(/(?:^|\W)\/slur(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/slur.gif"> `)
-                .replace(/(?:^|\W)\/e8(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/slur.gif"> `)
-                .replace(/(?:^|\W)\/yawn(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/yawn.gif"> `)
-                .replace(/(?:^|\W)\/e10(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/yawn.gif"> `)
-                .replace(/(?:^|\W)\/dice(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/dice.gif"> `)
-                .replace(/(?:^|\W)\/e19(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/dice.gif"> `)
-                .replace(/(?:^|\W)\/hum(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/hum.gif"> `)
-                .replace(/(?:^|\W)\/e27(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/hum.gif"> `)
-                .replace(/(?:^|\W)\/oops(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/oops.gif"> `)
-                .replace(/(?:^|\W)\/e29(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/oops.gif"> `)
-                .replace(/(?:^|\W)\/spit(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/spit.gif"> `)
-                .replace(/(?:^|\W)\/e30(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/spit.gif"> `)
-                .replace(/(?:^|\W)\/panic(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/panic.gif"> `)
-                .replace(/(?:^|\W)\/e32(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/panic.gif"> `)
-                .replace(/(?:^|\W)\/whisp(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/whisp.gif"> `)
-                .replace(/(?:^|\W)\/e33(?:$|\W)/g, ` <img src="${mo.serverUrl}/dist/assets/images/emote/whisp.gif"> `);
 
             return message;
         },
