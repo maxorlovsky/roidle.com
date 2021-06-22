@@ -42,6 +42,8 @@ export default {
         socketConnection() {
             if (this.socketConnection) {
                 this.setUpSocketEvents();
+            } else {
+                this.destroySocketEvents();
             }
         },
         tradeRequestId() {
@@ -52,14 +54,16 @@ export default {
             }
         },
     },
-    beforeDestroy() {
-        mo.socket.off('rejectTradeComplete');
-    },
     methods: {
         setUpSocketEvents() {
             mo.socket.on('rejectTradeComplete', () => {
                 this.closeTradeRequest();
             });
+        },
+        destroySocketEvents() {
+            if (mo.socket) {
+                mo.socket.off('rejectTradeComplete');
+            }
         },
         closeTradeRequest() {
             // Reset trade request, so this modal would close

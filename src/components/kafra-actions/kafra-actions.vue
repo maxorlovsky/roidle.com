@@ -149,7 +149,14 @@ export default {
             return discount(60, this.characterSkills[25]);
         },
         resetPrice() {
-            return discount(this.characterBaseLevel * 1000, this.characterSkills[25]);
+            let price = discount(this.characterBaseLevel * 1000, this.characterSkills[25]);
+
+            // TODO REMOVE
+            if (this.characterBaseLevel < 60) {
+                price = 100;
+            }
+
+            return price;
         }
     },
     watch: {
