@@ -334,7 +334,7 @@ export default {
             }
         },
         checkHours() {
-            if (this.serverHour % 8 === 0 || this.serverHour % 9 === 0 || this.serverHour % 10 === 0 || this.serverHour % 11 === 0) {
+            if ((this.serverHour >= 8 && this.serverHour <= 11) || (this.serverHour >= 19 && this.serverHour <= 23)) {
                 this.ambienceFile = 'night-sounds';
             } else {
                 this.ambienceFile = '';

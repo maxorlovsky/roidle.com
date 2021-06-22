@@ -71,13 +71,13 @@ export default {
             this.sunset = false;
             this.sunrise = false;
 
-            if (this.serverHour % 7 === 0) {
+            if (this.serverHour === 7 || this.serverHour === 18) {
                 // Every 7 and 14 hours we have sunset
                 this.sunset = true;
-            } else if (this.serverHour % 8 === 0 || this.serverHour % 9 === 0 || this.serverHour % 10 === 0 || this.serverHour % 11 === 0) {
+            } else if ((this.serverHour >= 8 && this.serverHour <= 11) || (this.serverHour >= 19 && this.serverHour <= 23)) {
                 // Every 8,9,10,11 hours we have night, for 4 hours
                 this.night = true;
-            } else if (this.serverHour % 12 === 0) {
+            } else if (this.serverHour === 0 || this.serverHour === 12) {
                 // Every 12 hours we have sunrise
                 this.sunrise = true;
             }
