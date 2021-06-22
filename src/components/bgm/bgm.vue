@@ -4,6 +4,12 @@
             :src="`${serverUrl}/dist/assets/bgm/${musicFile}.mp3`"
             loop
         />
+
+        <audio ref="ambience"
+            :src="`${serverUrl}/dist/assets/bgm/${ambienceFile}.mp3`"
+            loop
+            autoplay
+        />
     </div>
 </template>
 
@@ -16,6 +22,7 @@ export default {
     data() {
         return {
             musicFile: '',
+            ambienceFile: '',
             inteval: null,
             volumeChangeValue: 0
         };
@@ -25,7 +32,11 @@ export default {
             'characterLocationId',
             'music',
             'musicVolume',
-            'serverUrl'
+            'ambience',
+            'ambienceVolume',
+            'serverUrl',
+            'currentLocation',
+            'serverHour'
         ])
     },
     watch: {
@@ -37,6 +48,23 @@ export default {
         },
         musicVolume() {
             this.detectMusicSettings();
+        },
+        ambience() {
+            this.detectAmbienceSettings();
+        },
+        ambienceVolume() {
+            this.detectAmbienceSettings();
+        },
+        currentLocation() {
+            // No ambience in the dungeons
+            if (this.currentLocation && this.currentLocation.dungeon) {
+                this.ambienceFile = '';
+            } else {
+                this.checkHours();
+            }
+        },
+        serverHour() {
+            this.checkHours();
         }
     },
     mounted() {
@@ -54,6 +82,7 @@ export default {
         }
 
         this.$refs.music.volume = this.musicVolume;
+        this.$refs.ambience.volume = this.ambienceVolume;
     },
     beforeDestroy() {
         clearInterval(this.interval);
@@ -297,6 +326,18 @@ export default {
                 this.$refs.music.play();
             } else {
                 this.$refs.music.pause();
+            }
+        },
+        detectAmbienceSettings() {
+            if (this.ambienceVolume || this.ambienceVolume === 0) {
+                this.$refs.ambience.volume = this.ambienceVolume;
+            }
+        },
+        checkHours() {
+            if (this.serverHour % 8 === 0 || this.serverHour % 9 === 0 || this.serverHour % 10 === 0 || this.serverHour % 11 === 0) {
+                this.ambienceFile = 'night-sounds';
+            } else {
+                this.ambienceFile = '';
             }
         }
     }

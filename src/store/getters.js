@@ -43,6 +43,8 @@ export default {
     selfBagItemInfo: (state) => state.selfBagItemInfo,
     music: (state) => state.music,
     musicVolume: (state) => state.musicVolume,
+    ambience: (state) => state.ambience,
+    ambienceVolume: (state) => state.ambienceVolume,
     sound: (state) => state.sound,
     soundVolume: (state) => state.soundVolume,
     resetChat: (state) => state.resetChat,
@@ -86,5 +88,6 @@ export default {
     putIntoChat: (state) => state.putIntoChat,
     online: (state) => state.online,
     hunts: (state) => state.hunts,
-    playersRegistered: (state) => state.playersRegistered
+    playersRegistered: (state) => state.playersRegistered,
+    serverHour: (state) => state.serverHour,
 };

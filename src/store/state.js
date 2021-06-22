@@ -144,6 +144,9 @@ export default {
     // eslint-disable-next-line
     sound: functions.storage('get', 'sound') === false ? false : true,
     soundVolume: functions.storage('get', 'soundVolume') && functions.storage('get', 'soundVolume') >= 0 ? functions.storage('get', 'soundVolume') : 0.3,
+    // eslint-disable-next-line
+    ambience: functions.storage('get', 'ambience') === false ? false : true,
+    ambienceVolume: functions.storage('get', 'ambienceVolume') && functions.storage('get', 'ambienceVolume') >= 0 ? functions.storage('get', 'ambienceVolume') : 0.1,
     resetChat: null,
     closeTutorial: null,
     admin: 0,
@@ -214,4 +217,5 @@ export default {
     online: 0,
     hunts: 0,
     playersRegistered: 0,
+    serverHour: 0,
 };

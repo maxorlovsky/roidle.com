@@ -50,6 +50,27 @@
                     </div>
                 </div>
 
+                <div class="settings__setting">
+                    <div class="settings__setting__slider game-icon">
+                        <div class="settings__setting__title">{{ $t('settings.ambience') }}</div>
+
+                        <range-slider v-model="ambienceSliderValue"
+                            class="slider"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                        />
+                    </div>
+
+                    <div class="settings__setting__icon game-icon"
+                        @click="ambienceToggle"
+                    >
+                        <i :class="{'icon-volume-on': ambience, 'icon-volume-off': !ambience}"
+                            class="icon "
+                        />
+                    </div>
+                </div>
+
                 <div v-if="admin"
                     class="settings__setting"
                 >
@@ -195,6 +216,7 @@ const settingsPage = {
             loading: true,
             musicSliderValue: this.$store.state.musicVolume,
             soundSliderValue: this.$store.state.soundVolume,
+            ambienceSliderValue: this.$store.state.ambienceVolume,
             version: mo.version,
             allowLogins: true,
             statistics: null
@@ -203,6 +225,7 @@ const settingsPage = {
     computed: {
         ...mapGetters([
             'music',
+            'ambience',
             'sound',
             'admin',
             'serverUrl',
@@ -219,6 +242,11 @@ const settingsPage = {
             const volume = Number(this.soundSliderValue.toFixed(1));
 
             this.changeSoundVolume(volume);
+        },
+        ambienceSliderValue() {
+            const volume = Number(this.ambienceSliderValue.toFixed(1));
+
+            this.changeAmbienceVolume(volume);
         }
     },
     mounted() {
@@ -254,7 +282,10 @@ const settingsPage = {
             'soundOff',
             'soundOn',
             'changeSoundVolume',
-            'resetState'
+            'resetState',
+            'ambienceOff',
+            'ambienceOn',
+            'changeAmbienceVolume',
         ]),
 
         formatAgeStatistic() {
@@ -317,6 +348,13 @@ const settingsPage = {
                 this.soundOff();
             } else {
                 this.soundOn();
+            }
+        },
+        ambienceToggle() {
+            if (this.ambience) {
+                this.ambienceOff();
+            } else {
+                this.ambienceOn();
             }
         },
         selectCharacter() {

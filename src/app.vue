@@ -263,6 +263,10 @@ export default {
         ]),
 
         setUpMainSocketEvents() {
+            mo.socket.on('getServerHourComplete', (value) => {
+                this.$store.commit('setServerHour', value);
+            });
+
             mo.socket.on('partyLeaderUpdate', (id) => {
                 this.$store.commit('changePartyLeader', id);
             });
@@ -435,6 +439,7 @@ export default {
             });
 
             mo.socket.emit('getPreloadedData');
+            mo.socket.emit('getServerHour');
         },
         setUpSocketEvents() {
             mo.socket.on('disconnect', (message) => {

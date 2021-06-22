@@ -117,5 +117,20 @@ export default {
         commit('soundVolume', value);
 
         functions.storage('set', 'soundVolume', value);
-    }
+    },
+    ambienceOff({ commit }) {
+        commit('ambience', false);
+
+        functions.storage('set', 'ambience', false);
+    },
+    ambienceOn({ commit }) {
+        commit('ambience', true);
+
+        functions.storage('set', 'ambience', true);
+    },
+    changeAmbienceVolume({ commit }, value) {
+        commit('ambienceVolume', value);
+
+        functions.storage('set', 'ambienceVolume', value);
+    },
 };

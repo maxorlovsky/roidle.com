@@ -1,0 +1,17 @@
+.town-hall-actions {
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0.5rem;
+
+        > div {
+            cursor: pointer;
+            margin-left: 1rem;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+}
