@@ -135,6 +135,12 @@
                         'game__action--prioritize': gameModal === 'ship'
                     }"
                 />
+                <town-hall-actions v-if="townHallAvailable"
+                    :class="{
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--prioritize': gameModal === 'town-hall'
+                    }"
+                />
 
                 <div v-if="huntStatus || characterTraveling || characterResting"
                     :class="{'game__action-in-progress--auto-height': huntStatus}"
@@ -172,12 +178,7 @@
 
             <puzzle-challenge v-if="showChallenge" />
 
-            <ul v-if="enableXmas"
-                class="snow"
-            >
-                <li />
-                <li />
-            </ul>
+            <weather />
         </template>
     </section>
 </template>
@@ -198,6 +199,8 @@ import puzzleChallenge from '@components/puzzle-challenge/puzzle-challenge.vue';
 import avatar from '@components/avatar/avatar.vue';
 import shipActions from '@components/ship-actions/ship-actions.vue';
 import huntBattle from '@components/hunt-battle/hunt-battle.vue';
+import townHallActions from '@components/town-hall-actions/town-hall-actions.vue';
+import weather from '@components/weather/weather.vue';
 
 const gamePage = {
     components: {
@@ -211,7 +214,9 @@ const gamePage = {
         avatar,
         craftActions,
         shipActions,
-        huntBattle
+        huntBattle,
+        townHallActions,
+        weather
     },
     data() {
         return {
@@ -232,8 +237,8 @@ const gamePage = {
             showTradeRequest: false,
             craftAvailable: false,
             shipAvailable: false,
-            enableXmas: false,
-            field: null
+            townHallAvailable: false,
+            field: null,
         };
     },
     computed: {
@@ -382,6 +387,12 @@ const gamePage = {
                         this.shipAvailable = true;
                     } else {
                         this.shipAvailable = false;
+                    }
+
+                    if (this.currentLocation.townHall) {
+                        this.townHallAvailable = true;
+                    } else {
+                        this.townHallAvailable = false;
                     }
 
                     this.showActions = true;

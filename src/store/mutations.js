@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    setServerHour: (state, hour) => {
+        state.serverHour = hour;
+    },
     changePartyLeader: (state, id) => {
         state.partyLeader = (id === state.characterId);
         state.partyLeaderId = id;
@@ -178,11 +181,17 @@ export default {
     closeTutorial: (state) => {
         state.closeTutorial = new Date();
     },
+    ambienceVolume: (state, value) => {
+        state.ambienceVolume = value;
+    },
     soundVolume: (state, value) => {
         state.soundVolume = value;
     },
     musicVolume: (state, value) => {
         state.musicVolume = value;
+    },
+    ambience: (state, value) => {
+        state.ambience = value;
     },
     sound: (state, value) => {
         state.sound = value;
