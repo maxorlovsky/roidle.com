@@ -74,32 +74,32 @@
                     >{{ $t('characterSelect.createAndConnectAccount') }}</button>
                 </div>
 
-                <div v-for="item in characters"
-                    :key="item.id"
+                <div v-for="character in characters"
+                    :key="character.id"
                     class="character-select__select-character"
                 >
-                    <avatar :head-style="item.headStyle"
-                        :head-color="item.headColor"
-                        :dye-color="item.dyeColor"
-                        :head-gears="item.headgearItemIds"
-                        :gender="item.gender"
-                        :job="item.job"
+                    <avatar :head-style="character.headStyle"
+                        :head-color="character.headColor"
+                        :dye-color="character.dyeColor"
+                        :head-gears="character.headgearItemIds"
+                        :gender="character.gender"
+                        :job="character.job"
                         :framed="true"
                     />
                     <div class="character-select__select-character__info">
-                        {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>
-                        {{ item.job }}<br>
-                        {{ $t('global.location') }}: {{ item.location }}
+                        {{ character.name }} ({{ character.baseLevel }}/{{ character.jobLevel }})<br>
+                        {{ character.job }}<br>
+                        {{ $t('global.location') }}: {{ character.location }}
                     </div>
 
                     <div class="character-select__select-character__buttons">
                         <button :disabled="buttonLoading"
                             class="btn btn-sm btn-danger"
-                            @click="deleteCharacter(item.id)"
+                            @click="deleteCharacter(character.id)"
                         >{{ $t('global.delete') }}</button>
                         <button :disabled="buttonLoading"
                             class="btn game-button"
-                            @click="chooseCharacter(item.id)"
+                            @click="chooseCharacter(character.id)"
                         >{{ $t('characterSelect.selectCharacter') }}</button>
                     </div>
                 </div>

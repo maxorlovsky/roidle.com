@@ -13,32 +13,32 @@
             <div v-else
                 class="trading-list__characters"
             >
-                <div v-for="item in usersList"
-                    :key="item.name"
+                <div v-for="user in usersList"
+                    :key="user.name"
                     class="trading-list__character"
                 >
-                    <avatar :head-style="item.headStyle"
-                        :head-color="item.headColor"
-                        :dye-color="item.dyeColor"
-                        :head-gears="item.headGears"
-                        :gender="item.gender"
-                        :job="item.job"
+                    <avatar :head-style="user.headStyle"
+                        :head-color="user.headColor"
+                        :dye-color="user.dyeColor"
+                        :head-gears="user.headGears"
+                        :gender="user.gender"
+                        :job="user.job"
                         :framed="true"
                     />
 
                     <div class="trading-list__character__info">
-                        {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>
-                        {{ item.job }}
+                        {{ user.name }} ({{ user.baseLevel }}/{{ user.jobLevel }})<br>
+                        {{ user.job }}
                     </div>
 
                     <div class="trading-list__character__buttons">
                         <button :disabled="buttonLoading"
                             class="btn game-button"
-                            @click="viewCharacter(item.name)"
+                            @click="viewCharacter(user.name)"
                         >{{ $t('global.viewProfile') }}</button>
                         <button :disabled="buttonLoading"
                             class="btn game-button"
-                            @click="trade(item.name)"
+                            @click="trade(user.name)"
                         >{{ $t('global.trade') }}</button>
                     </div>
                 </div>
