@@ -21,14 +21,14 @@
                 >{{ $t('shop.openOwnShop') }}</router-link>
 
                 <template v-if="shops.length">
-                    <div v-for="(item, index) in shops"
+                    <div v-for="(shop, index) in shops"
                         :key="index"
                         class="players-shops__list__item"
                     >
                         <div class="players-shops__list__item__image">
                             <div class="players-shops__list__item__image__shop-image">
-                                <img v-if="item.image"
-                                    :src="`/merchant-shops/${item.image}`"
+                                <img v-if="shop.image"
+                                    :src="`/merchant-shops/${shop.image}`"
                                 >
                                 <img v-else
                                     :src="`${serverUrl}/dist/assets/images/items/672.gif`"
@@ -37,12 +37,12 @@
                         </div>
 
                         <div class="players-shops__list__item__info">
-                            <div class="players-shops__list__item__info__name">{{ item.name }}</div>
-                            <div class="players-shops__list__item__info__description">{{ item.description }}</div>
+                            <div class="players-shops__list__item__info__name">{{ shop.name }}</div>
+                            <div class="players-shops__list__item__info__description">{{ shop.description }}</div>
                         </div>
 
                         <div class="players-shops__list__item__info__buttons">
-                            <router-link :to="`/players-shops/view/${item.id}`"
+                            <router-link :to="`/players-shops/view/${shop.id}`"
                                 class="btn game-button"
                             >{{ $t('shop.enterShop') }}</router-link>
                         </div>
