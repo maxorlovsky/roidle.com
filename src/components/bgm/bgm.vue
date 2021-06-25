@@ -332,8 +332,16 @@ export default {
             if (this.ambienceVolume || this.ambienceVolume === 0) {
                 this.$refs.ambience.volume = this.ambienceVolume;
             }
+
+            this.checkHours();
         },
         checkHours() {
+            if (!this.ambience) {
+                this.ambienceFile = '';
+
+                return false;
+            }
+
             if ((this.serverHour >= 8 && this.serverHour <= 11) || (this.serverHour >= 19 && this.serverHour <= 23)) {
                 this.ambienceFile = 'night-sounds';
             } else {
