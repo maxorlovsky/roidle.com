@@ -89,7 +89,9 @@ export default {
         });
     },
     beforeDestroy() {
-        this.$refs.music.removeEventListener('ended');
+        this.$refs.music.removeEventListener('ended', () => {
+            this.loadNewTrack();
+        });
 
         clearInterval(this.interval);
     },
@@ -163,7 +165,7 @@ export default {
                 case 12:
                 case 13:
                 case 14:
-                    musicTracks = ['prontera-field-1', 'prontera-field-2', 'prontera-field-3'];
+                    musicTracks = ['prontera-field-1', 'prontera-field-2'];
                     break;
                 case 15:
                 case 16:
