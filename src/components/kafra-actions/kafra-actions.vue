@@ -25,7 +25,7 @@
                     :disabled="buttonLoading"
                     class="btn game-button"
                     @click="openBank()"
-                >{{ $t('kafra.useBank') }} <!--({{ bankPrice }} Z)--></button>
+                >{{ $t('kafra.useBank') }} ({{ bankPrice }} Z)</button>
                 <button :disabled="buttonLoading"
                     class="btn game-button"
                     @click="openBarberShop()"
@@ -143,7 +143,7 @@ export default {
             return discount(1000, this.characterSkills[25]);
         },
         bankPrice() {
-            return discount(50, this.characterSkills[25]);
+            return discount(150, this.characterSkills[25]);
         },
         storagePrice() {
             return discount(60, this.characterSkills[25]);
