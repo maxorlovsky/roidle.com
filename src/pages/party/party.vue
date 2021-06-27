@@ -17,55 +17,55 @@
                 <div v-else
                     class="party__window__members"
                 >
-                    <div v-for="item in partyMembers"
-                        :key="item.id"
+                    <div v-for="character in partyMembers"
+                        :key="character.id"
                         class="party__window__members__member"
                     >
-                        <avatar :head-style="item.headStyle"
-                            :head-color="item.headColor"
-                            :dye-color="item.dyeColor"
-                            :head-gears="item.headGears"
-                            :gender="item.gender"
-                            :job="item.job"
+                        <avatar :head-style="character.headStyle"
+                            :head-color="character.headColor"
+                            :dye-color="character.dyeColor"
+                            :head-gears="character.headGears"
+                            :gender="character.gender"
+                            :job="character.job"
                             :framed="true"
                         />
                         <div class="party__window__members__member__info">
-                            {{ item.name }} ({{ item.baseLevel }}/{{ item.jobLevel }})<br>
-                            {{ item.job }}<br>
-                            {{ $t('global.location') }}: {{ item.location }}
-                            <div v-if="item.online"
+                            {{ character.name }} ({{ character.baseLevel }}/{{ character.jobLevel }})<br>
+                            {{ character.job }}<br>
+                            {{ $t('global.location') }}: {{ character.location }}
+                            <div v-if="character.online"
                                 class="party__window__members__member__info--online"
                             >{{ $t('party.online') }}</div>
                             <div v-else
                                 class="party__window__members__member__info--offline"
                             >{{ $t('party.offline') }}</div>
 
-                            <img v-if="item.id === partyLeaderId"
+                            <img v-if="character.id === partyLeaderId"
                                 :src="`${serverUrl}/dist/assets/images/items/2235.gif`"
                                 class="party__window__members__member__info--leader"
                             >
                         </div>
 
                         <div class="party__window__members__member__buttons">
-                            <button v-if="partyLeader && item.id !== partyLeaderId"
+                            <button v-if="partyLeader && character.id !== partyLeaderId"
                                 :disabled="buttonLoading"
                                 class="btn btn-sm btn-danger"
-                                @click="kickConfirm(item.id)"
+                                @click="kickConfirm(character.id)"
                             >{{ $t('party.kick') }}</button>
-                            <button v-if="partyLeader && item.id !== partyLeaderId"
+                            <button v-if="partyLeader && character.id !== partyLeaderId"
                                 :disabled="buttonLoading"
                                 class="btn btn-sm btn-warning"
-                                @click="makeLeader(item.id)"
+                                @click="makeLeader(character.id)"
                             >{{ $t('party.promoteToLeader') }}</button>
-                            <button v-if="item.id === characterId"
+                            <button v-if="character.id === characterId"
                                 :disabled="buttonLoading || (partyLeader && partyMembers.length > 1)"
                                 class="btn btn-sm btn-danger"
                                 @click="showLeave = true"
                             >{{ $t('party.leaveParty') }}</button>
-                            <button v-if="item.id !== characterId"
+                            <button v-if="character.id !== characterId"
                                 :disabled="buttonLoading"
                                 class="btn game-button"
-                                @click="viewCharacter(item.name)"
+                                @click="viewCharacter(character.name)"
                             >{{ $t('global.viewProfile') }}</button>
                         </div>
                     </div>
