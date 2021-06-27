@@ -71,7 +71,7 @@
                         <span v-else-if="$route.query.action === 'sell'">{{ item.amount }}</span>
                     </div>
                     <div class="shop__item__name-price">
-                        <div class="shop__item__name-price__name">{{ item.itemName }}</div>
+                        <div class="shop__item__name-price__name">{{ item.itemName }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                         <div class="shop__item__name-price__price">{{ item.price }} Z</div>
                     </div>
                     <div class="shop__item__move"
@@ -106,7 +106,7 @@
                         <span v-else>{{ item.amount }}</span>
                     </div>
                     <div class="shop__item__name-price">
-                        <div class="shop__item__name-price__name">{{ item.itemName }}</div>
+                        <div class="shop__item__name-price__name">{{ item.itemName }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                         <div class="shop__item__name-price__price">{{ item.price }} Z</div>
                     </div>
                     <div class="shop__item__move"

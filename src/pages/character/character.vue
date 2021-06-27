@@ -13,7 +13,7 @@
                         class="equipment__item"
                     >
                         <img :src="`${serverUrl}/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
-                        <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
+                        <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }} <template v-if="characterEquipment[eq.slot].refined">+{{ characterEquipment[eq.slot].refined }}</template></span>
                     </div>
                     <span class="equipment__placeholder">{{ eq.name }}</span>
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
@@ -58,7 +58,7 @@
                         class="equipment__item"
                     >
                         <img :src="`${serverUrl}/dist/assets/images/items/${characterEquipment[eq.slot].itemId}.gif`">
-                        <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }}</span>
+                        <span class="equipment__item__name">{{ characterEquipment[eq.slot].name }} <template v-if="characterEquipment[eq.slot].refined">+{{ characterEquipment[eq.slot].refined }}</template></span>
                     </div>
                     <span class="equipment__placeholder">{{ eq.name }}</span>
                     <div v-if="characterEquipment[eq.slot] && characterEquipment[eq.slot].itemId"
@@ -96,7 +96,7 @@
                         <div v-if="item.currentlyEquiped"
                             class="equipment-modal__item__currently-equipped-label"
                         >{{ $t('character.currentlyEquippedItem') }}</div>
-                        <div>{{ item.name }}</div>
+                        <div>{{ item.name }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                         <div>
                             {{ itemClassNameCorrection(item.class, item.twoHanded) }}
                             <span class=""

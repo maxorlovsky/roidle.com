@@ -83,7 +83,7 @@
                         <span v-else>{{ item.amount }}</span>
                     </div>
                     <div class="kafra-storage__item__name-price">
-                        <div class="kafra-storage__item__name-price__name">{{ item.itemName || item.name }}</div>
+                        <div class="kafra-storage__item__name-price__name">{{ item.itemName || item.name }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                     </div>
                     <div v-if="selectedMainTab === 'withdraw'"
                         :class="{'kafra-storage__item__move--disabled': buttonLoading}"
