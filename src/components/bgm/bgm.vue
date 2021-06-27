@@ -145,31 +145,25 @@ export default {
                 case 8:
                     musicTracks = ['izlude', 'izlude-original'];
                     break;
+                case 2:
                 case 3:
                 case 4:
+                case 5:
+                case 6:
                 case 7:
                 case 9:
                 case 10:
                 case 11:
-                    musicTracks = ['prontera-field-1'];
-                    break;
-                case 2:
-                case 5:
-                case 6:
-                    musicTracks = ['prontera-field-2'];
-                    break;
                 case 12:
                 case 13:
                 case 14:
-                    musicTracks = ['prontera-field-3'];
+                    musicTracks = ['prontera-field-1', 'prontera-field-2', 'prontera-field-3'];
                     break;
                 case 15:
                 case 16:
                 case 17:
                 case 20:
                 case 21:
-                    musicTracks = ['morocc-desert-1'];
-                    break;
                 case 22:
                 case 23:
                 case 26:
@@ -178,9 +172,10 @@ export default {
                 case 30:
                 case 31:
                 case 32:
+                case 33:
                 case 34:
                 case 35:
-                    musicTracks = ['37'];
+                    musicTracks = ['morocc-desert-1', '37', '45'];
                     break;
                 case 18:
                 case 24:
@@ -200,9 +195,6 @@ export default {
                 case 27:
                     musicTracks = ['11'];
                     break;
-                case 33:
-                    musicTracks = ['45'];
-                    break;
                 case 40:
                 case 41:
                 case 42:
@@ -217,17 +209,19 @@ export default {
                 case 49:
                     musicTracks = ['14'];
                     break;
+                case 50:
                 case 51:
+                case 52:
+                case 53:
+                case 54:
                 case 55:
                 case 56:
+                case 57:
                 case 58:
                 case 59:
-                    musicTracks = ['23'];
-                    break;
-                case 50:
-                case 54:
-                case 57:
-                    musicTracks = ['25'];
+                case 60:
+                case 63:
+                    musicTracks = ['23', '25', '35', '66'];
                     break;
                 case 61:
                     musicTracks = ['04'];
@@ -235,35 +229,23 @@ export default {
                 case 65:
                     musicTracks = ['13', 'geffen-mix'];
                     break;
-                case 52:
-                case 53:
-                case 60:
-                    musicTracks = ['35'];
-                    break;
                 case 62:
                 case 64:
                     musicTracks = ['64'];
                     break;
-                case 63:
-                    musicTracks = ['66'];
-                    break;
                 case 66:
                 case 67:
                 case 68:
-                case 72:
-                    musicTracks = ['31'];
-                    break;
                 case 69:
+                case 70:
+                case 71:
+                case 72:
                 case 73:
                 case 74:
                 case 75:
-                    musicTracks = ['33'];
-                    break;
-                case 70:
-                case 71:
                 case 76:
                 case 77:
-                    musicTracks = ['34'];
+                    musicTracks = ['31', '33', '34'];
                     break;
                 case 78:
                     musicTracks = ['39'];
