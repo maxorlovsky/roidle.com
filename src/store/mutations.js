@@ -578,6 +578,18 @@ export default {
             state.characterEquipment.footgear.refined = values.equipment.footgear.refined || 0;
             state.characterEquipment.footgear.durability = values.equipment.footgear.durability || 0;
         }
+        if (values.equipment && values.equipment.acc1) {
+            state.characterEquipment.acc1.id = values.equipment.acc1.id || 0;
+            state.characterEquipment.acc1.itemId = values.equipment.acc1.itemId || 0;
+            state.characterEquipment.acc1.name = values.equipment.acc1.name || '';
+            state.characterEquipment.acc1.durability = values.equipment.acc1.durability || 0;
+        }
+        if (values.equipment && values.equipment.acc2) {
+            state.characterEquipment.acc2.id = values.equipment.acc2.id || 0;
+            state.characterEquipment.acc2.itemId = values.equipment.acc2.itemId || 0;
+            state.characterEquipment.acc2.name = values.equipment.acc2.name || '';
+            state.characterEquipment.acc2.durability = values.equipment.acc2.durability || 0;
+        }
     },
     characterInit: (state, values) => {
         // Main character data
@@ -698,6 +710,20 @@ export default {
             state.characterEquipment.footgear.refined = values.equipment.footgear.refined || 0;
             state.characterEquipment.footgear.durability = values.equipment.footgear.durability || 0;
         }
+        if (values.equipment && values.equipment.acc1) {
+            state.characterEquipment.acc1.id = values.equipment.acc1.id || 0;
+            state.characterEquipment.acc1.itemId = values.equipment.acc1.itemId || 0;
+            state.characterEquipment.acc1.name = values.equipment.acc1.name || '';
+            state.characterEquipment.acc1.refined = values.equipment.acc1.refined || 0;
+            state.characterEquipment.acc1.durability = values.equipment.acc1.durability || 0;
+        }
+        if (values.equipment && values.equipment.acc2) {
+            state.characterEquipment.acc2.id = values.equipment.acc2.id || 0;
+            state.characterEquipment.acc2.itemId = values.equipment.acc2.itemId || 0;
+            state.characterEquipment.acc2.name = values.equipment.acc2.name || '';
+            state.characterEquipment.acc2.refined = values.equipment.acc2.refined || 0;
+            state.characterEquipment.acc2.durability = values.equipment.acc2.durability || 0;
+        }
 
         // Traveling
         if (values.character.traveling) {
@@ -811,10 +837,12 @@ export default {
                 durability: 0
             },
             face: {
+                id: 0,
                 itemId: 0,
                 name: ''
             },
             mouth: {
+                id: 0,
                 itemId: 0,
                 name: ''
             },
@@ -852,7 +880,21 @@ export default {
                 name: '',
                 refined: 0,
                 durability: 0
-            }
+            },
+            acc1: {
+                id: 0,
+                itemId: 0,
+                name: '',
+                refined: 0,
+                durability: 0
+            },
+            acc2: {
+                id: 0,
+                itemId: 0,
+                name: '',
+                refined: 0,
+                durability: 0
+            },
         };
 
         state.travelingDungeon = false;

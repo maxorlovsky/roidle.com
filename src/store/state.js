@@ -108,6 +108,16 @@ export default {
             itemId: 0,
             name: '',
             refined: 0
+        },
+        acc1: {
+            itemId: 0,
+            name: '',
+            refined: 0
+        },
+        acc2: {
+            itemId: 0,
+            name: '',
+            refined: 0
         }
     },
     dockedMenu: false,
