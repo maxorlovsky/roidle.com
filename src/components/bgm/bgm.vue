@@ -2,7 +2,6 @@
     <div class="bgm">
         <audio ref="music"
             :src="`${serverUrl}/dist/assets/bgm/${musicFile}.mp3`"
-            loop
         />
 
         <audio ref="ambience"
@@ -83,8 +82,15 @@ export default {
 
         this.$refs.music.volume = this.musicVolume;
         this.$refs.ambience.volume = this.ambienceVolume;
+
+        // On music end we randomize new track
+        this.$refs.music.addEventListener('ended', () => {
+            this.loadNewTrack();
+        });
     },
     beforeDestroy() {
+        this.$refs.music.removeEventListener('ended');
+
         clearInterval(this.interval);
     },
     methods: {
