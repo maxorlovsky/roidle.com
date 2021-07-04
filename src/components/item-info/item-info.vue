@@ -131,6 +131,9 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Utils
+import { humanReadableParams } from '@utils/inventory.js';
+
 // Mixins
 import chatMixin from '@mixins/chat.js';
 
@@ -411,15 +414,10 @@ export default {
 
             // Making params human readable
             if (item.params) {
-                for (const param of Object.keys(item.params)) {
-                    if (param === 'element') {
-                        this.element = item.params[param];
-                    } else {
-                        this.params += `${param.toUpperCase()}: ${item.params[param]}, `;
-                    }
-                }
+                const params = humanReadableParams(item.params);
 
-                this.params = this.params.substring(0, this.params.length - 2);
+                this.element = params.element;
+                this.params = params.paramsString;
             }
 
             if (item.durability >= 0) {

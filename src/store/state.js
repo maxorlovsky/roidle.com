@@ -184,6 +184,10 @@ export default {
     characterCrafting: false,
     craftTimer: null,
     craftData: null,
+    // Refining
+    characterRefining: false,
+    refineTimer: null,
+    refineData: null,
     // Traveling
     characterTraveling: false,
     travelTimer: null,

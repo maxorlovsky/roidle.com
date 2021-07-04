@@ -3,6 +3,19 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    refinementComplete: (state) => {
+        state.refineTimer = null;
+        state.refineData = null;
+        state.characterRefining = false;
+    },
+    refineInProgress: (state, value) => {
+        state.refineTimer = value.finishTime;
+        state.refineData = value.refineData;
+        state.characterRefininllg = true;
+    },
+    refinementStart: (state) => {
+        state.characterRefining = true;
+    },
     setServerHour: (state, hour) => {
         state.serverHour = hour;
     },
@@ -740,6 +753,11 @@ export default {
             state.characterCrafting = true;
         }
 
+        // Refining
+        if (values.character.refining) {
+            state.characterRefining = true;
+        }
+
         // Setting admin state
         if (values.character.admin) {
             state.admin = values.character.admin;
@@ -949,6 +967,7 @@ export default {
         state.craftTimer = null;
         state.craftData = null;
         state.characterCrafting = false;
+        state.characterRefining = false;
         state.characterTraveling = false;
         state.travelTimer = null;
         state.travelData = {

@@ -9,6 +9,7 @@ $chat-tabs-height: 35px;
 $chat-tabs-height-padding: $chat-tabs-height + 10px;
 $mobMaxImageWidth: 120px;
 $mobMaxImageHeight: 130px;
+$assets: "../assets" !default;
 
 $element-fire: #f00;
 $element-water: #00e;
@@ -28,9 +29,6 @@ $nav-link-padding: 0;
 $table-border-width: 0;
 $nav-link-padding-y: 0;
 $nav-link-padding-x: 0;
-
-/* Font-Awesome variables */
-$assets: "../assets" !default;
 
 // Importing lib styles
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

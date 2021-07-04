@@ -44,6 +44,7 @@ import './pages/all-hunts/all-hunts.vue';
 import './pages/leaderboards/leaderboards.vue';
 // 1 import './pages/town-hall/town-hall.vue';
 import './pages/item-finder/item-finder.vue';
+import './pages/refinement/refinement.vue';
 
 // Text pages
 import './pages/text-page/terms-and-conditions.vue';
