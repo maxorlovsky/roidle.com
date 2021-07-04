@@ -59,7 +59,7 @@
                             <span v-else>{{ item.amount }}</span>
                         </div>
                         <div class="players-shops__sold-item__name-price">
-                            <div class="players-shops__sold-item__name-price__name">{{ item.itemName }}</div>
+                            <div class="players-shops__sold-item__name-price__name">{{ item.itemName }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                             <div class="players-shops__sold-item__name-price__price">{{ $t('shop.price') }}:
                                 <span :class="{ 'players-shops__sold-item__name-price__price--not-enough': characterZeny < item.price }">{{ item.price }} Z</span>
                             </div>
@@ -117,7 +117,7 @@
                             <span>{{ item.amount }}</span>
                         </div>
                         <div class="players-shops__sold-item__name-price">
-                            <div class="players-shops__sold-item__name-price__name">{{ item.itemName }}</div>
+                            <div class="players-shops__sold-item__name-price__name">{{ item.itemName }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                             <div v-if="item.maxDurability"
                                 class="players-shops__buy-item__name-price__durability"
                             >
@@ -155,7 +155,7 @@
                         type="number"
                         size="9"
                     >
-                    <b>{{ buyingItem.itemName }} <template v-if="buyingItem.defaultDurability">({{ buyingItem.durability }} / {{ buyingItem.maxDurability }})</template></b>
+                    <b>{{ buyingItem.itemName }} <template v-if="buyingItem.refined">+{{ buyingItem.refined }}</template> <template v-if="buyingItem.defaultDurability">({{ buyingItem.durability }} / {{ buyingItem.maxDurability }})</template></b>
                     <p>{{ $t('shop.fullPrice') }}: <b :class="{ 'players-shops__amount__zeny--not-enough': characterZeny < buyingItem.price * itemAmountValue }">{{ buyingItem.price * itemAmountValue }}Z</b></p>
                 </template>
                 <template v-else>

@@ -176,7 +176,7 @@
                             <span v-else>{{ item.amount }}</span>
                         </div>
                         <div class="players-shops__sold-item__name-price">
-                            <div class="players-shops__sold-item__name-price__name">{{ item.itemName }}</div>
+                            <div class="players-shops__sold-item__name-price__name">{{ item.itemName }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                             <div class="players-shops__sold-item__name-price__price">
                                 {{ $t('shop.endPrice') }}: {{ Math.floor(Number(item.price) + (Number(item.price) * (locationTax / 100))) }} Z
                             </div>
@@ -238,7 +238,7 @@
             class="modal"
         >
             <div class="modal__content players-shops__amount">
-                <b>{{ transferItem.name }} <template v-if="transferItem.defaultDurability">({{ transferItem.durability }} / {{ transferItem.maxDurability }})</template></b>
+                <b>{{ transferItem.name }} <template v-if="transferItem.refined">+{{ transferItem.refined }}</template> <template v-if="transferItem.defaultDurability">({{ transferItem.durability }} / {{ transferItem.maxDurability }})</template></b>
 
                 <div v-if="displayItemAmountProperty">
                     <div class="form-heading">{{ $t('global.amount') }}:</div>

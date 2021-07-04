@@ -47,7 +47,7 @@
                     <i class="icon icon-sword" />
                 </router-link>
 
-                <div v-if="characterCrafting || characterTraveling"
+                <div v-if="characterCrafting || characterTraveling || characterRefining"
                     class="game__trade game-icon game__additions--disabled"
                 >
                     <i class="icon icon-trade" />
@@ -84,7 +84,7 @@
             >
                 <hunt-actions v-if="huntAvailable"
                     :class="{
-                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting || characterRefining,
                         'game__action--prioritize': gameModal === 'hunt'
                     }"
                 />
@@ -105,15 +105,15 @@
                     }"
                 />
                 <inn-actions v-if="innAvailable"
-                    :disabled="characterCrafting"
+                    :disabled="characterCrafting || characterRefining"
                     :class="{
-                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting || characterRefining,
                         'game__action--prioritize': gameModal === 'inn'
                     }"
                 />
                 <shop-actions v-if="shopsAvailable"
                     :class="{
-                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting || characterRefining,
                         'game__action--prioritize': gameModal === 'shop'
                     }"
                 />
@@ -125,19 +125,19 @@
                 />
                 <dungeon-actions v-if="dungeonAvailable"
                     :class="{
-                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting || characterRefining,
                         'game__action--prioritize': gameModal === 'dungeon'
                     }"
                 />
                 <ship-actions v-if="shipAvailable"
                     :class="{
-                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting || characterRefining,
                         'game__action--prioritize': gameModal === 'ship'
                     }"
                 />
                 <town-hall-actions v-if="townHallAvailable"
                     :class="{
-                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting,
+                        'game__action--disabled': huntStatus || characterTraveling || characterResting || characterCrafting || characterRefining,
                         'game__action--prioritize': gameModal === 'town-hall'
                     }"
                 />
@@ -254,6 +254,7 @@ const gamePage = {
             'currentLocation',
             'characterSkills',
             'characterCrafting',
+            'characterRefining',
             'characterTraveling',
             'characterResting',
             'serverUrl',

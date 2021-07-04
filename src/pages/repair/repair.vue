@@ -27,7 +27,7 @@
                             <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
                         </div>
                         <div class="repair__item__info">
-                            <div class="repair__item__info__name">{{ item.name }}</div>
+                            <div class="repair__item__info__name">{{ item.name }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                             <div class="repair__item__info__durability">{{ item.durability }} / {{ item.maxDurability }}</div>
                             <div class="repair__item__info__cost">{{ $t('repair.cost') }}: {{ item.price }} Z</div>
                         </div>

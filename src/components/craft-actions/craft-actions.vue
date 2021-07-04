@@ -12,23 +12,24 @@
         >
             <div class="modal__header">{{ $t('craft.actionTitle') }}</div>
             <div class="modal__content kafra-actions__buttons">
-                <button :disabled="characterCrafting"
-                    class="btn game-button"
+                <button class="btn game-button"
                     @click="$router.push('/repair')"
                 >{{ $t('craft.repairItems') }}</button>
 
-                <button class="btn game-button"
+                <button :disabled="characterRefining"
+                    class="btn game-button"
                     @click="$router.push('/craft/smithy')"
                 >{{ $t('craft.smithy') }}</button>
 
-                <button class="btn game-button"
+                <button :disabled="characterRefining"
+                    class="btn game-button"
                     @click="$router.push('/craft/alchemy')"
                 >{{ $t('craft.laboratory') }}</button>
 
-                <button class="btn game-button"
-                    disabled
+                <button :disabled="characterCrafting"
+                    class="btn game-button"
                     @click="$router.push('/refinement')"
-                >{{ $t('craft.grindingStation') }}</button>
+                >{{ $t('refine.title') }}</button>
             </div>
             <div class="modal__buttons">
                 <button class="btn btn-secondary"
@@ -53,6 +54,7 @@ export default {
     computed: {
         ...mapGetters([
             'characterCrafting',
+            'characterRefining',
             'serverUrl',
             'gameModal'
         ])

@@ -15,6 +15,7 @@
                     'map__piece--disabled': (
                         characterTraveling ||
                         characterCrafting ||
+                        characterRefining ||
                         characterResting ||
                         huntStatus ||
                         userOverweight ||
@@ -124,6 +125,7 @@ const mapPage = {
             'partyMembers',
             'currentLocation',
             'characterCrafting',
+            'characterRefining',
             'characterTraveling',
             'characterResting',
             'travelData',
@@ -202,6 +204,7 @@ const mapPage = {
                 locationId === this.characterLocationId ||
                 this.characterTraveling ||
                 this.characterCrafting ||
+                this.characterRefining ||
                 this.characterResting ||
                 this.huntStatus ||
                 this.userOverweight ||

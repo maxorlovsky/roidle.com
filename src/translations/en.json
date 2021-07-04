@@ -110,7 +110,8 @@
         "hunting": "Hunting",
         "traveling": "Traveling",
         "resting": "Resting",
-        "crafting": "Crafting"
+        "crafting": "Crafting",
+        "refining": "Refining"
     },
     "chat": {
         "chat": "chat",
@@ -161,8 +162,7 @@
         "staffs": "Staffs",
         "confirmationToCancel": "Are you sure you want to cancel the craft? You WILL NOT receive materials back for canceling the process.",
         "poisons": "Poisons",
-        "tonics": "Tonics",
-        "grindingStation": "Grinding station"
+        "tonics": "Tonics"
     },
     "map": {
         "dungeonActionTitle": "Dungeon",
@@ -602,5 +602,21 @@
         "shopName": "Shop Name",
         "location": "Location",
         "pricePerItem": "Price per item"
+    },
+    "refine": {
+        "title": "Refinement station",
+        "explanation": "Refinement station, where great Blacksmith minds figured out a way how to make already powerful weapons even more powerful.<br>You see a lot of fellow Blacksmiths in the building, all silently hammering, grinding and polishing the weapons and armors.<br>To refine the weapon you need to have Item Refinement skill, materials and zeny to rent refine station. Price and materials depend on level of weapon.<br>On refinement of item to +8, +9 or +10 in case of fail, your refinement will go down by -1.",
+        "cost": "Cost",
+        "selectItem": "Select item to refine",
+        "chance": "Refine successful chance",
+        "materials": "Required materials",
+        "youAreRefining": "You are refining. Your chance for success is",
+        "abandonRefinement": "Abandon refinement process",
+        "abandonRefinementExplanation": "You can abandon your work, but you will not recover any of the materials and will not get any experience",
+        "refinementRequirementsNotMet": "Refinement requirements not met, either you don't have enough MP, Zeny, Materials or skill level to refine this item",
+        "confirmationToCancel": "Are you sure you want to cancel the refinement? You WILL NOT receive materials back for canceling the process. You will only get your item back.",
+        "buffItem": "Chance increase",
+        "include": "Include",
+        "exclude": "Exclude"
     }
 }

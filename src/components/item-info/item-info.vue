@@ -13,7 +13,7 @@
                 class="item-info__illustration"
             >
             <div class="item-info__description">
-                <b>{{ name }}</b>
+                <b>{{ name }} <template v-if="refined">+{{ refined }}</template></b>
                 <div>{{ $t('itemInfo.type') }}: <span class="ucfirst">{{ itemClass ? itemClass : type }}</span> <span v-if="twoHanded">({{ $t('itemInfo.twoHanded') }})</span></div>
                 <div v-if="params">{{ $t('itemInfo.params') }}: <b>{{ params }}</b></div>
                 <div v-if="element"
@@ -131,6 +131,9 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Utils
+import { humanReadableParams } from '@utils/inventory.js';
+
 // Mixins
 import chatMixin from '@mixins/chat.js';
 
@@ -164,7 +167,8 @@ export default {
             showRepair: false,
             repairMaterials: [],
             element: '',
-            restriction: 0
+            restriction: 0,
+            refined: 0,
         };
     },
     computed: {
@@ -406,18 +410,14 @@ export default {
             this.jobs = item.jobs;
             this.broken = false;
             this.restriction = item.restriction;
+            this.refined = item.refined;
 
             // Making params human readable
             if (item.params) {
-                for (const param of Object.keys(item.params)) {
-                    if (param === 'element') {
-                        this.element = item.params[param];
-                    } else {
-                        this.params += `${param.toUpperCase()}: ${item.params[param]}, `;
-                    }
-                }
+                const params = humanReadableParams(item.params);
 
-                this.params = this.params.substring(0, this.params.length - 2);
+                this.element = params.element;
+                this.params = params.paramsString;
             }
 
             if (item.durability >= 0) {

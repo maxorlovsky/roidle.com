@@ -55,6 +55,7 @@ export default {
     computed: {
         ...mapGetters([
             'characterCrafting',
+            'characterRefining',
             'serverUrl',
             'gameModal'
         ])
@@ -70,7 +71,7 @@ export default {
     },
     methods: {
         openModal() {
-            if (this.characterCrafting) {
+            if (this.characterCrafting || this.characterRefining) {
                 return false;
             }
 

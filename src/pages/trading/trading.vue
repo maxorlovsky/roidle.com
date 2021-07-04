@@ -56,23 +56,10 @@
                             :key="index"
                             class="trading__item"
                         >
-                            <div :class="{
-                                'trading__item__image-amount--broken': item.broken,
-                                'trading__item__image-amount--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
-                                'trading__item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
-                            }"
-                                class="trading__item__image-amount"
-                                @click.exact="showItemInfo(item)"
-                                @click.ctrl="parseItemToChat(item.name)"
-                            >
-                                <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
-                                <span v-if="item.maxDurability">
-                                    {{ item.durability }}/{{ item.maxDurability }}
-                                </span>
-                                <span v-else>{{ item.amount }}</span>
-                            </div>
+                            <item-block :item="item" />
+
                             <div class="trading__item__name-price">
-                                <div class="trading__item__name-price__name">{{ item.name }}</div>
+                                <div class="trading__item__name-price__name">{{ item.name }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                             </div>
                             <div v-if="!leftTradeApproved"
                                 class="trading__item__move"
@@ -104,23 +91,10 @@
                             :key="index"
                             class="trading__item"
                         >
-                            <div :class="{
-                                'trading__item__image-amount--broken': item.broken,
-                                'trading__item__image-amount--not-pristine': item.defaultDurability && item.durability < item.defaultDurability,
-                                'trading__item__image-amount--high-quality': item.durability && item.durability > item.defaultDurability
-                            }"
-                                class="trading__item__image-amount"
-                                @click.exact="showItemInfo(item)"
-                                @click.ctrl="parseItemToChat(item.name)"
-                            >
-                                <img :src="`${serverUrl}/dist/assets/images/items/${item.itemId}.gif`">
-                                <span v-if="item.maxDurability">
-                                    {{ item.durability }}/{{ item.maxDurability }}
-                                </span>
-                                <span v-else>{{ item.amount }}</span>
-                            </div>
+                            <item-block :item="item" />
+
                             <div class="trading__item__name-price">
-                                <div class="trading__item__name-price__name">{{ item.name }}</div>
+                                <div class="trading__item__name-price__name">{{ item.name }} <template v-if="item.refined">+{{ item.refined }}</template></div>
                             </div>
                         </div>
                     </template>
@@ -187,10 +161,16 @@
 // 3rd party libs
 import { mapGetters } from 'vuex';
 
+// Components
+import itemBlock from '@components/item-block/item-block.vue';
+
 // Mixins
 import chatMixin from '@mixins/chat.js';
 
 const tradingPage = {
+    components: {
+        itemBlock
+    },
     mixins: [chatMixin],
     data() {
         return {

@@ -108,6 +108,16 @@ export default {
             itemId: 0,
             name: '',
             refined: 0
+        },
+        acc1: {
+            itemId: 0,
+            name: '',
+            refined: 0
+        },
+        acc2: {
+            itemId: 0,
+            name: '',
+            refined: 0
         }
     },
     dockedMenu: false,
@@ -174,6 +184,10 @@ export default {
     characterCrafting: false,
     craftTimer: null,
     craftData: null,
+    // Refining
+    characterRefining: false,
+    refineTimer: null,
+    refineData: null,
     // Traveling
     characterTraveling: false,
     travelTimer: null,

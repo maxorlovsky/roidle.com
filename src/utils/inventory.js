@@ -26,4 +26,22 @@ const isEquipableGear = (itemId) => {
     return false;
 };
 
-export { sort, isEquipableGear };
+const humanReadableParams = (params) => {
+    let paramsString = '';
+    let element = '';
+
+    for (const param of Object.keys(params)) {
+        if (param === 'element') {
+            element = params[param];
+        } else {
+            paramsString += `${param.toUpperCase()}: ${params[param]}, `;
+        }
+    }
+
+    return {
+        paramsString: paramsString.substring(0, paramsString.length - 2),
+        element: element
+    };
+};
+
+export { sort, isEquipableGear, humanReadableParams };

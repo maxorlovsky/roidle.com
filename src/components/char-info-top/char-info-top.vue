@@ -167,6 +167,8 @@ export default {
             'puzzleChallenge',
             'characterCrafting',
             'craftTimer',
+            'characterRefining',
+            'refineTimer',
             'characterTraveling',
             'travelTimer',
             'characterResting',
@@ -232,12 +234,30 @@ export default {
                 }
             }
         },
+        characterRefining: {
+            immediate: true,
+            handler() {
+                if (this.characterRefining) {
+                    mo.socket.emit('getRefinement');
+                }
+            }
+        },
         craftTimer: {
             immediate: true,
             handler() {
                 if (this.craftTimer) {
                     this.showNewTimer('crafting', this.craftTimer);
                 } else if (!this.craftTimer && !this.characterCrafting) {
+                    this.resetTimer();
+                }
+            }
+        },
+        refineTimer: {
+            immediate: true,
+            handler() {
+                if (this.refineTimer) {
+                    this.showNewTimer('refinement', this.refineTimer);
+                } else if (!this.refineTimer && !this.characterRefining) {
                     this.resetTimer();
                 }
             }
@@ -344,6 +364,16 @@ export default {
             }
         });
 
+        mo.socket.on('refinementComplete', () => {
+            this.$store.commit('refinementComplete');
+        });
+
+        mo.socket.on('getRefinementComplete', (response) => {
+            if (response.status) {
+                this.$store.commit('refineInProgress', response);
+            }
+        });
+
         mo.socket.on('initiateTradingComplete', (response) => {
             if (response) {
                 this.$router.push('/trading');
@@ -438,6 +468,9 @@ export default {
             } else if (action === 'resting') {
                 this.timerAction = this.$t('charInfoTop.resting');
                 socketEmitAction = 'getRest';
+            } else if (action === 'refinement') {
+                this.timerAction = this.$t('charInfoTop.refining');
+                socketEmitAction = 'getRefinement';
             }
 
             this.timerSeconds = seconds;
