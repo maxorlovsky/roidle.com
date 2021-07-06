@@ -254,9 +254,16 @@ const homePage = {
             'online',
             'hunts',
             'playersRegistered',
+            'serverDown',
         ])
     },
     mounted() {
+        if (this.serverDown) {
+            this.$router.push('/server-down');
+
+            return false;
+        }
+
         // Check if user session is available and live
         if (functions.storage('get', 'session')) {
             this.authenticate();
