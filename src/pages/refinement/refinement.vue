@@ -90,7 +90,7 @@
                 <div class="refinement__inventory-wrapper__empty">{{ $t('refine.selectItem') }}</div>
             </div>
 
-            <div v-if="!characterRefining && newRefinement < 10"
+            <div v-if="!characterRefining && newRefinement <= 10"
                 class="refinement__cost"
             >
                 <div class="refinement__cost__title">{{ $t('refine.cost') }}</div>
@@ -328,7 +328,7 @@ const refinementPage = {
                 haveItems = false;
             }
 
-            if (this.newRefinement >= 10) {
+            if (this.newRefinement > 10) {
                 haveItems = false;
             }
 
