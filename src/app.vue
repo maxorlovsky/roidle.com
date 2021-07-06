@@ -143,7 +143,7 @@ export default {
             'closeTutorial',
             'characterId',
             'partyMembersIds',
-            'pushNotification'
+            'pushNotification',
         ])
     },
     watch: {
@@ -216,6 +216,7 @@ export default {
         try {
             await axios.get(`${mo.serverUrl}/api/ping?cache=${new Date().getTime()}`);
         } catch (error) {
+            this.$store.commit('setServerDown', true);
             this.$router.replace('/server-down');
             this.removeLoader();
 

@@ -232,4 +232,5 @@ export default {
     hunts: 0,
     playersRegistered: 0,
     serverHour: 0,
+    serverDown: false,
 };
