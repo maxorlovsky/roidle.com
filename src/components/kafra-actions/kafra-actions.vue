@@ -149,14 +149,7 @@ export default {
             return discount(60, this.characterSkills[25]);
         },
         resetPrice() {
-            let price = discount(this.characterBaseLevel * 1000, this.characterSkills[25]);
-
-            // TODO REMOVE
-            if (this.characterBaseLevel < 60) {
-                price = 100;
-            }
-
-            return price;
+            return discount(this.characterBaseLevel * 1000, this.characterSkills[25]);
         }
     },
     watch: {
@@ -187,26 +180,32 @@ export default {
         });
 
         mo.socket.on('characterResetStatsComplete', (response) => {
-            this.$store.commit('resetStats', response);
             this.buttonLoading = false;
-            this.showKafraModal = false;
-            this.showResetStatsConfirmation = false;
+
+            if (response) {
+                this.$store.commit('resetStats', response);
+                this.showKafraModal = false;
+                this.showResetStatsConfirmation = false;
+            }
         });
 
         mo.socket.on('characterResetSkillsComplete', (response) => {
-            this.$store.commit('setCharacterData', {
-                attributes: response.attributes,
-                skills: response.skills,
-                skillPoints: response.skillPoints
-            });
-            this.$store.commit('setHpMp', {
-                hp: response.attributes.maxHp,
-                mp: response.attributes.maxMp
-            });
-
             this.buttonLoading = false;
-            this.showKafraModal = false;
-            this.showResetSkillsConfirmation = false;
+
+            if (response) {
+                this.$store.commit('setCharacterData', {
+                    attributes: response.attributes,
+                    skills: response.skills,
+                    skillPoints: response.skillPoints
+                });
+                this.$store.commit('setHpMp', {
+                    hp: response.attributes.maxHp,
+                    mp: response.attributes.maxMp
+                });
+
+                this.showKafraModal = false;
+                this.showResetSkillsConfirmation = false;
+            }
         });
     },
     beforeDestroy() {

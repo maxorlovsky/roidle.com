@@ -166,6 +166,9 @@ import { mapGetters } from 'vuex';
 // Components
 import loading from '@components/loading/loading.vue';
 
+// Utilities
+import { addEmotes } from '@utils/chat.js';
+
 const questsPage = {
     components: {
         loading,
@@ -357,6 +360,8 @@ const questsPage = {
                 .replace(/\[/g, '<span class="quests--blue-color">[')
                 .replace(/\]/g, ']</span>')
                 .replace(/(\n)/g, '<br>');
+
+            text = addEmotes(text);
 
             return text;
         }

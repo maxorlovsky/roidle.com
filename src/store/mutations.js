@@ -3,6 +3,9 @@ import Vue from 'vue';
 
 // Mutations are always synchronous
 export default {
+    setServerDown: (state, value) => {
+        state.serverDown = value;
+    },
     refinementComplete: (state) => {
         state.refineTimer = null;
         state.refineData = null;

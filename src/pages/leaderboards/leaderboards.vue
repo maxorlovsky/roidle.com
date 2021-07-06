@@ -165,6 +165,7 @@ const leaderboardsPage = {
 
                 this.loading = false;
             } catch (error) {
+                this.$store.commit('setServerDown', true);
                 this.$router.replace('/server-down');
             }
         },

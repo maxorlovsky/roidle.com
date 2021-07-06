@@ -93,4 +93,5 @@ export default {
     hunts: (state) => state.hunts,
     playersRegistered: (state) => state.playersRegistered,
     serverHour: (state) => state.serverHour,
+    serverDown: (state) => state.serverDown,
 };

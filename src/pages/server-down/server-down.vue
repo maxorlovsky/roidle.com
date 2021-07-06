@@ -40,6 +40,7 @@ const serverDownPage = {
 
                 // In case of message OK sent, server are back up, we redirect user to home page
                 if (response.data.message === 'OK') {
+                    this.$store.commit('setServerDown', false);
                     this.$router.replace('/');
                 } else {
                     this.seconds = 10;
