@@ -24,7 +24,8 @@ const serverDownPage = {
     },
     data() {
         return {
-            seconds: 10
+            seconds: 10,
+            timeout: null
         };
     },
     computed: {
@@ -32,6 +33,9 @@ const serverDownPage = {
     },
     mounted() {
         this.checkServerStatus();
+    },
+    beforeDestroy() {
+        clearTimeout(this.timeout);
     },
     methods: {
         async checkServerStatus() {
@@ -54,7 +58,7 @@ const serverDownPage = {
         },
         runTimer() {
             // Set up 10 seconds timer to recheck status of the servers
-            setTimeout(() => {
+            this.timeout = setTimeout(() => {
                 // When seconds reach 1, we trigger server status check
                 if (this.seconds <= 1) {
                     this.checkServerStatus();
