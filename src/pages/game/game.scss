@@ -92,6 +92,10 @@
         background-image: url("#{$assets}/images/locations/undersea.jpg");
     }
 
+    &.inside.pyramid {
+        background-image: url("#{$assets}/images/locations/pyramids.jpg");
+    }
+
     &__party {
         display: flex;
         align-items: center;
