@@ -282,6 +282,13 @@ export default {
                 case 2013:
                     musicTracks = ['29', '49'];
                     break;
+                case 2015:
+                case 2016:
+                case 2017:
+                case 2018:
+                case 2019:
+                    musicTracks = ['22'];
+                    break;
                 default:
                     musicTracks = ['prontera', 'izlude'];
                     break;

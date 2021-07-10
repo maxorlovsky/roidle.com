@@ -48,6 +48,19 @@
                     </div>
                 </template>
 
+                <div v-if="choices.displayChoices"
+                    class="quests-quiz"
+                >
+                    <div v-for="(choice, choiceIndex) in choices.selection"
+                        :key="choice"
+                        :class="{ 'quests-quiz__answer--selected': choices.selected === choiceIndex }"
+                        class="quests-quiz__answer"
+                        @click="choices.selected = choiceIndex"
+                    >
+                        {{ choice }}
+                    </div>
+                </div>
+
                 <div v-if="quiz.questions.length"
                     class="quests-quiz"
                 >
@@ -77,14 +90,15 @@
                         >{{ $t('quests.next') }}</button>
                     </div>
                 </div>
+
                 <div class="quests-details__actions">
                     <button v-if="selectedMissionAction"
-                        :disabled="buttonLoading || (quiz.questions.length > 0 && !quiz.everyThingAnswered)"
+                        :disabled="isDiabled"
                         class="btn btn-success"
                         @click="completeQuest()"
                     >{{ $t('quests.endDiscussions') }}</button>
                     <button v-else
-                        :disabled="buttonLoading || (quiz.questions.length > 0 && !quiz.everyThingAnswered)"
+                        :disabled="isDiabled"
                         class="btn game-button"
                         @click="proceedWithQuest()"
                     >{{ $t('quests.next') }}</button>
@@ -174,6 +188,9 @@ const questsPage = {
         loading,
     },
     data() {
+        // Need to add params to reset
+        // Of this.closeQuest()
+
         return {
             loading: true,
             buttonLoading: false,
@@ -193,6 +210,11 @@ const questsPage = {
                 currentlyViewedQuestion: 0,
                 everyThingAnswered: false
             },
+            choices: {
+                displayChoices: false,
+                selection: [],
+                selected: -1
+            },
         };
     },
     computed: {
@@ -203,6 +225,12 @@ const questsPage = {
             'characterName',
             'serverUrl'
         ]),
+
+        isDiabled() {
+            return this.buttonLoading ||
+                (this.quiz.questions.length > 0 && !this.quiz.everyThingAnswered) ||
+                (this.choices.displayChoices && this.choices.selected < 0);
+        }
     },
     mounted() {
         mo.socket.on('finishQuestComplete', () => {
@@ -291,6 +319,11 @@ const questsPage = {
                 this.displayNPC = this.selectedMission.steps[this.selectedMission.currentStep].npcImage;
             }
 
+            // In case there are choices for the player in the quest, we apply them
+            if (this.selectedMission.steps[this.selectedMission.currentStep].choices && this.selectedMission.steps[this.selectedMission.currentStep].choices.length) {
+                this.choices.selection = this.selectedMission.steps[this.selectedMission.currentStep].choices;
+            }
+
             // When displaying quest, we need to identify which button to display
             this.checkQuestAction();
         },
@@ -307,6 +340,11 @@ const questsPage = {
             if (this.selectedMission.steps[this.selectedMission.currentStep].messages[checkNextDialogStep]) {
                 this.selectedMissionAction = 0;
             } else {
+                // Check on the last step if there is a choise needed and display it if that's the case
+                if (this.choices.selection.length) {
+                    this.choices.displayChoices = true;
+                }
+
                 this.selectedMissionAction = 1;
             }
         },
@@ -334,6 +372,7 @@ const questsPage = {
             mo.socket.emit('finishQuest', {
                 selectedMissionId: this.selectedMission.id,
                 quizAnswers: this.quiz.answers.length ? this.quiz.answers : null,
+                choiceIndex: this.choices.selected >= 0 ? this.choices.selected : null,
             });
         },
         closeQuest() {
@@ -352,6 +391,11 @@ const questsPage = {
                 answers: [],
                 currentlyViewedQuestion: 0,
                 everyThingAnswered: false
+            };
+            this.choices = {
+                displayChoices: false,
+                selection: [],
+                selected: -1
             };
         },
         transformText(text) {
